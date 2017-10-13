@@ -1,0 +1,78 @@
+
+ROM used: 2139 (26%)
+          2846 (35%) including unused fragments
+
+          0 Average locations per line
+          3 Average locations per statement
+
+RAM used: 344 (93%) at main() level
+          358 (97%) worst case
+
+Stack used: 2 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   52    14   2  CCS_TEST.c
+   23     0   0  CCS_TEST.h
+  330     0   0  ..\..\..\..\..\Program Files (x86)\PICC2\devices\16F877a.h
+ 2220   257  38  ..\..\..\..\..\Program Files (x86)\PICC2\drivers\math.h
+  135    12   2  ..\..\LTSketchbook\Libraries\LTC1867\LTC1867.h
+  161    25   4  ..\..\LTSketchbook\Libraries\LTC2309\LTC2309.h
+  157    24   4  ..\..\LTSketchbook\Libraries\LTC2418\LTC2418.h
+  197    22   3  ..\..\LTSketchbook\Libraries\LTC2449\LTC2449.h
+  126    25   4  ..\..\LTSketchbook\Libraries\LTC2461\LTC2461.h
+  183    26   4  ..\..\LTSketchbook\Libraries\LTC2484\LTC2484.h
+  101    13   2  ..\..\LTSketchbook\Libraries\LTC2640\LTC2640.h
+  129    21   3  ..\..\LTSketchbook\Libraries\LTC2654\LTC2654.h
+  165    25   4  ..\..\LTSketchbook\Libraries\LTC2655\LTC2655.h
+  132    21   3  ..\..\LTSketchbook\Libraries\LTC2656\LTC2656.h
+  165    25   4  ..\..\LTSketchbook\Libraries\LTC2657\LTC2657.h
+  348    82  12  ..\..\LTSketchbook\Libraries\LTC2945\LTC2945.h
+  242    49   7  ..\..\LTSketchbook\Libraries\LTC2991\LTC2991.h
+  161    29   4  ..\..\LTSketchbook\Libraries\LTC4151\LTC4151.h
+----- -----
+ 5027   670 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     20   1   1             @delay_ms1
+0     98   5   3             @I2C_READ_1
+0     94   4   1             @I2C_WRITE_1
+0     48   2   3   265  3.5  LTC1867_read
+ Inline       10   649  7.0  LTC2309_read
+0    126   6   9   634  7.1  LTC2418_read
+0    135   6  12   820  7.5  LTC2449_read
+ Inline       12   601  6.7  LTC2461_read
+0    126   6   9   634  7.1  LTC2484_read
+0     51   2   5   295  3.9  LTC2640_write
+0     54   3   8   383  4.8  LTC2654_write
+0    117   5  10   536  7.7  LTC2655_write
+0     54   3   8   383  4.8  LTC2656_write
+0    117   5  10   536  7.7  LTC2657_write
+0     99   5   5   233  5.4  LTC2945_write
+0     99   5   5   233  5.4  LTC2991_write
+0     99   5   5   233  5.4  LTC4151_write
+1    798  37  26  1216  2.9  MAIN
+
+Program metrics:
+    Functions               15
+    Statements              670
+    Comments                1652
+    Volume (V)              12680
+    Difficilty (D)          86.3
+    Effort to implement (E) 1094673
+    Time to implement (T)   16 hours, 54 minutes
+    Est Delivered Bugs (B)  4
+    Cyclomatic Complexity   15
+    Maintainability (MI)    48
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-007FF  1337  707  
+00800-00FFF   798  1250  
+01000-017FF     0  2048  
+01800-01FFF     0  2048  
+
+
+

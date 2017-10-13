@@ -1,0 +1,330 @@
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC1867\LTC1867.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2309\LTC2309.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2418\LTC2418.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2422\LTC2422.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2449\LTC2449.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2461\LTC2461.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2484\LTC2484.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2607\LTC2607.cpp
+Total errors found: 0
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2640\LTC2640.cpp:40:  Found C system header after other header. Should be: LTC2640.h, c system, c++ system, other.  [build/include_order] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2640\LTC2640.cpp
+Total errors found: 1
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2654\LTC2654.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2655\LTC2655.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2656\LTC2656.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2657\LTC2657.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2945\LTC2945.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2991\LTC2991.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC4151\LTC4151.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC6946\LTC6946.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LT_I2C\LT_I2C.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LT_SPI\LT_SPI.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\QuickEval\QuickEval.cpp
+Total errors found: 0
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Serial_EEPROM\Serial_EEPROM.cpp:100:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Serial_EEPROM\Serial_EEPROM.cpp:121:  Line ends in whitespace.  Consider deleting these extra spaces.  [whitespace/end_of_line] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Serial_EEPROM\Serial_EEPROM.cpp:325:  Could not find a newline character at the end of the file.  [whitespace/ending_newline] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Serial_EEPROM\Serial_EEPROM.cpp
+Total errors found: 3
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.cpp:32:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.cpp:32:  Missing spaces around ==  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.cpp:62:  Missing spaces around ==  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.cpp:64:  Missing spaces around <=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.cpp:67:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.cpp
+Total errors found: 5
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\1000\1867\DC806A\DC806A.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2300\2309\DC1337A\DC1337A.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2400\2418\DC571A\DC571A.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2400\2449\DC742A\DC742A.cpp
+Total errors found: 0
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2400\2461\DC1491A\DC1491A.cpp:203:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2400\2461\DC1491A\DC1491A.cpp
+Total errors found: 1
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2400\2484\DC939A\DC939A.cpp
+Total errors found: 0
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2607\DC934A\DC934A.cpp:196:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2607\DC934A\DC934A.cpp:198:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2607\DC934A\DC934A.cpp:200:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2607\DC934A\DC934A.cpp:202:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2607\DC934A\DC934A.cpp:204:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2607\DC934A\DC934A.cpp:205:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2607\DC934A\DC934A.cpp:356:  Missing space after ,  [whitespace/comma] [3]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2607\DC934A\DC934A.cpp
+Total errors found: 7
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2640\DC1333A\DC1333A.cpp:123:  Extra space before ( in function call  [whitespace/parens] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2640\DC1333A\DC1333A.cpp
+Total errors found: 1
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2654\DC1678A\DC1678A.cpp
+Total errors found: 0
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2655\DC1703A\DC1703A.cpp:179:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2655\DC1703A\DC1703A.cpp:186:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2655\DC1703A\DC1703A.cpp
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2656\DC1397A\DC1397A.cpp:183:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2656\DC1397A\DC1397A.cpp:190:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2656\DC1397A\DC1397A.cpp:208:  Extra space after ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2656\DC1397A\DC1397A.cpp:222:  Extra space after ( in function call  [whitespace/parens] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2656\DC1397A\DC1397A.cpp
+Total errors found: 4
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2600\2657\DC1529A\DC1529A.cpp
+Total errors found: 0
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2900\2945\DC1697A\DC1697A.cpp
+Total errors found: 0
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2900\2991\DC1785A\DC1785A.cpp:959:  Small and focused functions are preferred: loop() has 772 non-comment lines (error triggered by exceeding 500 lines).  [readability/fn_size] [1]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\2000\2900\2991\DC1785A\DC1785A.cpp
+Total errors found: 1
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\4000\4151\DC1208A\DC1208A.cpp
+Total errors found: 0
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\6000\6946\DC1705B\DC1705B.cpp:272:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\6000\6946\DC1705B\DC1705B.cpp:377:  Extra space for operator  ++;  [whitespace/operators] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\6000\6946\DC1705B\DC1705B.cpp:385:  Extra space for operator  --;  [whitespace/operators] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\6000\6946\DC1705B\DC1705B.cpp:399:  Extra space for operator  ++;  [whitespace/operators] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\6000\6946\DC1705B\DC1705B.cpp:415:  Extra space for operator  --;  [whitespace/operators] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\6000\6946\DC1705B\DC1705B.cpp:505:  Could not find a newline character at the end of the file.  [whitespace/ending_newline] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Part Number\6000\6946\DC1705B\DC1705B.cpp
+Total errors found: 6
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:70:  Missing space after ,  [whitespace/comma] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:79:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:82:  Missing space after ,  [whitespace/comma] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:91:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:118:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:121:  Missing spaces around <=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:135:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:137:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:184:  Use int16/int64/etc, rather than the C type long  [runtime/int] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:191:  Missing spaces around <<  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:208:  Missing spaces around ==  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:214:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:227:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:245:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:252:  Missing spaces around ==  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:258:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:351:  Missing spaces around ==  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp:354:  Missing spaces around ==  [whitespace/operators] [3]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B\DC590B.cpp
+Total errors found: 18
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:63:  Missing space after ,  [whitespace/comma] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:72:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:75:  Missing space after ,  [whitespace/comma] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:84:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:111:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:114:  Missing spaces around <=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:128:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:130:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:181:  Use int16/int64/etc, rather than the C type long  [runtime/int] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:188:  Missing spaces around <<  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:204:  Missing spaces around ==  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:210:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:224:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:241:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:248:  Missing spaces around ==  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:254:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:284:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:348:  Missing spaces around ==  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp:351:  Missing spaces around ==  [whitespace/operators] [3]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\DC590B_new_I2C_scheme\DC590B_new_I2C_Scheme.cpp
+Total errors found: 19
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\I2C_Address_Scan\I2C_Address_Scan.cpp:43:  "QuickEval.h" already included at C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\I2C_Address_Scan\I2C_Address_Scan.cpp:39  [build/include] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\I2C_Address_Scan\I2C_Address_Scan.cpp
+Total errors found: 1
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:55:  Use int16/int64/etc, rather than the C type long  [runtime/int] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:117:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:143:  Missing space after ,  [whitespace/comma] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:144:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:149:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:153:  Missing space after ,  [whitespace/comma] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:154:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:159:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:165:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:170:  Using deprecated casting style.  Use static_cast<char>(...) instead  [readability/casting] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:173:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:179:  Missing space after ,  [whitespace/comma] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:184:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:191:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:196:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:208:  Missing spaces around >=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:228:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:232:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:237:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:242:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:249:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:253:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:258:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:263:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:270:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:274:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:279:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:284:  Else clause should never be on same line as else (use 2 lines)  [whitespace/newline] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp:289:  Could not find a newline character at the end of the file.  [whitespace/ending_newline] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Serial_EEPROM_Test\Serial_EEPROM_Test.cpp
+Total errors found: 29
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Software_I2C_EEPROM_Demo\Software_I2C_EEPROM_Demo.cpp:88:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Software_I2C_EEPROM_Demo\Software_I2C_EEPROM_Demo.cpp
+Total errors found: 1
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:53:  Use int16/int64/etc, rather than the C type long  [runtime/int] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:54:  Use int16/int64/etc, rather than the C type long  [runtime/int] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:68:  Use int16/int64/etc, rather than the C type long  [runtime/int] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:70:  All parameters should be named in a function  [readability/function] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:83:  Blank line at the start of a code block.  Is this needed?  [whitespace/blank_line] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:90:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:103:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:109:  Use int16/int64/etc, rather than the C type long  [runtime/int] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:110:  Use int16/int64/etc, rather than the C type long  [runtime/int] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:141:  Extra space before ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:142:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:162:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:178:  Missing spaces around <=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:182:  Extra space before ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:183:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:192:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:193:  Extra space before ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:194:  Extra space before )  [whitespace/parens] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:198:  Extra space before ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:201:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:219:  Extra space after ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:232:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:232:  Extra space after ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:235:  Extra space after ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:245:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:294:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:306:  Extra space after ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:322:  Extra space after ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:326:  Missing spaces around !=  [whitespace/operators] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:360:  Extra space before ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:361:  Extra space after ( in function call  [whitespace/parens] [4]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:362:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp:365:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Utilities\Tester\Tester.cpp
+Total errors found: 33
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Linduino\Linduino.h:26:  #ifndef header guard has wrong style, please use: LIBRARIES_LINDUINO_LINDUINO_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Linduino\Linduino.h:45:  #endif line should be "#endif  // LIBRARIES_LINDUINO_LINDUINO_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Linduino\Linduino.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC1867\LTC1867.h:41:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC1867_LTC1867_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC1867\LTC1867.h:104:  #endif line should be "#endif  // LIBRARIES_LTC1867_LTC1867_H_"  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC1867\LTC1867.h:104:  Could not find a newline character at the end of the file.  [whitespace/ending_newline] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC1867\LTC1867.h
+Total errors found: 3
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2309\LTC2309.h:40:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2309_LTC2309_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2309\LTC2309.h:112:  #endif line should be "#endif  // LIBRARIES_LTC2309_LTC2309_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2309\LTC2309.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2418\LTC2418.h:49:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2418_LTC2418_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2418\LTC2418.h:108:  #endif line should be "#endif  // LIBRARIES_LTC2418_LTC2418_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2418\LTC2418.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2422\LTC2422.h:37:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2422_LTC2422_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2422\LTC2422.h:57:  #endif line should be "#endif  // LIBRARIES_LTC2422_LTC2422_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2422\LTC2422.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2449\LTC2449.h:71:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2449_LTC2449_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2449\LTC2449.h:158:  #endif line should be "#endif  // LIBRARIES_LTC2449_LTC2449_H_"  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2449\LTC2449.h:158:  Could not find a newline character at the end of the file.  [whitespace/ending_newline] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2449\LTC2449.h
+Total errors found: 3
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2461\LTC2461.h:42:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2461_LTC2461_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2461\LTC2461.h:73:  #endif line should be "#endif  // LIBRARIES_LTC2461_LTC2461_H_"  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2461\LTC2461.h:67:  Extra space after ( in function call  [whitespace/parens] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2461\LTC2461.h
+Total errors found: 3
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2484\LTC2484.h:57:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2484_LTC2484_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2484\LTC2484.h:103:  #endif line should be "#endif  // LIBRARIES_LTC2484_LTC2484_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2484\LTC2484.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2607\LTC2607.h:36:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2607_LTC2607_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2607\LTC2607.h:105:  #endif line should be "#endif  // LIBRARIES_LTC2607_LTC2607_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2607\LTC2607.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2640\LTC2640.h:25:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2640_LTC2640_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2640\LTC2640.h:49:  #endif line should be "#endif  // LIBRARIES_LTC2640_LTC2640_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2640\LTC2640.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2654\LTC2654.h:45:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2654_LTC2654_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2654\LTC2654.h:82:  #endif line should be "#endif  // LIBRARIES_LTC2654_LTC2654_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2654\LTC2654.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2655\LTC2655.h:25:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2655_LTC2655_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2655\LTC2655.h:98:  #endif line should be "#endif  // LIBRARIES_LTC2655_LTC2655_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2655\LTC2655.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2656\LTC2656.h:46:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2656_LTC2656_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2656\LTC2656.h:84:  #endif line should be "#endif  // LIBRARIES_LTC2656_LTC2656_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2656\LTC2656.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2657\LTC2657.h:42:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2657_LTC2657_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2657\LTC2657.h:114:  #endif line should be "#endif  // LIBRARIES_LTC2657_LTC2657_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2657\LTC2657.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2945\LTC2945.h:51:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2945_LTC2945_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2945\LTC2945.h:210:  #endif line should be "#endif  // LIBRARIES_LTC2945_LTC2945_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2945\LTC2945.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2991\LTC2991.h:56:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC2991_LTC2991_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2991\LTC2991.h:149:  #endif line should be "#endif  // LIBRARIES_LTC2991_LTC2991_H_"  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2991\LTC2991.h:82:  Line ends in whitespace.  Consider deleting these extra spaces.  [whitespace/end_of_line] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC2991\LTC2991.h
+Total errors found: 3
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC4151\LTC4151.h:48:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC4151_LTC4151_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC4151\LTC4151.h:104:  #endif line should be "#endif  // LIBRARIES_LTC4151_LTC4151_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC4151\LTC4151.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC6946\LTC6946.h:43:  #ifndef header guard has wrong style, please use: LIBRARIES_LTC6946_LTC6946_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC6946\LTC6946.h:203:  #endif line should be "#endif  // LIBRARIES_LTC6946_LTC6946_H_"  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC6946\LTC6946.h:121:  Line ends in whitespace.  Consider deleting these extra spaces.  [whitespace/end_of_line] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LTC6946\LTC6946.h
+Total errors found: 3
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LT_I2C\LT_I2C.h:38:  #ifndef header guard has wrong style, please use: LIBRARIES_LT_I2C_LT_I2C_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LT_I2C\LT_I2C.h:88:  #endif line should be "#endif  // LIBRARIES_LT_I2C_LT_I2C_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LT_I2C\LT_I2C.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LT_SPI\LT_SPI.h:27:  #ifndef header guard has wrong style, please use: LIBRARIES_LT_SPI_LT_SPI_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LT_SPI\LT_SPI.h:54:  #endif line should be "#endif  // LIBRARIES_LT_SPI_LT_SPI_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\LT_SPI\LT_SPI.h
+Total errors found: 2
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\QuickEval\QuickEval.h:27:  #ifndef header guard has wrong style, please use: LIBRARIES_QUICKEVAL_QUICKEVAL_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\QuickEval\QuickEval.h:60:  #endif line should be "#endif  // LIBRARIES_QUICKEVAL_QUICKEVAL_H_"  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\QuickEval\QuickEval.h:54:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\QuickEval\QuickEval.h:56:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\QuickEval\QuickEval.h:58:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\QuickEval\QuickEval.h
+Total errors found: 5
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Serial_EEPROM\Serial_EEPROM.h:29:  #ifndef header guard has wrong style, please use: LIBRARIES_SERIAL_EEPROM_SERIAL_EEPROM_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Serial_EEPROM\Serial_EEPROM.h:103:  #endif line should be "#endif  // LIBRARIES_SERIAL_EEPROM_SERIAL_EEPROM_H_"  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Serial_EEPROM\Serial_EEPROM.h:35:  Line ends in whitespace.  Consider deleting these extra spaces.  [whitespace/end_of_line] [4]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Serial_EEPROM\Serial_EEPROM.h
+Total errors found: 3
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Tester\Tester.h:33:  #ifndef header guard has wrong style, please use: LIBRARIES_TESTER_TESTER_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Tester\Tester.h:94:  #endif line should be "#endif  // LIBRARIES_TESTER_TESTER_H_"  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Tester\Tester.h:52:  Is this a non-const reference? If so, make const or use a pointer.  [runtime/references] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Tester\Tester.h:61:  Blank line at the start of a code block.  Is this needed?  [whitespace/blank_line] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Tester\Tester.h:63:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Tester\Tester.h:76:  Blank line at the start of a code block.  Is this needed?  [whitespace/blank_line] [2]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Tester\Tester.h:89:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\Tester\Tester.h
+Total errors found: 7
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.h:21:  #ifndef header guard has wrong style, please use: LIBRARIES_USERINTERFACE_USERINTERFACE_H_  [build/header_guard] [5]
+C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.h:53:  #endif line should be "#endif  // LIBRARIES_USERINTERFACE_USERINTERFACE_H_"  [build/header_guard] [5]
+Done processing C:\Users\Dan\Dropbox\Linduino\trunk\Utilities\Linduino-check\LTSketchbook\Libraries\UserInterface\UserInterface.h
+Total errors found: 2

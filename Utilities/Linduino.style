@@ -1,0 +1,11 @@
+--style=allman
+--indent=spaces=2
+--indent-classes
+--indent-switches
+--indent-cases
+--pad-header
+--align-pointer=name
+--convert-tabs
+--align-pointer=name
+--align-reference=name
+--lineend=windows

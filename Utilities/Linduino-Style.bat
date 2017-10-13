@@ -1,0 +1,1 @@
+astyle.exe --recursive --options=Linduino.style ..\LTSketchbook\*.cpp ..\LTSketchbook\*.h ..\LTSketchbook\*.ino

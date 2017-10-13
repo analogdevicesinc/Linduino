@@ -1,0 +1,247 @@
+004     @WRITE_PROGRAM_MEMORY8.P1
+004-005 @READ_PROGRAM_MEMORY8.P2
+008     PSP_DATA
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01B     CCP_2
+01B     CCP_2_LOW
+01C     CCP_2_HIGH
+020     @TRIS_C
+021-024 LTC1867_lsb
+025-028 LTC1867_offset_unipolar_code
+029-02C LTC1867_offset_bipolar_code
+02D-030 LTC2309_lsb
+031-034 LTC2309_offset_code
+035-038 LTC2418_lsb
+039-03C LTC2418_offset_code
+03D-040 LTC2449_lsb
+041-044 LTC2449_offset_code
+045-048 LTC2461_lsb
+049-04C LTC2461_offset_code
+04D-050 LTC2484_lsb
+051-054 LTC2484_offset_code
+055-058 LTC2484_t0
+059-05C LTC2484_r0
+05D-060 LTC2640_lsb
+061-064 LTC2640_offset
+065-074 LTC2654_offset
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B-07E LTC2945_ADIN_lsb
+09C.6   C1OUT
+09C.7   C2OUT
+0A0-0AF LTC2654_lsb
+0B0-0BF LTC2655_offset
+0C0-0CF LTC2655_lsb
+0D0-0EF LTC2656_offset
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+110-12F LTC2656_lsb
+130-14F LTC2657_offset
+150-16F LTC2657_lsb
+190-193 LTC2945_DELTA_SENSE_lsb
+194-197 LTC2945_VIN_lsb
+198-19B LTC2945_Power_lsb
+19C-19F LTC2945_ADIN_DELTA_SENSE_lsb
+1A0-1A3 LTC2991_Single_Ended_lsb
+1A4-1A7 LTC2991_Differential_lsb
+1A8-1AB LTC2991_Vcc_lsb
+1AC-1AF LTC2991_Temperature_lsb
+1B0-1B3 LTC2991_Diode_Voltage_lsb
+1B4-1B7 LTC4151_sense_lsb
+1B8-1BB LTC4151_vin_lsb
+1BC-1BF LTC4151_adin_lsb
+1C0     LTC2945_read_12_bits.i2c_address
+1C0     LTC2945_read_24_bits.i2c_address
+1C0-1C3 atan2.y
+1C0     LTC2945_read_16_bits.i2c_address
+1C0     LTC4151_read.i2c_address
+1C0-1C1 MAIN.adc_code
+1C0     LTC2991_read.i2c_address
+1C0     LTC2945_read.i2c_address
+1C1     LTC2945_read_24_bits.command
+1C1     LTC4151_read.command
+1C1     LTC2945_read_16_bits.command
+1C1     LTC2991_read.command
+1C1     LTC2945_read_12_bits.command
+1C1     LTC2945_read.command
+1C2     LTC2945_read_16_bits.ack
+1C2     LTC2945_read_24_bits.ack
+1C2-1C3 LTC4151_read.ack
+1C2-1C3 LTC2991_read.ack
+1C2     LTC2945_read.ack
+1C2     LTC2945_read_12_bits.ack
+1C2-1C5 MAIN.adc_code_2
+1C3-1C6 LTC2945_read_16_bits.data
+1C3-1C6 LTC2945_read_24_bits.data
+1C3-1C6 LTC2945_read_12_bits.data
+1C4-1C7 LTC4151_read.data
+1C4-1C7 atan2.x
+1C4-1C7 LTC2991_read.data
+1C6-1C9 MAIN.adc_reading
+1C8-1CB atan2.z
+1CA     MAIN.adc_command
+1CB-1CC MAIN.adc_command_2
+1CC.0   atan2.sign
+1CD     atan2.quad
+1CD     MAIN.code
+1CE     MAIN.command
+1CF     MAIN.dac_command
+1D0     MAIN.dac_address
+1D1-1D2 MAIN.dac_code
+1D3     MAIN.i2c_address
+1D4     MAIN.ack
+1D5     MAIN.overrange
+1D6-1D9 MAIN.result
+1DA     LTC2309_read.i2c_address
+1DA-1DB LTC2654_write.dac_command
+1DA-1DB LTC2449_read.adc_command
+1DA     LTC2991_write.i2c_address
+1DA     LTC2418_read.adc_command
+1DA     LTC4151_write.i2c_address
+1DA     LTC1867_read.adc_command
+1DA     LTC2657_write.i2c_address
+1DA     LTC2640_write.dac_command
+1DA     LTC2655_write.i2c_address
+1DA     LTC2484_read.adc_command
+1DA     LTC2945_write.i2c_address
+1DA     LTC2461_read.i2c_address
+1DA-1DB LTC2656_write.dac_command
+1DB-1DC LTC1867_read.data
+1DB     LTC2655_write.dac_command
+1DB     LTC2945_write.command
+1DB     LTC2461_read.adc_command
+1DB     LTC2991_write.command
+1DB-1DC LTC2640_write.dac_code
+1DB-1DC LTC2418_read.timer_count
+1DB     LTC2309_read.adc_command
+1DB-1DC LTC2484_read.timer_count
+1DB     LTC2657_write.dac_command
+1DB     LTC4151_write.command
+1DC     LTC2461_read.ack
+1DC-1DD LTC2449_read.timer_count
+1DC     LTC2991_write.code
+1DC     LTC2655_write.dac_address
+1DC     LTC2654_write.dac_address
+1DC     LTC2656_write.dac_address
+1DC     LTC4151_write.code
+1DC     LTC2945_write.code
+1DC     LTC2309_read.ack
+1DC     LTC2657_write.dac_address
+1DD-1DE LTC2654_write.dac_code
+1DD-1DE LTC2640_write.data
+1DD     LTC4151_write.ack
+1DD     LTC2991_write.ack
+1DD-1DE LTC2657_write.dac_code
+1DD-1E0 LTC2309_read.data
+1DD-1DE LTC2656_write.dac_code
+1DD     LTC2945_write.ack
+1DD-1E0 LTC2461_read.data
+1DD-1DE LTC2655_write.dac_code
+1DD-1E0 LTC2484_read.data
+1DD-1E0 LTC2418_read.data
+1DE-1E1 LTC2449_read.data
+1DE     LTC2945_write.@SCRATCH1
+1DE     LTC2991_write.@SCRATCH1
+1DE     LTC4151_write.@SCRATCH1
+1DF     LTC2656_write.command_byte
+1DF     LTC2655_write.ack
+1DF     LTC2654_write.command_byte
+1DF     LTC2657_write.ack
+1E0     LTC2655_write.command_byte
+1E0-1E1 LTC2654_write.data
+1E0     LTC2657_write.command_byte
+1E0-1E1 LTC2656_write.data
+1E1-1E2 LTC2657_write.data
+1E1-1E2 LTC2655_write.data
+1E1     LTC2309_read.@SCRATCH1
+1E1     LTC2418_read.@SCRATCH1
+1E1     LTC2461_read.@SCRATCH1
+1E1     LTC2484_read.@SCRATCH1
+1E2-1E3 LTC2449_read.command
+1E2     LTC2418_read.@SCRATCH2
+1E2     LTC2484_read.@SCRATCH2
+1E3     LTC2655_write.@SCRATCH1
+1E3     LTC2657_write.@SCRATCH1
+1E4     @delay_ms1.P1
+1E4     LTC2449_read.@SCRATCH1
+1E5     @I2C_READ_1.P1
+1E5     LTC2449_read.@SCRATCH2
+1E6     @I2C_WRITE_1.P1
+1E6     @I2C_READ_1.@SCRATCH1
+1E7     @I2C_READ_1.@SCRATCH2
+
+ROM Allocation:
+00F4  @delay_ms1
+0092  @I2C_READ_1
+0034  @I2C_WRITE_1
+0004  LTC1867_read
+08EC  LTC2309_read
+0108  LTC2418_read
+0186  LTC2449_read
+09D7  LTC2461_read
+020D  LTC2484_read
+028B  LTC2640_write
+02BE  LTC2654_write
+02F4  LTC2655_write
+0369  LTC2656_write
+039F  LTC2657_write
+0414  LTC2945_write
+0477  LTC2991_write
+04DA  LTC4151_write
+0800  MAIN
+0800  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    C:\Projects\Arduino\Linduino\Test\CCS\
+
+Project Files:
+    CCS_TEST.c
+    CCS_TEST.h
+    ..\..\..\..\..\Program Files (x86)\PICC2\devices\16F877a.h
+    ..\..\..\..\..\Program Files (x86)\PICC2\drivers\math.h
+    ..\..\LTSketchbook\Libraries\LTC1867\LTC1867.h
+    ..\..\LTSketchbook\Libraries\LTC2309\LTC2309.h
+    ..\..\LTSketchbook\Libraries\LTC2418\LTC2418.h
+    ..\..\LTSketchbook\Libraries\LTC2449\LTC2449.h
+    ..\..\LTSketchbook\Libraries\LTC2461\LTC2461.h
+    ..\..\LTSketchbook\Libraries\LTC2484\LTC2484.h
+    ..\..\LTSketchbook\Libraries\LTC2640\LTC2640.h
+    ..\..\LTSketchbook\Libraries\LTC2654\LTC2654.h
+    ..\..\LTSketchbook\Libraries\LTC2655\LTC2655.h
+    ..\..\LTSketchbook\Libraries\LTC2656\LTC2656.h
+    ..\..\LTSketchbook\Libraries\LTC2657\LTC2657.h
+    ..\..\LTSketchbook\Libraries\LTC2945\LTC2945.h
+    ..\..\LTSketchbook\Libraries\LTC2991\LTC2991.h
+    ..\..\LTSketchbook\Libraries\LTC4151\LTC4151.h
+
+Units:
+    C:\Projects\Arduino\Linduino\Test\CCS\CCS_TEST (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-65535
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,16,32
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      CCS_TEST.err
+    Ext Symbols: CCS_TEST.esym
+    INHX8:       CCS_TEST.hex
+    Symbols:     CCS_TEST.sym
+    List:        CCS_TEST.lst
+    Debug/COFF:  CCS_TEST.cof
+    Project:     CCS_TEST.PJT
+    Call Tree:   CCS_TEST.tre
+    Statistics:  CCS_TEST.sta

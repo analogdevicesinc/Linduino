@@ -1,0 +1,29 @@
+[PROJECT]
+Target=C:\Projects\Arduino\Linduino\Test\CCS\CCS_TEST.hex
+Development_Mode=
+Processor_Text=PIC16F877A
+ToolSuite=CCS
+Processor=0x877A
+[C:\Projects\Arduino\Linduino\Test\CCS\CCS_TEST]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+[mru-list]
+1=C:\Projects\Arduino\Linduino\Test\CCS\CCS_TEST.c
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+[Units]
+Link=0
+Count=1
+1=C:\Projects\Arduino\Linduino\Test\CCS\CCS_TEST
+[Opened Files]
+1=CCS_TEST.c
+2=CCS_TEST.h
+3=..\..\LTSketchbook\Libraries\LTC2945\LTC2945.h
+4=
+5=..\..\LTSketchbook\Libraries\LTC2654\LTC2654.h
+6=..\..\LTSketchbook\Libraries\LTC2655\LTC2655.h
+7=

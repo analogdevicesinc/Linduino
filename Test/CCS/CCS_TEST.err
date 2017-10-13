@@ -1,0 +1,10 @@
+>>> Warning 203 "C:\Projects\Arduino\Linduino\LTSketchbook\Libraries\LTC2418\LTC2418.h" Line 123(1,1): Condition always TRUE
+>>> Warning 225 "C:\Projects\Arduino\Linduino\LTSketchbook\Libraries\LTC2449\LTC2449.h" Line 86(21,26): Duplicate #define
+>>> Warning 203 "C:\Projects\Arduino\Linduino\LTSketchbook\Libraries\LTC2449\LTC2449.h" Line 166(1,1): Condition always TRUE
+>>> Warning 225 "C:\Projects\Arduino\Linduino\LTSketchbook\Libraries\LTC2484\LTC2484.h" Line 72(21,26): Duplicate #define
+>>> Warning 203 "C:\Projects\Arduino\Linduino\LTSketchbook\Libraries\LTC2484\LTC2484.h" Line 107(1,1): Condition always TRUE
+>>> Warning 202 "C:\Projects\Arduino\Linduino\LTSketchbook\Libraries\LTC2991\LTC2991.h" Line 139(23,38): Variable never used:   LTC2991_Vcc_lsb
+>>> Warning 202 "CCS_TEST.c" Line 34(6,15): Variable never used:   overrange
+>>> Warning 202 "CCS_TEST.c" Line 35(7,13): Variable never used:   result
+      Memory usage:   ROM=26%      RAM=93% - 97%
+      0 Errors,  8 Warnings.
