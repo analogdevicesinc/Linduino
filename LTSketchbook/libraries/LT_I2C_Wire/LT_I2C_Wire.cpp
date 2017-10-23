@@ -61,17 +61,21 @@ ongoing work.
 #include "LT_I2C_Wire.h"
 #include <Wire.h>
 
-#if defined(ARDUINO_AVR_UNO)
-#include <util/delay.h>
-#else
-#include <delay.h>
+#if defined(ARDUINO_ARCH_AVR)
+  #include <util/delay.h>
+#elif defined(ARDUINO_ARCH_SAM)
+  #define Wire Wire1
+ #define _delay_us delayMicroseconds  
+#elif defined(ARDUINO_ARCH_SAMD)
+  #include <delay.h>
+  #define _delay_us delayMicroseconds  
 #endif
 
 // Read a byte, store in "value".
 int8_t i2c_read_byte(uint8_t address, uint8_t *value)
 {
   Wire.beginTransmission(address);
-  Wire.requestFrom(address, (uint8_t)1, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)1, (uint8_t)true);
   while (Wire.available())
   {
     *value = Wire.read();				// Read MSB from buffer
@@ -103,7 +107,7 @@ int8_t i2c_read_byte_data(uint8_t address, uint8_t command, uint8_t *value)
   {										// endTransmission returns zero on success			
     return(1);
   }
-  Wire.requestFrom(address, (uint8_t)1, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)1, (uint8_t)true);
   while (Wire.available())
   {
     *value = Wire.read();               // Read MSB from buffer
@@ -147,7 +151,7 @@ int8_t i2c_read_word_data(uint8_t address, uint8_t command, uint16_t *value)
     return(1);
   }
   Wire.beginTransmission(address);
-  Wire.requestFrom(address, (uint8_t)2, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)2, (uint8_t)true);
   int i = 1;
   while (Wire.available())
   {
@@ -198,7 +202,7 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t command, uint8_t length, uin
     return(1);
   }
   Wire.beginTransmission(address);
-  Wire.requestFrom(address, length, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
 
   while (Wire.available())
   {
@@ -223,7 +227,7 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t length, uint8_t *values)
   int8_t ret = 0;
 
   Wire.beginTransmission(address);
-  Wire.requestFrom(address, length, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
 
   while (Wire.available())
   {
@@ -261,7 +265,7 @@ int8_t i2c_write_block_data(uint8_t address, uint8_t command, uint8_t length, ui
   return(0);
 }
 
-// Write two command bytes, then receive a block of data
+// Write two command bytes, then receive a block of data														
 int8_t i2c_two_byte_command_read_block(uint8_t address, uint16_t command, uint8_t length, uint8_t *values)
 {
   int8_t ret = 0;
@@ -271,34 +275,40 @@ int8_t i2c_two_byte_command_read_block(uint8_t address, uint16_t command, uint8_
     uint16_t w;
   } comm;
   comm.w = command;
-
   uint8_t i = (length-1);
-  Wire.beginTransmission(address);
-  Wire.write(byte(comm.b[1]));
-  Wire.write(byte(comm.b[0]));
-
-  if(Wire.endTransmission(false))	// endTransmission(false) is a repeated start
-  {									// endTransmission returns zero on success
-	Wire.endTransmission();			
-    return(1);
-  }
-  // Wire.beginTransmission(address);	// requestFrom calls beginTransmission(address)
-  Wire.requestFrom(address, length, (uint8_t)true);
-
-  while (Wire.available())
+  uint8_t readBack = 0;
+  
+  #if defined(ARDUINO_ARCH_SAM)
+    Wire.beginTransmission(address);
+    readBack = Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint32_t)command, (uint8_t)2, (uint8_t)false);
+  #elif defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_AVR)
+    Wire.beginTransmission(address);
+    Wire.write(byte(comm.b[1]));
+    Wire.write(byte(comm.b[0]));
+  
+    if(Wire.endTransmission(false))	// endTransmission(false) is a repeated start
+    {									// endTransmission returns zero on success
+      Wire.endTransmission();			
+      return(1);
+    }
+    readBack = Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);	
+  #endif
+  
+  if(readBack == length)
   {
-    values[i] = Wire.read();
-    i--;
-    if (i == 0)
-      break;
+	while (Wire.available())
+    {
+      values[i] = Wire.read();
+      if (i == 0)
+        break;
+      i--;
+    }
+	return (0);
   }
-  delay(100);
-  if(Wire.endTransmission())	// endTransmission(false) is a repeated start
-  {									// endTransmission returns zero on success
-	Wire.endTransmission();			
-    return(1);
+  else
+  {
+	return (1);
   }
-  return(0);
 }
 
 // Initializes Linduino I2C port.
