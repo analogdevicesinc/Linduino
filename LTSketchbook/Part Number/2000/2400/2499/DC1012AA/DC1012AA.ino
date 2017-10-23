@@ -82,14 +82,22 @@ ongoing work.
 
 #include <Arduino.h>
 #include <stdint.h>
-#include "Linduino.h"
-#include "LT_SPI.h"
+#include "Linduino.h"   
 #include <SPI.h>
 #include "UserInterface.h"
-#include "LT_I2C.h"
-#include "QuikEval_EEPROM.h"
 #include "LTC24XX_general.h"
 #include "LTC2499.h"
+#include "UseWire.h"
+
+#ifdef USEWIRE
+#include "LT_I2C_Wire.h"
+#include "LT_SPI_Zero.h"
+#include "QuikEval_EEPROM_Wire.h"
+#else
+#include "LT_I2C.h"
+#include "LT_SPI.h"
+#include "QuikEval_EEPROM.h"
+#endif
 
 // Function Declaration
 void print_title();                             // Print the title block
@@ -105,7 +113,7 @@ void menu_5_set_address();
 // Global variables
 static uint8_t demo_board_connected;                //!< Set to 1 if the board is connected
 static int16_t two_x_mode = LTC2499_SPEED_1X;       //!< The LTC2499 2X Mode settings
-static float LTC2499_vref = 5.0;                    //!< The LTC2499 reference voltage
+static float LTC2499_vref = 2.5;                    //!< The LTC2499 reference voltage
 static uint8_t rejection_mode = LTC2499_R50_R60;    //!< The LTC2499 rejection mode
 static uint8_t i2c_address = LTC2497_I2C_ADDRESS;   //!< I2C address in 7 bit format for part
 static uint16_t eoc_timeout = 300;                  //!< Timeout in ms
