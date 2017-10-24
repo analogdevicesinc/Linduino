@@ -82,7 +82,7 @@ ongoing work.
 
 #include <Arduino.h>
 #include <stdint.h>
-#include "Linduino.h"   
+#include "Linduino.h"
 #include <SPI.h>
 #include "UserInterface.h"
 #include "LTC24XX_general.h"

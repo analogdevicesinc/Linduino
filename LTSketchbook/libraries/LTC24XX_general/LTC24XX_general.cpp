@@ -73,7 +73,7 @@ ongoing work.
 #include "Linduino.h"
 #include <SPI.h>
 #include "LTC24XX_general.h"
-#include "UseWire.h"						
+#include "UseWire.h"
 #ifdef USEWIRE
 #include "LT_I2C_Wire.h"
 #include "LT_SPI_Zero.h"

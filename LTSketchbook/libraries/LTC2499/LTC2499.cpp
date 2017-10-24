@@ -68,7 +68,7 @@ ongoing work.
 
 #include <stdint.h>
 #include <Arduino.h>
-#include "Linduino.h"   
+#include "Linduino.h"
 #include "LTC2499.h"
 #include "LTC24XX_general.h"
 #include "UseWire.h"

@@ -75,10 +75,10 @@ ongoing work.
 #if defined(ARDUINO_AVR_UNO)
 #include <util/delay.h>
 #elif defined(ARDUINO_SAM_DUE)
-#define _delay_us delayMicroseconds  
+#define _delay_us delayMicroseconds
 #else
 #include <delay.h>
-#define _delay_us delayMicroseconds  
+#define _delay_us delayMicroseconds
 #endif
 
 //#define Wire Wire1
@@ -111,7 +111,7 @@ uint8_t read_quikeval_id_string(char *buffer)
   // find comma positions
   for (i = 0; i < buffer_count; i++)
   {
-	if (buffer[i] == ',') comma_position[comma_count++]=i;
+    if (buffer[i] == ',') comma_position[comma_count++]=i;
   }
 
   if (comma_position[6] < comma_position[5])// comma_position[6]=strlen(buffer);  // some demo boards are missing the last comma
@@ -196,24 +196,24 @@ int8_t discover_demo_board(char *demo_name)
 // Returns 0 if an acknowledge is generated and 1 if not.
 int8_t eeprom_poll(uint8_t i2c_address)
 {
-	
+
   uint8_t timer_count;
   int8_t ack = 1;
-  
+
   for (timer_count = 0; timer_count < EEPROM_TIMEOUT; timer_count++)
   {
-	Wire.beginTransmission(i2c_address >> 1);
-	ack = Wire.endTransmission(false);
-	
-	if (ack == 0)
-	{
+    Wire.beginTransmission(i2c_address >> 1);
+    ack = Wire.endTransmission(false);
+
+    if (ack == 0)
+    {
       return 0;                  // If the EEPROM acknowledges, jump out of delay loop
-	}
-	else
-	{
-	  Wire.endTransmission();
-	  delay(1);
-	}
+    }
+    else
+    {
+      Wire.endTransmission();
+      delay(1);
+    }
   }
   return 1;
 }
@@ -232,16 +232,16 @@ int8_t eeprom_write_poll(uint8_t i2c_address)
 uint8_t eeprom_write_byte(uint8_t i2c_address, char data, uint16_t address)
 {
   uint8_t byte_count = 0;
-  if (address < EEPROM_DATA_SIZE)     	// Make sure the address is in bounds
+  if (address < EEPROM_DATA_SIZE)       // Make sure the address is in bounds
   {
-    if (!eeprom_poll(i2c_address))  	// Check if EEPROM is ready
+    if (!eeprom_poll(i2c_address))    // Check if EEPROM is ready
     {
-	  Wire.beginTransmission(i2c_address >> 1);
+      Wire.beginTransmission(i2c_address >> 1);
       if (EEPROM_DATA_SIZE > 0x100)
         Wire.write(byte(address>>8));   // Send upper byte of address if size > 256 bytes
-      Wire.write(address);         		// Send lower byte of address
-      Wire.write(data);           		// Send byte to EEPROM
-      Wire.endTransmission();			// I2C stop
+      Wire.write(address);            // Send lower byte of address
+      Wire.write(data);               // Send byte to EEPROM
+      Wire.endTransmission();     // I2C stop
       byte_count = 1;
     }
   }
@@ -278,7 +278,7 @@ uint8_t eeprom_write_buffer(uint8_t i2c_address, char *buffer, uint16_t address)
         Wire.beginTransmission(i2c_address);
         if (EEPROM_DATA_SIZE > 0x100)
           Wire.write(byte(address>>8));   // Send upper byte of address if size > 256 bytes
-        Wire.write(address);         		// Send lower byte of address
+        Wire.write(address);            // Send lower byte of address
         byte_count = strlen(buffer)-index;              // Calculate the remaining byte count
         if (byte_count > EEPROM_PAGE_SIZE)              // Limit to EEPROM_PAGE_SIZE
           byte_count = EEPROM_PAGE_SIZE;
@@ -306,22 +306,23 @@ uint8_t eeprom_read_byte(uint8_t i2c_address, char *data, uint16_t address)
   {
     if (!eeprom_poll(i2c_address))        // Check if EEPROM is ready
     {
-	  Wire.beginTransmission(i2c_address >> 1);
+      Wire.beginTransmission(i2c_address >> 1);
       if (EEPROM_DATA_SIZE > 0x100)
         Wire.write(address>>8);          // Send upper byte of address if size > 256 bytes
       Wire.write(address);               // Send lower byte of address
-      if(Wire.endTransmission(false))	// endTransmission(false) is a repeated start
-      {									// endTransmission returns zero on success
-	    Wire.endTransmission();			
+      if (Wire.endTransmission(false)) // endTransmission(false) is a repeated start
+      {
+        // endTransmission returns zero on success
+        Wire.endTransmission();
         return(0);
-      } 
-	  Wire.requestFrom((uint8_t)(i2c_address >> 1), (uint8_t)1, (uint8_t)true);
-	  while (Wire.available())
-	  {
-	    *data = Wire.read();                // Read last byte from EEPROM with NACK
-		byte_count = 1;
-	  }
-	  Wire.endTransmission();
+      }
+      Wire.requestFrom((uint8_t)(i2c_address >> 1), (uint8_t)1, (uint8_t)true);
+      while (Wire.available())
+      {
+        *data = Wire.read();                // Read last byte from EEPROM with NACK
+        byte_count = 1;
+      }
+      Wire.endTransmission();
     }
   }
   return(byte_count);
@@ -349,30 +350,31 @@ uint8_t eeprom_read_buffer(uint8_t i2c_address, char *buffer, uint16_t address, 
   *buffer='\0';                            // Initialize buffer with null
   if (!eeprom_poll(i2c_address))      // Check if the EEPROM is ready
   {
-	Wire.beginTransmission(i2c_address >> 1);
+    Wire.beginTransmission(i2c_address >> 1);
     if (EEPROM_DATA_SIZE > 0x100)
       Wire.write(byte(address>>8));            // Send upper byte of address if size > 256 bytes
     Wire.write(address);                 // Send lower byte of address
-    if(Wire.endTransmission(false))	// endTransmission(false) is a repeated start
-    {									// endTransmission returns zero on success
-	  Wire.endTransmission();			
+    if (Wire.endTransmission(false)) // endTransmission(false) is a repeated start
+    {
+      // endTransmission returns zero on success
+      Wire.endTransmission();
       return(0);
-    }     
+    }
 
-	Wire.requestFrom((uint8_t)(i2c_address >> 1), (uint8_t)count, (uint8_t)true);
-	while (Wire.available())
-	{
-	  data = Wire.read();
-	  *buffer++ = data;
-	  if (i == (count-1))
-	  {
-		*buffer = 0;                          // Place null terminator at end of buffer
+    Wire.requestFrom((uint8_t)(i2c_address >> 1), (uint8_t)count, (uint8_t)true);
+    while (Wire.available())
+    {
+      data = Wire.read();
+      *buffer++ = data;
+      if (i == (count-1))
+      {
+        *buffer = 0;                          // Place null terminator at end of buffer
         break;
-	  }
-	  i++;
-	}
+      }
+      i++;
+    }
     Wire.endTransmission();
-	return(i);
+    return(i);
   }
   return(0);
 }
@@ -387,30 +389,31 @@ uint8_t eeprom_read_buffer_with_terminator(uint8_t i2c_address, char *buffer, ui
   *buffer='\0';                            // Initialize buffer with null
   if (eeprom_poll(i2c_address) == 0)      // Check if the EEPROM is ready
   {
-	Wire.beginTransmission(i2c_address >> 1);
+    Wire.beginTransmission(i2c_address >> 1);
     if (EEPROM_DATA_SIZE > 0x100)
       Wire.write(byte(address>>8));            // Send upper byte of address if size > 256 bytes
     Wire.write(address);                 // Send lower byte of address
-    if(Wire.endTransmission(false))	// endTransmission(false) is a repeated start
-    {									// endTransmission returns zero on success
-	  Wire.endTransmission();			
+    if (Wire.endTransmission(false)) // endTransmission(false) is a repeated start
+    {
+      // endTransmission returns zero on success
+      Wire.endTransmission();
       return(0);
-    }     
+    }
 
-	Wire.requestFrom((uint8_t)(i2c_address >> 1), (uint8_t)count, (uint8_t)true);
-	while (Wire.available())
-	{
-	  data = Wire.read();
-	  *buffer++ = data;
-	  if ((data == terminator) || (i == (count-1)))
-	  {
-		*buffer = 0;                          // Place null terminator at end of buffer
+    Wire.requestFrom((uint8_t)(i2c_address >> 1), (uint8_t)count, (uint8_t)true);
+    while (Wire.available())
+    {
+      data = Wire.read();
+      *buffer++ = data;
+      if ((data == terminator) || (i == (count-1)))
+      {
+        *buffer = 0;                          // Place null terminator at end of buffer
         break;
-	  }
-	  i++;
-	}
+      }
+      i++;
+    }
     Wire.endTransmission();
-	return(i);
+    return(i);
   }
   return(0);
 }
@@ -557,41 +560,41 @@ uint8_t disable_calibration()
   uint8_t timer_count;
   int8_t ack = 1;
   uint8_t i = (count-1);
-  
+
   i2c_address = i2c_address >> 1;
   for (timer_count = 0; timer_count < EEPROM_TIMEOUT; timer_count++)
   {
-	Wire.beginTransmission(i2c_address);
-	if (EEPROM_DATA_SIZE > 0x100)
+  Wire.beginTransmission(i2c_address);
+  if (EEPROM_DATA_SIZE > 0x100)
       Wire.write(byte(address>>8));        // Send upper byte of address if size > 256 bytes
     Wire.write(byte(address));             // Send lower byte of address
-	ack = Wire.endTransmission(false);
-	if (ack == 0)
-	  break;                  // If the EEPROM acknowledges, jump out of delay loop
-	else
-	{
-	  Wire.endTransmission();
-	  delay(1);
-	}
+  ack = Wire.endTransmission(false);
+  if (ack == 0)
+    break;                  // If the EEPROM acknowledges, jump out of delay loop
+  else
+  {
+    Wire.endTransmission();
+    delay(1);
   }
-  
+  }
+
   if(ack)
   {
-	return 0;
+  return 0;
   }
   else
   {
-	Wire.requestFrom(i2c_address, count, (uint8_t)true);
+  Wire.requestFrom(i2c_address, count, (uint8_t)true);
     while (Wire.available())
     {
       buffer[i] = Wire.read();
-	  if ((i == 0) || (buffer[i] == terminator))
+    if ((i == 0) || (buffer[i] == terminator))
         break;
-	  i--;
+    i--;
     }
     delay(100);
-    if(Wire.endTransmission())			// stop transmitting
-    {										// endTransmission returns zero on success			
+    if(Wire.endTransmission())      // stop transmitting
+    {                   // endTransmission returns zero on success
       return(1);
     }
     return(0);

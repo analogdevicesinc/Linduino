@@ -116,14 +116,14 @@ void loop()
   uint8_t user_select;             // The user's choice of the three menu options
   float user_value;                // data value user inputs, either for gm or Rth
   if (Serial.available())
-  { 
+  {
     user_select = read_int();
     switch (user_select)
     {
       case 1:                      // Change gm
         Serial.print(F("\nEnter desired gm (1-5.73), this will be rounded to nearest legal value:\n"));
         user_value = read_float();
-        
+
         gm_dec = gm_nearest_legal_value(user_value);    // Snap given decimal gm value to nearest actual gm decimal value
         gm = gm_decimal2hex(gm_dec);                    // Convert decimal gm to hex
 
@@ -136,7 +136,7 @@ void loop()
       case 2:                      // Change ith
         Serial.print(F("\nEnter desired ith (0-62), this will be rounded to nearest legal value:\n"));
         user_value = read_float();
-        
+
         ith_dec = ith_nearest_legal_value(user_value);  // Snap given decimal ith value to nearest actual ith decimal value
         ith = ith_decimal2hex(ith_dec);                 // Convert decimal ith to hex
 
@@ -145,13 +145,15 @@ void loop()
 
         print_comp_config();
         print_prompt();
-        break; 
+        break;
       case 3:                      // Toggle Channel
-        if (channel == 0) {
+        if (channel == 0)
+        {
           smbus->writeByte(ltc3886_i2c_address, PAGE, CH_1);
           channel = CH_1;
         }
-        else {
+        else
+        {
           smbus->writeByte(ltc3886_i2c_address, PAGE, CH_0);
           channel = CH_0;
         }
@@ -190,7 +192,8 @@ void print_prompt()
 
 //! Prints current compensation configuration and saves ith, gm, and configuration hex values.
 //! @return void
-void print_comp_config() {
+void print_comp_config()
+{
   comp_config = smbus->readByte(ltc3886_i2c_address, MFR_PWM_COMP);
 
   ith = 0x1F & comp_config;                 // Extract ith via bit-wise AND with 5 LSD
@@ -211,10 +214,13 @@ void print_comp_config() {
 
 //! Rounds decimal input ith to nearest legal decimal value.
 //! @return double
-float ith_nearest_legal_value(float ith) {
-  for (int i=0; i<(sizeof(ith_vals)/4)-1; i++) {
+float ith_nearest_legal_value(float ith)
+{
+  for (int i=0; i<(sizeof(ith_vals)/4)-1; i++)
+  {
     float cutoff = ith_vals[i] + (ith_vals[i+1] - ith_vals[i])/2;
-    if (ith < cutoff) { 
+    if (ith < cutoff)
+    {
       return ith_vals[i];
     }
   }
@@ -223,10 +229,13 @@ float ith_nearest_legal_value(float ith) {
 
 //! Rounds decimal input gm to nearest legal decimal value.
 //! @return double
-float gm_nearest_legal_value(float gm) {
-  for (int i=0; i<(sizeof(gm_vals)/4)-1; i++) {
+float gm_nearest_legal_value(float gm)
+{
+  for (int i=0; i<(sizeof(gm_vals)/4)-1; i++)
+  {
     float cutoff = gm_vals[i] + (gm_vals[i+1] - gm_vals[i])/2;
-    if (gm < cutoff) {
+    if (gm < cutoff)
+    {
       return gm_vals[i];
     }
   }
@@ -235,9 +244,12 @@ float gm_nearest_legal_value(float gm) {
 
 //! Converts ith demo circuit hex value to its decimal equivalent.
 //! @return double
-float ith_hex2decimal(uint8_t ith) {
-  for (int i=0; i<sizeof(ith_vals_hex); i++) {
-    if (ith_vals_hex[i]==ith) {
+float ith_hex2decimal(uint8_t ith)
+{
+  for (int i=0; i<sizeof(ith_vals_hex); i++)
+  {
+    if (ith_vals_hex[i]==ith)
+    {
       return ith_vals[i];
     }
   }
@@ -245,9 +257,12 @@ float ith_hex2decimal(uint8_t ith) {
 
 //! Converts gm demo circuit hex value to its decimal equivalent.
 //! @return double
-float gm_hex2decimal(uint8_t gm) {
-  for (int i=0; i<sizeof(gm_vals_hex); i++) {
-    if (gm_vals_hex[i]==gm) {
+float gm_hex2decimal(uint8_t gm)
+{
+  for (int i=0; i<sizeof(gm_vals_hex); i++)
+  {
+    if (gm_vals_hex[i]==gm)
+    {
       return gm_vals[i];
     }
   }
@@ -255,9 +270,12 @@ float gm_hex2decimal(uint8_t gm) {
 
 //! Converts ith decimal value to the demo circuit hex equivalent.
 //! @return uint8_t
-uint8_t ith_decimal2hex(float ith) {
-  for (int i=0; i<sizeof(ith_vals); i++) {
-    if (abs(ith_vals[i]-ith) < .1) {                       // Epsilon of .1 selected to prevent equality check of floating numbers
+uint8_t ith_decimal2hex(float ith)
+{
+  for (int i=0; i<sizeof(ith_vals); i++)
+  {
+    if (abs(ith_vals[i]-ith) < .1)                         // Epsilon of .1 selected to prevent equality check of floating numbers
+    {
       return ith_vals_hex[i];
     }
   }
@@ -265,9 +283,12 @@ uint8_t ith_decimal2hex(float ith) {
 
 //! Converts gm decimal value to the demo circuit hex equivalent.
 //! @return uint8_t
-uint8_t gm_decimal2hex(float gm) {
-  for (int i=0; i<sizeof(gm_vals); i++) {
-    if (abs(gm_vals[i]-gm) < .1) {                         // Epsilon of .1 selected to prevent equality check of floating numbers
+uint8_t gm_decimal2hex(float gm)
+{
+  for (int i=0; i<sizeof(gm_vals); i++)
+  {
+    if (abs(gm_vals[i]-gm) < .1)                           // Epsilon of .1 selected to prevent equality check of floating numbers
+    {
       return gm_vals_hex[i];
     }
   }

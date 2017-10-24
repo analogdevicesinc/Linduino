@@ -8,14 +8,14 @@ Setting the Thresholds:
     2. Select the desired Threshold to be changed. Then enter the minimum and maximum
        values.
     3. If any reading exceeds the set threshold, a fault will be generated that can be viewed in
-	   the Read/Clear Faults Menu 
+     the Read/Clear Faults Menu
 
 
 Reading and Clearing a Fault:
     1. Select the Read/Clear Fault option from the main menu.
     2. To read all the faults, select Read Faults option. This will display all the faults that have occured.
-	3. To clear all faults, go back to the Read/Clear Faults menu and select Clear Faults option.
-	
+  3. To clear all faults, go back to the Read/Clear Faults menu and select Clear Faults option.
+
 NOTE: Due to memory limitations of the Atmega328 processor this sketch shows limited functionality of the LTC2992. Please
       check the datasheet for a picture of the full functionality of the LTC2992.
 
@@ -96,7 +96,7 @@ void print_prompt();                // Print the Prompt
 int8_t menu_1_continuous_mode(int8_t CTRLA_mode,  int8_t bit_resolution, float scale);
 int8_t menu_2_threshold_config(float scale, int8_t bit_resolution);
 int8_t menu_3_GPIO_config();
-int8_t menu_4_settings(int8_t * CTRLA_mode, int8_t * bit_resolution);
+int8_t menu_4_settings(int8_t *CTRLA_mode, int8_t *bit_resolution);
 int8_t menu_5_read_clear_faults();
 
 int8_t menu_2_threshold_menu_1_set_power(int8_t bit_resolution);
@@ -146,7 +146,7 @@ void setup()
   }
   if (demo_board_connected)
   {
-   // restore_alert_settings();
+    // restore_alert_settings();
     print_prompt();
   }
 }
@@ -159,7 +159,7 @@ void loop()
 
   static int8_t CTRLA_mode = 0x00;              //! CTRLA Register Setting Default.
   static int8_t bit_resolution = 1;             //! Variable to select ADC Resolution. 1 = 12-bit, 0 = 8-bit. Settable in Settings.
-  
+
   static float scale = (150/3);                 //! Stores division ratio for resistive divider on GPIO pin.  Configured inside "Settings" menu.
 
   if (demo_board_connected)                     //! Do nothing if the demo board is not connected
@@ -178,19 +178,19 @@ void loop()
           break;
 
         case 2:
-		ack |= menu_2_threshold_config(scale, bit_resolution);               //! Configure Threshold Values
+          ack |= menu_2_threshold_config(scale, bit_resolution);               //! Configure Threshold Values
           break;
 
         case 3:
-		ack |= menu_3_GPIO_config();                                         //! Toggle GPIO States
+          ack |= menu_3_GPIO_config();                                         //! Toggle GPIO States
           break;
 
         case 4:
-		ack |= menu_4_settings(&CTRLA_mode, &bit_resolution);                 //! Configure ADC Resolution and Shutdown mode in Settings.
+          ack |= menu_4_settings(&CTRLA_mode, &bit_resolution);                 //! Configure ADC Resolution and Shutdown mode in Settings.
           break;
 
         case 5:
-		ack |= menu_5_read_clear_faults();                                    //! Read/Clear Faults
+          ack |= menu_5_read_clear_faults();                                    //! Read/Clear Faults
           break;
 
         default:
@@ -235,521 +235,527 @@ void print_prompt()
 int8_t menu_1_continuous_mode(int8_t CTRLA_mode, //!< Set Continious Mode
                               int8_t bit_resolution, //!< Set ADC Resolution
                               float scale) //!< Stores division ratio for resistive divider on GPIO pin.  Configured inside "Settings" menu.
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+  int8_t LTC2992_mode;
+  int8_t ack = 0;
+  CTRLA_mode = ((CTRLA_mode & LTC2992_CTRLA_MEASUREMENT_MODE_MASK) | (LTC2992_MODE_CONTINUOUS & ~LTC2992_CTRLA_MEASUREMENT_MODE_MASK));
+  Serial.println();
+  ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_CTRLA_REG, LTC2992_mode); //! Sets the LTC2992 to continuous mode
+  do
   {
-    int8_t LTC2992_mode;
-    int8_t ack = 0;
-    CTRLA_mode = ((CTRLA_mode & LTC2992_CTRLA_MEASUREMENT_MODE_MASK) | (LTC2992_MODE_CONTINUOUS & ~LTC2992_CTRLA_MEASUREMENT_MODE_MASK));
-    Serial.println();
-    ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_CTRLA_REG, LTC2992_mode); //! Sets the LTC2992 to continuous mode
-    do {
-
-      Serial.print(F("**********************************************************************************************\n\n"));
-      Serial.print(F("	Channel 1					   Channel 2\n\n"));
-      if (bit_resolution == 1) {
-        uint32_t power1_code, power2_code, max_power1_code, max_power2_code, min_power1_code, min_power2_code;
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_POWER1_MSB2_REG, & power1_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_POWER2_MSB2_REG, & power2_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_MSB2_REG, & max_power1_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_MSB2_REG, & power2_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_MSB2_REG, & min_power1_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_MSB2_REG, & min_power2_code);
-
-        float power1, power2, max_power1, max_power2, min_power1, min_power2; // Store power results
-        power1 = LTC2992_code_to_power(power1_code, resistor, LTC2992_Power_12bit_lsb);
-        power2 = LTC2992_code_to_power(power2_code, resistor, LTC2992_Power_12bit_lsb);
-        max_power1 = LTC2992_code_to_power(max_power1_code, resistor, LTC2992_Power_12bit_lsb);
-        max_power2 = LTC2992_code_to_power(max_power2_code, resistor, LTC2992_Power_12bit_lsb);
-        min_power1 = LTC2992_code_to_power(min_power1_code, resistor, LTC2992_Power_12bit_lsb);
-        min_power2 = LTC2992_code_to_power(min_power2_code, resistor, LTC2992_Power_12bit_lsb);
-
-        Serial.print(F("      Power 1: "));
-        Serial.print(power1, 4);
-        Serial.print(F(" W"));
-
-        Serial.print(F("					Power 2: "));
-        Serial.print(power2, 4);
-        Serial.print(F(" W\n"));
-
-        Serial.print(F("  Max Power 1: "));
-        Serial.print(max_power1, 4);
-        Serial.print(F(" W"));
-
-        Serial.print(F("				    Max Power 2: "));
-        Serial.print(max_power2, 4);
-        Serial.print(F(" W\n"));
-
-        Serial.print(F("  Min Power 1: "));
-        Serial.print(min_power1, 4);
-        Serial.print(F(" W"));
-
-        Serial.print(F("				    Min Power 2: "));
-        Serial.print(min_power2, 4);
-        Serial.print(F(" W\n"));
-
-        uint16_t current1_code, current2_code, max_current1_code, max_current2_code, min_current1_code, min_current2_code;
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_DELTA_SENSE1_MSB_REG, & current1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA1_SENSE_MSB_REG, & max_current1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA1_SENSE_MSB_REG, & min_current1_code);
-
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_DELTA_SENSE2_MSB_REG, & current2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA2_SENSE_MSB_REG, & max_current2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA2_SENSE_MSB_REG, & min_current2_code);
-
-        float current1, current2, max_current1, max_current2, min_current1, min_current2;
-        current1 = LTC2992_code_to_current(current1_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
-        max_current1 = LTC2992_code_to_current(max_current1_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
-        min_current1 = LTC2992_code_to_current(min_current1_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
-
-        current2 = LTC2992_code_to_current(current2_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
-        max_current2 = LTC2992_code_to_current(max_current2_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
-        min_current2 = LTC2992_code_to_current(min_current2_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
-
-        Serial.print(F("\n    Current 1: "));
-        Serial.print(current1, 4);
-        Serial.print(F(" A"));
-
-        Serial.print(F("                               Current 2: "));
-        Serial.print(current2, 4);
-        Serial.print(F(" A\n"));
-
-        Serial.print(F("Max Current 1: "));
-        Serial.print(max_current1, 4);
-        Serial.print(F(" A"));
-
-        Serial.print(F("				  Max Current 2: "));
-        Serial.print(max_current2, 4);
-        Serial.print(F(" A\n"));
-
-        Serial.print(F("Min Current 1: "));
-        Serial.print(min_current1, 4);
-        Serial.print(F(" A"));
-
-        Serial.print(F("			          Min Current 2: "));
-        Serial.print(min_current2, 4);
-        Serial.print(F(" A\n"));
-
-        uint16_t SENSE1_code, max_SENSE1_code, min_SENSE1_code;
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_SENSE1_MSB_REG, & SENSE1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_MSB_REG, & max_SENSE1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_MSB_REG, & min_SENSE1_code);
-
-        float SENSE1, max_SENSE1, min_SENSE1;
-        SENSE1 = LTC2992_SENSE_code_to_voltage(SENSE1_code, LTC2992_SENSE_12bit_lsb);
-        max_SENSE1 = LTC2992_SENSE_code_to_voltage(max_SENSE1_code, LTC2992_SENSE_12bit_lsb);
-        min_SENSE1 = LTC2992_SENSE_code_to_voltage(min_SENSE1_code, LTC2992_SENSE_12bit_lsb);
-
-        uint16_t SENSE2_code, max_SENSE2_code, min_SENSE2_code;
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_SENSE2_MSB_REG, & SENSE2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_MSB_REG, & max_SENSE2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_MSB_REG, & min_SENSE2_code);
-
-        float SENSE2, max_SENSE2, min_SENSE2;
-        SENSE2 = LTC2992_SENSE_code_to_voltage(SENSE2_code, LTC2992_SENSE_12bit_lsb);
-        max_SENSE2 = LTC2992_SENSE_code_to_voltage(max_SENSE2_code, LTC2992_SENSE_12bit_lsb);
-        min_SENSE2 = LTC2992_SENSE_code_to_voltage(min_SENSE2_code, LTC2992_SENSE_12bit_lsb);
-
-        Serial.print(F("\n      SENSE 1: "));
-        Serial.print(SENSE1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("			                SENSE 2: "));
-        Serial.print(SENSE2, 4);
-        Serial.print(F(" V\n"));
-
-        Serial.print(F("  Max SENSE 1: "));
-        Serial.print(max_SENSE1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("		                    Max SENSE 2: "));
-        Serial.print(max_SENSE2, 4);
-        Serial.print(F(" V\n"));
-
-        Serial.print(F("  Min SENSE 1: "));
-        Serial.print(min_SENSE1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("			            Min SENSE 2: "));
-        Serial.print(min_SENSE2, 4);
-        Serial.print(F(" V\n"));
-
-        uint32_t power_sum_code;
-        uint16_t current_sum_code;
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_PSUM_MSB1_REG, & power_sum_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_ISUM_MSB_REG, & current_sum_code);
-
-        float power_sum, current_sum;
-        power_sum = LTC2992_code_to_power_sum(power_sum_code, resistor, LTC2992_Power_12bit_lsb);
-        current_sum = LTC2992_code_to_current_sum(current_sum_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
-
-        Serial.print(F("\n   Power Sum: "));
-        Serial.print(power_sum, 4);
-        Serial.print(F(" W\n"));
-
-        Serial.print(F(" Current Sum: "));
-        Serial.print(current_sum, 4);
-        Serial.print(F(" A\n"));
-
-        uint16_t GPIO1_code, max_GPIO1_code, min_GPIO1_code, GPIO2_code, max_GPIO2_code, min_GPIO2_code,
-        GPIO3_code, max_GPIO3_code, min_GPIO3_code, GPIO4_code, max_GPIO4_code, min_GPIO4_code;
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO1_MSB_REG, & GPIO1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_MSB_REG, & max_GPIO1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_MSB_REG, & min_GPIO1_code);
-
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO2_MSB_REG, & GPIO2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_MSB_REG, & max_GPIO2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_MSB_REG, & min_GPIO2_code);
-
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO3_MSB_REG, & GPIO3_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_MSB_REG, & max_GPIO3_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_MSB_REG, & min_GPIO3_code);
-
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO4_MSB_REG, & GPIO4_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_MSB_REG, & max_GPIO4_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_MSB_REG, & min_GPIO4_code);
-
-        float GPIO1, max_GPIO1, min_GPIO1, GPIO2, max_GPIO2, min_GPIO2, GPIO3, max_GPIO3, min_GPIO3, GPIO4, max_GPIO4, min_GPIO4;
-        GPIO1 = LTC2992_GPIO_code_to_voltage(GPIO1_code, LTC2992_GPIO_12bit_lsb);
-        max_GPIO1 = LTC2992_GPIO_code_to_voltage(max_GPIO1_code, LTC2992_GPIO_12bit_lsb);
-        min_GPIO1 = LTC2992_GPIO_code_to_voltage(min_GPIO1_code, LTC2992_GPIO_12bit_lsb);
-
-        GPIO2 = LTC2992_GPIO_code_to_voltage(GPIO2_code, LTC2992_GPIO_12bit_lsb);
-        max_GPIO2 = LTC2992_GPIO_code_to_voltage(max_GPIO2_code, LTC2992_GPIO_12bit_lsb);
-        min_GPIO2 = LTC2992_GPIO_code_to_voltage(min_GPIO2_code, LTC2992_GPIO_12bit_lsb);
-
-        GPIO3 = LTC2992_GPIO_code_to_voltage(GPIO3_code, LTC2992_GPIO_12bit_lsb);
-        max_GPIO3 = LTC2992_GPIO_code_to_voltage(max_GPIO3_code, LTC2992_GPIO_12bit_lsb);
-        min_GPIO3 = LTC2992_GPIO_code_to_voltage(min_GPIO3_code, LTC2992_GPIO_12bit_lsb);
-
-        GPIO4 = LTC2992_GPIO_code_to_voltage(GPIO4_code, LTC2992_GPIO_12bit_lsb);
-        max_GPIO4 = LTC2992_GPIO_code_to_voltage(max_GPIO4_code, LTC2992_GPIO_12bit_lsb);
-        min_GPIO4 = LTC2992_GPIO_code_to_voltage(min_GPIO4_code, LTC2992_GPIO_12bit_lsb);
-
-        Serial.print(F("\n    GPIO1: "));
-        Serial.print(GPIO1*scale, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("        GPIO2: "));
-        Serial.print(GPIO2*scale, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("        GPIO3: "));
-        Serial.print(GPIO3, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("        GPIO4: "));
-        Serial.print(GPIO4, 4);
-        Serial.print(F(" V\n"));
-
-        Serial.print(F("Max GPIO1: "));
-        Serial.print(max_GPIO1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Max GPIO2: "));
-        Serial.print(max_GPIO2, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Max GPIO3: "));
-        Serial.print(max_GPIO3, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Max GPIO4: "));
-        Serial.print(max_GPIO4, 4);
-        Serial.print(F(" V\n"));
-
-        Serial.print(F("Min GPIO1: "));
-        Serial.print(min_GPIO1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Min GPIO2: "));
-        Serial.print(min_GPIO2, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Min GPIO3: "));
-        Serial.print(min_GPIO3, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Min GPIO4: "));
-        Serial.print(min_GPIO4, 4);
-        Serial.print(F(" V\n"));
-		
-		Serial.println();
-
-	   Serial.print(F("In 12 - bit mode\n"));
-
-		
-      } else {
-
- 
-
-        uint32_t power1_code, power2_code, max_power1_code, max_power2_code, min_power1_code, min_power2_code;
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_POWER1_MSB2_REG, & power1_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_POWER2_MSB2_REG, & power2_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_MSB2_REG, & max_power1_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_MSB2_REG, & power2_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_MSB2_REG, & min_power1_code);
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_MSB2_REG, & min_power2_code);
-
-        float power1, power2, max_power1, max_power2, min_power1, min_power2; // Store power results
-        power1 = LTC2992_code_to_power(power1_code>>8, resistor, LTC2992_Power_8bit_lsb);
-        power2 = LTC2992_code_to_power(power2_code>>8, resistor, LTC2992_Power_8bit_lsb);
-        max_power1 = LTC2992_code_to_power(max_power1_code>>8, resistor, LTC2992_Power_8bit_lsb);
-        max_power2 = LTC2992_code_to_power(max_power2_code>>8, resistor, LTC2992_Power_8bit_lsb);
-        min_power1 = LTC2992_code_to_power(min_power1_code>>8, resistor, LTC2992_Power_8bit_lsb);
-        min_power2 = LTC2992_code_to_power(min_power2_code>>8, resistor, LTC2992_Power_8bit_lsb);
-
-        Serial.print(F("      Power 1: "));
-        Serial.print(power1, 4);
-        Serial.print(F(" W"));
-
-        Serial.print(F("					Power 2: "));
-        Serial.print(power2, 4);
-        Serial.print(F(" W\n"));
-
-        Serial.print(F("  Max Power 1: "));
-        Serial.print(max_power1, 4);
-        Serial.print(F(" W"));
-
-        Serial.print(F("				    Max Power 2: "));
-        Serial.print(max_power2, 4);
-        Serial.print(F(" W\n"));
-
-        Serial.print(F("  Min Power 1: "));
-        Serial.print(min_power1, 4);
-        Serial.print(F(" W"));
-
-        Serial.print(F("				    Min Power 2: "));
-        Serial.print(min_power2, 4);
-        Serial.print(F(" W\n"));
-
-        uint16_t current1_code, current2_code, max_current1_code, max_current2_code, min_current1_code, min_current2_code;
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_DELTA_SENSE1_MSB_REG, & current1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA1_SENSE_MSB_REG, & max_current1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA1_SENSE_MSB_REG, & min_current1_code);
-
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_DELTA_SENSE2_MSB_REG, & current2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA2_SENSE_MSB_REG, & max_current2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA2_SENSE_MSB_REG, & min_current2_code);
-
-        float current1, current2, max_current1, max_current2, min_current1, min_current2;
-        current1 = LTC2992_code_to_current(current1_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
-        max_current1 = LTC2992_code_to_current(max_current1_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
-        min_current1 = LTC2992_code_to_current(min_current1_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
-
-        current2 = LTC2992_code_to_current(current2_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
-        max_current2 = LTC2992_code_to_current(max_current2_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
-        min_current2 = LTC2992_code_to_current(min_current2_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
-
-        Serial.print(F("\n    Current 1: "));
-        Serial.print(current1, 4);
-        Serial.print(F(" A"));
-
-        Serial.print(F("                               Current 2: "));
-        Serial.print(current2, 4);
-        Serial.print(F(" A\n"));
-
-        Serial.print(F("Max Current 1: "));
-        Serial.print(max_current1, 4);
-        Serial.print(F(" A"));
-
-        Serial.print(F("				  Max Current 2: "));
-        Serial.print(max_current2, 4);
-        Serial.print(F(" A\n"));
-
-        Serial.print(F("Min Current 1: "));
-        Serial.print(min_current1, 4);
-        Serial.print(F(" A"));
-
-        Serial.print(F("			          Min Current 2: "));
-        Serial.print(min_current2, 4);
-        Serial.print(F(" A\n"));
-
-        uint16_t SENSE1_code, max_SENSE1_code, min_SENSE1_code;
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_SENSE1_MSB_REG, & SENSE1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_MSB_REG, & max_SENSE1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_MSB_REG, & min_SENSE1_code);
-
-        float SENSE1, max_SENSE1, min_SENSE1;
-        SENSE1 = LTC2992_SENSE_code_to_voltage(SENSE1_code>>4, LTC2992_SENSE_8bit_lsb);
-        max_SENSE1 = LTC2992_SENSE_code_to_voltage(max_SENSE1_code>>4, LTC2992_SENSE_8bit_lsb);
-        min_SENSE1 = LTC2992_SENSE_code_to_voltage(min_SENSE1_code>>4, LTC2992_SENSE_8bit_lsb);
-
-        uint16_t SENSE2_code, max_SENSE2_code, min_SENSE2_code;
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_SENSE2_MSB_REG, & SENSE2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_MSB_REG, & max_SENSE2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_MSB_REG, & min_SENSE2_code);
-
-        float SENSE2, max_SENSE2, min_SENSE2;
-        SENSE2 = LTC2992_SENSE_code_to_voltage(SENSE2_code>>4, LTC2992_SENSE_8bit_lsb);
-        max_SENSE2 = LTC2992_SENSE_code_to_voltage(max_SENSE2_code>>4, LTC2992_SENSE_8bit_lsb);
-        min_SENSE2 = LTC2992_SENSE_code_to_voltage(min_SENSE2_code>>4, LTC2992_SENSE_8bit_lsb);
-
-        Serial.print(F("\n      SENSE 1: "));
-        Serial.print(SENSE1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("			                SENSE 2: "));
-        Serial.print(SENSE2, 4);
-        Serial.print(F(" V\n"));
-
-        Serial.print(F("  Max SENSE 1: "));
-        Serial.print(max_SENSE1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("		                    Max SENSE 2: "));
-        Serial.print(max_SENSE2, 4);
-        Serial.print(F(" V\n"));
-
-        Serial.print(F("  Min SENSE 1: "));
-        Serial.print(min_SENSE1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("			            Min SENSE 2: "));
-        Serial.print(min_SENSE2, 4);
-        Serial.print(F(" V\n"));
-
-        uint32_t power_sum_code;
-        uint16_t current_sum_code;
-        ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_PSUM_MSB1_REG, & power_sum_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_ISUM_MSB_REG, & current_sum_code);
-
-        float power_sum, current_sum;
-        power_sum = LTC2992_code_to_power_sum(power_sum_code>>8, resistor, LTC2992_Power_8bit_lsb);
-        current_sum = LTC2992_code_to_current_sum(current_sum_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
-
-        Serial.print(F("\n   Power Sum: "));
-        Serial.print(power_sum, 4);
-        Serial.print(F(" W\n"));
-
-        Serial.print(F(" Current Sum: "));
-        Serial.print(current_sum, 4);
-        Serial.print(F(" A\n"));
-
-        uint16_t GPIO1_code, max_GPIO1_code, min_GPIO1_code, GPIO2_code, max_GPIO2_code, min_GPIO2_code,
-        GPIO3_code, max_GPIO3_code, min_GPIO3_code, GPIO4_code, max_GPIO4_code, min_GPIO4_code;
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO1_MSB_REG, & GPIO1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_MSB_REG, & max_GPIO1_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_MSB_REG, & min_GPIO1_code);
-
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO2_MSB_REG, & GPIO2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_MSB_REG, & max_GPIO2_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_MSB_REG, & min_GPIO2_code);
-
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO3_MSB_REG, & GPIO3_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_MSB_REG, & max_GPIO3_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_MSB_REG, & min_GPIO3_code);
-
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO4_MSB_REG, & GPIO4_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_MSB_REG, & max_GPIO4_code);
-        ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_MSB_REG, & min_GPIO4_code);
-
-        float GPIO1, max_GPIO1, min_GPIO1, GPIO2, max_GPIO2, min_GPIO2, GPIO3, max_GPIO3, min_GPIO3, GPIO4, max_GPIO4, min_GPIO4;
-        GPIO1 = LTC2992_GPIO_code_to_voltage(GPIO1_code>>4, LTC2992_GPIO_8bit_lsb);
-        max_GPIO1 = LTC2992_GPIO_code_to_voltage(max_GPIO1_code>>4, LTC2992_GPIO_8bit_lsb);
-        min_GPIO1 = LTC2992_GPIO_code_to_voltage(min_GPIO1_code>>4, LTC2992_GPIO_8bit_lsb);
-
-        GPIO2 = LTC2992_GPIO_code_to_voltage(GPIO2_code>>4, LTC2992_GPIO_8bit_lsb);
-        max_GPIO2 = LTC2992_GPIO_code_to_voltage(max_GPIO2_code>>4, LTC2992_GPIO_8bit_lsb);
-        min_GPIO2 = LTC2992_GPIO_code_to_voltage(min_GPIO2_code>>4, LTC2992_GPIO_8bit_lsb);
-
-        GPIO3 = LTC2992_GPIO_code_to_voltage(GPIO3_code>>4, LTC2992_GPIO_8bit_lsb);
-        max_GPIO3 = LTC2992_GPIO_code_to_voltage(max_GPIO3_code>>4, LTC2992_GPIO_8bit_lsb);
-        min_GPIO3 = LTC2992_GPIO_code_to_voltage(min_GPIO3_code>>4, LTC2992_GPIO_8bit_lsb);
-
-        GPIO4 = LTC2992_GPIO_code_to_voltage(GPIO4_code>>4, LTC2992_GPIO_8bit_lsb);
-        max_GPIO4 = LTC2992_GPIO_code_to_voltage(max_GPIO4_code>>4, LTC2992_GPIO_8bit_lsb);
-        min_GPIO4 = LTC2992_GPIO_code_to_voltage(min_GPIO4_code>>4, LTC2992_GPIO_8bit_lsb);
-
-        Serial.print(F("\n    GPIO1: "));
-        Serial.print(GPIO1*scale, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("        GPIO2: "));
-        Serial.print(GPIO2*scale, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("        GPIO3: "));
-        Serial.print(GPIO3, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("        GPIO4: "));
-        Serial.print(GPIO4, 4);
-        Serial.print(F(" V\n"));
-
-        Serial.print(F("Max GPIO1: "));
-        Serial.print(max_GPIO1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Max GPIO2: "));
-        Serial.print(max_GPIO2, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Max GPIO3: "));
-        Serial.print(max_GPIO3, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Max GPIO4: "));
-        Serial.print(max_GPIO4, 4);
-        Serial.print(F(" V\n"));
-
-        Serial.print(F("Min GPIO1: "));
-        Serial.print(min_GPIO1, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Min GPIO2: "));
-        Serial.print(min_GPIO2, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Min GPIO3: "));
-        Serial.print(min_GPIO3, 4);
-        Serial.print(F(" V"));
-
-        Serial.print(F("    Min GPIO4: "));
-        Serial.print(min_GPIO4, 4);
-        Serial.print(F(" V\n"));
-		
-	    Serial.println();
-
-		
-		Serial.print(F("In 8 - bit mode\n"));
-
-      }
-
-      Serial.print(F("\n\n**********************************************************************************************\n\n"));
-
-      Serial.print(F("m-Main Menu\n\n"));
-      Serial.flush();
-      delay(CONTINUOUS_MODE_DISPLAY_DELAY);
+
+    Serial.print(F("**********************************************************************************************\n\n"));
+    Serial.print(F("	Channel 1					   Channel 2\n\n"));
+    if (bit_resolution == 1)
+    {
+      uint32_t power1_code, power2_code, max_power1_code, max_power2_code, min_power1_code, min_power2_code;
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_POWER1_MSB2_REG, & power1_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_POWER2_MSB2_REG, & power2_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_MSB2_REG, & max_power1_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_MSB2_REG, & power2_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_MSB2_REG, & min_power1_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_MSB2_REG, & min_power2_code);
+
+      float power1, power2, max_power1, max_power2, min_power1, min_power2; // Store power results
+      power1 = LTC2992_code_to_power(power1_code, resistor, LTC2992_Power_12bit_lsb);
+      power2 = LTC2992_code_to_power(power2_code, resistor, LTC2992_Power_12bit_lsb);
+      max_power1 = LTC2992_code_to_power(max_power1_code, resistor, LTC2992_Power_12bit_lsb);
+      max_power2 = LTC2992_code_to_power(max_power2_code, resistor, LTC2992_Power_12bit_lsb);
+      min_power1 = LTC2992_code_to_power(min_power1_code, resistor, LTC2992_Power_12bit_lsb);
+      min_power2 = LTC2992_code_to_power(min_power2_code, resistor, LTC2992_Power_12bit_lsb);
+
+      Serial.print(F("      Power 1: "));
+      Serial.print(power1, 4);
+      Serial.print(F(" W"));
+
+      Serial.print(F("					Power 2: "));
+      Serial.print(power2, 4);
+      Serial.print(F(" W\n"));
+
+      Serial.print(F("  Max Power 1: "));
+      Serial.print(max_power1, 4);
+      Serial.print(F(" W"));
+
+      Serial.print(F("				    Max Power 2: "));
+      Serial.print(max_power2, 4);
+      Serial.print(F(" W\n"));
+
+      Serial.print(F("  Min Power 1: "));
+      Serial.print(min_power1, 4);
+      Serial.print(F(" W"));
+
+      Serial.print(F("				    Min Power 2: "));
+      Serial.print(min_power2, 4);
+      Serial.print(F(" W\n"));
+
+      uint16_t current1_code, current2_code, max_current1_code, max_current2_code, min_current1_code, min_current2_code;
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_DELTA_SENSE1_MSB_REG, & current1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA1_SENSE_MSB_REG, & max_current1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA1_SENSE_MSB_REG, & min_current1_code);
+
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_DELTA_SENSE2_MSB_REG, & current2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA2_SENSE_MSB_REG, & max_current2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA2_SENSE_MSB_REG, & min_current2_code);
+
+      float current1, current2, max_current1, max_current2, min_current1, min_current2;
+      current1 = LTC2992_code_to_current(current1_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
+      max_current1 = LTC2992_code_to_current(max_current1_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
+      min_current1 = LTC2992_code_to_current(min_current1_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
+
+      current2 = LTC2992_code_to_current(current2_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
+      max_current2 = LTC2992_code_to_current(max_current2_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
+      min_current2 = LTC2992_code_to_current(min_current2_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
+
+      Serial.print(F("\n    Current 1: "));
+      Serial.print(current1, 4);
+      Serial.print(F(" A"));
+
+      Serial.print(F("                               Current 2: "));
+      Serial.print(current2, 4);
+      Serial.print(F(" A\n"));
+
+      Serial.print(F("Max Current 1: "));
+      Serial.print(max_current1, 4);
+      Serial.print(F(" A"));
+
+      Serial.print(F("				  Max Current 2: "));
+      Serial.print(max_current2, 4);
+      Serial.print(F(" A\n"));
+
+      Serial.print(F("Min Current 1: "));
+      Serial.print(min_current1, 4);
+      Serial.print(F(" A"));
+
+      Serial.print(F("			          Min Current 2: "));
+      Serial.print(min_current2, 4);
+      Serial.print(F(" A\n"));
+
+      uint16_t SENSE1_code, max_SENSE1_code, min_SENSE1_code;
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_SENSE1_MSB_REG, & SENSE1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_MSB_REG, & max_SENSE1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_MSB_REG, & min_SENSE1_code);
+
+      float SENSE1, max_SENSE1, min_SENSE1;
+      SENSE1 = LTC2992_SENSE_code_to_voltage(SENSE1_code, LTC2992_SENSE_12bit_lsb);
+      max_SENSE1 = LTC2992_SENSE_code_to_voltage(max_SENSE1_code, LTC2992_SENSE_12bit_lsb);
+      min_SENSE1 = LTC2992_SENSE_code_to_voltage(min_SENSE1_code, LTC2992_SENSE_12bit_lsb);
+
+      uint16_t SENSE2_code, max_SENSE2_code, min_SENSE2_code;
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_SENSE2_MSB_REG, & SENSE2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_MSB_REG, & max_SENSE2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_MSB_REG, & min_SENSE2_code);
+
+      float SENSE2, max_SENSE2, min_SENSE2;
+      SENSE2 = LTC2992_SENSE_code_to_voltage(SENSE2_code, LTC2992_SENSE_12bit_lsb);
+      max_SENSE2 = LTC2992_SENSE_code_to_voltage(max_SENSE2_code, LTC2992_SENSE_12bit_lsb);
+      min_SENSE2 = LTC2992_SENSE_code_to_voltage(min_SENSE2_code, LTC2992_SENSE_12bit_lsb);
+
+      Serial.print(F("\n      SENSE 1: "));
+      Serial.print(SENSE1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("			                SENSE 2: "));
+      Serial.print(SENSE2, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.print(F("  Max SENSE 1: "));
+      Serial.print(max_SENSE1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("		                    Max SENSE 2: "));
+      Serial.print(max_SENSE2, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.print(F("  Min SENSE 1: "));
+      Serial.print(min_SENSE1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("			            Min SENSE 2: "));
+      Serial.print(min_SENSE2, 4);
+      Serial.print(F(" V\n"));
+
+      uint32_t power_sum_code;
+      uint16_t current_sum_code;
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_PSUM_MSB1_REG, & power_sum_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_ISUM_MSB_REG, & current_sum_code);
+
+      float power_sum, current_sum;
+      power_sum = LTC2992_code_to_power_sum(power_sum_code, resistor, LTC2992_Power_12bit_lsb);
+      current_sum = LTC2992_code_to_current_sum(current_sum_code, resistor, LTC2992_DELTA_SENSE_12bit_lsb);
+
+      Serial.print(F("\n   Power Sum: "));
+      Serial.print(power_sum, 4);
+      Serial.print(F(" W\n"));
+
+      Serial.print(F(" Current Sum: "));
+      Serial.print(current_sum, 4);
+      Serial.print(F(" A\n"));
+
+      uint16_t GPIO1_code, max_GPIO1_code, min_GPIO1_code, GPIO2_code, max_GPIO2_code, min_GPIO2_code,
+               GPIO3_code, max_GPIO3_code, min_GPIO3_code, GPIO4_code, max_GPIO4_code, min_GPIO4_code;
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO1_MSB_REG, & GPIO1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_MSB_REG, & max_GPIO1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_MSB_REG, & min_GPIO1_code);
+
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO2_MSB_REG, & GPIO2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_MSB_REG, & max_GPIO2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_MSB_REG, & min_GPIO2_code);
+
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO3_MSB_REG, & GPIO3_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_MSB_REG, & max_GPIO3_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_MSB_REG, & min_GPIO3_code);
+
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO4_MSB_REG, & GPIO4_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_MSB_REG, & max_GPIO4_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_MSB_REG, & min_GPIO4_code);
+
+      float GPIO1, max_GPIO1, min_GPIO1, GPIO2, max_GPIO2, min_GPIO2, GPIO3, max_GPIO3, min_GPIO3, GPIO4, max_GPIO4, min_GPIO4;
+      GPIO1 = LTC2992_GPIO_code_to_voltage(GPIO1_code, LTC2992_GPIO_12bit_lsb);
+      max_GPIO1 = LTC2992_GPIO_code_to_voltage(max_GPIO1_code, LTC2992_GPIO_12bit_lsb);
+      min_GPIO1 = LTC2992_GPIO_code_to_voltage(min_GPIO1_code, LTC2992_GPIO_12bit_lsb);
+
+      GPIO2 = LTC2992_GPIO_code_to_voltage(GPIO2_code, LTC2992_GPIO_12bit_lsb);
+      max_GPIO2 = LTC2992_GPIO_code_to_voltage(max_GPIO2_code, LTC2992_GPIO_12bit_lsb);
+      min_GPIO2 = LTC2992_GPIO_code_to_voltage(min_GPIO2_code, LTC2992_GPIO_12bit_lsb);
+
+      GPIO3 = LTC2992_GPIO_code_to_voltage(GPIO3_code, LTC2992_GPIO_12bit_lsb);
+      max_GPIO3 = LTC2992_GPIO_code_to_voltage(max_GPIO3_code, LTC2992_GPIO_12bit_lsb);
+      min_GPIO3 = LTC2992_GPIO_code_to_voltage(min_GPIO3_code, LTC2992_GPIO_12bit_lsb);
+
+      GPIO4 = LTC2992_GPIO_code_to_voltage(GPIO4_code, LTC2992_GPIO_12bit_lsb);
+      max_GPIO4 = LTC2992_GPIO_code_to_voltage(max_GPIO4_code, LTC2992_GPIO_12bit_lsb);
+      min_GPIO4 = LTC2992_GPIO_code_to_voltage(min_GPIO4_code, LTC2992_GPIO_12bit_lsb);
+
+      Serial.print(F("\n    GPIO1: "));
+      Serial.print(GPIO1*scale, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("        GPIO2: "));
+      Serial.print(GPIO2*scale, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("        GPIO3: "));
+      Serial.print(GPIO3, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("        GPIO4: "));
+      Serial.print(GPIO4, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.print(F("Max GPIO1: "));
+      Serial.print(max_GPIO1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Max GPIO2: "));
+      Serial.print(max_GPIO2, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Max GPIO3: "));
+      Serial.print(max_GPIO3, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Max GPIO4: "));
+      Serial.print(max_GPIO4, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.print(F("Min GPIO1: "));
+      Serial.print(min_GPIO1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Min GPIO2: "));
+      Serial.print(min_GPIO2, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Min GPIO3: "));
+      Serial.print(min_GPIO3, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Min GPIO4: "));
+      Serial.print(min_GPIO4, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.println();
+
+      Serial.print(F("In 12 - bit mode\n"));
+
+
     }
-    while (Serial.available() == false);
-    read_int(); // clears the Serial.available
-    return (ack);
+    else
+    {
+
+
+
+      uint32_t power1_code, power2_code, max_power1_code, max_power2_code, min_power1_code, min_power2_code;
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_POWER1_MSB2_REG, & power1_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_POWER2_MSB2_REG, & power2_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_MSB2_REG, & max_power1_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_MSB2_REG, & power2_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_MSB2_REG, & min_power1_code);
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_MSB2_REG, & min_power2_code);
+
+      float power1, power2, max_power1, max_power2, min_power1, min_power2; // Store power results
+      power1 = LTC2992_code_to_power(power1_code>>8, resistor, LTC2992_Power_8bit_lsb);
+      power2 = LTC2992_code_to_power(power2_code>>8, resistor, LTC2992_Power_8bit_lsb);
+      max_power1 = LTC2992_code_to_power(max_power1_code>>8, resistor, LTC2992_Power_8bit_lsb);
+      max_power2 = LTC2992_code_to_power(max_power2_code>>8, resistor, LTC2992_Power_8bit_lsb);
+      min_power1 = LTC2992_code_to_power(min_power1_code>>8, resistor, LTC2992_Power_8bit_lsb);
+      min_power2 = LTC2992_code_to_power(min_power2_code>>8, resistor, LTC2992_Power_8bit_lsb);
+
+      Serial.print(F("      Power 1: "));
+      Serial.print(power1, 4);
+      Serial.print(F(" W"));
+
+      Serial.print(F("					Power 2: "));
+      Serial.print(power2, 4);
+      Serial.print(F(" W\n"));
+
+      Serial.print(F("  Max Power 1: "));
+      Serial.print(max_power1, 4);
+      Serial.print(F(" W"));
+
+      Serial.print(F("				    Max Power 2: "));
+      Serial.print(max_power2, 4);
+      Serial.print(F(" W\n"));
+
+      Serial.print(F("  Min Power 1: "));
+      Serial.print(min_power1, 4);
+      Serial.print(F(" W"));
+
+      Serial.print(F("				    Min Power 2: "));
+      Serial.print(min_power2, 4);
+      Serial.print(F(" W\n"));
+
+      uint16_t current1_code, current2_code, max_current1_code, max_current2_code, min_current1_code, min_current2_code;
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_DELTA_SENSE1_MSB_REG, & current1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA1_SENSE_MSB_REG, & max_current1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA1_SENSE_MSB_REG, & min_current1_code);
+
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_DELTA_SENSE2_MSB_REG, & current2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA2_SENSE_MSB_REG, & max_current2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA2_SENSE_MSB_REG, & min_current2_code);
+
+      float current1, current2, max_current1, max_current2, min_current1, min_current2;
+      current1 = LTC2992_code_to_current(current1_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
+      max_current1 = LTC2992_code_to_current(max_current1_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
+      min_current1 = LTC2992_code_to_current(min_current1_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
+
+      current2 = LTC2992_code_to_current(current2_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
+      max_current2 = LTC2992_code_to_current(max_current2_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
+      min_current2 = LTC2992_code_to_current(min_current2_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
+
+      Serial.print(F("\n    Current 1: "));
+      Serial.print(current1, 4);
+      Serial.print(F(" A"));
+
+      Serial.print(F("                               Current 2: "));
+      Serial.print(current2, 4);
+      Serial.print(F(" A\n"));
+
+      Serial.print(F("Max Current 1: "));
+      Serial.print(max_current1, 4);
+      Serial.print(F(" A"));
+
+      Serial.print(F("				  Max Current 2: "));
+      Serial.print(max_current2, 4);
+      Serial.print(F(" A\n"));
+
+      Serial.print(F("Min Current 1: "));
+      Serial.print(min_current1, 4);
+      Serial.print(F(" A"));
+
+      Serial.print(F("			          Min Current 2: "));
+      Serial.print(min_current2, 4);
+      Serial.print(F(" A\n"));
+
+      uint16_t SENSE1_code, max_SENSE1_code, min_SENSE1_code;
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_SENSE1_MSB_REG, & SENSE1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_MSB_REG, & max_SENSE1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_MSB_REG, & min_SENSE1_code);
+
+      float SENSE1, max_SENSE1, min_SENSE1;
+      SENSE1 = LTC2992_SENSE_code_to_voltage(SENSE1_code>>4, LTC2992_SENSE_8bit_lsb);
+      max_SENSE1 = LTC2992_SENSE_code_to_voltage(max_SENSE1_code>>4, LTC2992_SENSE_8bit_lsb);
+      min_SENSE1 = LTC2992_SENSE_code_to_voltage(min_SENSE1_code>>4, LTC2992_SENSE_8bit_lsb);
+
+      uint16_t SENSE2_code, max_SENSE2_code, min_SENSE2_code;
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_SENSE2_MSB_REG, & SENSE2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_MSB_REG, & max_SENSE2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_MSB_REG, & min_SENSE2_code);
+
+      float SENSE2, max_SENSE2, min_SENSE2;
+      SENSE2 = LTC2992_SENSE_code_to_voltage(SENSE2_code>>4, LTC2992_SENSE_8bit_lsb);
+      max_SENSE2 = LTC2992_SENSE_code_to_voltage(max_SENSE2_code>>4, LTC2992_SENSE_8bit_lsb);
+      min_SENSE2 = LTC2992_SENSE_code_to_voltage(min_SENSE2_code>>4, LTC2992_SENSE_8bit_lsb);
+
+      Serial.print(F("\n      SENSE 1: "));
+      Serial.print(SENSE1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("			                SENSE 2: "));
+      Serial.print(SENSE2, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.print(F("  Max SENSE 1: "));
+      Serial.print(max_SENSE1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("		                    Max SENSE 2: "));
+      Serial.print(max_SENSE2, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.print(F("  Min SENSE 1: "));
+      Serial.print(min_SENSE1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("			            Min SENSE 2: "));
+      Serial.print(min_SENSE2, 4);
+      Serial.print(F(" V\n"));
+
+      uint32_t power_sum_code;
+      uint16_t current_sum_code;
+      ack |= LTC2992_read_24_bits(LTC2992_I2C_ADDRESS, LTC2992_PSUM_MSB1_REG, & power_sum_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_ISUM_MSB_REG, & current_sum_code);
+
+      float power_sum, current_sum;
+      power_sum = LTC2992_code_to_power_sum(power_sum_code>>8, resistor, LTC2992_Power_8bit_lsb);
+      current_sum = LTC2992_code_to_current_sum(current_sum_code>>4, resistor, LTC2992_DELTA_SENSE_8bit_lsb);
+
+      Serial.print(F("\n   Power Sum: "));
+      Serial.print(power_sum, 4);
+      Serial.print(F(" W\n"));
+
+      Serial.print(F(" Current Sum: "));
+      Serial.print(current_sum, 4);
+      Serial.print(F(" A\n"));
+
+      uint16_t GPIO1_code, max_GPIO1_code, min_GPIO1_code, GPIO2_code, max_GPIO2_code, min_GPIO2_code,
+               GPIO3_code, max_GPIO3_code, min_GPIO3_code, GPIO4_code, max_GPIO4_code, min_GPIO4_code;
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO1_MSB_REG, & GPIO1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_MSB_REG, & max_GPIO1_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_MSB_REG, & min_GPIO1_code);
+
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO2_MSB_REG, & GPIO2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_MSB_REG, & max_GPIO2_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_MSB_REG, & min_GPIO2_code);
+
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO3_MSB_REG, & GPIO3_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_MSB_REG, & max_GPIO3_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_MSB_REG, & min_GPIO3_code);
+
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_GPIO4_MSB_REG, & GPIO4_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_MSB_REG, & max_GPIO4_code);
+      ack |= LTC2992_read_12_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_MSB_REG, & min_GPIO4_code);
+
+      float GPIO1, max_GPIO1, min_GPIO1, GPIO2, max_GPIO2, min_GPIO2, GPIO3, max_GPIO3, min_GPIO3, GPIO4, max_GPIO4, min_GPIO4;
+      GPIO1 = LTC2992_GPIO_code_to_voltage(GPIO1_code>>4, LTC2992_GPIO_8bit_lsb);
+      max_GPIO1 = LTC2992_GPIO_code_to_voltage(max_GPIO1_code>>4, LTC2992_GPIO_8bit_lsb);
+      min_GPIO1 = LTC2992_GPIO_code_to_voltage(min_GPIO1_code>>4, LTC2992_GPIO_8bit_lsb);
+
+      GPIO2 = LTC2992_GPIO_code_to_voltage(GPIO2_code>>4, LTC2992_GPIO_8bit_lsb);
+      max_GPIO2 = LTC2992_GPIO_code_to_voltage(max_GPIO2_code>>4, LTC2992_GPIO_8bit_lsb);
+      min_GPIO2 = LTC2992_GPIO_code_to_voltage(min_GPIO2_code>>4, LTC2992_GPIO_8bit_lsb);
+
+      GPIO3 = LTC2992_GPIO_code_to_voltage(GPIO3_code>>4, LTC2992_GPIO_8bit_lsb);
+      max_GPIO3 = LTC2992_GPIO_code_to_voltage(max_GPIO3_code>>4, LTC2992_GPIO_8bit_lsb);
+      min_GPIO3 = LTC2992_GPIO_code_to_voltage(min_GPIO3_code>>4, LTC2992_GPIO_8bit_lsb);
+
+      GPIO4 = LTC2992_GPIO_code_to_voltage(GPIO4_code>>4, LTC2992_GPIO_8bit_lsb);
+      max_GPIO4 = LTC2992_GPIO_code_to_voltage(max_GPIO4_code>>4, LTC2992_GPIO_8bit_lsb);
+      min_GPIO4 = LTC2992_GPIO_code_to_voltage(min_GPIO4_code>>4, LTC2992_GPIO_8bit_lsb);
+
+      Serial.print(F("\n    GPIO1: "));
+      Serial.print(GPIO1*scale, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("        GPIO2: "));
+      Serial.print(GPIO2*scale, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("        GPIO3: "));
+      Serial.print(GPIO3, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("        GPIO4: "));
+      Serial.print(GPIO4, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.print(F("Max GPIO1: "));
+      Serial.print(max_GPIO1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Max GPIO2: "));
+      Serial.print(max_GPIO2, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Max GPIO3: "));
+      Serial.print(max_GPIO3, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Max GPIO4: "));
+      Serial.print(max_GPIO4, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.print(F("Min GPIO1: "));
+      Serial.print(min_GPIO1, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Min GPIO2: "));
+      Serial.print(min_GPIO2, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Min GPIO3: "));
+      Serial.print(min_GPIO3, 4);
+      Serial.print(F(" V"));
+
+      Serial.print(F("    Min GPIO4: "));
+      Serial.print(min_GPIO4, 4);
+      Serial.print(F(" V\n"));
+
+      Serial.println();
+
+
+      Serial.print(F("In 8 - bit mode\n"));
+
+    }
+
+    Serial.print(F("\n\n**********************************************************************************************\n\n"));
+
+    Serial.print(F("m-Main Menu\n\n"));
+    Serial.flush();
+    delay(CONTINUOUS_MODE_DISPLAY_DELAY);
   }
+  while (Serial.available() == false);
+  read_int(); // clears the Serial.available
+  return (ack);
+}
 
 //! Configure Threshold Values
 int8_t menu_2_threshold_config(float scale, //!< Stores division ratio for resistive divider on GPIO pin.  Configured inside "Settings" menu.
-    int8_t bit_resolution) //!< Sets ADC Resolution
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+                               int8_t bit_resolution) //!< Sets ADC Resolution
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+  int8_t ack = 0;
+  int8_t user_command;
+  do
   {
-    int8_t ack = 0;
-    int8_t user_command;
-    do {
-      Serial.print(F("*************************\n\n"));
-      Serial.print(F("1-Set Power Threshold\n"));
-      Serial.print(F("2-Set Current Threshold\n"));
-      Serial.print(F("3-Set SENSE Threshold\n"));
-      Serial.print(F("4-Set GPIO Threshold\n"));
-      Serial.print(F("5-Reset Thresholds To Default\n"));
-      Serial.print(F("m-Main Menu\n\n"));
-      Serial.print(F("Enter a command: "));
+    Serial.print(F("*************************\n\n"));
+    Serial.print(F("1-Set Power Threshold\n"));
+    Serial.print(F("2-Set Current Threshold\n"));
+    Serial.print(F("3-Set SENSE Threshold\n"));
+    Serial.print(F("4-Set GPIO Threshold\n"));
+    Serial.print(F("5-Reset Thresholds To Default\n"));
+    Serial.print(F("m-Main Menu\n\n"));
+    Serial.print(F("Enter a command: "));
 
-      user_command = read_int();
-      if (user_command == 'm')
-        Serial.println(F("m"));
-      else
-        Serial.println(user_command);
-      Serial.println();
-      switch (user_command) {
+    user_command = read_int();
+    if (user_command == 'm')
+      Serial.println(F("m"));
+    else
+      Serial.println(user_command);
+    Serial.println();
+    switch (user_command)
+    {
       case 1:
         ack |= menu_2_threshold_menu_1_set_power(bit_resolution); //! Set Power Min/Max Thresholds
         break;
@@ -773,115 +779,123 @@ int8_t menu_2_threshold_config(float scale, //!< Stores division ratio for resis
         if (user_command != 'm')
           Serial.println(F("Incorrect Option"));
         break;
-      }
     }
-    while (!((user_command == 'm') || (ack)));
-    return (ack);
   }
-  //! Set Power Min/Max Values
+  while (!((user_command == 'm') || (ack)));
+  return (ack);
+}
+//! Set Power Min/Max Values
 int8_t menu_2_threshold_menu_1_set_power(int8_t bit_resolution) //!< Sets ADC Resolution
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+
+  int8_t ack = 0;
+  Serial.print(F("Enter Max Channel 1 Power Threshold:"));
+
+  float max_power_threshold;
+  max_power_threshold = read_float();
+  Serial.println(max_power_threshold, 4);
+
+  uint32_t max_power_threshold_code;
+  if (bit_resolution == 1)
   {
-
-    int8_t ack = 0;
-    Serial.print(F("Enter Max Channel 1 Power Threshold:"));
-
-    float max_power_threshold;
-    max_power_threshold = read_float();
-    Serial.println(max_power_threshold, 4);
-
-    uint32_t max_power_threshold_code;
-    if (bit_resolution == 1)
-	{
-      max_power_threshold_code = (max_power_threshold / LTC2992_Power_12bit_lsb) * resistor;
-	  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_THRESHOLD_MSB2_REG, max_power_threshold_code);
-    }
-	else
-	{ max_power_threshold_code = (max_power_threshold / LTC2992_Power_8bit_lsb) * resistor;
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_THRESHOLD_MSB2_REG, max_power_threshold_code<<8);
-	}
-    Serial.print(F("Enter Min Channel 1 Power Threshold:"));
-
-    float min_power_threshold;
-    min_power_threshold = read_float();
-    Serial.println(min_power_threshold, 4);
-    Serial.println();
-
-    uint32_t min_power_threshold_code;
-    if (bit_resolution == 1)
-	{
-      min_power_threshold_code = (min_power_threshold / LTC2992_Power_12bit_lsb) * resistor;
-	  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_THRESHOLD_MSB2_REG, min_power_threshold_code);
-
-    } else {
-      min_power_threshold_code = (min_power_threshold / LTC2992_Power_8bit_lsb) * resistor;
-      ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_THRESHOLD_MSB2_REG, min_power_threshold_code<<8);
-	}
-    Serial.print(F("Enter Max Channel 2 Power Threshold:"));
-    max_power_threshold = read_float();
-    Serial.println(max_power_threshold, 4);
-
-    if (bit_resolution == 1)
-	{
-      max_power_threshold_code = (max_power_threshold / LTC2992_Power_12bit_lsb) * resistor;
-	  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_THRESHOLD_MSB2_REG, max_power_threshold_code);
-
-    }else{
-      max_power_threshold_code = (max_power_threshold / LTC2992_Power_8bit_lsb) * resistor;
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_THRESHOLD_MSB2_REG, max_power_threshold_code<<8);
-	}
-    Serial.print(F("Enter Min Channel 2 Power Threshold:"));
-
-    min_power_threshold = read_float();
-    Serial.println(min_power_threshold, 4);
-    Serial.println();
-
-    if (bit_resolution == 1)
-	{
-      min_power_threshold_code = (min_power_threshold / LTC2992_Power_12bit_lsb) * resistor;
-      ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG, min_power_threshold_code);
-
-	}else
-	{ min_power_threshold_code = (min_power_threshold / LTC2992_Power_8bit_lsb) * resistor;
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG, min_power_threshold_code<<8);
-	}
-    Serial.print(F("Enter Max Power SUM Threshold:"));
-    max_power_threshold = read_float();
-    Serial.println(max_power_threshold, 4);
-
-    if (bit_resolution == 1)
-	{
-      max_power_threshold_code = (max_power_threshold / (2 * LTC2992_Power_12bit_lsb)) * resistor;
-	  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG, max_power_threshold_code);
-
-    }
-	else
-	{
-      max_power_threshold_code = (max_power_threshold / (2 * LTC2992_Power_8bit_lsb)) * resistor;
-	    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG, max_power_threshold_code<<8);
-	}
-
-    Serial.print(F("Enter Min Power Sum Threshold:"));
-
-    min_power_threshold = read_float();
-    Serial.println(min_power_threshold, 4);
-    Serial.println();
-    if (bit_resolution == 1)
-	{
-      min_power_threshold_code = (min_power_threshold / (2 * LTC2992_Power_12bit_lsb)) * resistor;
-	  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG, min_power_threshold_code);
-    }
-	else
-	{ min_power_threshold_code = (min_power_threshold / (2 * LTC2992_Power_8bit_lsb)) * resistor;
-      ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG, min_power_threshold_code<<8);
-	}
-
-    return (ack);
+    max_power_threshold_code = (max_power_threshold / LTC2992_Power_12bit_lsb) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_THRESHOLD_MSB2_REG, max_power_threshold_code);
   }
+  else
+  {
+    max_power_threshold_code = (max_power_threshold / LTC2992_Power_8bit_lsb) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_THRESHOLD_MSB2_REG, max_power_threshold_code<<8);
+  }
+  Serial.print(F("Enter Min Channel 1 Power Threshold:"));
+
+  float min_power_threshold;
+  min_power_threshold = read_float();
+  Serial.println(min_power_threshold, 4);
+  Serial.println();
+
+  uint32_t min_power_threshold_code;
+  if (bit_resolution == 1)
+  {
+    min_power_threshold_code = (min_power_threshold / LTC2992_Power_12bit_lsb) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_THRESHOLD_MSB2_REG, min_power_threshold_code);
+
+  }
+  else
+  {
+    min_power_threshold_code = (min_power_threshold / LTC2992_Power_8bit_lsb) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_THRESHOLD_MSB2_REG, min_power_threshold_code<<8);
+  }
+  Serial.print(F("Enter Max Channel 2 Power Threshold:"));
+  max_power_threshold = read_float();
+  Serial.println(max_power_threshold, 4);
+
+  if (bit_resolution == 1)
+  {
+    max_power_threshold_code = (max_power_threshold / LTC2992_Power_12bit_lsb) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_THRESHOLD_MSB2_REG, max_power_threshold_code);
+
+  }
+  else
+  {
+    max_power_threshold_code = (max_power_threshold / LTC2992_Power_8bit_lsb) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_THRESHOLD_MSB2_REG, max_power_threshold_code<<8);
+  }
+  Serial.print(F("Enter Min Channel 2 Power Threshold:"));
+
+  min_power_threshold = read_float();
+  Serial.println(min_power_threshold, 4);
+  Serial.println();
+
+  if (bit_resolution == 1)
+  {
+    min_power_threshold_code = (min_power_threshold / LTC2992_Power_12bit_lsb) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG, min_power_threshold_code);
+
+  }
+  else
+  {
+    min_power_threshold_code = (min_power_threshold / LTC2992_Power_8bit_lsb) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG, min_power_threshold_code<<8);
+  }
+  Serial.print(F("Enter Max Power SUM Threshold:"));
+  max_power_threshold = read_float();
+  Serial.println(max_power_threshold, 4);
+
+  if (bit_resolution == 1)
+  {
+    max_power_threshold_code = (max_power_threshold / (2 * LTC2992_Power_12bit_lsb)) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG, max_power_threshold_code);
+
+  }
+  else
+  {
+    max_power_threshold_code = (max_power_threshold / (2 * LTC2992_Power_8bit_lsb)) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG, max_power_threshold_code<<8);
+  }
+
+  Serial.print(F("Enter Min Power Sum Threshold:"));
+
+  min_power_threshold = read_float();
+  Serial.println(min_power_threshold, 4);
+  Serial.println();
+  if (bit_resolution == 1)
+  {
+    min_power_threshold_code = (min_power_threshold / (2 * LTC2992_Power_12bit_lsb)) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG, min_power_threshold_code);
+  }
+  else
+  {
+    min_power_threshold_code = (min_power_threshold / (2 * LTC2992_Power_8bit_lsb)) * resistor;
+    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG, min_power_threshold_code<<8);
+  }
+
+  return (ack);
+}
 
 //! Set Min/Max Current Threshold
 int8_t menu_2_threshold_menu_2_set_current(int8_t bit_resolution) //!< Sets ADC Resolution
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
 
 {
   int8_t ack = 0;
@@ -892,11 +906,14 @@ int8_t menu_2_threshold_menu_2_set_current(int8_t bit_resolution) //!< Sets ADC 
   Serial.println(max_current_threshold, 4);
 
   uint16_t max_current_threshold_code;
-  if (bit_resolution == 1) {
+  if (bit_resolution == 1)
+  {
     max_current_threshold_code = (max_current_threshold / LTC2992_DELTA_SENSE_12bit_lsb) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA1_SENSE_THRESHOLD_MSB_REG, (max_current_threshold_code << 4));
 
-  } else {
+  }
+  else
+  {
     max_current_threshold_code = (max_current_threshold / LTC2992_DELTA_SENSE_8bit_lsb) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA1_SENSE_THRESHOLD_MSB_REG, (max_current_threshold_code << 8));
   }
@@ -909,10 +926,13 @@ int8_t menu_2_threshold_menu_2_set_current(int8_t bit_resolution) //!< Sets ADC 
   Serial.println();
 
   uint16_t min_current_threshold_code;
-  if (bit_resolution == 1) {
+  if (bit_resolution == 1)
+  {
     min_current_threshold_code = (min_current_threshold / LTC2992_DELTA_SENSE_12bit_lsb) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA1_SENSE_THRESHOLD_MSB_REG, (min_current_threshold_code << 4));
-  } else {
+  }
+  else
+  {
     min_current_threshold_code = (min_current_threshold / LTC2992_DELTA_SENSE_8bit_lsb) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA1_SENSE_THRESHOLD_MSB_REG, (min_current_threshold_code << 8));
 
@@ -922,10 +942,13 @@ int8_t menu_2_threshold_menu_2_set_current(int8_t bit_resolution) //!< Sets ADC 
   max_current_threshold = read_float();
   Serial.println(max_current_threshold, 4);
 
-  if (bit_resolution == 1) {
+  if (bit_resolution == 1)
+  {
     max_current_threshold_code = (max_current_threshold / LTC2992_DELTA_SENSE_12bit_lsb) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA2_SENSE_THRESHOLD_MSB_REG, (max_current_threshold_code << 4));
-  } else {
+  }
+  else
+  {
     max_current_threshold_code = (max_current_threshold / LTC2992_DELTA_SENSE_8bit_lsb) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA2_SENSE_THRESHOLD_MSB_REG, (max_current_threshold_code << 8));
   }
@@ -935,11 +958,14 @@ int8_t menu_2_threshold_menu_2_set_current(int8_t bit_resolution) //!< Sets ADC 
   Serial.println(min_current_threshold, 4);
   Serial.println();
 
-  if (bit_resolution == 1) {
+  if (bit_resolution == 1)
+  {
     min_current_threshold_code = (min_current_threshold / LTC2992_DELTA_SENSE_12bit_lsb) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA2_SENSE_THRESHOLD_MSB_REG, (min_current_threshold_code << 4));
 
-  } else {
+  }
+  else
+  {
     min_current_threshold_code = (min_current_threshold / LTC2992_DELTA_SENSE_8bit_lsb) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA2_SENSE_THRESHOLD_MSB_REG, (min_current_threshold_code << 8));
   }
@@ -952,9 +978,10 @@ int8_t menu_2_threshold_menu_2_set_current(int8_t bit_resolution) //!< Sets ADC 
     max_current_threshold_code = (max_current_threshold / (2 * LTC2992_DELTA_SENSE_12bit_lsb)) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_ISUM_THRESHOLD_MSB_REG, (max_current_threshold_code << 4));
   }
-  else{
+  else
+  {
     max_current_threshold_code = (max_current_threshold / (2 * LTC2992_DELTA_SENSE_8bit_lsb)) * resistor;
-	ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_ISUM_THRESHOLD_MSB_REG, (max_current_threshold_code << 8));
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_ISUM_THRESHOLD_MSB_REG, (max_current_threshold_code << 8));
   }
   Serial.print(F("Enter Min Current Sum Threshold:"));
 
@@ -968,7 +995,7 @@ int8_t menu_2_threshold_menu_2_set_current(int8_t bit_resolution) //!< Sets ADC 
 
   }
   else
-  {  
+  {
     min_current_threshold_code = (min_current_threshold / (2 * LTC2992_DELTA_SENSE_8bit_lsb)) * resistor;
     ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_ISUM_THRESHOLD_MSB_REG, (min_current_threshold_code << 8));
   }
@@ -978,275 +1005,314 @@ int8_t menu_2_threshold_menu_2_set_current(int8_t bit_resolution) //!< Sets ADC 
 
 //! Set Min/Max Voltage Thresholds
 int8_t menu_2_threshold_menu_3_set_SENSE(int8_t bit_resolution)
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+  int8_t ack = 0;
+  Serial.print(F("Enter Max Channel 1 SENSE Threshold:"));
+
+  float max_sense_threshold;
+  max_sense_threshold = read_float();
+  Serial.println(max_sense_threshold, 4);
+
+  uint16_t max_sense_threshold_code;
+  if (bit_resolution == 1)
   {
-    int8_t ack = 0;
-    Serial.print(F("Enter Max Channel 1 SENSE Threshold:"));
-
-    float max_sense_threshold;
-    max_sense_threshold = read_float();
-    Serial.println(max_sense_threshold, 4);
-
-    uint16_t max_sense_threshold_code;
-    if (bit_resolution == 1) {
-      max_sense_threshold_code = (max_sense_threshold / LTC2992_SENSE_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_THRESHOLD_MSB_REG, (max_sense_threshold_code << 4));
-    } else {
-      max_sense_threshold_code = (max_sense_threshold / LTC2992_SENSE_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_THRESHOLD_MSB_REG, (max_sense_threshold_code << 8));
-    }
-    Serial.print(F("Enter Min Channel 1 SENSE Threshold:"));
-
-    float min_sense_threshold;
-    min_sense_threshold = read_float();
-    Serial.println(min_sense_threshold, 4);
-    Serial.println();
-
-    uint16_t min_sense_threshold_code;
-    if (bit_resolution == 1) {
-      min_sense_threshold_code = (min_sense_threshold / LTC2992_SENSE_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_THRESHOLD_MSB_REG, (min_sense_threshold_code << 4));
-
-    } else {
-      min_sense_threshold_code = (min_sense_threshold / LTC2992_SENSE_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_THRESHOLD_MSB_REG, (min_sense_threshold_code << 8));
-    }
-    Serial.print(F("Enter Max Channel 2 SENSE Threshold:"));
-    max_sense_threshold = read_float();
-    Serial.println(max_sense_threshold, 4);
-
-    if (bit_resolution == 1) {
-      max_sense_threshold_code = (max_sense_threshold / LTC2992_SENSE_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG, (max_sense_threshold_code << 4));
-    } else {
-      max_sense_threshold_code = (max_sense_threshold / LTC2992_SENSE_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG, (max_sense_threshold_code << 8));
-    }
-
-    Serial.print(F("Enter Min Channel 2 SENSE Threshold:"));
-
-    min_sense_threshold = read_float();
-    Serial.println(min_sense_threshold, 4);
-    Serial.println();
-
-    if (bit_resolution == 1) {
-      min_sense_threshold_code = (min_sense_threshold / LTC2992_SENSE_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG, (min_sense_threshold_code << 4));
-    } else {
-      min_sense_threshold_code = (min_sense_threshold / LTC2992_SENSE_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG, (min_sense_threshold_code << 8));
-    }
-
-
-    return (ack);
+    max_sense_threshold_code = (max_sense_threshold / LTC2992_SENSE_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_THRESHOLD_MSB_REG, (max_sense_threshold_code << 4));
   }
-  //Set Min/Max GPIO Thresholds
+  else
+  {
+    max_sense_threshold_code = (max_sense_threshold / LTC2992_SENSE_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_THRESHOLD_MSB_REG, (max_sense_threshold_code << 8));
+  }
+  Serial.print(F("Enter Min Channel 1 SENSE Threshold:"));
+
+  float min_sense_threshold;
+  min_sense_threshold = read_float();
+  Serial.println(min_sense_threshold, 4);
+  Serial.println();
+
+  uint16_t min_sense_threshold_code;
+  if (bit_resolution == 1)
+  {
+    min_sense_threshold_code = (min_sense_threshold / LTC2992_SENSE_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_THRESHOLD_MSB_REG, (min_sense_threshold_code << 4));
+
+  }
+  else
+  {
+    min_sense_threshold_code = (min_sense_threshold / LTC2992_SENSE_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_THRESHOLD_MSB_REG, (min_sense_threshold_code << 8));
+  }
+  Serial.print(F("Enter Max Channel 2 SENSE Threshold:"));
+  max_sense_threshold = read_float();
+  Serial.println(max_sense_threshold, 4);
+
+  if (bit_resolution == 1)
+  {
+    max_sense_threshold_code = (max_sense_threshold / LTC2992_SENSE_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG, (max_sense_threshold_code << 4));
+  }
+  else
+  {
+    max_sense_threshold_code = (max_sense_threshold / LTC2992_SENSE_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG, (max_sense_threshold_code << 8));
+  }
+
+  Serial.print(F("Enter Min Channel 2 SENSE Threshold:"));
+
+  min_sense_threshold = read_float();
+  Serial.println(min_sense_threshold, 4);
+  Serial.println();
+
+  if (bit_resolution == 1)
+  {
+    min_sense_threshold_code = (min_sense_threshold / LTC2992_SENSE_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG, (min_sense_threshold_code << 4));
+  }
+  else
+  {
+    min_sense_threshold_code = (min_sense_threshold / LTC2992_SENSE_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG, (min_sense_threshold_code << 8));
+  }
+
+
+  return (ack);
+}
+//Set Min/Max GPIO Thresholds
 int8_t menu_2_alert_menu_4_set_adin_alerts(float scale, //!< Stores division ratio for resistive divider on GPIO pin.  Configured inside "Settings" menu.
-                                           int8_t bit_resolution) //!< Sets ADC Resolution
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+    int8_t bit_resolution) //!< Sets ADC Resolution
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+  int8_t ack = 0;
+  Serial.print(F("Enter Max GPIO1 Threshold (Range: 0V - 100V):"));
+
+  float max_gpio_threshold;
+  max_gpio_threshold = read_float();
+  Serial.println(max_gpio_threshold, 4);
+
+  uint16_t max_gpio_threshold_code;
+  if (bit_resolution == 1)
   {
-    int8_t ack = 0;
-    Serial.print(F("Enter Max GPIO1 Threshold (Range: 0V - 100V):"));
-
-    float max_gpio_threshold;
-    max_gpio_threshold = read_float();
-    Serial.println(max_gpio_threshold, 4);
-
-    uint16_t max_gpio_threshold_code;
-    if (bit_resolution == 1) {
-      max_gpio_threshold_code = (1 / scale) * (max_gpio_threshold / LTC2992_GPIO_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 4));
-    } else {
-      max_gpio_threshold_code = (1 / scale) * (max_gpio_threshold / LTC2992_GPIO_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 8));
-    }
-    Serial.print(F("Enter Min GPIO1 Threshold (Range: 0V - 100V):"));
-
-    float min_gpio_threshold;
-    min_gpio_threshold = read_float();
-    Serial.println(min_gpio_threshold, 4);
-    Serial.println();
-
-    uint16_t min_gpio_threshold_code;
-    if (bit_resolution == 1) {
-      min_gpio_threshold_code = (1 / scale) * (min_gpio_threshold / LTC2992_GPIO_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 4));
-    } else {
-      min_gpio_threshold_code = (1 / scale) * (min_gpio_threshold / LTC2992_GPIO_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 8));
-    }
-
-    Serial.print(F("Enter Max GPIO2 Threshold (Range: 0V - 100V):"));
-    max_gpio_threshold = read_float();
-    Serial.println(max_gpio_threshold, 4);
-
-    if (bit_resolution == 1) {
-      max_gpio_threshold_code = (1 / scale) * (max_gpio_threshold / LTC2992_GPIO_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 4));
-    } else {
-      max_gpio_threshold_code = (1 / scale) * (max_gpio_threshold / LTC2992_GPIO_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 8));
-    }
-
-    Serial.print(F("Enter Min GPIO2 Threshold (Range: 0V - 100V):"));
-
-    min_gpio_threshold = read_float();
-    Serial.println(min_gpio_threshold, 4);
-    Serial.println();
-
-    if (bit_resolution == 1) {
-      min_gpio_threshold_code = (1 / scale) * (min_gpio_threshold / LTC2992_GPIO_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 4));
-    } else {
-      min_gpio_threshold_code = (1 / scale) * (min_gpio_threshold / LTC2992_GPIO_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 8));
-    }
-
-    Serial.print(F("Enter Max GPIO3 Threshold (Range: 0V - 2.048V):"));
-    max_gpio_threshold = read_float();
-    Serial.println(max_gpio_threshold, 4);
-
-    if (bit_resolution == 1) {
-      max_gpio_threshold_code = (max_gpio_threshold / LTC2992_GPIO_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 4));
-    } else {
-      max_gpio_threshold_code = (max_gpio_threshold / LTC2992_GPIO_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 8));
-    }
-
-    Serial.print(F("Enter Min GPIO3 Threshold (Range: 0V - 2.048V):"));
-
-    min_gpio_threshold = read_float();
-    Serial.println(min_gpio_threshold, 4);
-    Serial.println();
-
-    if (bit_resolution == 1) {
-      min_gpio_threshold_code = (min_gpio_threshold / LTC2992_GPIO_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 4));
-    } else {
-      min_gpio_threshold_code = (min_gpio_threshold / LTC2992_GPIO_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 8));
-    }
-
-    Serial.print(F("Enter Max GPIO4 Threshold (Range: 0V - 2.048V):"));
-    max_gpio_threshold = read_float();
-    Serial.println(max_gpio_threshold, 4);
-
-    if (bit_resolution == 1) {
-      max_gpio_threshold_code = (max_gpio_threshold / LTC2992_GPIO_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 4));
-    } else {
-      max_gpio_threshold_code = (max_gpio_threshold / LTC2992_GPIO_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 8));
-    }
-
-    Serial.print(F("Enter Min GPIO4 Threshold (Range: 0V - 2.048V):"));
-
-    min_gpio_threshold = read_float();
-    Serial.println(min_gpio_threshold, 4);
-    Serial.println();
-
-    if (bit_resolution == 1) {
-      min_gpio_threshold_code = (min_gpio_threshold / LTC2992_GPIO_12bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 4));
-    } else {
-      min_gpio_threshold_code = (min_gpio_threshold / LTC2992_GPIO_8bit_lsb);
-      ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 8));
-    }
-
-
-    return (ack);
+    max_gpio_threshold_code = (1 / scale) * (max_gpio_threshold / LTC2992_GPIO_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 4));
   }
-  //! Set All Thresholds to Default Values
+  else
+  {
+    max_gpio_threshold_code = (1 / scale) * (max_gpio_threshold / LTC2992_GPIO_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 8));
+  }
+  Serial.print(F("Enter Min GPIO1 Threshold (Range: 0V - 100V):"));
+
+  float min_gpio_threshold;
+  min_gpio_threshold = read_float();
+  Serial.println(min_gpio_threshold, 4);
+  Serial.println();
+
+  uint16_t min_gpio_threshold_code;
+  if (bit_resolution == 1)
+  {
+    min_gpio_threshold_code = (1 / scale) * (min_gpio_threshold / LTC2992_GPIO_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 4));
+  }
+  else
+  {
+    min_gpio_threshold_code = (1 / scale) * (min_gpio_threshold / LTC2992_GPIO_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 8));
+  }
+
+  Serial.print(F("Enter Max GPIO2 Threshold (Range: 0V - 100V):"));
+  max_gpio_threshold = read_float();
+  Serial.println(max_gpio_threshold, 4);
+
+  if (bit_resolution == 1)
+  {
+    max_gpio_threshold_code = (1 / scale) * (max_gpio_threshold / LTC2992_GPIO_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 4));
+  }
+  else
+  {
+    max_gpio_threshold_code = (1 / scale) * (max_gpio_threshold / LTC2992_GPIO_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 8));
+  }
+
+  Serial.print(F("Enter Min GPIO2 Threshold (Range: 0V - 100V):"));
+
+  min_gpio_threshold = read_float();
+  Serial.println(min_gpio_threshold, 4);
+  Serial.println();
+
+  if (bit_resolution == 1)
+  {
+    min_gpio_threshold_code = (1 / scale) * (min_gpio_threshold / LTC2992_GPIO_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 4));
+  }
+  else
+  {
+    min_gpio_threshold_code = (1 / scale) * (min_gpio_threshold / LTC2992_GPIO_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 8));
+  }
+
+  Serial.print(F("Enter Max GPIO3 Threshold (Range: 0V - 2.048V):"));
+  max_gpio_threshold = read_float();
+  Serial.println(max_gpio_threshold, 4);
+
+  if (bit_resolution == 1)
+  {
+    max_gpio_threshold_code = (max_gpio_threshold / LTC2992_GPIO_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 4));
+  }
+  else
+  {
+    max_gpio_threshold_code = (max_gpio_threshold / LTC2992_GPIO_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 8));
+  }
+
+  Serial.print(F("Enter Min GPIO3 Threshold (Range: 0V - 2.048V):"));
+
+  min_gpio_threshold = read_float();
+  Serial.println(min_gpio_threshold, 4);
+  Serial.println();
+
+  if (bit_resolution == 1)
+  {
+    min_gpio_threshold_code = (min_gpio_threshold / LTC2992_GPIO_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 4));
+  }
+  else
+  {
+    min_gpio_threshold_code = (min_gpio_threshold / LTC2992_GPIO_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 8));
+  }
+
+  Serial.print(F("Enter Max GPIO4 Threshold (Range: 0V - 2.048V):"));
+  max_gpio_threshold = read_float();
+  Serial.println(max_gpio_threshold, 4);
+
+  if (bit_resolution == 1)
+  {
+    max_gpio_threshold_code = (max_gpio_threshold / LTC2992_GPIO_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 4));
+  }
+  else
+  {
+    max_gpio_threshold_code = (max_gpio_threshold / LTC2992_GPIO_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_THRESHOLD_MSB_REG, (max_gpio_threshold_code << 8));
+  }
+
+  Serial.print(F("Enter Min GPIO4 Threshold (Range: 0V - 2.048V):"));
+
+  min_gpio_threshold = read_float();
+  Serial.println(min_gpio_threshold, 4);
+  Serial.println();
+
+  if (bit_resolution == 1)
+  {
+    min_gpio_threshold_code = (min_gpio_threshold / LTC2992_GPIO_12bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 4));
+  }
+  else
+  {
+    min_gpio_threshold_code = (min_gpio_threshold / LTC2992_GPIO_8bit_lsb);
+    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_THRESHOLD_MSB_REG, (min_gpio_threshold_code << 8));
+  }
+
+
+  return (ack);
+}
+//! Set All Thresholds to Default Values
 int8_t menu_2_threshold_menu_5_reset_thresholds()
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+
+  int8_t ack = 0;
+
+  uint32_t max_32bit_threshold = 0xFFFFFF;
+  uint16_t max_16bit_threshold = 0xFFF0;
+  uint32_t min_32bit_threshold = 0x000000;
+  uint16_t min_16bit_threshold = 0x00000;
+
+  uint32_t max_power_threshold_code = 0;
+  uint32_t min_power_threshold_code = 0;
+
+  //Reset Power Thresholds
+
+  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_THRESHOLD_MSB2_REG, max_32bit_threshold);
+  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_THRESHOLD_MSB2_REG, min_32bit_threshold);
+
+  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_THRESHOLD_MSB2_REG, max_32bit_threshold);
+  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG, min_32bit_threshold);
+
+  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG, max_32bit_threshold);
+  ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG, min_32bit_threshold);
+
+  //Reset Current Thresholds
+
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA1_SENSE_THRESHOLD_MSB_REG, max_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA1_SENSE_THRESHOLD_MSB_REG, min_16bit_threshold);
+
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA2_SENSE_THRESHOLD_MSB_REG, max_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA2_SENSE_THRESHOLD_MSB_REG, min_16bit_threshold);
+
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_ISUM_THRESHOLD_MSB_REG, max_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_ISUM_THRESHOLD_MSB_REG, min_16bit_threshold);
+
+  //Reset Voltage Thresholds
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_THRESHOLD_MSB_REG, max_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_THRESHOLD_MSB_REG, min_16bit_threshold);
+
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG, max_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG, min_16bit_threshold);
+
+  //Reset GPIO Thresholds
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_THRESHOLD_MSB_REG, max_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_THRESHOLD_MSB_REG, max_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_THRESHOLD_MSB_REG, max_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_THRESHOLD_MSB_REG, max_16bit_threshold);
+
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_THRESHOLD_MSB_REG, min_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_THRESHOLD_MSB_REG, min_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_THRESHOLD_MSB_REG, min_16bit_threshold);
+  ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_THRESHOLD_MSB_REG, min_16bit_threshold);
+
+  if (ack == 0)
   {
-
-    int8_t ack = 0;
-
-    uint32_t max_32bit_threshold = 0xFFFFFF;
-    uint16_t max_16bit_threshold = 0xFFF0;
-    uint32_t min_32bit_threshold = 0x000000;
-    uint16_t min_16bit_threshold = 0x00000;
-
-    uint32_t max_power_threshold_code = 0;
-    uint32_t min_power_threshold_code = 0;
-
-    //Reset Power Thresholds
-
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER1_THRESHOLD_MSB2_REG, max_32bit_threshold);
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER1_THRESHOLD_MSB2_REG, min_32bit_threshold);
-
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_POWER2_THRESHOLD_MSB2_REG, max_32bit_threshold);
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG, min_32bit_threshold);
-
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG, max_32bit_threshold);
-    ack |= LTC2992_write_24_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG, min_32bit_threshold);
-
-    //Reset Current Thresholds
-
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA1_SENSE_THRESHOLD_MSB_REG, max_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA1_SENSE_THRESHOLD_MSB_REG, min_16bit_threshold);
-
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_DELTA2_SENSE_THRESHOLD_MSB_REG, max_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_DELTA2_SENSE_THRESHOLD_MSB_REG, min_16bit_threshold);
-
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_ISUM_THRESHOLD_MSB_REG, max_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_ISUM_THRESHOLD_MSB_REG, min_16bit_threshold);
-
-    //Reset Voltage Thresholds
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE1_THRESHOLD_MSB_REG, max_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE1_THRESHOLD_MSB_REG, min_16bit_threshold);
-
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG, max_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG, min_16bit_threshold);
-
-    //Reset GPIO Thresholds
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO1_THRESHOLD_MSB_REG, max_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO2_THRESHOLD_MSB_REG, max_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO3_THRESHOLD_MSB_REG, max_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MAX_GPIO4_THRESHOLD_MSB_REG, max_16bit_threshold);
-
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO1_THRESHOLD_MSB_REG, min_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO2_THRESHOLD_MSB_REG, min_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO3_THRESHOLD_MSB_REG, min_16bit_threshold);
-    ack |= LTC2992_write_16_bits(LTC2992_I2C_ADDRESS, LTC2992_MIN_GPIO4_THRESHOLD_MSB_REG, min_16bit_threshold);
-
-    if (ack == 0) {
-      Serial.println(F("\nThresholds Reset to Defaults\n"));
-    }
-
-    return (ack);
+    Serial.println(F("\nThresholds Reset to Defaults\n"));
   }
+
+  return (ack);
+}
 
 //Toggle and Configure GPIO Pins
 int8_t menu_3_GPIO_config()
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+  int8_t ack = 0;
+  int8_t user_command;
+  uint8_t gpio_io_code;
+  uint8_t gpio4_control_code;
+
+  do
   {
-    int8_t ack = 0;
-    int8_t user_command;
-    uint8_t gpio_io_code;
-    uint8_t gpio4_control_code;
+    Serial.print(F("*************************\n\n"));
+    Serial.print(F("1-Configure GPIO1\n"));
+    Serial.print(F("2-Configure GPIO2\n"));
+    Serial.print(F("3-Configure GPIO3\n"));
+    Serial.print(F("4-Configure GPIO4\n"));
+    Serial.print(F("m-Main Menu\n\n"));
+    Serial.print(F("Enter a command: "));
 
-    do {
-      Serial.print(F("*************************\n\n"));
-      Serial.print(F("1-Configure GPIO1\n"));
-      Serial.print(F("2-Configure GPIO2\n"));
-      Serial.print(F("3-Configure GPIO3\n"));
-      Serial.print(F("4-Configure GPIO4\n"));
-      Serial.print(F("m-Main Menu\n\n"));
-      Serial.print(F("Enter a command: "));
+    ack |= LTC2992_read(LTC2992_I2C_ADDRESS, LTC2992_GPIO_IO_CONT_REG, & gpio_io_code);
+    ack |= LTC2992_read(LTC2992_I2C_ADDRESS, LTC2992_GPIO4_CFG_REG, & gpio4_control_code);
 
-      ack |= LTC2992_read(LTC2992_I2C_ADDRESS, LTC2992_GPIO_IO_CONT_REG, & gpio_io_code);
-      ack |= LTC2992_read(LTC2992_I2C_ADDRESS, LTC2992_GPIO4_CFG_REG, & gpio4_control_code);
-
-      user_command = read_int();
-      if (user_command == 'm')
-        Serial.println(F("m"));
-      else
-        Serial.println(user_command);
-      Serial.println();
-      switch (user_command) {
+    user_command = read_int();
+    if (user_command == 'm')
+      Serial.println(F("m"));
+    else
+      Serial.println(user_command);
+    Serial.println();
+    switch (user_command)
+    {
       case 1:
         Serial.print(F("1-GPIO1 Pulls Low, 2-GPIO1 High-Z\n"));
         user_command = read_int();
@@ -1257,7 +1323,7 @@ int8_t menu_3_GPIO_config()
           gpio_io_code = gpio_io_code | LTC2992_GPIO1_OUT_LOW;
         else
           gpio_io_code = gpio_io_code & LTC2992_GPIO1_OUT_HIGH_Z;
-	  
+
         break;
 
       case 2:
@@ -1282,33 +1348,34 @@ int8_t menu_3_GPIO_config()
         Serial.print(F("Enter a command: "));
         user_command = read_int();
         Serial.println(user_command);
-        switch (user_command) {
-        case 1:
-          gpio_io_code = gpio_io_code | LTC2992_GPIO3_CONFIG_LOW_DATARDY;
-          break;
-        case 2:
-          gpio_io_code = gpio_io_code & LTC2992_GPIOCFG_GPIO3_MASK;
-          gpio_io_code = gpio_io_code | LTC2992_GPIO3_CONFIG_128_LOW;
-          break;
-        case 3:
-          gpio_io_code = gpio_io_code & LTC2992_GPIOCFG_GPIO3_MASK;
-          gpio_io_code = gpio_io_code | LTC2992_GPIO3_CONFIG_16_LOW;
-          break;
-        case 4:
-          gpio_io_code = gpio_io_code & LTC2992_GPIOCFG_GPIO3_MASK;
-          gpio_io_code = gpio_io_code | LTC2992_GPIO3_CONFIG_IO;
-          Serial.print(F("1-GPIO3 Pulls Low, 2-GPIO3 High-Z\n"));
-          user_command = read_int();
-          if ((user_command > 2) || (user_command < 0))
-            user_command = 2;
-          Serial.println(user_command);
-          if (user_command == 1)
-            gpio_io_code = gpio_io_code | LTC2992_GPIO3_OUT_LOW;
-          else
-            gpio_io_code = gpio_io_code & LTC2992_GPIO3_OUT_HIGH_Z;
-          break;
-        default:
-          break;
+        switch (user_command)
+        {
+          case 1:
+            gpio_io_code = gpio_io_code | LTC2992_GPIO3_CONFIG_LOW_DATARDY;
+            break;
+          case 2:
+            gpio_io_code = gpio_io_code & LTC2992_GPIOCFG_GPIO3_MASK;
+            gpio_io_code = gpio_io_code | LTC2992_GPIO3_CONFIG_128_LOW;
+            break;
+          case 3:
+            gpio_io_code = gpio_io_code & LTC2992_GPIOCFG_GPIO3_MASK;
+            gpio_io_code = gpio_io_code | LTC2992_GPIO3_CONFIG_16_LOW;
+            break;
+          case 4:
+            gpio_io_code = gpio_io_code & LTC2992_GPIOCFG_GPIO3_MASK;
+            gpio_io_code = gpio_io_code | LTC2992_GPIO3_CONFIG_IO;
+            Serial.print(F("1-GPIO3 Pulls Low, 2-GPIO3 High-Z\n"));
+            user_command = read_int();
+            if ((user_command > 2) || (user_command < 0))
+              user_command = 2;
+            Serial.println(user_command);
+            if (user_command == 1)
+              gpio_io_code = gpio_io_code | LTC2992_GPIO3_OUT_LOW;
+            else
+              gpio_io_code = gpio_io_code & LTC2992_GPIO3_OUT_HIGH_Z;
+            break;
+          default:
+            break;
         }
         break;
       case 4:
@@ -1326,38 +1393,40 @@ int8_t menu_3_GPIO_config()
         if (user_command != 'm')
           Serial.println(F("Incorrect Option"));
         break;
-      }
-	ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_GPIO_IO_CONT_REG, gpio_io_code);
-    ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_GPIO4_CFG_REG, gpio4_control_code);
     }
-    while (!((user_command == 'm') || (ack)));
-
-    return (ack);
+    ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_GPIO_IO_CONT_REG, gpio_io_code);
+    ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_GPIO4_CFG_REG, gpio4_control_code);
   }
-  //! Read/Clear Faults
+  while (!((user_command == 'm') || (ack)));
+
+  return (ack);
+}
+//! Read/Clear Faults
 int8_t menu_5_read_clear_faults()
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+
+  int8_t ack = 0;
+  int8_t user_command;
+  uint8_t fault_code;
+  uint8_t no_fault_code = 0x00;
+
+  do
   {
+    Serial.print(F("*************************\n\n"));
+    Serial.print(F("1-Real All Faults\n"));
+    Serial.print(F("2-Clear All Faults\n"));
+    Serial.print(F("m-Main Menu\n\n"));
+    Serial.print(F("Enter a command: "));
 
-    int8_t ack = 0;
-    int8_t user_command;
-    uint8_t fault_code;
-    uint8_t no_fault_code = 0x00;
-
-    do {
-      Serial.print(F("*************************\n\n"));
-      Serial.print(F("1-Real All Faults\n"));
-      Serial.print(F("2-Clear All Faults\n"));
-      Serial.print(F("m-Main Menu\n\n"));
-      Serial.print(F("Enter a command: "));
-
-      user_command = read_int();
-      if (user_command == 'm')
-        Serial.println(F("m"));
-      else
-        Serial.println(user_command);
-      Serial.println();
-      switch (user_command) {
+    user_command = read_int();
+    if (user_command == 'm')
+      Serial.println(F("m"));
+    else
+      Serial.println(user_command);
+    Serial.println();
+    switch (user_command)
+    {
       case 1:
         ack |= LTC2992_read(LTC2992_I2C_ADDRESS, LTC2992_FAULT1_REG, & fault_code);
 
@@ -1483,7 +1552,8 @@ int8_t menu_5_read_clear_faults()
         else
           no_fault_code++;
 
-        if (no_fault_code == 28) {
+        if (no_fault_code == 28)
+        {
           Serial.println(F("No Faults Occured\n"));
           Serial.println();
         }
@@ -1497,7 +1567,8 @@ int8_t menu_5_read_clear_faults()
         ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_FAULT3_REG, fault_code);
         ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_FAULT4_REG, fault_code);
 
-        if (ack == 0) {
+        if (ack == 0)
+        {
           Serial.println(F("\nAll Faults Cleared\n"));
         }
         break;
@@ -1506,54 +1577,57 @@ int8_t menu_5_read_clear_faults()
         if (user_command != 'm')
           Serial.println(F("Incorrect Option"));
         break;
-      }
     }
-    while (!((user_command == 'm') || (ack)));
-
-    return (ack);
-
   }
-  //! Settings to configure shutdown mode and ADC Resolution
-int8_t menu_4_settings(int8_t * CTRLA_mode, //! CTRLA Register. Used to set device in Shutdown
-                       int8_t * bit_resolution) //! Sets ADC Bit Resolution.
-  //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+  while (!((user_command == 'm') || (ack)));
+
+  return (ack);
+
+}
+//! Settings to configure shutdown mode and ADC Resolution
+int8_t menu_4_settings(int8_t *CTRLA_mode,  //! CTRLA Register. Used to set device in Shutdown
+                       int8_t *bit_resolution)  //! Sets ADC Bit Resolution.
+//! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
+{
+  int8_t ack = 0;
+  int8_t user_command;
+
+  do
   {
-    int8_t ack = 0;
-    int8_t user_command;
+    Serial.print(F("*************************\n\n"));
+    Serial.print(F("1-Configure ADC Resolution\n"));
+    Serial.print(F("2-Enable/Disable Shutdown Mode\n"));
+    Serial.print(F("m-Main Menu\n\n"));
+    Serial.print(F("Enter a command: "));
 
-    do {
-      Serial.print(F("*************************\n\n"));
-      Serial.print(F("1-Configure ADC Resolution\n"));
-      Serial.print(F("2-Enable/Disable Shutdown Mode\n"));
-      Serial.print(F("m-Main Menu\n\n"));
-      Serial.print(F("Enter a command: "));
-
-      user_command = read_int();
-      if (user_command == 'm')
-        Serial.println(F("m"));
-      else
-        Serial.println(user_command);
-      Serial.println();
-      switch (user_command) {
+    user_command = read_int();
+    if (user_command == 'm')
+      Serial.println(F("m"));
+    else
+      Serial.println(user_command);
+    Serial.println();
+    switch (user_command)
+    {
       case 1:
         Serial.print(F("1-12-bit resolution, 2-8-bit resolution\n"));
         user_command = read_int();
         if ((user_command > 2) || (user_command < 0))
           user_command = 2;
         Serial.println(user_command);
-        if (user_command == 1){
+        if (user_command == 1)
+        {
           * bit_resolution = 1;
-		   ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_NADC_REG, 0x00);
-		}
-   	   else
-	   {
+          ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_NADC_REG, 0x00);
+        }
+        else
+        {
           *bit_resolution = 0;
-		   ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_NADC_REG, LTC2992_ADC_RESOLUTION);
-	   }
-	   uint8_t nadc_code;
-	   LTC2992_read(LTC2992_I2C_ADDRESS,LTC2992_NADC_REG, &nadc_code);
-	   Serial.println(nadc_code);
-		break;
+          ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_NADC_REG, LTC2992_ADC_RESOLUTION);
+        }
+        uint8_t nadc_code;
+        LTC2992_read(LTC2992_I2C_ADDRESS,LTC2992_NADC_REG, &nadc_code);
+        Serial.println(nadc_code);
+        break;
 
       case 2:
         Serial.print(F("1-Enable Shutdown, 2-Disable Shutdown\n"));
@@ -1561,21 +1635,26 @@ int8_t menu_4_settings(int8_t * CTRLA_mode, //! CTRLA Register. Used to set devi
         if ((user_command > 2) || (user_command < 0))
           user_command = 2;
         Serial.println(user_command);
-        if (user_command == 1) { * CTRLA_mode = * CTRLA_mode | LTC2992_MODE_SHUTDOWN;
+        if (user_command == 1)
+        {
+          * CTRLA_mode = * CTRLA_mode | LTC2992_MODE_SHUTDOWN;
           Serial.print(F("Shutdown Mode is enabled. Selecting Continious Mode in main menu will disable Shutdown mode\n"));
-        } else { * CTRLA_mode = ( * CTRLA_mode & LTC2992_CTRLA_MEASUREMENT_MODE_MASK) | LTC2992_MODE_CONTINUOUS;
+        }
+        else
+        {
+          * CTRLA_mode = ( * CTRLA_mode & LTC2992_CTRLA_MEASUREMENT_MODE_MASK) | LTC2992_MODE_CONTINUOUS;
           Serial.print(F("Shutdown Mode is disabled. \n"));
         }
-		ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_CTRLA_REG, *CTRLA_mode);
+        ack |= LTC2992_write(LTC2992_I2C_ADDRESS, LTC2992_CTRLA_REG, *CTRLA_mode);
         break;
       default:
         if (user_command != 'm')
           Serial.println(F("Incorrect Option"));
         break;
-      }
     }
-    while (!((user_command == 'm') || (ack)));
-    return (ack);
-
   }
-  
+  while (!((user_command == 'm') || (ack)));
+  return (ack);
+
+}
+

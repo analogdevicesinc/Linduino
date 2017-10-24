@@ -161,8 +161,8 @@ void loop()
           menu_2_set_1X2X();
           break;
         case 3:
-           menu_3_sleep();
-           break;
+          menu_3_sleep();
+          break;
         default:
           Serial.println(F("Incorrect Option"));
       }
@@ -276,8 +276,8 @@ void menu_2_set_1X2X()
 }
 
 void menu_3_sleep()
-  {
-    int32_t adc_code = 0;     // The LTC2460 code
-    Serial.print("Putting LTC2460 into sleep mode");
-    LTC2460_read(LTC2460_CS, 0x90, &adc_code); // Send sleep bit
-  }
+{
+  int32_t adc_code = 0;     // The LTC2460 code
+  Serial.print("Putting LTC2460 into sleep mode");
+  LTC2460_read(LTC2460_CS, 0x90, &adc_code); // Send sleep bit
+}

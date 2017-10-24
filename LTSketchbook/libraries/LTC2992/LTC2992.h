@@ -160,7 +160,7 @@ ongoing work.
 // #define LTC2992_I2C_ADDRESS 0x67    //  High      Low
 // #define LTC2992_I2C_ADDRESS 0x68    //  Float     High
 // #define LTC2992_I2C_ADDRESS 0x69    //  High      High
- #define LTC2992_I2C_ADDRESS 0x6A    //  Float     Float
+#define LTC2992_I2C_ADDRESS 0x6A    //  Float     Float
 // #define LTC2992_I2C_ADDRESS 0x6B    //  Float     Low
 // #define LTC2992_I2C_ADDRESS 0x6C    //  Low       High
 // #define LTC2992_I2C_ADDRESS 0x6D    //  High      Float
@@ -243,23 +243,23 @@ ongoing work.
 | LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG             | 0x43  |
 | LTC2992_MIN_POWER2_THRESHOLD_MSB1_REG             | 0x44  |
 | LTC2992_MIN_POWER2_THRESHOLD_LSB_REG              | 0x45  |
-| LTC2992_DELTA_SENSE2_MSB_REG                	    | 0x46  |
-| LTC2992_DELTA_SENSE2_LSB_REG                	    | 0x47  |
-| LTC2992_MAX_DELTA2_SENSE_MSB_REG            	    | 0x48  |
-| LTC2992_MAX_DELTA2_SENSE_LSB_REG            	    | 0x49  |
-| LTC2992_MIN_DELTA2_SENSE_MSB_REG            	    | 0x4A  |
-| LTC2992_MIN_DELTA2_SENSE_LSB_REG            	    | 0x4B  |
-| LTC2992_MAX_DELTA2_SENSE_THRESHOLD_MSB_REG  	    | 0x4C  |
-| LTC2992_MAX_DELTA2_SENSE_THRESHOLD_LSB_REG  	    | 0x4D  |
-| LTC2992_MIN_DELTA2_SENSE_THRESHOLD_MSB_REG  	    | 0x4E  |
-| LTC2992_MIN_DELTA2_SENSE_THRESHOLD_LSB_REG  	    | 0x4F  |
-| LTC2992_SENSE2_MSB_REG                      	    | 0x50  |
-| LTC2992_SENSE2_LSB_REG                      	    | 0x51  |
-| LTC2992_MAX_SENSE2_MSB_REG                  	    | 0x52  |
-| LTC2992_MAX_SENSE2_LSB_REG                  	    | 0x53  |
-| LTC2992_MIN_SENSE2_MSB_REG                  	    | 0x54  |
-| LTC2992_MIN_SENSE2_LSB_REG                  	    | 0x55  |
-| LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG        	    | 0x56  |
+| LTC2992_DELTA_SENSE2_MSB_REG                      | 0x46  |
+| LTC2992_DELTA_SENSE2_LSB_REG                      | 0x47  |
+| LTC2992_MAX_DELTA2_SENSE_MSB_REG                  | 0x48  |
+| LTC2992_MAX_DELTA2_SENSE_LSB_REG                  | 0x49  |
+| LTC2992_MIN_DELTA2_SENSE_MSB_REG                  | 0x4A  |
+| LTC2992_MIN_DELTA2_SENSE_LSB_REG                  | 0x4B  |
+| LTC2992_MAX_DELTA2_SENSE_THRESHOLD_MSB_REG        | 0x4C  |
+| LTC2992_MAX_DELTA2_SENSE_THRESHOLD_LSB_REG        | 0x4D  |
+| LTC2992_MIN_DELTA2_SENSE_THRESHOLD_MSB_REG        | 0x4E  |
+| LTC2992_MIN_DELTA2_SENSE_THRESHOLD_LSB_REG        | 0x4F  |
+| LTC2992_SENSE2_MSB_REG                            | 0x50  |
+| LTC2992_SENSE2_LSB_REG                            | 0x51  |
+| LTC2992_MAX_SENSE2_MSB_REG                        | 0x52  |
+| LTC2992_MAX_SENSE2_LSB_REG                        | 0x53  |
+| LTC2992_MIN_SENSE2_MSB_REG                        | 0x54  |
+| LTC2992_MIN_SENSE2_LSB_REG                        | 0x55  |
+| LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG              | 0x56  |
 | LTC2992_MAX_SENSE2_THRESHOLD_LSB_REG              | 0x57  |
 | LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG              | 0x58  |
 | LTC2992_MIN_SENSE2_THRESHOLD_LSB_REG              | 0x59  |
@@ -297,26 +297,26 @@ ongoing work.
 | LTC2992_ISUM_LSB_REG_REG                          | 0x79  |
 | LTC2992_MAX_ISUM_MSB_REG                          | 0x7A  |
 | LTC2992_MAX_ISUM_LSB_REG                          | 0x7B  |
-| LTC2992_MIN_ISUM_MSB_REG                          | 0x7C  |                                         
-| LTC2992_MIN_ISUM_LSB_REG                          | 0x7D  |                                          
-| LTC2992_MAX_ISUM_THRESHOLD_MSB_REG                | 0x7E  |                                          
-| LTC2992_MAX_ISUM_THRESHOLD_LSB_REG                | 0x7F  |                                          
+| LTC2992_MIN_ISUM_MSB_REG                          | 0x7C  |
+| LTC2992_MIN_ISUM_LSB_REG                          | 0x7D  |
+| LTC2992_MAX_ISUM_THRESHOLD_MSB_REG                | 0x7E  |
+| LTC2992_MAX_ISUM_THRESHOLD_LSB_REG                | 0x7F  |
 | LTC2992_MIN_ISUM_THRESHOLD_MSB_REG                | 0x80  |
 | LTC2992_MIN_ISUM_THRESHOLD_LSB_REG                | 0x81  |
 | LTC2992_PSUM_MSB1_REG                             | 0x82  |
 | LTC2992_PSUM_MSB_REG                              | 0x83  |
 | LTC2992_PSUM_LSB_REG_REG                          | 0x84  |
 | LTC2992_MAX_PSUM_MSB1_REG                         | 0x85  |
-| LTC2992_MAX_PSUM_MSB_REG                          | 0x86  | 
+| LTC2992_MAX_PSUM_MSB_REG                          | 0x86  |
 | LTC2992_MAX_PSUM_LSB_REG                          | 0x87  |
-| LTC2992_MIN_PSUM_MSB1_REG                         | 0x88  |                                         
-| LTC2992_MIN_PSUM_MSB_REG                          | 0x89  |  
-| LTC2992_MIN_PSUM_LSB_REG                          | 0x8A  |                                          
-| LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG               | 0x8B  |                                          
-| LTC2992_MAX_PSUM_THRESHOLD_MSB_REG                | 0x8C  | 
-| LTC2992_MAX_PSUM_THRESHOLD_LSB_REG                | 0x8D  |                                          
+| LTC2992_MIN_PSUM_MSB1_REG                         | 0x88  |
+| LTC2992_MIN_PSUM_MSB_REG                          | 0x89  |
+| LTC2992_MIN_PSUM_LSB_REG                          | 0x8A  |
+| LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG               | 0x8B  |
+| LTC2992_MAX_PSUM_THRESHOLD_MSB_REG                | 0x8C  |
+| LTC2992_MAX_PSUM_THRESHOLD_LSB_REG                | 0x8D  |
 | LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG               | 0x8E  |
-| LTC2992_MIN_PSUM_THRESHOLD_MSB_REG                | 0x8F  | 
+| LTC2992_MIN_PSUM_THRESHOLD_MSB_REG                | 0x8F  |
 | LTC2992_MIN_PSUM_THRESHOLD_LSB_REG                | 0x90  |
 | LTC2992_ALERT3_REG                                | 0x91  |
 | LTC2992_FAULT3_REG                                | 0x92  |
@@ -324,7 +324,7 @@ ongoing work.
 | LTC2992_FAULT4_REG                                | 0x94  |
 | LTC2992_GPIO_STATUS_REG                           | 0x95  |
 | LTC2992_GPIO_IO_CONT_REG                          | 0x96  |
-| LTC2992_GPIO4_CFG_REG                             | 0x97  |   
+| LTC2992_GPIO4_CFG_REG                             | 0x97  |
   */
 
 
@@ -334,156 +334,156 @@ ongoing work.
 @{ */
 // Registers
 
-#define LTC2992_CTRLA_REG                                  0x00  
-#define LTC2992_CTRLB_REG                                  0x01  
-#define LTC2992_ALERT1_REG                                 0x02  
-#define LTC2992_FAULT1_REG                                 0x03  
-#define LTC2992_NADC_REG                                   0x04  
-#define LTC2992_POWER1_MSB2_REG                            0x05  
-#define LTC2992_POWER1_MSB1_REG                            0x06  
-#define LTC2992_POWER1_LSB_REG                             0x07  
-#define LTC2992_MAX_POWER1_MSB2_REG                        0x08  
-#define LTC2992_MAX_POWER1_MSB1_REG                        0x09  
-#define LTC2992_MAX_POWER1_LSB_REG                         0x0A  
-#define LTC2992_MIN_POWER1_MSB2_REG                        0x0B  
-#define LTC2992_MIN_POWER1_MSB1_REG                        0x0C  
-#define LTC2992_MIN_POWER1_LSB_REG                         0x0D  
-#define LTC2992_MAX_POWER1_THRESHOLD_MSB2_REG              0x0E  
-#define LTC2992_MAX_POWER1_THRESHOLD_MSB1_REG              0x0F  
-#define LTC2992_MAX_POWER1_THRESHOLD_LSB_REG               0x10  
-#define LTC2992_MIN_POWER1_THRESHOLD_MSB2_REG              0x11  
-#define LTC2992_MIN_POWER1_THRESHOLD_MSB1_REG              0x12  
-#define LTC2992_MIN_POWER1_THRESHOLD_LSB_REG               0x13  
-#define LTC2992_DELTA_SENSE1_MSB_REG                       0x14  
-#define LTC2992_DELTA_SENSE1_LSB_REG                       0x15  
-#define LTC2992_MAX_DELTA1_SENSE_MSB_REG                   0x16  
-#define LTC2992_MAX_DELTA1_SENSE_LSB_REG                   0x17  
-#define LTC2992_MIN_DELTA1_SENSE_MSB_REG                   0x18  
-#define LTC2992_MIN_DELTA1_SENSE_LSB_REG                   0x19  
-#define LTC2992_MAX_DELTA1_SENSE_THRESHOLD_MSB_REG         0x1A  
-#define LTC2992_MAX_DELTA1_SENSE_THRESHOLD_LSB_REG         0x1B  
-#define LTC2992_MIN_DELTA1_SENSE_THRESHOLD_MSB_REG         0x1C  
-#define LTC2992_MIN_DELTA1_SENSE_THRESHOLD_LSB_REG         0x1D  
-#define LTC2992_SENSE1_MSB_REG                             0x1E  
-#define LTC2992_SENSE1_LSB_REG                             0x1F  
-#define LTC2992_MAX_SENSE1_MSB_REG                         0x20  
-#define LTC2992_MAX_SENSE1_LSB_REG                         0x21  
-#define LTC2992_MIN_SENSE1_MSB_REG                         0x22  
-#define LTC2992_MIN_SENSE1_LSB_REG                         0x23  
-#define LTC2992_MAX_SENSE1_THRESHOLD_MSB_REG               0x24  
-#define LTC2992_MAX_SENSE1_THRESHOLD_LSB_REG               0x25  
-#define LTC2992_MIN_SENSE1_THRESHOLD_MSB_REG               0x26  
-#define LTC2992_MIN_SENSE1_THRESHOLD_LSB_REG               0x27  
-#define LTC2992_GPIO1_MSB_REG                              0x28  
-#define LTC2992_GPIO1_LSB_REG_REG                          0x29  
-#define LTC2992_MAX_GPIO1_MSB_REG                          0x2A  
-#define LTC2992_MAX_GPIO1_LSB_REG                          0x2B  
-#define LTC2992_MIN_GPIO1_MSB_REG                          0x2C  
-#define LTC2992_MIN_GPIO1_LSB_REG                          0x2D  
-#define LTC2992_MAX_GPIO1_THRESHOLD_MSB_REG                0x2E  
-#define LTC2992_MAX_GPIO1_THRESHOLD_LSB_REG                0x2F  
-#define LTC2992_MIN_GPIO1_THRESHOLD_MSB_REG                0x30  
-#define LTC2992_MIN_GPIO1_THRESHOLD_LSB_REG                0x31  
-#define LTC2992_ADC_STATUS_REG                             0x32  
-#define LTC2992_ALERT2_REG                                 0x34  
-#define LTC2992_FAULT2_REG                                 0x35  
-#define LTC2992_POWER2_MSB2_REG                            0x37  
-#define LTC2992_POWER2_MSB1_REG                            0x38  
-#define LTC2992_POWER2_LSB_REG                             0x39  
-#define LTC2992_MAX_POWER2_MSB2_REG                        0x3A  
-#define LTC2992_MAX_POWER2_MSB1_REG                        0x3B  
-#define LTC2992_MAX_POWER2_LSB_REG                         0x3C  
-#define LTC2992_MIN_POWER2_MSB2_REG                        0x3D  
-#define LTC2992_MIN_POWER2_MSB1_REG                        0x3E  
-#define LTC2992_MIN_POWER2_LSB_REG                         0x3F  
-#define LTC2992_MAX_POWER2_THRESHOLD_MSB2_REG              0x40  
-#define LTC2992_MAX_POWER2_THRESHOLD_MSB1_REG              0x41  
-#define LTC2992_MAX_POWER2_THRESHOLD_LSB_REG               0x42  
-#define LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG              0x43  
-#define LTC2992_MIN_POWER2_THRESHOLD_MSB1_REG              0x44  
-#define LTC2992_MIN_POWER2_THRESHOLD_LSB_REG               0x45  
-#define LTC2992_DELTA_SENSE2_MSB_REG                	     0x46  
-#define LTC2992_DELTA_SENSE2_LSB_REG                	     0x47  
-#define LTC2992_MAX_DELTA2_SENSE_MSB_REG            	     0x48  
-#define LTC2992_MAX_DELTA2_SENSE_LSB_REG            	     0x49  
-#define LTC2992_MIN_DELTA2_SENSE_MSB_REG            	     0x4A  
-#define LTC2992_MIN_DELTA2_SENSE_LSB_REG            	     0x4B  
-#define LTC2992_MAX_DELTA2_SENSE_THRESHOLD_MSB_REG  	     0x4C  
-#define LTC2992_MAX_DELTA2_SENSE_THRESHOLD_LSB_REG  	     0x4D  
-#define LTC2992_MIN_DELTA2_SENSE_THRESHOLD_MSB_REG  	     0x4E  
-#define LTC2992_MIN_DELTA2_SENSE_THRESHOLD_LSB_REG  	     0x4F  
-#define LTC2992_SENSE2_MSB_REG                      	     0x50  
-#define LTC2992_SENSE2_LSB_REG                      	     0x51  
-#define LTC2992_MAX_SENSE2_MSB_REG                  	     0x52  
-#define LTC2992_MAX_SENSE2_LSB_REG                  	     0x53  
-#define LTC2992_MIN_SENSE2_MSB_REG                  	     0x54  
-#define LTC2992_MIN_SENSE2_LSB_REG                  	     0x55  
-#define LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG        	     0x56  
-#define LTC2992_MAX_SENSE2_THRESHOLD_LSB_REG               0x57  
-#define LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG               0x58  
-#define LTC2992_MIN_SENSE2_THRESHOLD_LSB_REG               0x59  
-#define LTC2992_GPIO2_MSB_REG                              0x5A  
-#define LTC2992_GPIO2_LSB_REG_REG                          0x5B  
-#define LTC2992_MAX_GPIO2_MSB_REG                          0x5C  
-#define LTC2992_MAX_GPIO2_LSB_REG                          0x5D  
-#define LTC2992_MIN_GPIO2_MSB_REG                          0x5E  
-#define LTC2992_MIN_GPIO2_LSB_REG                          0x5F  
-#define LTC2992_MAX_GPIO2_THRESHOLD_MSB_REG                0x60  
-#define LTC2992_MAX_GPIO2_THRESHOLD_LSB_REG                0x61  
-#define LTC2992_MIN_GPIO2_THRESHOLD_MSB_REG                0x62  
-#define LTC2992_MIN_GPIO2_THRESHOLD_LSB_REG                0x63  
-#define LTC2992_GPIO3_MSB_REG                              0x64  
-#define LTC2992_GPIO3_LSB_REG_REG                          0x65  
-#define LTC2992_MAX_GPIO3_MSB_REG                          0x66  
-#define LTC2992_MAX_GPIO3_LSB_REG                          0x67  
-#define LTC2992_MIN_GPIO3_MSB_REG                          0x68  
-#define LTC2992_MIN_GPIO3_LSB_REG                          0x69  
-#define LTC2992_MAX_GPIO3_THRESHOLD_MSB_REG                0x6A  
-#define LTC2992_MAX_GPIO3_THRESHOLD_LSB_REG                0x6B  
-#define LTC2992_MIN_GPIO3_THRESHOLD_MSB_REG                0x6C  
-#define LTC2992_MIN_GPIO3_THRESHOLD_LSB_REG                0x6D  
-#define LTC2992_GPIO4_MSB_REG                              0x6E  
-#define LTC2992_GPIO4_LSB_REG_REG                          0x6F  
-#define LTC2992_MAX_GPIO4_MSB_REG                          0x70  
-#define LTC2992_MAX_GPIO4_LSB_REG                          0x71  
-#define LTC2992_MIN_GPIO4_MSB_REG                          0x72  
-#define LTC2992_MIN_GPIO4_LSB_REG                          0x73  
-#define LTC2992_MAX_GPIO4_THRESHOLD_MSB_REG                0x74  
-#define LTC2992_MAX_GPIO4_THRESHOLD_LSB_REG                0x75  
-#define LTC2992_MIN_GPIO4_THRESHOLD_MSB_REG                0x76  
-#define LTC2992_MIN_GPIO4_THRESHOLD_LSB_REG                0x77  
-#define LTC2992_ISUM_MSB_REG                               0x78  
-#define LTC2992_ISUM_LSB_REG_REG                           0x79  
-#define LTC2992_MAX_ISUM_MSB_REG                           0x7A  
-#define LTC2992_MAX_ISUM_LSB_REG                           0x7B  
-#define LTC2992_MIN_ISUM_MSB_REG                           0x7C                                           
-#define LTC2992_MIN_ISUM_LSB_REG                           0x7D                                            
-#define LTC2992_MAX_ISUM_THRESHOLD_MSB_REG                 0x7E                                            
-#define LTC2992_MAX_ISUM_THRESHOLD_LSB_REG                 0x7F                                            
-#define LTC2992_MIN_ISUM_THRESHOLD_MSB_REG                 0x80  
-#define LTC2992_MIN_ISUM_THRESHOLD_LSB_REG                 0x81  
-#define LTC2992_PSUM_MSB1_REG                              0x82  
-#define LTC2992_PSUM_MSB_REG                               0x83  
-#define LTC2992_PSUM_LSB_REG_REG                           0x84  
-#define LTC2992_MAX_PSUM_MSB1_REG                          0x85  
-#define LTC2992_MAX_PSUM_MSB_REG                           0x86   
-#define LTC2992_MAX_PSUM_LSB_REG                           0x87  
-#define LTC2992_MIN_PSUM_MSB1_REG                          0x88                                           
-#define LTC2992_MIN_PSUM_MSB_REG                           0x89    
-#define LTC2992_MIN_PSUM_LSB_REG                           0x8A                                            
-#define LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG                0x8B                                            
-#define LTC2992_MAX_PSUM_THRESHOLD_MSB_REG                 0x8C   
-#define LTC2992_MAX_PSUM_THRESHOLD_LSB_REG                 0x8D                                            
-#define LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG                0x8E  
-#define LTC2992_MIN_PSUM_THRESHOLD_MSB_REG                 0x8F   
-#define LTC2992_MIN_PSUM_THRESHOLD_LSB_REG                 0x90  
-#define LTC2992_ALERT3_REG                                 0x91  
-#define LTC2992_FAULT3_REG                                 0x92  
-#define LTC2992_ALERT4_REG                                 0x93  
-#define LTC2992_FAULT4_REG                                 0x94  
-#define LTC2992_GPIO_STATUS_REG                            0x95  
-#define LTC2992_GPIO_IO_CONT_REG                           0x96  
-#define LTC2992_GPIO4_CFG_REG                              0x97     
+#define LTC2992_CTRLA_REG                                  0x00
+#define LTC2992_CTRLB_REG                                  0x01
+#define LTC2992_ALERT1_REG                                 0x02
+#define LTC2992_FAULT1_REG                                 0x03
+#define LTC2992_NADC_REG                                   0x04
+#define LTC2992_POWER1_MSB2_REG                            0x05
+#define LTC2992_POWER1_MSB1_REG                            0x06
+#define LTC2992_POWER1_LSB_REG                             0x07
+#define LTC2992_MAX_POWER1_MSB2_REG                        0x08
+#define LTC2992_MAX_POWER1_MSB1_REG                        0x09
+#define LTC2992_MAX_POWER1_LSB_REG                         0x0A
+#define LTC2992_MIN_POWER1_MSB2_REG                        0x0B
+#define LTC2992_MIN_POWER1_MSB1_REG                        0x0C
+#define LTC2992_MIN_POWER1_LSB_REG                         0x0D
+#define LTC2992_MAX_POWER1_THRESHOLD_MSB2_REG              0x0E
+#define LTC2992_MAX_POWER1_THRESHOLD_MSB1_REG              0x0F
+#define LTC2992_MAX_POWER1_THRESHOLD_LSB_REG               0x10
+#define LTC2992_MIN_POWER1_THRESHOLD_MSB2_REG              0x11
+#define LTC2992_MIN_POWER1_THRESHOLD_MSB1_REG              0x12
+#define LTC2992_MIN_POWER1_THRESHOLD_LSB_REG               0x13
+#define LTC2992_DELTA_SENSE1_MSB_REG                       0x14
+#define LTC2992_DELTA_SENSE1_LSB_REG                       0x15
+#define LTC2992_MAX_DELTA1_SENSE_MSB_REG                   0x16
+#define LTC2992_MAX_DELTA1_SENSE_LSB_REG                   0x17
+#define LTC2992_MIN_DELTA1_SENSE_MSB_REG                   0x18
+#define LTC2992_MIN_DELTA1_SENSE_LSB_REG                   0x19
+#define LTC2992_MAX_DELTA1_SENSE_THRESHOLD_MSB_REG         0x1A
+#define LTC2992_MAX_DELTA1_SENSE_THRESHOLD_LSB_REG         0x1B
+#define LTC2992_MIN_DELTA1_SENSE_THRESHOLD_MSB_REG         0x1C
+#define LTC2992_MIN_DELTA1_SENSE_THRESHOLD_LSB_REG         0x1D
+#define LTC2992_SENSE1_MSB_REG                             0x1E
+#define LTC2992_SENSE1_LSB_REG                             0x1F
+#define LTC2992_MAX_SENSE1_MSB_REG                         0x20
+#define LTC2992_MAX_SENSE1_LSB_REG                         0x21
+#define LTC2992_MIN_SENSE1_MSB_REG                         0x22
+#define LTC2992_MIN_SENSE1_LSB_REG                         0x23
+#define LTC2992_MAX_SENSE1_THRESHOLD_MSB_REG               0x24
+#define LTC2992_MAX_SENSE1_THRESHOLD_LSB_REG               0x25
+#define LTC2992_MIN_SENSE1_THRESHOLD_MSB_REG               0x26
+#define LTC2992_MIN_SENSE1_THRESHOLD_LSB_REG               0x27
+#define LTC2992_GPIO1_MSB_REG                              0x28
+#define LTC2992_GPIO1_LSB_REG_REG                          0x29
+#define LTC2992_MAX_GPIO1_MSB_REG                          0x2A
+#define LTC2992_MAX_GPIO1_LSB_REG                          0x2B
+#define LTC2992_MIN_GPIO1_MSB_REG                          0x2C
+#define LTC2992_MIN_GPIO1_LSB_REG                          0x2D
+#define LTC2992_MAX_GPIO1_THRESHOLD_MSB_REG                0x2E
+#define LTC2992_MAX_GPIO1_THRESHOLD_LSB_REG                0x2F
+#define LTC2992_MIN_GPIO1_THRESHOLD_MSB_REG                0x30
+#define LTC2992_MIN_GPIO1_THRESHOLD_LSB_REG                0x31
+#define LTC2992_ADC_STATUS_REG                             0x32
+#define LTC2992_ALERT2_REG                                 0x34
+#define LTC2992_FAULT2_REG                                 0x35
+#define LTC2992_POWER2_MSB2_REG                            0x37
+#define LTC2992_POWER2_MSB1_REG                            0x38
+#define LTC2992_POWER2_LSB_REG                             0x39
+#define LTC2992_MAX_POWER2_MSB2_REG                        0x3A
+#define LTC2992_MAX_POWER2_MSB1_REG                        0x3B
+#define LTC2992_MAX_POWER2_LSB_REG                         0x3C
+#define LTC2992_MIN_POWER2_MSB2_REG                        0x3D
+#define LTC2992_MIN_POWER2_MSB1_REG                        0x3E
+#define LTC2992_MIN_POWER2_LSB_REG                         0x3F
+#define LTC2992_MAX_POWER2_THRESHOLD_MSB2_REG              0x40
+#define LTC2992_MAX_POWER2_THRESHOLD_MSB1_REG              0x41
+#define LTC2992_MAX_POWER2_THRESHOLD_LSB_REG               0x42
+#define LTC2992_MIN_POWER2_THRESHOLD_MSB2_REG              0x43
+#define LTC2992_MIN_POWER2_THRESHOLD_MSB1_REG              0x44
+#define LTC2992_MIN_POWER2_THRESHOLD_LSB_REG               0x45
+#define LTC2992_DELTA_SENSE2_MSB_REG                       0x46
+#define LTC2992_DELTA_SENSE2_LSB_REG                       0x47
+#define LTC2992_MAX_DELTA2_SENSE_MSB_REG                   0x48
+#define LTC2992_MAX_DELTA2_SENSE_LSB_REG                   0x49
+#define LTC2992_MIN_DELTA2_SENSE_MSB_REG                   0x4A
+#define LTC2992_MIN_DELTA2_SENSE_LSB_REG                   0x4B
+#define LTC2992_MAX_DELTA2_SENSE_THRESHOLD_MSB_REG         0x4C
+#define LTC2992_MAX_DELTA2_SENSE_THRESHOLD_LSB_REG         0x4D
+#define LTC2992_MIN_DELTA2_SENSE_THRESHOLD_MSB_REG         0x4E
+#define LTC2992_MIN_DELTA2_SENSE_THRESHOLD_LSB_REG         0x4F
+#define LTC2992_SENSE2_MSB_REG                             0x50
+#define LTC2992_SENSE2_LSB_REG                             0x51
+#define LTC2992_MAX_SENSE2_MSB_REG                         0x52
+#define LTC2992_MAX_SENSE2_LSB_REG                         0x53
+#define LTC2992_MIN_SENSE2_MSB_REG                         0x54
+#define LTC2992_MIN_SENSE2_LSB_REG                         0x55
+#define LTC2992_MAX_SENSE2_THRESHOLD_MSB_REG               0x56
+#define LTC2992_MAX_SENSE2_THRESHOLD_LSB_REG               0x57
+#define LTC2992_MIN_SENSE2_THRESHOLD_MSB_REG               0x58
+#define LTC2992_MIN_SENSE2_THRESHOLD_LSB_REG               0x59
+#define LTC2992_GPIO2_MSB_REG                              0x5A
+#define LTC2992_GPIO2_LSB_REG_REG                          0x5B
+#define LTC2992_MAX_GPIO2_MSB_REG                          0x5C
+#define LTC2992_MAX_GPIO2_LSB_REG                          0x5D
+#define LTC2992_MIN_GPIO2_MSB_REG                          0x5E
+#define LTC2992_MIN_GPIO2_LSB_REG                          0x5F
+#define LTC2992_MAX_GPIO2_THRESHOLD_MSB_REG                0x60
+#define LTC2992_MAX_GPIO2_THRESHOLD_LSB_REG                0x61
+#define LTC2992_MIN_GPIO2_THRESHOLD_MSB_REG                0x62
+#define LTC2992_MIN_GPIO2_THRESHOLD_LSB_REG                0x63
+#define LTC2992_GPIO3_MSB_REG                              0x64
+#define LTC2992_GPIO3_LSB_REG_REG                          0x65
+#define LTC2992_MAX_GPIO3_MSB_REG                          0x66
+#define LTC2992_MAX_GPIO3_LSB_REG                          0x67
+#define LTC2992_MIN_GPIO3_MSB_REG                          0x68
+#define LTC2992_MIN_GPIO3_LSB_REG                          0x69
+#define LTC2992_MAX_GPIO3_THRESHOLD_MSB_REG                0x6A
+#define LTC2992_MAX_GPIO3_THRESHOLD_LSB_REG                0x6B
+#define LTC2992_MIN_GPIO3_THRESHOLD_MSB_REG                0x6C
+#define LTC2992_MIN_GPIO3_THRESHOLD_LSB_REG                0x6D
+#define LTC2992_GPIO4_MSB_REG                              0x6E
+#define LTC2992_GPIO4_LSB_REG_REG                          0x6F
+#define LTC2992_MAX_GPIO4_MSB_REG                          0x70
+#define LTC2992_MAX_GPIO4_LSB_REG                          0x71
+#define LTC2992_MIN_GPIO4_MSB_REG                          0x72
+#define LTC2992_MIN_GPIO4_LSB_REG                          0x73
+#define LTC2992_MAX_GPIO4_THRESHOLD_MSB_REG                0x74
+#define LTC2992_MAX_GPIO4_THRESHOLD_LSB_REG                0x75
+#define LTC2992_MIN_GPIO4_THRESHOLD_MSB_REG                0x76
+#define LTC2992_MIN_GPIO4_THRESHOLD_LSB_REG                0x77
+#define LTC2992_ISUM_MSB_REG                               0x78
+#define LTC2992_ISUM_LSB_REG_REG                           0x79
+#define LTC2992_MAX_ISUM_MSB_REG                           0x7A
+#define LTC2992_MAX_ISUM_LSB_REG                           0x7B
+#define LTC2992_MIN_ISUM_MSB_REG                           0x7C
+#define LTC2992_MIN_ISUM_LSB_REG                           0x7D
+#define LTC2992_MAX_ISUM_THRESHOLD_MSB_REG                 0x7E
+#define LTC2992_MAX_ISUM_THRESHOLD_LSB_REG                 0x7F
+#define LTC2992_MIN_ISUM_THRESHOLD_MSB_REG                 0x80
+#define LTC2992_MIN_ISUM_THRESHOLD_LSB_REG                 0x81
+#define LTC2992_PSUM_MSB1_REG                              0x82
+#define LTC2992_PSUM_MSB_REG                               0x83
+#define LTC2992_PSUM_LSB_REG_REG                           0x84
+#define LTC2992_MAX_PSUM_MSB1_REG                          0x85
+#define LTC2992_MAX_PSUM_MSB_REG                           0x86
+#define LTC2992_MAX_PSUM_LSB_REG                           0x87
+#define LTC2992_MIN_PSUM_MSB1_REG                          0x88
+#define LTC2992_MIN_PSUM_MSB_REG                           0x89
+#define LTC2992_MIN_PSUM_LSB_REG                           0x8A
+#define LTC2992_MAX_PSUM_THRESHOLD_MSB1_REG                0x8B
+#define LTC2992_MAX_PSUM_THRESHOLD_MSB_REG                 0x8C
+#define LTC2992_MAX_PSUM_THRESHOLD_LSB_REG                 0x8D
+#define LTC2992_MIN_PSUM_THRESHOLD_MSB1_REG                0x8E
+#define LTC2992_MIN_PSUM_THRESHOLD_MSB_REG                 0x8F
+#define LTC2992_MIN_PSUM_THRESHOLD_LSB_REG                 0x90
+#define LTC2992_ALERT3_REG                                 0x91
+#define LTC2992_FAULT3_REG                                 0x92
+#define LTC2992_ALERT4_REG                                 0x93
+#define LTC2992_FAULT4_REG                                 0x94
+#define LTC2992_GPIO_STATUS_REG                            0x95
+#define LTC2992_GPIO_IO_CONT_REG                           0x96
+#define LTC2992_GPIO4_CFG_REG                              0x97
 
 
 //! @}
@@ -497,12 +497,12 @@ ongoing work.
 
 #define LTC2992_MODE_SHUTDOWN                              0x60
 #define LTC2992_MODE_SINGLE_CYCLE                          0x40
-#define LTC2992_MODE_SNAPSHOT							   0x20
+#define LTC2992_MODE_SNAPSHOT                0x20
 #define LTC2992_MODE_CONTINUOUS                            0x00
 
 #define LTC2992_CONTINUOUS_GPIO_1_2_3_4                     0x18
-#define LTC2992_CONTINUOUS_GPIO_1_2                         0x10 
-#define LTC2992_CONTINUOUS_SENSE_1_2						0x08
+#define LTC2992_CONTINUOUS_GPIO_1_2                         0x10
+#define LTC2992_CONTINUOUS_SENSE_1_2            0x08
 #define LTC2992_CONTINUOUS_SENSE_1_2_GPIO_1_2_3_4           0x00
 
 #define LTC2992_SNAPSHOT_GPIO_1_2                           0x07
@@ -610,7 +610,7 @@ ongoing work.
 #define LTC2992_DISABLE_GPIO3_INPUT_ALERT          0xFD
 
 
-//GPIO IO Control Registers                      
+//GPIO IO Control Registers
 #define LTC2992_GPIO1_OUT_HIGH_Z                  0x7F
 #define LTC2992_GPIO1_OUT_LOW                     0x80
 #define LTC2992_GPIO2_OUT_HIGH_Z                  0xBF
@@ -620,7 +620,7 @@ ongoing work.
 #define LTC2992_GPIO3_CONFIG_128_LOW              0x20
 #define LTC2992_GPIO3_CONFIG_16_LOW               0x10
 #define LTC2992_GPIO3_CONFIG_IO                   0x00
-                                                  
+
 #define LTC2992_GPIO1_IN_HIGH_POL_ALERT           0x08
 #define LTC2992_GPIO1_IN_LOW_POL_ALERT            0xFC
 #define LTC2992_GPIO2_IN_HIGH_POL_ALERT           0x04
@@ -672,7 +672,7 @@ int8_t LTC2992_write_24_bits(uint8_t i2c_address, //!< Register address for the 
                              uint8_t adc_command, //!< The "command byte" for the LTC2992
                              uint32_t code         //!< Value that will be written to the register.
                             );
-							
+
 //! Reads an 8-bit adc_code from LTC2992
 //! @return The function returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
 int8_t LTC2992_read(uint8_t i2c_address, //!< Register address for the LTC2992
@@ -701,8 +701,8 @@ int8_t LTC2992_read_24_bits(uint8_t i2c_address, //!< Register address for the L
 //! Calculate the LTC2992 SENSE voltage
 //! @return Returns the SENSE Voltage in Volts
 float LTC2992_SENSE_code_to_voltage(uint16_t adc_code,        //!< The ADC value
-                                  float LTC2992_SENSE_lsb     //!< SENSE lsb weight
-                                 );
+                                    float LTC2992_SENSE_lsb     //!< SENSE lsb weight
+                                   );
 //! Calculate the LTC2992 GPIO voltage
 //! @return Returns the GPIO Voltage in Volts
 float LTC2992_GPIO_code_to_voltage(uint16_t adc_code,       //!< The ADC value
@@ -714,23 +714,23 @@ float LTC2992_code_to_current(uint16_t adc_code,                //!< The ADC val
                               float resistor,                   //!< The resistor value
                               float LTC2992_DELTA_SENSE_lsb     //!< Delta sense lsb weight
                              );
-							 
+
 //! Calculate the LTC2992 current sum with a sense resistor
 //! @return The LTC2992 current in Amps
 float LTC2992_code_to_current_sum(uint16_t adc_code,                //!< The ADC value
-                              float resistor,                   //!< The resistor value
-                              float LTC2992_DELTA_SENSE_lsb     //!< Delta sense lsb weight
-                             );
-							 
+                                  float resistor,                   //!< The resistor value
+                                  float LTC2992_DELTA_SENSE_lsb     //!< Delta sense lsb weight
+                                 );
+
 //! Calculate the LTC2992 power
 //! @return The LTC2992 power in Watts
 float LTC2992_code_to_power(int32_t adc_code,           //!< The ADC value
                             float resistor,       //!< The resistor value
-                            float LTC2992_Power_lsb);     //!< Power lsb weight						   
+                            float LTC2992_Power_lsb);     //!< Power lsb weight
 
 float LTC2992_code_to_power_sum(int32_t adc_code,             //!< The ADC value
-								float resistor,				//!< The Resistor Value
-								float LTC2992_Power_lsb);    //!< Power LSB Weight
-							
+                                float resistor,       //!< The Resistor Value
+                                float LTC2992_Power_lsb);    //!< Power LSB Weight
+
 #endif  // LTC2945_H
 
