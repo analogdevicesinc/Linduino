@@ -1,0 +1,8 @@
+var group__LTC4155__OTG__FAULT =
+[
+    [ "LTC4155_OTG_FAULT", "group__LTC4155__OTG__FAULT.html#ga77a11c751900c344cb6880d0f0294eef", null ],
+    [ "LTC4155_OTG_FAULT_MASK", "group__LTC4155__OTG__FAULT.html#gabbaa041032c99818b3540c2d6f70e879", null ],
+    [ "LTC4155_OTG_FAULT_OFFSET", "group__LTC4155__OTG__FAULT.html#ga0ed3e17ce2091b6b7ed46aef12d3c07f", null ],
+    [ "LTC4155_OTG_FAULT_SIZE", "group__LTC4155__OTG__FAULT.html#gafb6a320d015d8c1c81c2282095d987c1", null ],
+    [ "LTC4155_OTG_FAULT_SUBADDR", "group__LTC4155__OTG__FAULT.html#ga408923f430e1510e935c512c06932f03", null ]
+];

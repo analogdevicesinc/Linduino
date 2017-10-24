@@ -1,0 +1,26 @@
+var DC2071AA_8ino =
+[
+    [ "loop", "DC2071AA_8ino.html#a39a24a80bc3128a314bb15c85fc22cef", null ],
+    [ "menu_1_read_adc", "DC2071AA_8ino.html#af0dd3eb4ce76ed695f37389ffeaa44ee", null ],
+    [ "menu_2_program_sequencer", "DC2071AA_8ino.html#acab668a3bf4516f6f7215c01d627912e", null ],
+    [ "menu_3_read_sequencer", "DC2071AA_8ino.html#a9445ab31f251ee6f75f2d473eef42fb8", null ],
+    [ "menu_4_select_bits", "DC2071AA_8ino.html#a9bc52fbec6fbad128178345bd2764202", null ],
+    [ "menu_5_select_range", "DC2071AA_8ino.html#ac8ed50e4d06a62801d3b0bec0108bcaa", null ],
+    [ "menu_6_select_gain_compression", "DC2071AA_8ino.html#aceb920f2fce3bd3eb4f8fd7f834ab6c4", null ],
+    [ "print_prompt", "DC2071AA_8ino.html#a2ea477f9f0e79d6865887e79570ac386", null ],
+    [ "print_title", "DC2071AA_8ino.html#a0b879bb0b1ef45ad46fc8331c59225f9", null ],
+    [ "print_user_command", "DC2071AA_8ino.html#af1418f97589cbd2395d1d1769d29298b", null ],
+    [ "setup", "DC2071AA_8ino.html#a90de5b68ab8defa635679fc0620fb698", null ],
+    [ "adc_code", "DC2071AA_8ino.html#a4c5134eb2742920f62e605ad7f9bce56", null ],
+    [ "adc_command", "DC2071AA_8ino.html#a47df7299de96908e998b99cb400d6e2c", null ],
+    [ "adc_voltage", "DC2071AA_8ino.html#accbe82e8b2bd5e290287f5e7f7c72069", null ],
+    [ "COMMAND_DIFF", "DC2071AA_8ino.html#a6805ec4fe0caeffb9fab482c1a939da2", null ],
+    [ "COMMAND_SINGLE_ENDED", "DC2071AA_8ino.html#af955cbf84daa4652733759f431ada1ce", null ],
+    [ "display_code", "DC2071AA_8ino.html#ac3975e05ff0b925435257678f55872d6", null ],
+    [ "LTC2373_bits", "DC2071AA_8ino.html#a3c1cd49a60c92ce9be13806c0cc23540", null ],
+    [ "LTC2373_gain_compression", "DC2071AA_8ino.html#a5fbbe54342e41d4d8b627c2fb5e018f1", null ],
+    [ "LTC2373_range_select", "DC2071AA_8ino.html#aaa332944ceac8e441c198e4e0896dd36", null ],
+    [ "LTC2373_sequencer_bit", "DC2071AA_8ino.html#af14b35548b1a9da8224bceac767954b3", null ],
+    [ "LTC2373_vref", "DC2071AA_8ino.html#a99f7f8d733fe61f5e2ec76487c36067d", null ],
+    [ "user_command", "DC2071AA_8ino.html#a0ebdfc0b8a5cb5385ab6c6b9fe6fd679", null ]
+];

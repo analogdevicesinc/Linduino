@@ -1,0 +1,8 @@
+var group__LTC4155__ENABLE__OTG__INT =
+[
+    [ "LTC4155_ENABLE_OTG_INT", "group__LTC4155__ENABLE__OTG__INT.html#ga94e857b9ec23b4cdd79d90c18603dd69", null ],
+    [ "LTC4155_ENABLE_OTG_INT_MASK", "group__LTC4155__ENABLE__OTG__INT.html#ga68b963191be4ab4bef129ab231478aeb", null ],
+    [ "LTC4155_ENABLE_OTG_INT_OFFSET", "group__LTC4155__ENABLE__OTG__INT.html#ga57f61496fa44a31dce65e48eda19a689", null ],
+    [ "LTC4155_ENABLE_OTG_INT_SIZE", "group__LTC4155__ENABLE__OTG__INT.html#ga17e2749df98a11d23fec2219fc0521c8", null ],
+    [ "LTC4155_ENABLE_OTG_INT_SUBADDR", "group__LTC4155__ENABLE__OTG__INT.html#gab5afcb026a89dcb8f0e45e0f6b5c7a16", null ]
+];

@@ -1,0 +1,8 @@
+var group__LTC4155__RESERVED =
+[
+    [ "LTC4155_RESERVED", "group__LTC4155__RESERVED.html#gadb6e83321aaf563d129861780138bfab", null ],
+    [ "LTC4155_RESERVED_MASK", "group__LTC4155__RESERVED.html#ga54c65a7758a671d424c0b746b6aad4e4", null ],
+    [ "LTC4155_RESERVED_OFFSET", "group__LTC4155__RESERVED.html#ga9f1b132d913c544ecae061056dd182e6", null ],
+    [ "LTC4155_RESERVED_SIZE", "group__LTC4155__RESERVED.html#ga7a544927bd0b6589c284999b579da6b7", null ],
+    [ "LTC4155_RESERVED_SUBADDR", "group__LTC4155__RESERVED.html#gaabf73aca54c686b04906bf887d0c41ca", null ]
+];

@@ -1,0 +1,26 @@
+var DC939A_8ino =
+[
+    [ "build_adc_command", "DC939A_8ino.html#acc898095a5430d34841d2ee01ddb0980", null ],
+    [ "loop", "DC939A_8ino.html#a39a24a80bc3128a314bb15c85fc22cef", null ],
+    [ "menu_0_read", "DC939A_8ino.html#a6aec877956ea0facbf7e129cd14c1334", null ],
+    [ "menu_1_set_rejection", "DC939A_8ino.html#abadb031ac61fdd8960eb3141772a8217", null ],
+    [ "menu_2_set_1X_2X", "DC939A_8ino.html#a24d05565b48f987ded99d5a9b1881b33", null ],
+    [ "menu_3_calibrate_voltage", "DC939A_8ino.html#a01113dccb919787e1fed65dfbfd4c966", null ],
+    [ "menu_4_calibrate_temperature", "DC939A_8ino.html#ae4e55e1436c3245ed4a739aba12b5db9", null ],
+    [ "print_prompt", "DC939A_8ino.html#a2ea477f9f0e79d6865887e79570ac386", null ],
+    [ "print_title", "DC939A_8ino.html#a0b879bb0b1ef45ad46fc8331c59225f9", null ],
+    [ "restore_calibration", "DC939A_8ino.html#a8a2c607e019908d9e92698fa842e0c28", null ],
+    [ "setup", "DC939A_8ino.html#a90de5b68ab8defa635679fc0620fb698", null ],
+    [ "store_calibration", "DC939A_8ino.html#a7c5befd5ab914622919e68a8af53edd2", null ],
+    [ "REJECTION50", "DC939A_8ino.html#a591b97b87ebf471196814492ffbe4298", null ],
+    [ "REJECTION50_60", "DC939A_8ino.html#a33b14bca58a904a5b347f1affc4b19d4", null ],
+    [ "REJECTION60", "DC939A_8ino.html#aaace9c997f6ccb9be3ebf6edd362c7bc", null ],
+    [ "adc_2x", "DC939A_8ino.html#a750c68221f793764daf30460acb6998d", null ],
+    [ "adc_rejection", "DC939A_8ino.html#ab777b89ec708203ab6dce8b587c16215", null ],
+    [ "demo_board_connected", "DC939A_8ino.html#a1371f3fcb5f0942f131a857d01f04f93", null ],
+    [ "LTC2484_lsb", "DC939A_8ino.html#a4cbea829650cb109cd31c6d021568b92", null ],
+    [ "LTC2484_offset_code", "DC939A_8ino.html#af999bc32c963c018263d891ee0388d21", null ],
+    [ "LTC2484_r0", "DC939A_8ino.html#a3be582bab62019fe5f11f39cfb519bbb", null ],
+    [ "LTC2484_t0", "DC939A_8ino.html#a410ded1e4b3155c249a775cf48ee354b", null ],
+    [ "MISO_TIMEOUT", "DC939A_8ino.html#a50ab9ab49e31bd464fa19c7959cb6c73", null ]
+];

@@ -1,0 +1,28 @@
+var LTC3335_8cpp =
+[
+    [ "LTC3335_Clear_Int", "LTC3335_8cpp.html#a562de73ad1b7f8529ed28cc72cbfee5a", null ],
+    [ "LTC3335_Counter_Test_Current_Task", "LTC3335_8cpp.html#a17b93a91669782c120b2898f1ecf5f4e", null ],
+    [ "ltc3335_decode_register_a", "LTC3335_8cpp.html#a2017b62e0fcb9598319dd71efb491236", null ],
+    [ "ltc3335_encode_register_a", "LTC3335_8cpp.html#acdbf1f5c835bbb440057296fb7483740", null ],
+    [ "LTC3335_Get_Alarms", "LTC3335_8cpp.html#ab673f26634627fd1b0f05fc899cedc59", null ],
+    [ "LTC3335_Get_Counter_Test_Current", "LTC3335_8cpp.html#ac250699ca67eb3c49c57db91e0a1c75c", null ],
+    [ "LTC3335_Get_Discharged_Capacity", "LTC3335_8cpp.html#a5179e7a7f8de942571a921acf9d6ca50", null ],
+    [ "ltc3335_get_register", "LTC3335_8cpp.html#ac3c479253b6ab175c5c9b6f7cadb57b8", null ],
+    [ "LTC3335_Init", "LTC3335_8cpp.html#af302fe8cb769b2dbabcd6d3a46cd835c", null ],
+    [ "LTC3335_Reset_Counter_Test_Current", "LTC3335_8cpp.html#a4db463eb61d2baf98cee04af0c405b30", null ],
+    [ "LTC3335_Set_Counter_Test", "LTC3335_8cpp.html#aa0a64a21ddb2d6838175d512cc8893eb", null ],
+    [ "ltc3335_set_register", "LTC3335_8cpp.html#a392645b9cb7ba83b4a2eb44d8f9d76bc", null ],
+    [ "LTC3335_Set_Voltage", "LTC3335_8cpp.html#aa040f2743dc4a052c3c5fef7ec92b404", null ],
+    [ "ltc3335_accumulator_last", "LTC3335_8cpp.html#ac830143315f84d9fc51024c7dda9f9d6", null ],
+    [ "ltc3335_counter_test_edge_count", "LTC3335_8cpp.html#aa8ab69d10422f5b3c4547509b73a1ac2", null ],
+    [ "ltc3335_counter_test_last", "LTC3335_8cpp.html#a91b69190eb9d3f754fc8ac599e142641", null ],
+    [ "ltc3335_counter_test_time", "LTC3335_8cpp.html#a47bc891562612962f17f574aea22637d", null ],
+    [ "ltc3335_discharged_capacity", "LTC3335_8cpp.html#a4f49bfb2f6915c28de7c90f1f7be3b7e", null ],
+    [ "ltc3335_hw_counter_last", "LTC3335_8cpp.html#a2a4511bf9a9246c9bd0eaf229ecd5c8c", null ],
+    [ "ltc3335_hw_timer_last", "LTC3335_8cpp.html#a71bc9da276a1ee6f576fbe5c68427d74", null ],
+    [ "ltc3335_prescaler_last", "LTC3335_8cpp.html#a2a632e3d33a5dd8c6d2984c1b93a55d3", null ],
+    [ "ltc3335_quiescent_current_timer", "LTC3335_8cpp.html#ad618d78b8d5a819dfe9837f057f0e584", null ],
+    [ "ltc3335_subaddress_last", "LTC3335_8cpp.html#a5d4bef1231edd8e2a683040378dea79e", null ],
+    [ "ltc3335_voltage_selection_enabled_last", "LTC3335_8cpp.html#a719bd6f3652d959d539fa0d9e99e32fa", null ],
+    [ "ltc3335_voltage_selection_last", "LTC3335_8cpp.html#ad00c51dd9aec56f6a4b4f197ba65d358", null ]
+];

@@ -1,0 +1,36 @@
+var DC1410AA_8ino =
+[
+    [ "init_gain_pins", "DC1410AA_8ino.html#a4ec9b59631742f5f61321f96457e2708", null ],
+    [ "loop", "DC1410AA_8ino.html#a39a24a80bc3128a314bb15c85fc22cef", null ],
+    [ "menu_1_read_differential", "DC1410AA_8ino.html#a554357d801af1412e475ed045f5166ba", null ],
+    [ "menu_2_set_1X2X", "DC1410AA_8ino.html#af6ee27d009ac508958c849b1c472f0f6", null ],
+    [ "menu_3_set_channel_gain", "DC1410AA_8ino.html#ab345619704bda0c427c913a0d965ab16", null ],
+    [ "print_gain", "DC1410AA_8ino.html#aca05ced42368a4ab640b08c3c99cfaca", null ],
+    [ "print_prompt", "DC1410AA_8ino.html#a2ea477f9f0e79d6865887e79570ac386", null ],
+    [ "print_title", "DC1410AA_8ino.html#a0b879bb0b1ef45ad46fc8331c59225f9", null ],
+    [ "print_user_command", "DC1410AA_8ino.html#af1418f97589cbd2395d1d1769d29298b", null ],
+    [ "set_gain", "DC1410AA_8ino.html#ab30d7c23116dcf05cd0cc7031ffaacdc", null ],
+    [ "setup", "DC1410AA_8ino.html#a90de5b68ab8defa635679fc0620fb698", null ],
+    [ "Av", "DC1410AA_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8b", [
+      [ "unity", "DC1410AB_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8ba147c22165676f467b65e907db8fe102a", null ],
+      [ "g8", "DC1410AB_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8baa012180909f4a99c45f8b35e3241f2c0", null ],
+      [ "g16", "DC1410AB_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8ba414f5dc325c3bd3c96716f9253cb3187", null ],
+      [ "g32", "DC1410AB_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8babff370ea601d48323c96a4e381411dd8", null ],
+      [ "unity", "DC1410AA_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8ba147c22165676f467b65e907db8fe102a", null ],
+      [ "g8", "DC1410AA_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8baa012180909f4a99c45f8b35e3241f2c0", null ],
+      [ "g16", "DC1410AA_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8ba414f5dc325c3bd3c96716f9253cb3187", null ],
+      [ "g32", "DC1410AA_8ino.html#a6c4bfd0b4e66d30fb975a1044bca0c8babff370ea601d48323c96a4e381411dd8", null ]
+    ] ],
+    [ "A_PIN", "DC1410AA_8ino.html#a8aaef6143c98ad27a4625d0c1b807725", null ],
+    [ "B_PIN", "DC1410AA_8ino.html#ac6dd722fd6387c8076386e954f406d6c", null ],
+    [ "channel_gain", "DC1410AA_8ino.html#a9bd00de9e4180a11fd4bf30a06b0a25e", null ],
+    [ "demo_board_connected", "DC1410AA_8ino.html#a1371f3fcb5f0942f131a857d01f04f93", null ],
+    [ "eoc_timeout", "DC1410AA_8ino.html#ac9e6544152d48e7780b787e2fb92c059", null ],
+    [ "filt_flag", "DC1410AA_8ino.html#a3bb52a7c46cbda91db5d4be380d25a05", null ],
+    [ "LTC2498_vref", "DC1410AA_8ino.html#a609f1d8238677c716508a476aa704583", null ],
+    [ "read_command_seq", "DC1410AA_8ino.html#adf5181f3682e73c41d88c2b1abba5b73", null ],
+    [ "read_gain_seq", "DC1410AA_8ino.html#a3b658a4cf3f4088bcca122d212d2a7f3", null ],
+    [ "rejection_mode", "DC1410AA_8ino.html#ac34538bf688df0a154db50a4af83111a", null ],
+    [ "smoothing_const", "DC1410AA_8ino.html#adfeb5d3bf4e11beebf53222317dfeeff", null ],
+    [ "two_x_mode", "DC1410AA_8ino.html#a2b06467b3b344961c7a0141400d0591a", null ]
+];

@@ -1,0 +1,8 @@
+var group__LTC4155__AT__INPUT__ILIM =
+[
+    [ "LTC4155_AT_INPUT_ILIM", "group__LTC4155__AT__INPUT__ILIM.html#gad64d91400f6b3d7007a3b329be6b4f12", null ],
+    [ "LTC4155_AT_INPUT_ILIM_MASK", "group__LTC4155__AT__INPUT__ILIM.html#ga28503b0db60774ebe177d12d57ae76bc", null ],
+    [ "LTC4155_AT_INPUT_ILIM_OFFSET", "group__LTC4155__AT__INPUT__ILIM.html#gad0d1a942671df5390968c3151736b880", null ],
+    [ "LTC4155_AT_INPUT_ILIM_SIZE", "group__LTC4155__AT__INPUT__ILIM.html#gaaf3a70ecc56d10f4580658cc76ccd12d", null ],
+    [ "LTC4155_AT_INPUT_ILIM_SUBADDR", "group__LTC4155__AT__INPUT__ILIM.html#ga278c33274891030aab895fda50effa2f", null ]
+];

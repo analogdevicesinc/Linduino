@@ -1,0 +1,8 @@
+var group__LTC4155__USBSNS__GOOD =
+[
+    [ "LTC4155_USBSNS_GOOD", "group__LTC4155__USBSNS__GOOD.html#ga01c2f5f4269c2672b74b3d2286d25e3b", null ],
+    [ "LTC4155_USBSNS_GOOD_MASK", "group__LTC4155__USBSNS__GOOD.html#gafee7e840eb191ec09427c0b76b768aec", null ],
+    [ "LTC4155_USBSNS_GOOD_OFFSET", "group__LTC4155__USBSNS__GOOD.html#ga53f3f3a87af3c1e79ebaa7aa1295d5f2", null ],
+    [ "LTC4155_USBSNS_GOOD_SIZE", "group__LTC4155__USBSNS__GOOD.html#ga932dad74141521d7abf6fb0971a90cb8", null ],
+    [ "LTC4155_USBSNS_GOOD_SUBADDR", "group__LTC4155__USBSNS__GOOD.html#gafe039a59f69df454249f706ad3b7d52c", null ]
+];

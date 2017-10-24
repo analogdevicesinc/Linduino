@@ -1,0 +1,26 @@
+var LTC2636_8h =
+[
+    [ "LTC2636_calibrate", "LTC2636_8h.html#aec1dcc445d811c96b62575ab7ce52fee", null ],
+    [ "LTC2636_code_to_voltage", "LTC2636_8h.html#a2f68a2134cdc5a9d6a11c19dd5715c3b", null ],
+    [ "LTC2636_voltage_to_code", "LTC2636_8h.html#aa7c9cc39c621b2bba8c9a8a211c8254c", null ],
+    [ "LTC2636_write", "LTC2636_8h.html#a187a2eda7e5ec61465b59a3521b139d3", null ],
+    [ "LTC2636_CMD_EXTERNAL_REFERENCE", "LTC2636_8h.html#a3d18be7c41f284013c8ae6c54254102e", null ],
+    [ "LTC2636_CMD_INTERNAL_REFERENCE", "LTC2636_8h.html#ad06f4a0b419a870b99685e9447928f02", null ],
+    [ "LTC2636_CMD_NO_OPERATION", "LTC2636_8h.html#a74c477649b70ad6c317c0e45afb56d7d", null ],
+    [ "LTC2636_CMD_POWER_DOWN", "LTC2636_8h.html#aa5e9516604c3eeb47e551299101a7705", null ],
+    [ "LTC2636_CMD_POWER_DOWN_ALL", "LTC2636_8h.html#a97e1f13873177669b7d7cb300ad30582", null ],
+    [ "LTC2636_CMD_UPDATE", "LTC2636_8h.html#a3d28ab4f42f1ce5a4a5b7403e6b7b04e", null ],
+    [ "LTC2636_CMD_WRITE", "LTC2636_8h.html#ae454e8c1f36b6581fe9ac343804ed12d", null ],
+    [ "LTC2636_CMD_WRITE_UPDATE", "LTC2636_8h.html#ae6e7f60258550979a36d329a7e96c014", null ],
+    [ "LTC2636_CMD_WRITE_UPDATE_ALL", "LTC2636_8h.html#a24ba4126011be8e9cc7aada2077a26bd", null ],
+    [ "LTC2636_CS", "LTC2636_8h.html#acd406e776bad4cdd28ac21a090c630f8", null ],
+    [ "LTC2636_DAC_A", "LTC2636_8h.html#abbc42424f27ce96b7562aeba5c815953", null ],
+    [ "LTC2636_DAC_ALL", "LTC2636_8h.html#aa870a0da07ee0745f304bf175b25c7fc", null ],
+    [ "LTC2636_DAC_B", "LTC2636_8h.html#ac4a4f7a8579ac86c896ab14911d446bf", null ],
+    [ "LTC2636_DAC_C", "LTC2636_8h.html#ac58266a4555e5853137fb952b92a1933", null ],
+    [ "LTC2636_DAC_D", "LTC2636_8h.html#a1fff8dc5d0e6dd998c1878b3c087f85b", null ],
+    [ "LTC2636_DAC_E", "LTC2636_8h.html#aa77cc6a4dbf1ca7c43e2327f57f7c94e", null ],
+    [ "LTC2636_DAC_F", "LTC2636_8h.html#abd332270c7d3660f44d7d7ef334f7a9f", null ],
+    [ "LTC2636_DAC_G", "LTC2636_8h.html#a424152b8017c6e87964517f5496a7581", null ],
+    [ "LTC2636_DAC_H", "LTC2636_8h.html#adbce5ce47c0d917aff327e1b2a888bb4", null ]
+];

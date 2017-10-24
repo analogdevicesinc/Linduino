@@ -1,0 +1,25 @@
+var group__PMBus__SMBus =
+[
+    [ "LT_FaultLog: PLTC PSM Fault Log support", "group__LT__FaultLog.html", "group__LT__FaultLog" ],
+    [ "LT_PMBus: PMBus commands", "group__LT__PMBus.html", "group__LT__PMBus" ],
+    [ "LT_PMBusDevice: Implementation of Device Detection and Capability", "group__LT__PMBusDevice.html", "group__LT__PMBusDevice" ],
+    [ "LT_PMBusMath: Value conversion routines", "group__LT__PMBusMath.html", "group__LT__PMBusMath" ],
+    [ "LT_PMBusRail: PMBus Rail commands", "group__LT__PMBusRail.html", "group__LT__PMBusRail" ],
+    [ "LT_I2CBus: Routines to communicate to I2C by Wire Library.", "group__LT__I2CBus.html", "group__LT__I2CBus" ],
+    [ "LT_SMBus: Base class of all SMBus with utility functions", "group__LT__SMBus.html", "group__LT__SMBus" ],
+    [ "LT_SMBusAra: Implementation of Device Alert", "group__LT__SMBusAra.html", "group__LT__SMBusAra" ],
+    [ "LT_SMBusBase: Implementation of SMBus", "group__LT__SMBusBase.html", "group__LT__SMBusBase" ],
+    [ "LT_SMBusGroup: SMBus Group Protocol", "group__LT__SMBusGroup.html", "group__LT__SMBusGroup" ],
+    [ "LT_SMBusNoPec: non-PEC version of SMBus", "group__LT__SMBusNoPec.html", "group__LT__SMBusNoPec" ],
+    [ "LT_SMBusPec: PEC version of SMBus", "group__LT__SMBusPec.html", "group__LT__SMBusPec" ],
+    [ "LT_Wire: Routines to Communicate With the hardware I2C port.", "group__LT__Wire.html", "group__LT__Wire" ],
+    [ "LTPSM_InFlightUpdate", "group__LTPSM__InFlightUpdate.html", "group__LTPSM__InFlightUpdate" ],
+    [ "LT_2974FaultLog", "group__LT__2974FaultLog.html", "group__LT__2974FaultLog" ],
+    [ "LT_2975FaultLog", "group__LT__2975FaultLog.html", "group__LT__2975FaultLog" ],
+    [ "LT_2977FaultLog", "group__LT__2977FaultLog.html", "group__LT__2977FaultLog" ],
+    [ "LT_2978FaultLog", "group__LT__2978FaultLog.html", "group__LT__2978FaultLog" ],
+    [ "LT_3880FaultLog", "group__LT__3380FaultLog.html", null ],
+    [ "LT_3882FaultLog", "group__LT__3882FaultLog.html", "group__LT__3882FaultLog" ],
+    [ "LT_3883FaultLog", "group__LT__3883FaultLog.html", "group__LT__3883FaultLog" ],
+    [ "LT_3887FaultLog", "group__LT__3887FaultLog.html", "group__LT__3887FaultLog" ]
+];

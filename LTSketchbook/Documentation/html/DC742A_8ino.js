@@ -1,0 +1,26 @@
+var DC742A_8ino =
+[
+    [ "loop", "DC742A_8ino.html#a39a24a80bc3128a314bb15c85fc22cef", null ],
+    [ "menu_1_read_single_ended", "DC742A_8ino.html#a26323c9b1c91dfe3fdbb4d00d8766fdf", null ],
+    [ "menu_2_read_differential", "DC742A_8ino.html#afae568c0df1a91394c078376683156b8", null ],
+    [ "menu_3_calibrate", "DC742A_8ino.html#a288f429dc75bc254db045983a4581435", null ],
+    [ "menu_4_set_OSR", "DC742A_8ino.html#a3f54fd60fa13413d5aef80be5e598f9b", null ],
+    [ "menu_5_set_1X2X", "DC742A_8ino.html#af906dea3534260cd6b312e337d374a74", null ],
+    [ "menu_6_en_dis_cal", "DC742A_8ino.html#adaa937285e2ac4f37e255447159a5f91", null ],
+    [ "print_prompt", "DC742A_8ino.html#a2ea477f9f0e79d6865887e79570ac386", null ],
+    [ "print_title", "DC742A_8ino.html#a0b879bb0b1ef45ad46fc8331c59225f9", null ],
+    [ "print_user_command", "DC742A_8ino.html#af1418f97589cbd2395d1d1769d29298b", null ],
+    [ "restore_calibration", "DC742A_8ino.html#a8a2c607e019908d9e92698fa842e0c28", null ],
+    [ "setup", "DC742A_8ino.html#a90de5b68ab8defa635679fc0620fb698", null ],
+    [ "store_calibration", "DC742A_8ino.html#a7c5befd5ab914622919e68a8af53edd2", null ],
+    [ "BUILD_1X_2X_COMMAND", "DC742A_8ino.html#a3374294ba08fc021c168de751b1d3982", null ],
+    [ "BUILD_COMMAND_DIFF", "DC742A_8ino.html#acf464fdcf6e3407e41d917cda1980a6d", null ],
+    [ "BUILD_COMMAND_SINGLE_ENDED", "DC742A_8ino.html#a8e69cf8336d04905b5ca9690ef9f5aad", null ],
+    [ "BUILD_OSR_COMMAND", "DC742A_8ino.html#ae0e0f7eb7da2a52bb7bdb798f0a507b1", null ],
+    [ "demo_board_connected", "DC742A_8ino.html#a1371f3fcb5f0942f131a857d01f04f93", null ],
+    [ "LTC2449_lsb", "DC742A_8ino.html#adcfd30596b96a84e861a4cb34f9ce865", null ],
+    [ "LTC2449_offset_code", "DC742A_8ino.html#a83c5c5a2cd428fe2c6b0e8ce67262120", null ],
+    [ "MISO_TIMEOUT", "DC742A_8ino.html#a50ab9ab49e31bd464fa19c7959cb6c73", null ],
+    [ "OSR_mode", "DC742A_8ino.html#acec1dbcba72e6a75a2df1ba695aa2047", null ],
+    [ "two_x_mode", "DC742A_8ino.html#a7f55451365eec7fe24c4c9024cbbbcbe", null ]
+];

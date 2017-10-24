@@ -1,0 +1,28 @@
+var Synth_8ino =
+[
+    [ "lcd", "Synth_8ino.html#aa33e6b425117a6e378d253f4838a5f6a", null ],
+    [ "loop", "Synth_8ino.html#a39a24a80bc3128a314bb15c85fc22cef", null ],
+    [ "loop_design", "Synth_8ino.html#a39fd22ca68e21e7d3df7e77ebf0524de", null ],
+    [ "read_switches", "Synth_8ino.html#aaf76a8dad12a2bf16a31949cfb2101f7", null ],
+    [ "restore_settings", "Synth_8ino.html#a6b919e9786add7adc729115222dd451d", null ],
+    [ "setup", "Synth_8ino.html#a90de5b68ab8defa635679fc0620fb698", null ],
+    [ "store_settings", "Synth_8ino.html#acf869220f05d19e09c788fe00c66ad71", null ],
+    [ "write_all", "Synth_8ino.html#a89d396fdc427dc61a5522fab6085a575", null ],
+    [ "BUTTON_PIN", "Synth_8ino.html#a5bba39fb833bcf2c50633911ee2531cc", null ],
+    [ "D4", "Synth_8ino.html#a7ee7055891d5c9bf61698e055cf01e4d", null ],
+    [ "D5", "Synth_8ino.html#aea27528bc1de6337f4f4f3fe1d372ca3", null ],
+    [ "D6", "Synth_8ino.html#a1a26f91d66b847cbec4bce8e366a411e", null ],
+    [ "D7", "Synth_8ino.html#ac30a53d1883c74ec7b513d037ef2c02f", null ],
+    [ "demo_board_connected", "Synth_8ino.html#a6b6612d3ffc7cc8c4a57d8d0ba6d80d4", null ],
+    [ "demo_name", "Synth_8ino.html#a6c112de8121ca3229273371855103456", null ],
+    [ "DOWN", "Synth_8ino.html#afac64c0c8699d52583e07c9c1d618c9d", null ],
+    [ "E", "Synth_8ino.html#a8479fa63b20132b73f399f8b910d7239", null ],
+    [ "LEFT", "Synth_8ino.html#af2ee32059ac0077c2e276e4372449f30", null ],
+    [ "MHz", "Synth_8ino.html#a46ccc9093af874c400f65026071fe1fa", null ],
+    [ "pos", "Synth_8ino.html#a74af96a639cd706734603438799a5867", null ],
+    [ "REG", "Synth_8ino.html#a18615023dc9651e5ca73f0732c664ca2", null ],
+    [ "RIGHT", "Synth_8ino.html#ad746e25a18d0e45326d2fdc463f69347", null ],
+    [ "RS", "Synth_8ino.html#a215c1cefbfb026933bf5743ca65710bd", null ],
+    [ "SELECT", "Synth_8ino.html#a0946f4c38d90087514781a703073e8fb", null ],
+    [ "UP", "Synth_8ino.html#a0131b3348807fb7c1f25658ef756169f", null ]
+];

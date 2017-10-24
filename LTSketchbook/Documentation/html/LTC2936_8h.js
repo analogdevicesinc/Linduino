@@ -1,0 +1,28 @@
+var LTC2936_8h =
+[
+    [ "LTC2936_BACKUP_WORD", "LTC2936_8h.html#ab06e9bcb7b0b9deb7257d4fb3d171f5d", null ],
+    [ "LTC2936_CLEAR_HISTORY", "LTC2936_8h.html#a91e21be0af87770d5951395d4156f563", null ],
+    [ "LTC2936_GPI_CONFIG", "LTC2936_8h.html#aa6e11c5477ee9e9c041455c6cefdc2a3", null ],
+    [ "LTC2936_GPIO1_CONFIG", "LTC2936_8h.html#a74f46c69c86a511a9220b5a258459e42", null ],
+    [ "LTC2936_GPIO2_3_CONFIG", "LTC2936_8h.html#a9dcb793a8dcb8da9dcc93a77e90f6d88", null ],
+    [ "LTC2936_HISTORY_WORD", "LTC2936_8h.html#afbffb6754764da4cd8cb749c4fd3da4b", null ],
+    [ "LTC2936_I2C_ARA_ADDRESS", "LTC2936_8h.html#a8309d4612ac8b30f44a9ac23ccb5de96", null ],
+    [ "LTC2936_I2C_GLOBAL_ADDRESS", "LTC2936_8h.html#ad567a46b1e881c65ee658f25ec757f46", null ],
+    [ "LTC2936_PADS", "LTC2936_8h.html#a7e177d224a64d4d589207db5d62af8a3", null ],
+    [ "LTC2936_RESTORE_USER", "LTC2936_8h.html#a0ba0d1e490cb2dbe9df4c225499bc808", null ],
+    [ "LTC2936_STATUS_WORD", "LTC2936_8h.html#a704c463d9364856799393bc46251b70f", null ],
+    [ "LTC2936_STORE_USER", "LTC2936_8h.html#a9d7039a8664beb82a3f4b6417ad41bcd", null ],
+    [ "LTC2936_V1_CONFIG", "LTC2936_8h.html#aedb4450c51547c50cb64935b7dd13e50", null ],
+    [ "LTC2936_V1_THR", "LTC2936_8h.html#a42142e2f7327acb29baa87fe64b14a32", null ],
+    [ "LTC2936_V2_CONFIG", "LTC2936_8h.html#ac48bddf751ba88a2eee29c1204fda801", null ],
+    [ "LTC2936_V2_THR", "LTC2936_8h.html#a798757a7ab78615979485e9662754a56", null ],
+    [ "LTC2936_V3_CONFIG", "LTC2936_8h.html#aea573e45b00ad0455933a7df8caec6e1", null ],
+    [ "LTC2936_V3_THR", "LTC2936_8h.html#ab43632bfcbf56dbed7cb1e283292d1f3", null ],
+    [ "LTC2936_V4_CONFIG", "LTC2936_8h.html#abc7ad9fb8cf0006625fffae41a0b7821", null ],
+    [ "LTC2936_V4_THR", "LTC2936_8h.html#aa4a704862f99fe58e64ba564d423aa34", null ],
+    [ "LTC2936_V5_CONFIG", "LTC2936_8h.html#aaf64b1fc3b769d3b2ec791d9d1c5b767", null ],
+    [ "LTC2936_V5_THR", "LTC2936_8h.html#ad6017bf7c9a97e0ca821cda6b9f917a1", null ],
+    [ "LTC2936_V6_CONFIG", "LTC2936_8h.html#ad84ca47dbebecb93e0a03f585e648a5c", null ],
+    [ "LTC2936_V6_THR", "LTC2936_8h.html#a516338f9299ae61b98026514096970a5", null ],
+    [ "LTC2936_WRITE_PROTECT", "LTC2936_8h.html#a817e917503715b2ac458b382aa6fa559", null ]
+];

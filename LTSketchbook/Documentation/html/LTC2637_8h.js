@@ -1,0 +1,26 @@
+var LTC2637_8h =
+[
+    [ "LTC2637_calibrate", "LTC2637_8h.html#a2c9866894c33624e93bacb8a69bacd03", null ],
+    [ "LTC2637_code_to_voltage", "LTC2637_8h.html#ace28ee29ce7399a79c6cc6487cb6ee3e", null ],
+    [ "LTC2637_voltage_to_code", "LTC2637_8h.html#a3e6b865a566ae00b54cd41591db192b1", null ],
+    [ "LTC2637_write", "LTC2637_8h.html#a14249661f6469580cff62461ca5c53b9", null ],
+    [ "LTC2637_CMD_EXTERNAL_REFERENCE", "LTC2637_8h.html#aacf91b9aa572974706b37b20997fa51e", null ],
+    [ "LTC2637_CMD_INTERNAL_REFERENCE", "LTC2637_8h.html#ac8b00d7bcc6f3cd3b55951ada4aea556", null ],
+    [ "LTC2637_CMD_NO_OPERATION", "LTC2637_8h.html#adfcc855669fa7f3448a8531fe22b3da4", null ],
+    [ "LTC2637_CMD_POWER_DOWN", "LTC2637_8h.html#a8dabd804b20332011c283dec1a502e4f", null ],
+    [ "LTC2637_CMD_POWER_DOWN_ALL", "LTC2637_8h.html#aa2c0fe5433d4a239f8a056655d3e46fd", null ],
+    [ "LTC2637_CMD_UPDATE", "LTC2637_8h.html#a6c7b3b3059c410e7757da5a42ac275a1", null ],
+    [ "LTC2637_CMD_WRITE", "LTC2637_8h.html#abc9ad12b4b1a92b86ff700bbd2a149c5", null ],
+    [ "LTC2637_CMD_WRITE_UPDATE", "LTC2637_8h.html#a69a6f214828c331fefa4cffede5db7b5", null ],
+    [ "LTC2637_DAC_A", "LTC2637_8h.html#a661a0c4e2af18428b38eb68362f5b04a", null ],
+    [ "LTC2637_DAC_ALL", "LTC2637_8h.html#ababcce48e6f78778313ad87f907f71db", null ],
+    [ "LTC2637_DAC_B", "LTC2637_8h.html#a7732d46653982e15c00ac0903d748cbd", null ],
+    [ "LTC2637_DAC_C", "LTC2637_8h.html#a955ef8049122df29bd9677cc2d83f9c4", null ],
+    [ "LTC2637_DAC_D", "LTC2637_8h.html#a1300d5cdb7e6a3eb212315faae48842a", null ],
+    [ "LTC2637_DAC_E", "LTC2637_8h.html#af717acda840e1a264cff3f41937fda9b", null ],
+    [ "LTC2637_DAC_F", "LTC2637_8h.html#af3af80802a516ea8776410ef86714e58", null ],
+    [ "LTC2637_DAC_G", "LTC2637_8h.html#aa4c90130bd5854fca0d9a58c1de5d2aa", null ],
+    [ "LTC2637_DAC_H", "LTC2637_8h.html#a3d51030e437716d55d44e673b63b3971", null ],
+    [ "LTC2637_I2C_ADDRESS", "LTC2637_8h.html#ae009b202bc06c2f686f7e0ba665fdedf", null ],
+    [ "LTC2637_I2C_GLOBAL_ADDRESS", "LTC2637_8h.html#a785f5d049a3672dc37c16dd7c4969e4f", null ]
+];

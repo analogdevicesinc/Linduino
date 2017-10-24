@@ -1,0 +1,28 @@
+var LTC2309_8h =
+[
+    [ "LTC2309_code_to_voltage", "LTC2309_8h.html#a264bca51593c983b396ebe8e394af8c6", null ],
+    [ "LTC2309_read", "LTC2309_8h.html#ae1b4a798e132f926f021562bf9f42b39", null ],
+    [ "LTC2309_BIPOLAR_MODE", "LTC2309_8h.html#a7362e19ba535d86469db56523073b1e1", null ],
+    [ "LTC2309_CH0", "LTC2309_8h.html#a9ac681c3e1a222b8d349919568c1871f", null ],
+    [ "LTC2309_CH1", "LTC2309_8h.html#a90acc7f277ed167c3b5a4df3dddbface", null ],
+    [ "LTC2309_CH2", "LTC2309_8h.html#a57a765d8dbbb460b0cc7ef3fe24a0d97", null ],
+    [ "LTC2309_CH3", "LTC2309_8h.html#a3b70a9298b796583a41477dc5820a916", null ],
+    [ "LTC2309_CH4", "LTC2309_8h.html#a4b9a4503264c8ac91149802c8d8261ce", null ],
+    [ "LTC2309_CH5", "LTC2309_8h.html#a4aebba2123c7fa541e1272627eed5164", null ],
+    [ "LTC2309_CH6", "LTC2309_8h.html#a8e6431364da3b4d4d218b21f7957d4c3", null ],
+    [ "LTC2309_CH7", "LTC2309_8h.html#a937cb1f7371adaae043e7c158a67f95d", null ],
+    [ "LTC2309_DIFFERENTIAL_MODE", "LTC2309_8h.html#aed6f5fdbd7cadf5709d32bcc04ec98f8", null ],
+    [ "LTC2309_EXIT_SLEEP_MODE", "LTC2309_8h.html#a5d8cc2c5ede83184e937b3e131293330", null ],
+    [ "LTC2309_I2C_ADDRESS", "LTC2309_8h.html#afedc97a0b29f14b6f27f7e554373724b", null ],
+    [ "LTC2309_P0_N1", "LTC2309_8h.html#a8129f6dcc4162b39eb41b52be501418e", null ],
+    [ "LTC2309_P1_N0", "LTC2309_8h.html#ac7062cfa486bc4be061b370857344fab", null ],
+    [ "LTC2309_P2_N3", "LTC2309_8h.html#a643af070dbf400f9a22011c2419a3f10", null ],
+    [ "LTC2309_P3_N2", "LTC2309_8h.html#a3172935515eb7a44af44b482bce3c07d", null ],
+    [ "LTC2309_P4_N5", "LTC2309_8h.html#a98b3282d9670a4807fd3139e4b1c0c97", null ],
+    [ "LTC2309_P5_N4", "LTC2309_8h.html#a1981f69ceecf3fe6695741b2d181848d", null ],
+    [ "LTC2309_P6_N7", "LTC2309_8h.html#a4fb3d60e8066bd1c7c80f986c7431f37", null ],
+    [ "LTC2309_P7_N6", "LTC2309_8h.html#a63827e047e775f0d1319467dbcd0a4bd", null ],
+    [ "LTC2309_SINGLE_ENDED_MODE", "LTC2309_8h.html#abab74800f3d8f7817bbc95eedf7aa411", null ],
+    [ "LTC2309_SLEEP_MODE", "LTC2309_8h.html#ad403b540ec7eda9edcf374926b453629", null ],
+    [ "LTC2309_UNIPOLAR_MODE", "LTC2309_8h.html#ae3ececd183cf08d100ea61438aeb376e", null ]
+];

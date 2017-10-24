@@ -1,0 +1,8 @@
+var group__LTC4155__WALLSNS__GOOD =
+[
+    [ "LTC4155_WALLSNS_GOOD", "group__LTC4155__WALLSNS__GOOD.html#ga4974aba815d549ac81e4cb81367c4273", null ],
+    [ "LTC4155_WALLSNS_GOOD_MASK", "group__LTC4155__WALLSNS__GOOD.html#ga46b5db75345e465905481fa4f86a380b", null ],
+    [ "LTC4155_WALLSNS_GOOD_OFFSET", "group__LTC4155__WALLSNS__GOOD.html#gaab8b8fc27e4d3b00e5cbe7f923833fad", null ],
+    [ "LTC4155_WALLSNS_GOOD_SIZE", "group__LTC4155__WALLSNS__GOOD.html#ga4ab9ec8768b091e5a1c962dc70eccfbc", null ],
+    [ "LTC4155_WALLSNS_GOOD_SUBADDR", "group__LTC4155__WALLSNS__GOOD.html#gab70fc34a6717e0a8ddc3702589049ed2", null ]
+];

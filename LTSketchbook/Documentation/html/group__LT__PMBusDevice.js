@@ -1,0 +1,25 @@
+var group__LT__PMBusDevice =
+[
+    [ "LT_PMBusDetect.h", "LT__PMBusDetect_8h.html", null ],
+    [ "LT_PMBusDevice.cpp", "LT__PMBusDevice_8cpp.html", null ],
+    [ "LT_PMBusDevice.h", "LT__PMBusDevice_8h.html", null ],
+    [ "LT_PMBusSpeedTest.cpp", "LT__PMBusSpeedTest_8cpp.html", null ],
+    [ "LT_PMBusSpeedTest.h", "LT__PMBusSpeedTest_8h.html", null ],
+    [ "LT_PMBusDetect.cpp", "LT__PMBusDetect_8cpp.html", null ],
+    [ "LT_PMBusDeviceController.h", "LT__PMBusDeviceController_8h.html", null ],
+    [ "LT_PMBusDeviceLTC2974.h", "LT__PMBusDeviceLTC2974_8h.html", null ],
+    [ "LT_PMBusDeviceLTC2975.h", "LT__PMBusDeviceLTC2975_8h.html", null ],
+    [ "LT_PMBusDeviceLTC2977.h", "LT__PMBusDeviceLTC2977_8h.html", null ],
+    [ "LT_PMBusDeviceLTC2978.h", "LT__PMBusDeviceLTC2978_8h.html", null ],
+    [ "LT_PMBusDeviceLTC2980.h", "LT__PMBusDeviceLTC2980_8h.html", null ],
+    [ "LT_PMBusDeviceLTC3880.h", "LT__PMBusDeviceLTC3880_8h.html", null ],
+    [ "LT_PMBusDeviceLTC3882.h", "LT__PMBusDeviceLTC3882_8h.html", null ],
+    [ "LT_PMBusDeviceLTC3883.h", "LT__PMBusDeviceLTC3883_8h.html", null ],
+    [ "LT_PMBusDeviceLTC3886.h", "LT__PMBusDeviceLTC3886_8h.html", null ],
+    [ "LT_PMBusDeviceLTC3887.h", "LT__PMBusDeviceLTC3887_8h.html", null ],
+    [ "LT_PMBusDeviceLTM2987.h", "LT__PMBusDeviceLTM2987_8h.html", null ],
+    [ "LT_PMBusDeviceLTM4675.h", "LT__PMBusDeviceLTM4675_8h.html", null ],
+    [ "LT_PMBusDeviceLTM4676.h", "LT__PMBusDeviceLTM4676_8h.html", null ],
+    [ "LT_PMBusDeviceLTM4677.h", "LT__PMBusDeviceLTM4677_8h.html", null ],
+    [ "LT_PMBusDeviceManager.h", "LT__PMBusDeviceManager_8h.html", null ]
+];

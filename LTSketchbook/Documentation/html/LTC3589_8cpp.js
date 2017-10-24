@@ -1,0 +1,27 @@
+var LTC3589_8cpp =
+[
+    [ "LTC3589_bit_clear", "LTC3589_8cpp.html#a512c43195c3062eff50ff6b99550db35", null ],
+    [ "LTC3589_bit_is_set", "LTC3589_8cpp.html#aaf0f5976840cd4826cba9df04fa564bd", null ],
+    [ "LTC3589_bit_set", "LTC3589_8cpp.html#a6ad0c6452b0bc168b60459bce731a73e", null ],
+    [ "LTC3589_bit_write", "LTC3589_8cpp.html#aff368c8f70c4a7168237a5424bce4bb3", null ],
+    [ "LTC3589_buck_vout_max", "LTC3589_8cpp.html#a4d49b3a20c6b6dd92c711217927cd6a6", null ],
+    [ "LTC3589_buck_vout_min", "LTC3589_8cpp.html#a75be92402b417966766647732f72bdfa", null ],
+    [ "LTC3589_ldo2_vout_max", "LTC3589_8cpp.html#afb3087bb4ef2263721460183e411eb3a", null ],
+    [ "LTC3589_ldo2_vout_min", "LTC3589_8cpp.html#a59a1d56ed8612e26937cc334e5a41aff", null ],
+    [ "LTC3589_register_read", "LTC3589_8cpp.html#a61eee843a48559d48236154c2e32a2a3", null ],
+    [ "LTC3589_register_write", "LTC3589_8cpp.html#ac32df6f98108e58f32a5ac903bf5c39d", null ],
+    [ "LTC3589_select_buck_reference", "LTC3589_8cpp.html#a94ad589865d1b8d74e472602560d2527", null ],
+    [ "LTC3589_select_ldo2_reference", "LTC3589_8cpp.html#a46b9f89d02be368cfe3b81641203269e", null ],
+    [ "LTC3589_set_buck_fb_ref", "LTC3589_8cpp.html#af5ebdb6484f02ac9f962ade8cab84a30", null ],
+    [ "LTC3589_set_buck_mode", "LTC3589_8cpp.html#a7f4216bf32a5a70ad5d8ead8cd8baddc", null ],
+    [ "LTC3589_set_buck_output_voltage", "LTC3589_8cpp.html#ab5273cca9f6649ed6c691c0b0f0e7caf", null ],
+    [ "LTC3589_set_buckboost_mode", "LTC3589_8cpp.html#a776c84111cf1b252c6503fe3d51769da", null ],
+    [ "LTC3589_set_go_bits", "LTC3589_8cpp.html#a6c64ed4bc6abcd28ef6cee2d77abb57c", null ],
+    [ "LTC3589_set_ldo2_fb_ref", "LTC3589_8cpp.html#a04ae1ddb6edf5fdfbd16b471e29546a8", null ],
+    [ "LTC3589_set_ldo2_output_voltage", "LTC3589_8cpp.html#a5576f9b28dcafe3822cc6d6152d52e6d", null ],
+    [ "LTC3589_set_ldo4_voltage", "LTC3589_8cpp.html#a4b8440c3722cb48b76ab1d16423b4225", null ],
+    [ "LTC3589_set_pgood_mask", "LTC3589_8cpp.html#ad06bccee80416a2400d7d3cb6df4a4f9", null ],
+    [ "LTC3589_set_regulator_slew", "LTC3589_8cpp.html#a82a3d6b6dab97e5b0f470d8eae918946", null ],
+    [ "LTC3589_set_startup_mode", "LTC3589_8cpp.html#aa67760a600c6cdcf10dc42bb68980379", null ],
+    [ "LTC3589_set_switch_dvdt_control", "LTC3589_8cpp.html#a129db0eeef48017c1ca99ca01ecf2c33", null ]
+];
