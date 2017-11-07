@@ -17,13 +17,14 @@ adt7420_init_param init_params = {
 };
 
 adt7420_dev * device;
+int32_t ret = SUCCESS;
 
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("Welcome to the new ADT7420 testing thingy");
 
-    int32_t ret = adt7420_init(&device, init_params);
+    // Initialize
+    ret = adt7420_init(&device, init_params);
 
     if(ret != SUCCESS)
     {
@@ -32,52 +33,55 @@ void setup()
     else
     {
         Serial.println("Connection to device succeeded!");
-
-        float temp = adt7420_get_temperature(device);
-        Serial.print("Current temp is: ");
-        Serial.println(temp);
-        Serial.println();
     }
+
+    print_title();
 }
 
 void loop()
 {
+    // If there is no device, don't continue
+    if(ret != SUCCESS)
+    {
+        return;
+    }
+
     print_prompt();
     
-        uint8_t user_command = read_int();
-        Serial.println(user_command);
-        Serial.flush();
-    
-        switch (user_command)
-        {
-        case 1:
-            menu_1_read_temperature();
-            break;
-    
-        case 2:
-            menu_2_set_resolution();
-            break;
-    
-        case 3:
-            menu_3_set_op_mode();
-            break;
-    
-        case 4:
-            menu_4_bunchoftemps();
-            break;
-    
-        case 5:
-            //menu_5_critical();
-            break;
-    
-        case 9:
-            //EEPROM_WRITE_TEST();
-            break;
-    
-        default:
-            Serial.println(F("Invalid option"));
-            break;
-        }
+    uint8_t user_command = read_int();
+    Serial.println(user_command);
+    Serial.flush();
+
+    switch (user_command)
+    {
+    case 1:
+        menu_1_read_temperature();
+        break;
+
+    case 2:
+        menu_2_set_resolution();
+        break;
+
+    case 3:
+        menu_3_set_op_mode();
+        break;
+
+    case 4:
+        menu_4_bunchoftemps();
+        break;
+
+    case 5:
+        //menu_5_critical();
+        break;
+
+    case 9:
+        //EEPROM_WRITE_TEST();
+        break;
+
+    default:
+        Serial.println(F("Invalid option"));
+        break;
+    }
 }
 
 void print_title()
@@ -100,8 +104,8 @@ void print_prompt()
     Serial.println(F("  2- Set resolution"));
     Serial.println(F("  3- Set operation mode"));
     Serial.println(F("  4- Poll for a bunch of temperatures"));
-    Serial.println(F("  5- Get critical temperature setting"));
-    Serial.println(F("  9- Test & clear Linduino EEPROM"));
+    Serial.println(F("  X- Get critical temperature setting"));
+    Serial.println(F("  X- Test & clear Linduino EEPROM"));
     Serial.println();
 
     Serial.print(F("Enter a command: "));
@@ -210,4 +214,38 @@ uint8_t menu_4_bunchoftemps()
     }
 
     return 0;
+}
+
+/** Convert a temperature to the code the sensor understands */
+void temp_to_code(float temp, uint8_t *msb, uint8_t *lsb, uint8_t resolution) // res of 0 = 13 bit, 1 = 16bit
+{
+    uint16_t code = 0;
+    
+    if(resolution)
+    {
+        if (temp < 0)
+        {
+            code = (uint16_t)((temp * 128) + 65536);
+        }
+        else
+        {
+            code = (uint16_t)(temp * 128);
+        }
+    }
+    else
+    {
+        if(temp < 0)
+        {
+            code = (uint16_t) (temp * 16) + 8192;
+        }
+        else
+        {
+            code = (uint16_t) (temp * 16) + 8192;
+        }
+        
+        code <<= 3;
+    }
+
+    *msb = (uint8_t)(code >> 8);
+    *lsb = (uint8_t)(code & 255);
 }
