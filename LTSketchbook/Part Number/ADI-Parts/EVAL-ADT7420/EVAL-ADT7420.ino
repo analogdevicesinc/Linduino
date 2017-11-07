@@ -63,7 +63,7 @@ void loop()
             break;
     
         case 4:
-            //menu_4_bunchoftemps();
+            menu_4_bunchoftemps();
             break;
     
         case 5:
@@ -173,6 +173,40 @@ uint8_t menu_3_set_op_mode()
     default:
         Serial.println(F("Invalid option"));
         break;
+    }
+
+    return 0;
+}
+
+uint8_t menu_4_bunchoftemps()
+{
+    Serial.print(F("  Enter number of desired samples: "));
+    uint16_t num_samples = read_int();
+    Serial.println(num_samples);
+
+    Serial.print(F("  Enter a desired frequency in samples/sec (max 10): "));
+    uint16_t sample_freq = read_int();
+    sample_freq = constrain(sample_freq, 1, 10);
+    Serial.println(sample_freq);
+
+    uint16_t delay_sec = 1000 / sample_freq;
+
+    Serial.print(F("  Gathering "));
+    Serial.print(num_samples / sample_freq);
+    Serial.println(F(" seconds of samples, press enter to continue"));
+
+    uint8_t temp = read_int();
+
+    for (int i = 0; i < num_samples; i++)
+    {
+        Serial.print(F("  #"));
+        Serial.print(i + 1);
+        Serial.print(F(":\t"));
+
+        float temp = adt7420_get_temperature(device);
+        Serial.println(temp);
+
+        delay(delay_sec);
     }
 
     return 0;
