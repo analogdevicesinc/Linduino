@@ -152,4 +152,19 @@ int32_t gpio_get_value(gpio_device *dev,
 /* Generate miliseconds delay. */
 void mdelay(uint32_t msecs);
 
+/*************************
+ * Linduino I2C functions for ADI use
+ * These functions are wrappers around the Arduino Wire library
+**/
+
+/*! Connects and initializes I2C */
+void Wire_Connect();
+
+/*! Write I2C */
+uint8_t Wire_Write(unsigned char address, unsigned char* data, unsigned char length, unsigned char stop);
+
+/*! Read I2C */
+uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char length, unsigned char stop);
+
+
 #endif // PLATFORM_DRIVERS_H_

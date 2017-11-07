@@ -41,6 +41,7 @@
 /***************************** Include Files **********************************/
 /******************************************************************************/
 #include <stdint.h>
+#include <Wire.h>
 #include "platform_drivers.h"
 
 /******************************************************************************/
@@ -305,4 +306,78 @@ void mdelay(uint32_t msecs)
 	if(msecs) {
 		// Unused variable - fix compiler warning
 	}
+}
+
+
+/***************************************************************************************************
+ * *************************************************************************************************
+ * LINDUINO WIRE I2C FUNCTIONS
+ */
+
+ /***************************************************************************/ /**
+ * @brief Connects to I2C device
+ * 
+*******************************************************************************/
+void Wire_Connect()
+{
+    Wire.begin();
+}
+
+/***************************************************************************/ /**
+ * @brief Write to I2C device.
+ *
+ * @param address - Address of device
+ * @param data - Data to write, includes command
+ * @param length - Length of data byte array
+ * @param stop - Stop bit
+ * 
+ * @return Transmission acknowledged by device
+ * 
+*******************************************************************************/
+uint8_t Wire_Write(unsigned char address, unsigned char* data, unsigned char length, unsigned char stop)
+{
+    Wire.beginTransmission(address);
+    
+    //Serial.print(F("Wire Writing Data:"));
+    for(int i = 0; i < length; i++)
+    {
+        //Serial.print(data[i]);
+        Wire.write(data[i]);
+    }
+    //Serial.println("");
+    
+    bool wireStop = (stop > 0);
+    
+    uint8_t ack = Wire.endTransmission(wireStop);
+    
+    return ack;
+}
+
+/***************************************************************************/ /**
+ * @brief Read from I2C device.
+ *
+ * @param address - Address of device
+ * @param data - Data read back
+ * @param length - Length of data byte array to read
+ * @param stop - Stop bit
+ * 
+ * @return Number of read bytes
+ * 
+*******************************************************************************/
+uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char length, unsigned char stop)
+{
+    Wire.requestFrom(address, length, stop);
+    
+    uint8_t i = 0;
+    
+    //Serial.print(F("Wire Reading Data: "));
+    while(Wire.available())
+    {
+        data[i] = Wire.read();
+        //Serial.print(data[i]);
+        i++;
+    }
+    //Serial.println("");
+    
+    return i;
 }
