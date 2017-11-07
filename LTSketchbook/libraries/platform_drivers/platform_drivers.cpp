@@ -57,6 +57,7 @@ int32_t i2c_init(i2c_device *dev)
 {
 	if(dev) {
 		// Unused variable - fix compiler warning
+		Wire_Connect();
 	}
 
 	return SUCCESS;
@@ -77,7 +78,7 @@ int32_t i2c_write(i2c_device *dev,
 		  uint8_t bytes_number,
 		  uint8_t stop_bit)
 {
-	if(dev) {
+	/*if(dev) {
 		// Unused variable - fix compiler warning
 	}
 
@@ -91,9 +92,11 @@ int32_t i2c_write(i2c_device *dev,
 
 	if(stop_bit) {
 		// Unused variable - fix compiler warning
-	}
+	}*/
 
-	return SUCCESS;
+	return Wire_Write(dev->slave_address, data, bytes_number, stop_bit);
+
+	//return SUCCESS;
 }
 
 /**
@@ -111,7 +114,9 @@ int32_t i2c_read(i2c_device *dev,
 		 uint8_t bytes_number,
 		 uint8_t stop_bit)
 {
-	if(dev) {
+	return Wire_Read(dev->slave_address, data, bytes_number, stop_bit);
+
+	/*if(dev) {
 		// Unused variable - fix compiler warning
 	}
 
@@ -127,7 +132,7 @@ int32_t i2c_read(i2c_device *dev,
 		// Unused variable - fix compiler warning
 	}
 
-	return SUCCESS;
+	return SUCCESS;*/
 }
 
 /**

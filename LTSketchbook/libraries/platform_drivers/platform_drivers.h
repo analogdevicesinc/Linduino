@@ -40,6 +40,11 @@
 #ifndef PLATFORM_DRIVERS_H_
 #define PLATFORM_DRIVERS_H_
 
+// Our platform driver needs to be C-compatible to work with the drivers
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
 /******************************************************************************/
@@ -166,5 +171,8 @@ uint8_t Wire_Write(unsigned char address, unsigned char* data, unsigned char len
 /*! Read I2C */
 uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char length, unsigned char stop);
 
+#ifdef __cplusplus // Closing extern c
+}
+#endif
 
 #endif // PLATFORM_DRIVERS_H_
