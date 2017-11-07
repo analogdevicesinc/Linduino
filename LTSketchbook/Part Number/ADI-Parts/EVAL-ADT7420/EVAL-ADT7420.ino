@@ -59,7 +59,7 @@ void loop()
             break;
     
         case 3:
-            //menu_3_set_op_mode();
+            menu_3_set_op_mode();
             break;
     
         case 4:
@@ -136,6 +136,44 @@ uint8_t menu_2_set_resolution()
 
     //EEPROM.write(64, 1);
     //EEPROM.write(65, new_res);
+
+    return 0;
+}
+
+uint8_t menu_3_set_op_mode()
+{
+    Serial.println(F("  Available operation modes:"));
+    Serial.println(F("    1- Continuous conversion mode (default)"));
+    Serial.println(F("    2- One-shot mode"));
+    Serial.println(F("    3- 1 SPS mode"));
+    Serial.println(F("    4- Shutdown"));
+    Serial.print(F("  Select a mode: "));
+
+    uint8_t new_mode = read_int();
+    Serial.println(new_mode);
+
+    switch (new_mode)
+    {
+    case 1:
+        adt7420_set_operation_mode(device, ADT7420_OP_MODE_CONT_CONV);
+        break;
+
+    case 2:
+        adt7420_set_operation_mode(device, ADT7420_OP_MODE_ONE_SHOT);
+        break;
+
+    case 3:
+        adt7420_set_operation_mode(device, ADT7420_OP_MODE_1_SPS);
+        break;
+
+    case 4:
+        adt7420_set_operation_mode(device, ADT7420_OP_MODE_SHUTDOWN);
+        break;
+
+    default:
+        Serial.println(F("Invalid option"));
+        break;
+    }
 
     return 0;
 }
