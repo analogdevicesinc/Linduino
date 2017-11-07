@@ -20,15 +20,23 @@ adt7420_dev * device;
 
 void setup()
 {
-    //int32_t ret = adt7420_init(&device, init_params);
     Serial.begin(115200);
-    Serial.println("Foobar");
+    Serial.println("Welcome to the new ADT7420 testing thingy");
 
-    int32_t ret = i2c_init(nullptr);   
+    int32_t ret = adt7420_init(&device, init_params);
 
-    Serial.println(ret);
+    if(ret != SUCCESS)
+    {
+        Serial.println("Connection to device failed :(");
+    }
+    else
+    {
+        Serial.println("Connection to device succeeded!");
 
-    //Serial.println(ret);
+        float temp = adt7420_get_temperature(device);
+        Serial.print("Current temp is: ");
+        Serial.println(temp);
+    }
 }
 
 void loop()
