@@ -171,6 +171,25 @@ uint8_t Wire_Write(unsigned char address, unsigned char* data, unsigned char len
 /*! Read I2C */
 uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char length, unsigned char stop);
 
+/*************************
+ * Linduino SPI functions for ADI use:
+ * These functions are derived from functions in LT_SPI and modified
+ * to work on ADI parts. They are copied here so we don't have to
+ * depend on the LT_SPI library to avoid naming conflicts.
+ */
+ 
+/*! Enable SPI, matches spi_enable */
+void Lin_SPI_Enable();
+
+/*! Initialize SPI, matches spi_init */
+void Lin_SPI_Init();
+
+/*! Connect to SPI, matches quikeval_spi_connect */
+void Lin_SPI_Connect();
+
+/*! Transfer block of SPI data, matches spi_transfer_block */
+void Lin_SPI_Transfer_Block(uint8_t cs_pin, uint8_t *tx, uint8_t *rx, uint8_t length);
+
 #ifdef __cplusplus // Closing extern c
 }
 #endif

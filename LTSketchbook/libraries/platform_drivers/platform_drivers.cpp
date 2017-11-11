@@ -41,6 +41,8 @@
 /***************************** Include Files **********************************/
 /******************************************************************************/
 #include <stdint.h>
+#include <Linduino.h>
+#include <SPI.h>
 #include <Wire.h>
 #include "platform_drivers.h"
 
@@ -142,9 +144,11 @@ int32_t i2c_read(i2c_device *dev,
  */
 int32_t spi_init(spi_device *dev)
 {
-	if(dev) {
-		// Unused variable - fix compiler warning
-	}
+	// @TODO fix this, shouldn't be hardcoded, need to get info from *dev
+	SPI.setDataMode(SPI_MODE3);
+
+	Lin_SPI_Init();
+	Lin_SPI_Connect();
 
 	return SUCCESS;
 }
@@ -160,19 +164,29 @@ int32_t spi_write_and_read(spi_device *dev,
 			   uint8_t *data,
 			   uint8_t bytes_number)
 {
-	if(dev) {
-		// Unused variable - fix compiler warning
-	}
+	uint8_t id = dev->chip_select;
+	uint8_t tx[bytes_number];
+	uint8_t rx[bytes_number];
 
-	if(data) {
-		// Unused variable - fix compiler warning
-	}
+	/*for(int i = 0; i < bytes_number; i++)
+	{
+		uint8_t inverse_i = (bytes_number - i - 1);
+		tx[i] = data[i];
+		data[i] = 0;
+	}*/
 
-	if(bytes_number) {
-		// Unused variable - fix compiler warning
-	}
+	// @TODO make this work with any bytesnumber, not just 3
+	tx[0] = data[2];
+	tx[1] = data[1];
+	tx[2] = data[0];
 
-	return 0;
+	Lin_SPI_Transfer_Block(id, tx, rx, bytes_number);
+
+	data[0] = rx[2];
+    data[1] = rx[1];
+    data[2] = rx[0];
+
+	return SUCCESS;
 }
 
 /**
@@ -202,17 +216,7 @@ int32_t gpio_set_direction(gpio_device *dev,
 			  uint8_t gpio_num,
 			  uint8_t direction)
 {
-	if(dev) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(gpio_num) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(direction) {
-		// Unused variable - fix compiler warning
-	}
+	pinMode(gpio_num, direction);
 
 	return 0;
 }
@@ -258,17 +262,7 @@ int32_t gpio_set_value(gpio_device *dev,
 		       uint8_t gpio_num,
 		       uint8_t value)
 {
-	if(dev) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(gpio_num) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(value) {
-		// Unused variable - fix compiler warning
-	}
+	digitalWrite(gpio_num, value);
 
 	return 0;
 }
@@ -286,17 +280,8 @@ int32_t gpio_get_value(gpio_device *dev,
 		       uint8_t gpio_num,
 		       uint8_t *value)
 {
-	if(dev) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(gpio_num) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(value) {
-		// Unused variable - fix compiler warning
-	}
+	uint8_t ret = digitalRead(gpio_num);
+	value = &ret;
 
 	return 0;
 }
@@ -309,7 +294,7 @@ int32_t gpio_get_value(gpio_device *dev,
 void mdelay(uint32_t msecs)
 {
 	if(msecs) {
-		// Unused variable - fix compiler warning
+		delay(msecs);
 	}
 }
 
@@ -385,4 +370,67 @@ uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char leng
     //Serial.println("");
     
     return i;
+}
+
+/***************************************************************************************************
+ * *************************************************************************************************
+ * LINDUINO SPI FUNCTIONS
+ */
+
+/***************************************************************************/ /**
+ * @brief Enables SPI.
+ *
+ * @param spi_clock_divider - The ID of the selected slave device.
+ * 
+*******************************************************************************/
+void Lin_SPI_Enable(uint8_t spi_clock_divider)
+{
+    SPI.begin();
+    SPI.setClockDivider(spi_clock_divider);
+}
+
+/***************************************************************************/ /**
+ * @brief Initializes SPI on the Linduino.
+ * 
+*******************************************************************************/
+void Lin_SPI_Init(void)
+{
+    Lin_SPI_Enable(SPI_CLOCK_DIV16); //! 1) Configure the spi port for 4MHz SCK
+}
+
+/***************************************************************************/ /**
+ * @brief Connect SPI pins to QuikEval connector through the Linduino MUX.
+ *        This will disconnect I2C.
+ * 
+*******************************************************************************/
+void Lin_SPI_Connect()
+{
+    output_high(QUIKEVAL_CS); //! 1) Pull Chip Select High
+
+    //! 2) Enable Main SPI
+    pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);
+    digitalWrite(QUIKEVAL_MUX_MODE_PIN, LOW);
+}
+
+/***************************************************************************/ /**
+ * @brief Reads and sends a byte array.
+ *
+ * @param cs_pin - Chipselect pin
+ * @param tx - Byte array to transfer/send
+ * @param rx - Byte array returned by device
+ * @param length - length of tx array
+ *
+*******************************************************************************/
+void Lin_SPI_Transfer_Block(uint8_t cs_pin, uint8_t *tx, uint8_t *rx, uint8_t length)
+{
+    int8_t i;
+
+    output_low(cs_pin); //! 1) Pull CS low
+
+    for (i = length; i > 0; i--)
+    {
+        rx[i - 1] = SPI.transfer(tx[i - 1]); //! 2) Read and send byte array
+    }
+
+    output_high(cs_pin); //! 3) Pull CS high
 }
