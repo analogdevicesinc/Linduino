@@ -168,23 +168,34 @@ int32_t spi_write_and_read(spi_device *dev,
 	uint8_t tx[bytes_number];
 	uint8_t rx[bytes_number];
 
-	/*for(int i = 0; i < bytes_number; i++)
-	{
-		uint8_t inverse_i = (bytes_number - i - 1);
-		tx[i] = data[i];
-		data[i] = 0;
-	}*/
+	uint8_t max_index = bytes_number - 1;
 
-	// @TODO make this work with any bytesnumber, not just 3
+	for(int i = 0; i < bytes_number; i++)
+	{
+		uint8_t inverse_i = max_index - i;
+		tx[i] = data[inverse_i];
+	}
+	/*
 	tx[0] = data[2];
 	tx[1] = data[1];
-	tx[2] = data[0];
+	tx[2] = data[0];*/
+
+	Serial.print(F("Data: "));
+	Serial.print(tx[0], HEX);
+	Serial.print(tx[1], HEX);
+	Serial.println(tx[2], HEX);
 
 	Lin_SPI_Transfer_Block(id, tx, rx, bytes_number);
 
+	for(int i = 0; i < bytes_number; i++)
+	{
+		uint8_t inverse_i = max_index - i;
+		data[i] = rx[inverse_i];
+	}
+	/*
 	data[0] = rx[2];
     data[1] = rx[1];
-    data[2] = rx[0];
+    data[2] = rx[0];*/
 
 	return SUCCESS;
 }
