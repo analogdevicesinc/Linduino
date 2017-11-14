@@ -130,11 +130,11 @@ void loop()
     case 4:
         menu_4_write_and_update_dac(selected_dac, ref_voltage);
         break;
-        /*
+        
     case 5:
         menu_5_power_up_down_DAC(selected_dac);
         break;
-        
+        /*
     case 6:
         menu_6_select_ref_voltage(&ref_voltage);
         break;
@@ -293,7 +293,7 @@ uint8_t menu_4_write_and_update_dac(int16_t selected_dac, float vref) //!< DAC t
     return (0);
 }
 
-/*
+
 uint8_t menu_5_power_up_down_DAC(int16_t selected_dac)
 {
     // Cancel if no DAC selected
@@ -356,28 +356,28 @@ uint8_t menu_5_power_up_down_DAC(int16_t selected_dac)
     if(dac1)
     {
         Serial.println(F("  Applying power mode to DAC A..."));
-        AD5686_PowerMode(AD5686_CH_A, selected_mode);
+        ad5686_power_mode(device, AD5686_CH_A, selected_mode);
     }
     if(dac2)
     {
         Serial.println(F("  Applying power mode to DAC B..."));
-        AD5686_PowerMode(AD5686_CH_B, selected_mode);
+        ad5686_power_mode(device, AD5686_CH_B, selected_mode);
     }
     if(dac3)
     {
         Serial.println(F("  Applying power mode to DAC C..."));
-        AD5686_PowerMode(AD5686_CH_C, selected_mode);
+        ad5686_power_mode(device, AD5686_CH_C, selected_mode);
     }
     if(dac4)
     {
         Serial.println(F("  Applying power mode to DAC D..."));
-        AD5686_PowerMode(AD5686_CH_D, selected_mode);
+        ad5686_power_mode(device, AD5686_CH_D, selected_mode);
     }
     
     Serial.println(F("  Done!"));
     return 0;
 }
-
+/*
 // Select reference voltage
 uint8_t menu_6_select_ref_voltage(float * vref)
 {
