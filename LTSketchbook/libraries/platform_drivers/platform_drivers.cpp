@@ -117,24 +117,6 @@ int32_t i2c_read(i2c_device *dev,
 		 uint8_t stop_bit)
 {
 	return Wire_Read(dev->slave_address, data, bytes_number, stop_bit);
-
-	/*if(dev) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(data) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(bytes_number) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(stop_bit) {
-		// Unused variable - fix compiler warning
-	}
-
-	return SUCCESS;*/
 }
 
 /**
@@ -145,7 +127,7 @@ int32_t i2c_read(i2c_device *dev,
 int32_t spi_init(spi_device *dev)
 {
 	// @TODO fix this, shouldn't be hardcoded, need to get info from *dev
-	SPI.setDataMode(SPI_MODE3);
+	SPI.setDataMode(arduino_spi_modes[dev->mode]);
 
 	Lin_SPI_Init();
 	Lin_SPI_Connect();
@@ -164,6 +146,8 @@ int32_t spi_write_and_read(spi_device *dev,
 			   uint8_t *data,
 			   uint8_t bytes_number)
 {
+	//SPI.setDataMode(SPI_MODE1);
+
 	uint8_t id = dev->chip_select;
 	uint8_t tx[bytes_number];
 	uint8_t rx[bytes_number];
@@ -173,14 +157,14 @@ int32_t spi_write_and_read(spi_device *dev,
 	for(int i = 0; i < bytes_number; i++)
 	{
 		uint8_t inverse_i = max_index - i;
-		tx[i] = data[inverse_i];
+		tx[i] = data[i];// data[inverse_i];
 	}
 	/*
 	tx[0] = data[2];
 	tx[1] = data[1];
 	tx[2] = data[0];*/
 
-	Serial.print(F("Data: "));
+	Serial.print(F("SPI writing: "));
 	Serial.print(tx[0], HEX);
 	Serial.print(tx[1], HEX);
 	Serial.println(tx[2], HEX);
@@ -211,7 +195,7 @@ int32_t gpio_init(gpio_device *dev)
 		// Unused variable - fix compiler warning
 	}
 
-	return 0;
+	return SUCCESS;
 }
 
 /**
@@ -438,9 +422,10 @@ void Lin_SPI_Transfer_Block(uint8_t cs_pin, uint8_t *tx, uint8_t *rx, uint8_t le
 
     output_low(cs_pin); //! 1) Pull CS low
 
-    for (i = length; i > 0; i--)
+	//for (i = length; i > 0; i--)
+	for (i = 0; i < length; i++)
     {
-        rx[i - 1] = SPI.transfer(tx[i - 1]); //! 2) Read and send byte array
+        rx[i] = SPI.transfer(tx[i]); //! 2) Read and send byte array
     }
 
     output_high(cs_pin); //! 3) Pull CS high

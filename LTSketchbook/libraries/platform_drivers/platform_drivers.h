@@ -87,6 +87,14 @@ typedef enum {
 	SPI_MODE_3 = (SPI_CPOL | SPI_CPHA)
 } spi_mode;
 
+// Converts 1-3 into arduino SPI codes
+const uint8_t arduino_spi_modes[4] = {
+	0x00, //SPI_MODE0
+	0x04, //SPI_MODE1
+	0x08, //SPI_MODE2
+	0x0C  //SPI_MODE3
+};
+
 typedef struct {
 	spi_type	type;
 	uint32_t	id;

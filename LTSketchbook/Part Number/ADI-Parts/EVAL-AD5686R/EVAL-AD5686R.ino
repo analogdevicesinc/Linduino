@@ -8,6 +8,7 @@ extern "C" {
     #include <ad5686.h>
 };
 
+
 /******************************************************************************/
 /************************** Variables Declarations ****************************/
 /******************************************************************************/
@@ -39,13 +40,13 @@ ad5686_init_param init_params = {
     0,              // I2C slave address
     GENERIC_SPI,    // SPI type
     QUIKEVAL_CS,    // SPI id
-    1000000,        // SPI max speed (hz)
-    SPI_MODE_3,     // SPI mode
+    45000000,        // SPI max speed (hz)
+    SPI_MODE_1,     // SPI mode
     QUIKEVAL_CS,    // SPI chipselect
     GENERIC_GPIO,   // GPIO type
     0,              // GPIO id
-    0,              // GPIO reset
-    0,              // GPIO LDAC
+    4,              // GPIO reset pin
+    5,              // GPIO LDAC pin
     ID_AD5686R,     // Device type
 };
 
@@ -66,23 +67,37 @@ void setup()
     Serial.print("Initialized, ");
     Serial.println(ret);
 
-    ad5686_write_update_register(device, AD5686_CH_A, 0x1200);
+    // Set GAIN high
+    gpio_set_value(&device->gpio_dev, 2, GPIO_HIGH);
 
-    uint8_t result = ad5686_read_back_register(device, AD5686_CH_A);
-    Serial.println(result, HEX);
-
-    // Pull LDAC high so we can write to registers without updating
-    //AD5686_LDAC_HIGH;
+    // Set LDAC high so we can write to registers without updating
+    gpio_set_value(&device->gpio_dev, 5, GPIO_HIGH);
     
-    //print_title();
+    print_title();
 }
 
 void loop()
-{   
-    ad5686_write_update_register(device, AD5686_CH_A, 0x8001);
-    delay(1);
-    ad5686_write_update_register(device, AD5686_CH_A, 0xF0F0);
-    delay(1);
+{
+
+    /*float fvoltage = 1.24;
+    uint16_t voltage = voltage_to_code(fvoltage, 2.5);
+
+    Serial.print(F("Converting "));
+    Serial.print(fvoltage);
+    Serial.print(F(" to "));
+    Serial.println(voltage, HEX);
+
+    ad5686_write_update_register(device, AD5686_CH_A, voltage);
+
+    delay(900);
+
+    //uint8_t result = ad5686_read_back_register(device, AD5686_CH_A);
+    //Serial.print("Readback of register: ");
+    //Serial.println(result, HEX);
+
+    delay(100);*/
+    //ad5686_write_update_register(device, AD5686_CH_ALL, 0xF0F0);
+    //delay(1000);
     // DAC(s) to perform actions on
     // Binarily represents which are selected with bits arranged like so: DCBA
     // Examples:
@@ -90,7 +105,7 @@ void loop()
     //   1010 = B & D
     //   1101 = A, C & D
     //   1111 = All
-    /*static int16_t selected_dac = 1;
+    static int16_t selected_dac = 1;
     static float ref_voltage = 2.5;
 
     // Switch menu based on user's input
@@ -115,7 +130,7 @@ void loop()
     case 4:
         menu_4_write_and_update_dac(selected_dac, ref_voltage);
         break;
-        
+        /*
     case 5:
         menu_5_power_up_down_DAC(selected_dac);
         break;
@@ -147,14 +162,26 @@ void loop()
     case 12:
         menu_12_assert_hard_reset();
         break;
-
+*/
     default:
         Serial.println("Incorrect Option");
         break;
-    }*/
+    }
 }
 
-/*
+// Convert voltage float to code the DAC understands
+uint16_t voltage_to_code(float voltage, float vRef)
+{
+    if(1 > 0) // Replace 1 with gain state
+    {
+        vRef *= 2;
+    }
+    
+    uint32_t max_code = ((uint32_t)1 << 16)-1; //
+    return (unsigned short)(voltage * (float)max_code / vRef); // 5 is vRef*2 because of GAIN
+}
+
+
 //! Prints the title block
 void print_title()
 {
@@ -239,7 +266,7 @@ uint8_t menu_2_write_to_input_register(int16_t selected_dac, float vref) //!< DA
 {
     unsigned short vdata = get_voltage_code(vref);
     
-    AD5686_WriteRegister(selected_dac, vdata);
+    ad5686_write_register(device, selected_dac, vdata);
 
     return 0;
 }
@@ -248,7 +275,7 @@ uint8_t menu_2_write_to_input_register(int16_t selected_dac, float vref) //!< DA
 uint8_t menu_3_update_dac(int16_t selected_dac)
 {
     //AD568X_WriteFunction(AD568X_CMD_UPDATE_DAC_N, selected_dac, 0);
-    AD5686_UpdateRegister(selected_dac);
+    ad5686_update_register(device, selected_dac);
     Serial.println(F("  Updated DAC(s)"));
     
     return 0;
@@ -261,11 +288,12 @@ uint8_t menu_4_write_and_update_dac(int16_t selected_dac, float vref) //!< DAC t
 {
     unsigned short vdata = get_voltage_code(vref);
 
-    AD5686_WriteUpdateRegister(selected_dac, vdata);
+    ad5686_write_update_register(device, selected_dac, vdata);
 
     return (0);
 }
 
+/*
 uint8_t menu_5_power_up_down_DAC(int16_t selected_dac)
 {
     // Cancel if no DAC selected
@@ -495,7 +523,7 @@ uint16_t voltage_to_code(float voltage, float vRef)
     
     uint32_t max_code = ((uint32_t)1 << 16)-1; //
     return (unsigned short)(voltage * (float)max_code / vRef); // 5 is vRef*2 because of GAIN
-}
+}*/
 
 // Gets a voltage from the user and converts it to the code the DAC understands
 uint16_t get_voltage_code(float vRef)
@@ -516,5 +544,3 @@ float get_voltage_float() //@TODO the arguments don't do anything, should remove
     Serial.flush();
     return dac_voltage;
 }
-
-*/
