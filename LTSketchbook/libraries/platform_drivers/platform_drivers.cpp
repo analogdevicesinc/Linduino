@@ -52,14 +52,27 @@
 
 /**
  * @brief Initialize the I2C communication peripheral.
- * @param dev - The device structure.
+ * @param desc - The I2C descriptor.
+ * @param init_param - The structure that contains the I2C parameters.
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t i2c_init(i2c_device *dev)
+int32_t i2c_init(i2c_desc **desc,
+		 i2c_init_param param)
 {
-	if(dev) {
+	Wire_Connect();
+	
+	return SUCCESS;
+}
+
+/**
+ * @brief Free the resources allocated by i2c_init().
+ * @param desc - The I2C descriptor.
+ * @return SUCCESS in case of success, FAILURE otherwise.
+ */
+int32_t i2c_remove(i2c_desc *desc)
+{
+	if (desc) {
 		// Unused variable - fix compiler warning
-		Wire_Connect();
 	}
 
 	return SUCCESS;
@@ -67,7 +80,7 @@ int32_t i2c_init(i2c_device *dev)
 
 /**
  * @brief Write data to a slave device.
- * @param dev - The device structure.
+ * @param desc - The I2C descriptor.
  * @param data - Buffer that stores the transmission data.
  * @param bytes_number - Number of bytes to write.
  * @param stop_bit - Stop condition control.
@@ -75,35 +88,17 @@ int32_t i2c_init(i2c_device *dev)
  *                            1 - A stop condition will be generated.
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t i2c_write(i2c_device *dev,
+int32_t i2c_write(i2c_desc *desc,
 		  uint8_t *data,
 		  uint8_t bytes_number,
 		  uint8_t stop_bit)
 {
-	/*if(dev) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(data) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(bytes_number) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(stop_bit) {
-		// Unused variable - fix compiler warning
-	}*/
-
-	return Wire_Write(dev->slave_address, data, bytes_number, stop_bit);
-
-	//return SUCCESS;
+	return Wire_Write(desc->slave_address, data, bytes_number, stop_bit);
 }
 
 /**
  * @brief Read data from a slave device.
- * @param dev - The device structure.
+ * @param desc - The I2C descriptor.
  * @param data - Buffer that will store the received data.
  * @param bytes_number - Number of bytes to read.
  * @param stop_bit - Stop condition control.
@@ -111,23 +106,24 @@ int32_t i2c_write(i2c_device *dev,
  *                            1 - A stop condition will be generated.
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t i2c_read(i2c_device *dev,
+int32_t i2c_read(i2c_desc *desc,
 		 uint8_t *data,
 		 uint8_t bytes_number,
 		 uint8_t stop_bit)
 {
-	return Wire_Read(dev->slave_address, data, bytes_number, stop_bit);
+	return Wire_Read(desc->slave_address, data, bytes_number, stop_bit);
 }
 
 /**
  * @brief Initialize the SPI communication peripheral.
- * @param dev - The device structure.
+ * @param desc - The SPI descriptor.
+ * @param init_param - The structure that contains the SPI parameters.
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t spi_init(spi_device *dev)
+int32_t spi_init(spi_desc **desc,
+		 spi_init_param param)
 {
-	// @TODO fix this, shouldn't be hardcoded, need to get info from *dev
-	SPI.setDataMode(arduino_spi_modes[dev->mode]);
+	SPI.setDataMode(arduino_spi_modes[param.mode]);
 
 	Lin_SPI_Init();
 	Lin_SPI_Connect();
@@ -136,33 +132,42 @@ int32_t spi_init(spi_device *dev)
 }
 
 /**
+ * @brief Free the resources allocated by spi_init().
+ * @param desc - The SPI descriptor.
+ * @return SUCCESS in case of success, FAILURE otherwise.
+ */
+int32_t spi_remove(spi_desc *desc)
+{
+	if (desc) {
+		// Unused variable - fix compiler warning
+	}
+
+	return SUCCESS;
+}
+
+/**
  * @brief Write and read data to/from SPI.
- * @param dev - The device structure.
+ * @param desc - The SPI descriptor.
  * @param data - The buffer with the transmitted/received data.
  * @param bytes_number - Number of bytes to write/read.
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t spi_write_and_read(spi_device *dev,
+int32_t spi_write_and_read(spi_desc *desc,
 			   uint8_t *data,
 			   uint8_t bytes_number)
 {
-	//SPI.setDataMode(SPI_MODE1);
-
-	uint8_t id = dev->chip_select;
+	uint8_t id = desc->chip_select;
 	uint8_t tx[bytes_number];
 	uint8_t rx[bytes_number];
 
 	uint8_t max_index = bytes_number - 1;
 
+	// Invert order of bytes
 	for(int i = 0; i < bytes_number; i++)
 	{
 		uint8_t inverse_i = max_index - i;
 		tx[i] = data[i];// data[inverse_i];
 	}
-	/*
-	tx[0] = data[2];
-	tx[1] = data[1];
-	tx[2] = data[0];*/
 
 	Serial.print(F("SPI writing: "));
 	Serial.print(tx[0], HEX);
@@ -171,73 +176,94 @@ int32_t spi_write_and_read(spi_device *dev,
 
 	Lin_SPI_Transfer_Block(id, tx, rx, bytes_number);
 
+	// Invert returned order of bytes
 	for(int i = 0; i < bytes_number; i++)
 	{
 		uint8_t inverse_i = max_index - i;
-		data[i] = rx[inverse_i];
+		data[i] = rx[i];
 	}
-	/*
-	data[0] = rx[2];
-    data[1] = rx[1];
-    data[2] = rx[0];*/
 
 	return SUCCESS;
 }
 
 /**
- * @brief Initialize the GPIO controller.
- * @param dev - The device structure.
+ * @brief Obtain the GPIO decriptor.
+ * @param desc - The GPIO descriptor.
+ * @param gpio_number - The number of the GPIO.
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t gpio_init(gpio_device *dev)
+int32_t gpio_get(gpio_desc **desc,
+		 uint8_t gpio_number)
 {
-	if(dev) {
+	if (desc) {
 		// Unused variable - fix compiler warning
 	}
 
-	return SUCCESS;
-}
-
-/**
- * @brief Set the direction of the specified GPIO.
- * @param dev - The device structure.
- * @param gpio_num - The GPIO number.
- * @param direction - The direction.
- *                    Example: GPIO_OUT
- *                             GPIO_IN
- * @return SUCCESS in case of success, FAILURE otherwise.
- */
-int32_t gpio_set_direction(gpio_device *dev,
-			  uint8_t gpio_num,
-			  uint8_t direction)
-{
-	pinMode(gpio_num, direction);
+	if (gpio_number) {
+		// Unused variable - fix compiler warning
+	}
 
 	return 0;
 }
 
 /**
+ * @brief Free the resources allocated by gpio_get().
+ * @param desc - The SPI descriptor.
+ * @return SUCCESS in case of success, FAILURE otherwise.
+ */
+int32_t gpio_remove(gpio_desc *desc)
+{
+	if (desc) {
+		// Unused variable - fix compiler warning
+	}
+
+	return SUCCESS;
+}
+
+/**
+ * @brief Enable the input direction of the specified GPIO.
+ * @param desc - The GPIO descriptor.
+ * @return SUCCESS in case of success, FAILURE otherwise.
+ */
+int32_t gpio_direction_input(gpio_desc *desc)
+{
+	pinMode(desc->number, GPIO_IN);
+
+	return SUCCESS;
+}
+
+/**
+ * @brief Enable the output direction of the specified GPIO.
+ * @param desc - The GPIO descriptor.
+ * @param value - The value.
+ *                Example: GPIO_HIGH
+ *                         GPIO_LOW
+ * @return SUCCESS in case of success, FAILURE otherwise.
+ */
+int32_t gpio_direction_output(gpio_desc *desc,
+			      uint8_t value)
+{
+	pinMode(desc->number, GPIO_OUT);
+
+	return SUCCESS;
+}
+
+/**
  * @brief Get the direction of the specified GPIO.
- * @param dev - The device structure.
- * @param gpio_num - The GPIO number.
+ * @param desc - The GPIO descriptor.
  * @param direction - The direction.
  *                    Example: GPIO_OUT
  *                             GPIO_IN
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t gpio_get_direction(gpio_device *dev,
-			  uint8_t gpio_num,
-			  uint8_t *direction)
+int32_t gpio_get_direction(gpio_desc *desc,
+			   uint8_t *direction)
 {
-	if(dev) {
+	if (desc) {
 		// Unused variable - fix compiler warning
 	}
 
-	if(gpio_num) {
-		// Unused variable - fix compiler warning
-	}
-
-	if(direction) {
+	if (direction) {
 		// Unused variable - fix compiler warning
 	}
 
@@ -246,39 +272,35 @@ int32_t gpio_get_direction(gpio_device *dev,
 
 /**
  * @brief Set the value of the specified GPIO.
- * @param dev - The device structure.
- * @param gpio_num - The GPIO number.
+ * @param desc - The GPIO descriptor.
  * @param value - The value.
  *                Example: GPIO_HIGH
  *                         GPIO_LOW
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t gpio_set_value(gpio_device *dev,
-		       uint8_t gpio_num,
+int32_t gpio_set_value(gpio_desc *desc,
 		       uint8_t value)
 {
-	digitalWrite(gpio_num, value);
+	digitalWrite(desc->number, value);
 
 	return 0;
 }
 
 /**
  * @brief Get the value of the specified GPIO.
- * @param dev - The device structure.
- * @param gpio_num - The GPIO number.
+ * @param desc - The GPIO descriptor.
  * @param value - The value.
  *                Example: GPIO_HIGH
  *                         GPIO_LOW
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
-int32_t gpio_get_value(gpio_device *dev,
-		       uint8_t gpio_num,
+int32_t gpio_get_value(gpio_desc *desc,
 		       uint8_t *value)
 {
-	uint8_t ret = digitalRead(gpio_num);
+	uint8_t ret = digitalRead(desc->number);
 	value = &ret;
 
-	return 0;
+	return SUCCESS;
 }
 
 /**
@@ -288,11 +310,10 @@ int32_t gpio_get_value(gpio_device *dev,
  */
 void mdelay(uint32_t msecs)
 {
-	if(msecs) {
+	if (msecs) {
 		delay(msecs);
 	}
 }
-
 
 /***************************************************************************************************
  * *************************************************************************************************

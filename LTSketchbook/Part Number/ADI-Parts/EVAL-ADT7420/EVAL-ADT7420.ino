@@ -8,11 +8,15 @@ extern "C" {
 #include "adt7420.h"
 };
 
-adt7420_init_param init_params = {
+i2c_init_param i2c_params = {
     GENERIC_I2C,    // i2c type
     0,              // i2c id
     100000,         // i2c max speed (hz)
     0x48,           // i2c slave address
+};
+
+adt7420_init_param init_params = {
+    i2c_params,     // i2c parameters
     0,              // resolution setting
 };
 
