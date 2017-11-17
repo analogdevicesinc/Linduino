@@ -58,6 +58,12 @@ ad5686_init_param init_params = {
 
 ad5686_dev * device;
 
+gpio_desc gpio_gain = {
+    GENERIC_GPIO,
+    0,
+    2,
+};
+
 void setup()
 {
     char demo_name[] = "AD5686R";
@@ -74,11 +80,6 @@ void setup()
     Serial.println(ret);
 
     // Set GAIN high
-    gpio_desc gpio_gain = {
-        GENERIC_GPIO,
-        0,
-        2,
-    };
     gpio_set_value(&gpio_gain, GPIO_HIGH);
 
     // Set LDAC high so we can write to registers without updating
@@ -184,7 +185,7 @@ void loop()
 uint16_t voltage_to_code(float voltage, float vRef)
 {
     uint8_t gain_state;
-    //gpio_get_value(&device->gpio_dev, 2, &gain_state);
+    gpio_get_value(&gpio_gain, &gain_state);
 
     Serial.print("GAIN STATE: ");
     Serial.println(gain_state);

@@ -123,6 +123,15 @@ int32_t i2c_read(i2c_desc *desc,
 int32_t spi_init(spi_desc **desc,
 		 spi_init_param param)
 {
+	// Create the spi description object for the device
+	spi_desc * new_desc = (spi_desc*) malloc(sizeof(*new_desc));
+	new_desc->chip_select = param.chip_select;
+	new_desc->mode = param.mode;
+	new_desc->max_speed_hz = param.max_speed_hz;
+	
+	*desc = new_desc;
+
+	// Set data mode
 	SPI.setDataMode(arduino_spi_modes[param.mode]);
 
 	Lin_SPI_Init();
@@ -156,17 +165,17 @@ int32_t spi_write_and_read(spi_desc *desc,
 			   uint8_t *data,
 			   uint8_t bytes_number)
 {
+	// Set chip select
 	uint8_t id = desc->chip_select;
+	
+	// transfer & read arrays
 	uint8_t tx[bytes_number];
 	uint8_t rx[bytes_number];
-
-	uint8_t max_index = bytes_number - 1;
-
-	// Invert order of bytes
+	
+	// Copy data to tx
 	for(int i = 0; i < bytes_number; i++)
 	{
-		uint8_t inverse_i = max_index - i;
-		tx[i] = data[i];// data[inverse_i];
+		tx[i] = data[i];
 	}
 
 	Serial.print(F("SPI writing: "));
@@ -176,10 +185,9 @@ int32_t spi_write_and_read(spi_desc *desc,
 
 	Lin_SPI_Transfer_Block(id, tx, rx, bytes_number);
 
-	// Invert returned order of bytes
+	// Copy rx back into data
 	for(int i = 0; i < bytes_number; i++)
 	{
-		uint8_t inverse_i = max_index - i;
 		data[i] = rx[i];
 	}
 
@@ -195,13 +203,12 @@ int32_t spi_write_and_read(spi_desc *desc,
 int32_t gpio_get(gpio_desc **desc,
 		 uint8_t gpio_number)
 {
-	if (desc) {
-		// Unused variable - fix compiler warning
-	}
+	gpio_desc * new_gpio = new gpio_desc;
+	new_gpio->type = GENERIC_GPIO;
+	new_gpio->id = 0;
+	new_gpio->number = gpio_number;
 
-	if (gpio_number) {
-		// Unused variable - fix compiler warning
-	}
+	*desc = new_gpio;
 
 	return 0;
 }
@@ -244,6 +251,7 @@ int32_t gpio_direction_output(gpio_desc *desc,
 			      uint8_t value)
 {
 	pinMode(desc->number, GPIO_OUT);
+	digitalWrite(desc->number, value);
 
 	return SUCCESS;
 }
@@ -298,7 +306,7 @@ int32_t gpio_get_value(gpio_desc *desc,
 		       uint8_t *value)
 {
 	uint8_t ret = digitalRead(desc->number);
-	value = &ret;
+	*value = ret;
 
 	return SUCCESS;
 }
