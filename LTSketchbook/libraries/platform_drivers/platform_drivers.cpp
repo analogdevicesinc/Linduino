@@ -187,10 +187,13 @@ int32_t spi_write_and_read(spi_desc *desc,
 		tx[i] = data[i];
 	}
 
-	Serial.print(F("SPI writing: "));
-	Serial.print(tx[0], HEX);
-	Serial.print(tx[1], HEX);
-	Serial.println(tx[2], HEX);
+	if(false)
+	{
+		Serial.print(F("SPI writing: "));
+		Serial.print(tx[0], HEX);
+		Serial.print(tx[1], HEX);
+		Serial.println(tx[2], HEX);
+	}
 
 	Lin_SPI_Transfer_Block(id, tx, rx, bytes_number);
 
@@ -393,14 +396,11 @@ uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char leng
     
     uint8_t i = 0;
     
-    //Serial.print(F("Wire Reading Data: "));
     while(Wire.available())
     {
         data[i] = Wire.read();
-        //Serial.print(data[i]);
         i++;
     }
-    //Serial.println("");
     
     return i;
 }
