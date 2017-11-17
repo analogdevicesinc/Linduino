@@ -90,26 +90,6 @@ void setup()
 
 void loop()
 {
-
-    /*float fvoltage = 1.24;
-    uint16_t voltage = voltage_to_code(fvoltage, 2.5);
-
-    Serial.print(F("Converting "));
-    Serial.print(fvoltage);
-    Serial.print(F(" to "));
-    Serial.println(voltage, HEX);
-
-    ad5686_write_update_register(device, AD5686_CH_A, voltage);
-
-    delay(900);
-
-    //uint8_t result = ad5686_read_back_register(device, AD5686_CH_A);
-    //Serial.print("Readback of register: ");
-    //Serial.println(result, HEX);
-
-    delay(100);*/
-    //ad5686_write_update_register(device, AD5686_CH_ALL, 0xF0F0);
-    //delay(1000);
     // DAC(s) to perform actions on
     // Binarily represents which are selected with bits arranged like so: DCBA
     // Examples:
@@ -146,7 +126,7 @@ void loop()
     case 5:
         menu_5_power_up_down_DAC(selected_dac);
         break;
-        /*
+        
     case 6:
         menu_6_select_ref_voltage(&ref_voltage);
         break;
@@ -162,7 +142,7 @@ void loop()
     case 9:
         menu_9_assert_ldac();
         break;
-        */
+        
     case 10:
         menu_10_set_gain();
         break;
@@ -256,7 +236,7 @@ uint8_t menu_1_select_dac(int16_t *selected_dac)
     Serial.print(F("  You selected DAC(s): "));
     Serial.println(dac_selection[*selected_dac]);
     
-    return (0); // Always returns success, consider adding a fail code later.
+   return SUCCESS; // Always returns success, consider adding a fail code later.
 }
 
 //! Menu 2: Write to input register only.  Does not update the output voltage.
@@ -267,7 +247,7 @@ uint8_t menu_2_write_to_input_register(int16_t selected_dac, float vref) //!< DA
     
     ad5686_write_register(device, selected_dac, vdata);
 
-    return 0;
+    return SUCCESS;
 }
 
 // Updates DAC outputs from its input registers
@@ -277,7 +257,7 @@ uint8_t menu_3_update_dac(int16_t selected_dac)
     ad5686_update_register(device, selected_dac);
     Serial.println(F("  Updated DAC(s)"));
     
-    return 0;
+    return SUCCESS;
 }
  
 // Menu for user to change a DAC's output voltage
@@ -292,7 +272,7 @@ uint8_t menu_4_write_and_update_dac(int16_t selected_dac, float vref) //!< DAC t
 
     ad5686_write_update_register(device, selected_dac, vdata);
 
-    return (0);
+    return SUCCESS;
 }
 
 
@@ -302,7 +282,7 @@ uint8_t menu_5_power_up_down_DAC(int16_t selected_dac)
     if(selected_dac == 0)
     {
         Serial.println(F("  No DAC selected, no changes made"));
-        return 0;
+        return FAILURE;
     }
     
     // Prompt for power mode
@@ -377,7 +357,8 @@ uint8_t menu_5_power_up_down_DAC(int16_t selected_dac)
     }
     
     Serial.println(F("  Done!"));
-    return 0;
+    
+    return SUCCESS;
 }
 
 // Select reference voltage
@@ -388,7 +369,7 @@ uint8_t menu_6_select_ref_voltage(float * vref)
     Serial.println(F("  2-External"));
     Serial.print(F("  Select a reference voltage source: "));
     
-    uint8_t vref_source = read_int();
+    uint8_t vref_source = read_int(); // 1-Internal, 2-External
     Serial.println(vref_source);
     
     float fvref = 0; // Custom vref
@@ -413,16 +394,16 @@ uint8_t menu_6_select_ref_voltage(float * vref)
             break;
     }
     
-    return 0;
+    return SUCCESS;
 }
-/*
+
 // Reads back all DAC registers
 uint8_t menu_7_read_back_registers()
 {
-    uint32_t reg1 = AD5686_ReadBackRegister(AD5686_CH_A);
-    uint32_t reg2 = AD5686_ReadBackRegister(AD5686_CH_B);
-    uint32_t reg3 = AD5686_ReadBackRegister(AD5686_CH_C);
-    uint32_t reg4 = AD5686_ReadBackRegister(AD5686_CH_D);
+    uint32_t reg1 = ad5686_read_back_register(device, AD5686_CH_A);
+    uint32_t reg2 = ad5686_read_back_register(device, AD5686_CH_B);
+    uint32_t reg3 = ad5686_read_back_register(device, AD5686_CH_C);
+    uint32_t reg4 = ad5686_read_back_register(device, AD5686_CH_D);
     
     Serial.println(F("\n  All DAC register values:"));
     Serial.print(F("    DAC A - "));
@@ -434,7 +415,7 @@ uint8_t menu_7_read_back_registers()
     Serial.print(F("    DAC D - "));
     Serial.println(reg4, HEX);
     
-    return 0;
+    return SUCCESS;
 }
 
 uint8_t menu_8_set_ldac_mask()
@@ -448,20 +429,22 @@ uint8_t menu_8_set_ldac_mask()
     if(mask > 15) mask = 15; // Clamp at 1111
     Serial.println(mask, BIN);
     
-    AD5686_LdacMask(mask);
+    ad5686_ldac_mask(device, mask);
     
     Serial.println(F("  Updated LDAC mask"));
+    
+    return SUCCESS;
 }
 
 uint8_t menu_9_assert_ldac()
 {
-    AD5686_LDAC_LOW;
+    gpio_set_value(device->gpio_ldac, GPIO_LOW);
     delay(0.1); // Wait just in case our clock speed is too fast (not likely)
-    AD5686_LDAC_HIGH;
+    gpio_set_value(device->gpio_ldac, GPIO_HIGH);
     Serial.println(F("  Asserted LDAC"));
     
-    return 0;
-}*/
+    return SUCCESS;
+}
 
 uint8_t menu_10_set_gain()
 {
@@ -492,7 +475,7 @@ uint8_t menu_10_set_gain()
             break;
     }
     
-    return 0;
+    return SUCCESS;
 }
 
 uint8_t menu_11_assert_soft_reset()
@@ -501,7 +484,7 @@ uint8_t menu_11_assert_soft_reset()
     
     ad5686_software_reset(device);
     
-    return 0;
+    return SUCCESS;
 }
 
 uint8_t menu_12_assert_hard_reset()
@@ -509,11 +492,11 @@ uint8_t menu_12_assert_hard_reset()
     Serial.println(F("  Performing hardware reset"));
     
     // Pull reset low then high
-    gpio_set_value(device->gpio_ldac, GPIO_LOW);
+    gpio_set_value(device->gpio_reset, GPIO_LOW);
     delay(0.1); // Wait just in case our clock speed is faster than 30ns (unlikely)
-    gpio_set_value(device->gpio_ldac, GPIO_HIGH);;
+    gpio_set_value(device->gpio_reset, GPIO_HIGH);;
     
-    return 0;
+    return SUCCESS;
 }
 
 // Convert voltage float to code the DAC understands
