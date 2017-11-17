@@ -162,7 +162,7 @@ void loop()
     case 9:
         menu_9_assert_ldac();
         break;
-        
+        */
     case 10:
         menu_10_set_gain();
         break;
@@ -174,31 +174,12 @@ void loop()
     case 12:
         menu_12_assert_hard_reset();
         break;
-*/
+
     default:
         Serial.println("Incorrect Option");
         break;
     }
 }
-
-// Convert voltage float to code the DAC understands
-uint16_t voltage_to_code(float voltage, float vRef)
-{
-    uint8_t gain_state;
-    gpio_get_value(&gpio_gain, &gain_state);
-
-    Serial.print("GAIN STATE: ");
-    Serial.println(gain_state);
-
-    if(gain_state == GPIO_HIGH) // Replace 1 with gain state
-    {
-        vRef *= 2;
-    }
-    
-    uint32_t max_code = ((uint32_t)1 << 16)-1; //
-    return (unsigned short)(voltage * (float)max_code / vRef); // 5 is vRef*2 because of GAIN
-}
-
 
 //! Prints the title block
 void print_title()
@@ -480,7 +461,7 @@ uint8_t menu_9_assert_ldac()
     Serial.println(F("  Asserted LDAC"));
     
     return 0;
-}
+}*/
 
 uint8_t menu_10_set_gain()
 {
@@ -497,12 +478,13 @@ uint8_t menu_10_set_gain()
     switch(selected_gain)
     {
         case 1:
-            AD5686_GAIN_LOW;
+            //AD5686_GAIN_LOW;
+            gpio_set_value(&gpio_gain, GPIO_LOW);
             Serial.println(F("  Setting gain low"));
             break;
             
         case 2:
-            AD5686_GAIN_HIGH;
+            gpio_set_value(&gpio_gain, GPIO_HIGH);
             Serial.println(F("  Setting gain high"));
             break;
             
@@ -517,7 +499,7 @@ uint8_t menu_11_assert_soft_reset()
 {
     Serial.println(F("  Performing software reset"));
     
-    AD5686_SoftwareReset();
+    ad5686_software_reset(device);
     
     return 0;
 }
@@ -527,9 +509,9 @@ uint8_t menu_12_assert_hard_reset()
     Serial.println(F("  Performing hardware reset"));
     
     // Pull reset low then high
-    AD5686_RESET_LOW;
+    gpio_set_value(device->gpio_ldac, GPIO_LOW);
     delay(0.1); // Wait just in case our clock speed is faster than 30ns (unlikely)
-    AD5686_RESET_HIGH;
+    gpio_set_value(device->gpio_ldac, GPIO_HIGH);;
     
     return 0;
 }
@@ -537,14 +519,20 @@ uint8_t menu_12_assert_hard_reset()
 // Convert voltage float to code the DAC understands
 uint16_t voltage_to_code(float voltage, float vRef)
 {
-    if(AD5686_GAIN_STATE > 0)
+    uint8_t gain_state;
+    gpio_get_value(&gpio_gain, &gain_state);
+
+    Serial.print("GAIN STATE: ");
+    Serial.println(gain_state);
+
+    if(gain_state == GPIO_HIGH) // Replace 1 with gain state
     {
         vRef *= 2;
     }
     
     uint32_t max_code = ((uint32_t)1 << 16)-1; //
     return (unsigned short)(voltage * (float)max_code / vRef); // 5 is vRef*2 because of GAIN
-}*/
+}
 
 // Gets a voltage from the user and converts it to the code the DAC understands
 uint16_t get_voltage_code(float vRef)
