@@ -216,13 +216,13 @@ uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char leng
  */
  
 /*! Enable SPI, matches spi_enable */
-void Lin_SPI_Enable();
+//void Lin_SPI_Enable(uint8_t spi_clock_divider);
 
 /*! Initialize SPI, matches spi_init */
-void Lin_SPI_Init();
+//void Lin_SPI_Init();
 
 /*! Connect to SPI, matches quikeval_spi_connect */
-void Lin_SPI_Connect();
+//void Lin_SPI_Connect();
 
 /*! Transfer block of SPI data, matches spi_transfer_block */
 void Lin_SPI_Transfer_Block(uint8_t cs_pin, uint8_t *tx, uint8_t *rx, uint8_t length);

@@ -139,13 +139,28 @@ int32_t spi_init(spi_desc **desc,
 	new_desc->max_speed_hz = param.max_speed_hz;
 	
 	*desc = new_desc;
-
-	// Set data mode
-	SPI.setDataMode(arduino_spi_modes[param.mode]);
-
-	Lin_SPI_Init();
-	Lin_SPI_Connect();
-
+	
+	// Set the Quikeval mux pin to use SPI
+    pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);
+    digitalWrite(QUIKEVAL_MUX_MODE_PIN, LOW);
+	
+	// Get SPI initialization settings from the description
+	uint8_t spi_mode = arduino_spi_modes[new_desc->mode];
+	uint32_t spi_speed = new_desc->max_speed_hz;
+	
+	// Create initialization object
+	SPISettings * spi_settings = new SPISettings(spi_speed, MSBFIRST, spi_mode);
+	
+	// Set the SPI bus to use our settings
+	SPI.beginTransaction(*spi_settings);
+	SPI.endTransaction();
+	
+	// Connect to the bus
+	SPI.begin();
+	
+	// Pull Chip Select High
+	output_high(new_desc->chip_select); 
+	
 	return SUCCESS;
 }
 
@@ -156,9 +171,7 @@ int32_t spi_init(spi_desc **desc,
  */
 int32_t spi_remove(spi_desc *desc)
 {
-	if (desc) {
-		// Unused variable - fix compiler warning
-	}
+	SPI.end();
 
 	return SUCCESS;
 }
@@ -410,32 +423,22 @@ uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char leng
  * LINDUINO SPI FUNCTIONS
  */
 
-/***************************************************************************/ /**
- * @brief Enables SPI.
- *
- * @param spi_clock_divider - The ID of the selected slave device.
- * 
-*******************************************************************************/
-void Lin_SPI_Enable(uint8_t spi_clock_divider)
+/*void Lin_SPI_Enable(uint8_t spi_clock_divider)
 {
-    SPI.begin();
-    SPI.setClockDivider(spi_clock_divider);
+    //SPI.begin();
+	//SPI.setClockDivider(spi_clock_divider);
+	
+	SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE1));
+	SPI.endTransaction();
+	
+	SPI.begin();
 }
 
-/***************************************************************************/ /**
- * @brief Initializes SPI on the Linduino.
- * 
-*******************************************************************************/
 void Lin_SPI_Init(void)
 {
     Lin_SPI_Enable(SPI_CLOCK_DIV16); //! 1) Configure the spi port for 4MHz SCK
 }
 
-/***************************************************************************/ /**
- * @brief Connect SPI pins to QuikEval connector through the Linduino MUX.
- *        This will disconnect I2C.
- * 
-*******************************************************************************/
 void Lin_SPI_Connect()
 {
     output_high(QUIKEVAL_CS); //! 1) Pull Chip Select High
@@ -443,7 +446,7 @@ void Lin_SPI_Connect()
     //! 2) Enable Main SPI
     pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);
     digitalWrite(QUIKEVAL_MUX_MODE_PIN, LOW);
-}
+}*/
 
 /***************************************************************************/ /**
  * @brief Reads and sends a byte array.
