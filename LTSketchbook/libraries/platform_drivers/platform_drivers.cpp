@@ -80,10 +80,6 @@ int32_t i2c_init(i2c_desc **desc,
  */
 int32_t i2c_remove(i2c_desc *desc)
 {
-	if (desc) {
-		// Unused variable - fix compiler warning
-	}
-
 	return SUCCESS;
 }
 

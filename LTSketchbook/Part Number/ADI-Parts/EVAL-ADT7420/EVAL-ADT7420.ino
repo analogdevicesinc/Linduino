@@ -21,35 +21,38 @@ adt7420_init_param init_params = {
 };
 
 adt7420_dev * device;
-int32_t ret = SUCCESS;
+
+int32_t connected = SUCCESS;
 
 void setup()
 {
     Serial.begin(115200);
+    
+    // Give serial port a chance to initialize
+    delay(100);
 
     pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);    // Required for DC2741 adapter in
     digitalWrite(QUIKEVAL_MUX_MODE_PIN, HIGH); // Linduino to X config. Set mux to I2C.
     delay(50);
 
     // Initialize
-    ret = adt7420_init(&device, init_params);
+    connected = adt7420_init(&device, init_params);
 
-    if(ret != SUCCESS)
+    if(connected != SUCCESS)
     {
         Serial.println("Connection to device failed :(");
     }
     else
     {
         Serial.println("Connection to device succeeded!");
+        print_title();
     }
-
-    print_title();
 }
 
 void loop()
 {
     // If there is no device, don't continue
-    if(ret != SUCCESS)
+    if(connected != SUCCESS)
     {
         return;
     }
