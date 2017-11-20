@@ -43,7 +43,7 @@ i2c_init_param i2c_params = {
 spi_init_param spi_params = {
     GENERIC_SPI,
     QUIKEVAL_CS,
-    45000000,
+    50000000,
     SPI_MODE_1,
     QUIKEVAL_CS,
 };
@@ -64,6 +64,8 @@ gpio_desc gpio_gain = {
     2,
 };
 
+int32_t connected = -1;
+
 void setup()
 {
     char demo_name[] = "AD5686R";
@@ -74,22 +76,30 @@ void setup()
     // Without this we get some garbage on the console
     delay(100);
 
-    int32_t ret = ad5686_init(&device, init_params);
+    connected = ad5686_init(&device, init_params);
 
     Serial.print("Initialized, ");
-    Serial.println(ret);
-
-    // Set GAIN high
-    gpio_set_value(&gpio_gain, GPIO_HIGH);
-
-    // Set LDAC high so we can write to registers without updating
-    gpio_set_value(device->gpio_ldac, GPIO_HIGH);
+    Serial.println(connected);
     
-    print_title();
+    if(connected == SUCCESS)
+    {
+        // Set GAIN high
+        gpio_set_value(&gpio_gain, GPIO_HIGH);
+        // Set LDAC high so we can write to registers without updating
+        gpio_set_value(device->gpio_ldac, GPIO_HIGH);
+        
+        print_title();
+    }
+    else
+    {
+        Serial.println(F("AD5686R not found! :("));
+    }
 }
 
 void loop()
 {
+    if(connected != SUCCESS) return;
+    
     // DAC(s) to perform actions on
     // Binarily represents which are selected with bits arranged like so: DCBA
     // Examples:
