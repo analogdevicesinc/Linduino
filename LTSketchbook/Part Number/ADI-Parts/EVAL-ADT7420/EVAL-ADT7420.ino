@@ -27,6 +27,10 @@ void setup()
 {
     Serial.begin(115200);
 
+    pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);    // Required for DC2741 adapter in
+    digitalWrite(QUIKEVAL_MUX_MODE_PIN, HIGH); // Linduino to X config. Set mux to I2C.
+    delay(50);
+
     // Initialize
     ret = adt7420_init(&device, init_params);
 
