@@ -68,9 +68,14 @@ int32_t i2c_init(i2c_desc **desc,
 	
 	*desc = new_desc;
 	
+	// Set the mux to use I2C
 	quikeval_set_mux(MUX_I2C);
 	
+	// Enable the I2C Wire functionality
 	Wire_Connect();
+	
+	// Set clock speed
+	Wire.setClock(new_desc->max_speed_hz);
 	
 	return SUCCESS;
 }
