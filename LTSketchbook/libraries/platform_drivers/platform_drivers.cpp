@@ -68,6 +68,8 @@ int32_t i2c_init(i2c_desc **desc,
 	
 	*desc = new_desc;
 	
+	quikeval_set_mux(MUX_I2C);
+	
 	Wire_Connect();
 	
 	return SUCCESS;
@@ -137,8 +139,7 @@ int32_t spi_init(spi_desc **desc,
 	*desc = new_desc;
 	
 	// Set the Quikeval mux pin to use SPI
-    pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);
-    digitalWrite(QUIKEVAL_MUX_MODE_PIN, LOW);
+    quikeval_set_mux(MUX_SPI);
 	
 	// Get SPI initialization settings from the description
 	uint8_t spi_mode = arduino_spi_modes[new_desc->mode];
@@ -443,6 +444,32 @@ void Lin_SPI_Connect()
     pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);
     digitalWrite(QUIKEVAL_MUX_MODE_PIN, LOW);
 }*/
+
+/***************************************************************************/ /**
+ * @brief Sets the Linduino MUX that selects SPI or I2C for the 
+ *        quikeval port
+ * 
+ * @param mux - New mux selection
+ *              Example: MUX_I2C - Enable I2C
+ *                       MUX_SPI - Enable SPI
+ * 
+*******************************************************************************/
+void quikeval_set_mux(uint8_t mux)
+{
+	
+	pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);
+	
+	if(mux == MUX_I2C)
+	{
+		digitalWrite(QUIKEVAL_MUX_MODE_PIN, HIGH);
+		delay(50);
+	}
+	else
+	{
+		digitalWrite(QUIKEVAL_MUX_MODE_PIN, LOW);
+		delay(1);
+	}
+}
 
 /***************************************************************************/ /**
  * @brief Reads and sends a byte array.

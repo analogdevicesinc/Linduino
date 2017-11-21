@@ -63,6 +63,9 @@ extern "C" {
 #define GPIO_HIGH	0x01
 #define GPIO_LOW	0x00
 
+#define MUX_I2C		0
+#define MUX_SPI		1
+
 /******************************************************************************/
 /*************************** Types Declarations *******************************/
 /******************************************************************************/
@@ -198,6 +201,8 @@ void mdelay(uint32_t msecs);
  * Linduino I2C functions for ADI use
  * These functions are wrappers around the Arduino Wire library
 **/
+
+void quikeval_set_mux(uint8_t mux);
 
 /*! Connects and initializes I2C */
 void Wire_Connect();
