@@ -140,6 +140,7 @@ void spi_transfer_block(uint8_t cs_pin, uint8_t *tx, uint8_t *rx, uint8_t length
 // Connect SPI pins to QuikEval connector through the Linduino MUX. This will disconnect I2C.
 void quikeval_SPI_connect()
 {
+  pinMode(QUIKEVAL_CS, OUTPUT);
   output_high(QUIKEVAL_CS); //! 1) Pull Chip Select High
 
   //! 2) Enable Main SPI
@@ -177,17 +178,28 @@ void spi_disable()
 // Write a data byte using the SPI hardware
 void spi_write(int8_t  data)  // Byte to be written to SPI port
 {
+  #if defined(ARDUINO_ARCH_AVR)
   SPDR = data;                  //! 1) Start the SPI transfer
   while (!(SPSR & _BV(SPIF)));  //! 2) Wait until transfer complete
+  #else
+  SPI.transfer(data);
+  #endif
+  
 }
 
 // Read and write a data byte using the SPI hardware
 // Returns the data byte read
 int8_t spi_read(int8_t  data) //!The data byte to be written
 {
+  #if defined(ARDUINO_ARCH_AVR)
   SPDR = data;                  //! 1) Start the SPI transfer
   while (!(SPSR & _BV(SPIF)));  //! 2) Wait until transfer complete
   return SPDR;                  //! 3) Return the data read
+  #else
+  return SPI.transfer(data);
+  #endif
+  
+  
 }
 
 // Below are implementations of spi_read, etc. that do not use the
