@@ -71,15 +71,15 @@ ongoing work.
 #include <stdint.h>
 #include <Arduino.h>
 #include "Linduino.h"
+#include "LT_SPI.h"
 #include <SPI.h>
 #include "LTC24XX_general.h"
-#include "UseWire.h"
+#include "USE_WIRE.h"
+
 #ifdef USEWIRE
 #include "LT_I2C_Wire.h"
-#include "LT_SPI_Zero.h"
 #else
 #include "LT_I2C.h"
-#include "LT_SPI.h"
 #endif
 
 int8_t LTC24XX_EOC_timeout(uint8_t cs, uint16_t miso_timeout)

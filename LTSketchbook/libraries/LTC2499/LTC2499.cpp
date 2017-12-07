@@ -71,7 +71,7 @@ ongoing work.
 #include "Linduino.h"
 #include "LTC2499.h"
 #include "LTC24XX_general.h"
-#include "UseWire.h"
+#include "USE_WIRE.h"
 
 #ifdef USEWIRE
 #include "LT_I2C_Wire.h"

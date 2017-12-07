@@ -125,11 +125,18 @@ ongoing work.
 #include "Linduino.h"
 #include "LT_SPI.h"
 #include "UserInterface.h"
-#include "LT_I2C.h"
-#include "QuikEval_EEPROM.h"
 #include "LTC2668.h"
 #include <SPI.h>
 #include <Wire.h>
+#include "USE_WIRE.h"
+
+#ifdef USEWIRE
+#include "LT_I2C_Wire.h"
+#include "QuikEval_EEPROM_Wire.h"
+#else
+#include "LT_I2C.h"
+#include "QuikEval_EEPROM.h"
+#endif
 
 // Macros
 #define REF_EXTERNAL    LTC2668_REF_DISABLE     //!< External mode 
@@ -573,7 +580,7 @@ void menu_12_voltage_ramp()
 // crosstalk artefacts.)
 void menu_13_settling_test()
 {
-  int16_t user_input, initial, final;
+/*  int16_t user_input, initial, final;
   int8_t range;
   Serial.println(F("Select test to run:"));
   Serial.println(F("0: presently programmed DAC values"));
@@ -682,6 +689,7 @@ void menu_13_settling_test()
   }
   Serial.read();
   Serial.println("Exiting Settling time test.");
+  */
 }
 // Functional test for demo board, tests continuity, EEPROM contents,
 // And correct resolution DAC installed.

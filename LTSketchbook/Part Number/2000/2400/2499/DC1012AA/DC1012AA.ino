@@ -87,15 +87,14 @@ ongoing work.
 #include "UserInterface.h"
 #include "LTC24XX_general.h"
 #include "LTC2499.h"
-#include "UseWire.h"
+#include "USE_WIRE.h"
+#include "LT_SPI.h"
 
 #ifdef USEWIRE
 #include "LT_I2C_Wire.h"
-#include "LT_SPI_Zero.h"
 #include "QuikEval_EEPROM_Wire.h"
 #else
 #include "LT_I2C.h"
-#include "LT_SPI.h"
 #include "QuikEval_EEPROM.h"
 #endif
 
