@@ -1,3 +1,42 @@
+/***************************************************************************//**
+ *   @file   EVAL-AD5686R.ino
+ *   @brief  Exerciser program for ad5686 no-OS driver
+ *   @author Gbrisebois (gregory.brisebois@analog.com)
+********************************************************************************
+ * Copyright 2017(c) Analog Devices, Inc.
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *  - Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *  - Neither the name of Analog Devices, Inc. nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *  - The use of this software may or may not infringe the patent rights
+ *    of one or more patent holders.  This license does not release you
+ *    from the requirement that you obtain separate licenses from these
+ *    patent holders to use this software.
+ *  - Use of the software either in source or binary form, must be run
+ *    on or directly connected to an Analog Devices Inc. component.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ANALOG DEVICES "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, NON-INFRINGEMENT,
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL ANALOG DEVICES BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, INTELLECTUAL PROPERTY RIGHTS, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*******************************************************************************/
+
 #include <Arduino.h>
 #include <stdint.h>
 #include "Linduino.h"
@@ -18,18 +57,18 @@ const String dac_selection[16] = {
     "None",
     "A",
     "B",
-    "AB",
+    "A,B",
     "C",
-    "AC",
-    "BC",
-    "ABC",
+    "A,C",
+    "B,C",
+    "A,B,C",
     "D",
-    "AD",
-    "BD",
-    "ABD",
-    "CD",
-    "ACD",
-    "BCD",
+    "A,D",
+    "B,D",
+    "A,B,D",
+    "C,D",
+    "A,C,D",
+    "B,C,D",
     "All"
 };
 
@@ -82,11 +121,15 @@ void setup()
     Serial.println(connected);
     
     if(connected == SUCCESS)
-    {
-        // Set GAIN high
-        gpio_set_value(&gpio_gain, GPIO_HIGH);
+    {	// De-assert reset
+		// DC2741 adapter has pullups to VIO as a crude output level-shifter
+		// on reset, gain, LDAC signals.
+		gpio_direction_input(device->gpio_reset); // DC2741 has pullup to VIO
+		// gpio_set_value(device->gpio_reset, GPIO_HIGH); // This would be more typical
+        // Set GAIN low
+		gpio_direction_output(&gpio_gain, GPIO_LOW);
         // Set LDAC high so we can write to registers without updating
-        gpio_set_value(device->gpio_ldac, GPIO_HIGH);
+        gpio_direction_input(device->gpio_ldac); // DC2741 has pullup to VIO
         
         print_title();
     }
@@ -134,7 +177,7 @@ void loop()
         break;
         
     case 5:
-        menu_5_power_up_down_DAC(selected_dac);
+        menu_5_power_down_mode(selected_dac);
         break;
         
     case 6:
@@ -193,7 +236,7 @@ void print_prompt(int16_t selected_dac, float ref_voltage) //!< this parameter i
     Serial.println(F("  2 -Write to input register (no update)"));
     Serial.println(F("  3 -Update DAC from input"));
     Serial.println(F("  4 -Write and update DAC"));
-    Serial.println(F("  5 -Power up/down DAC"));
+    Serial.println(F("  5 -Power down mode"));
     Serial.println(F("  6 -Select reference voltage"));
     Serial.println(F("  7 -Read back all registers"));
     Serial.println(F("  8 -Set LDAC# mask"));
@@ -286,7 +329,7 @@ uint8_t menu_4_write_and_update_dac(int16_t selected_dac, float vref) //!< DAC t
 }
 
 
-uint8_t menu_5_power_up_down_DAC(int16_t selected_dac)
+uint8_t menu_5_power_down_mode(int16_t selected_dac)
 {
     // Cancel if no DAC selected
     if(selected_dac == 0)
@@ -448,9 +491,9 @@ uint8_t menu_8_set_ldac_mask()
 
 uint8_t menu_9_assert_ldac()
 {
-    gpio_set_value(device->gpio_ldac, GPIO_LOW);
+    gpio_direction_output(device->gpio_ldac, GPIO_LOW);
     delay(0.1); // Wait just in case our clock speed is too fast (not likely)
-    gpio_set_value(device->gpio_ldac, GPIO_HIGH);
+    gpio_direction_input(device->gpio_ldac); // DC2741 has pullup to VIO
     Serial.println(F("  Asserted LDAC"));
     
     return SUCCESS;
@@ -472,12 +515,14 @@ uint8_t menu_10_set_gain()
     {
         case 1:
             //AD5686_GAIN_LOW;
-            gpio_set_value(&gpio_gain, GPIO_LOW);
+			// Explicitly set direction, drive low.
+			gpio_direction_output(&gpio_gain, GPIO_LOW);
+            //gpio_set_value(&gpio_gain, GPIO_LOW); // This would be more typical
             Serial.println(F("  Setting gain low"));
             break;
             
         case 2:
-            gpio_set_value(&gpio_gain, GPIO_HIGH);
+		    gpio_direction_input(&gpio_gain);  // DC2741 has pullup to VIO
             Serial.println(F("  Setting gain high"));
             break;
             
@@ -502,9 +547,9 @@ uint8_t menu_12_assert_hard_reset()
     Serial.println(F("  Performing hardware reset"));
     
     // Pull reset low then high
-    gpio_set_value(device->gpio_reset, GPIO_LOW);
+    gpio_direction_output(device->gpio_reset, GPIO_LOW);
     delay(0.1); // Wait just in case our clock speed is faster than 30ns (unlikely)
-    gpio_set_value(device->gpio_reset, GPIO_HIGH);;
+    gpio_direction_input(device->gpio_reset); // DC2741 has pullup to VIO
     
     return SUCCESS;
 }
