@@ -5,14 +5,36 @@ LTC2348-18: Octal, 18-Bit, 200ksps Differential ±10.24V Input SoftSpan ADC with
 Linear Technology DC2094AD Demonstration Board.
 LTC2348-16: Octal, 16-Bit, 200ksps Differential ±10.24V Input SoftSpan ADC with Wide Input Common Mode Range.
 
-Linear Technology DC2365AE Demonstration Board.
-LTC2358-16: Buffered Octal, 16-Bit, 200ksps/Ch Differential ±10.24V ADC with 30VP-P Common Mode Range.
+Linear Technology DC2520AA Demonstration Board.
+LTC2344-18: Quad, 18-Bit, 400ksps/ch Differential SoftSpan ADC with Wide Input Common Mode Range.
 
 Linear Technology DC2520AB Demonstration Board.
 LTC2344-16: Quad, 16-Bit, 400ksps/ch Differential SoftSpan ADC with Wide Input Common Mode Range.
 
-Linear Technology DC2520AA Demonstration Board.
-LTC2344-18: Quad, 18-Bit, 400ksps/ch Differential SoftSpan ADC with Wide Input Common Mode Range.
+Linear Technology DC2365AD Demonstration Board.
+LTC2333-18: Buffered 8-Channel, 18-Bit, 800ksps Differential ±10.24V ADC with 30VP-P Common Mode Range.
+
+Linear Technology DC2365AH Demonstration Board.
+LTC2333-16: Buffered 8-Channel, 16-Bit, 800ksps Differential ±10.24V ADC with 30VP-P Common Mode Range.
+
+Linear Technology DC2365AB Demonstration Board.
+LTC2357-18: Buffered Quad, 18-Bit, 350ksps/Ch Differential ±10.24V ADC with 30VP-P Common Mode Range.
+
+Linear Technology DC2365AF Demonstration Board.
+LTC2357-16: Buffered Quad, 16-Bit, 350ksps/Ch Differential ±10.24V ADC with 30VP-P Common Mode Range.
+
+Linear Technology DC2365AA Demonstration Board.
+LTC2358-18: Buffered Octal, 18-Bit, 200ksps/Ch Differential ±10.24V ADC with 30VP-P Common Mode Range.
+
+Linear Technology DC2365AE Demonstration Board.
+LTC2358-16: Buffered Octal, 16-Bit, 200ksps/Ch Differential ±10.24V ADC with 30VP-P Common Mode Range.
+
+Linear Technology DC2365AC Demonstration Board.
+LTC2353-18: Buffered Dual, 18-Bit, 550ksps/Ch Differential ±10.24V ADC with 30VP-P Common Mode Range.
+
+Linear Technology DC2365AG Demonstration Board.
+LTC2353-16: Buffered Dual, 16-Bit, 550ksps/Ch Differential ±10.24V ADC with 30VP-P Common Mode Range.
+
 
 @verbatim
 
@@ -35,15 +57,29 @@ NOTES
 
 http://www.linear.com/product/LTC2348-18
 http://www.linear.com/product/LTC2348-16
-http://www.linear.com/product/LTC2358-16
-http://www.linear.com/product/LTC2344-16
 http://www.linear.com/product/LTC2344-18
+http://www.linear.com/product/LTC2344-16
+http://www.linear.com/product/LTC2333-18
+http://www.linear.com/product/LTC2333-16
+http://www.linear.com/product/LTC2357-18
+http://www.linear.com/product/LTC2357-16
+http://www.linear.com/product/LTC2358-18
+http://www.linear.com/product/LTC2358-16
+http://www.linear.com/product/LTC2353-18
+http://www.linear.com/product/LTC2353-16
 
 http://www.linear.com/product/LTC2348-18#demoboards
 http://www.linear.com/product/LTC2348-16#demoboards
-http://www.linear.com/product/LTC2358-16#demoboards
-http://www.linear.com/product/LTC2344-16#demoboards
 http://www.linear.com/product/LTC2344-18#demoboards
+http://www.linear.com/product/LTC2344-16#demoboards
+http://www.linear.com/product/LTC2333-18#demoboards
+http://www.linear.com/product/LTC2333-16#demoboards
+http://www.linear.com/product/LTC2357-18#demoboards
+http://www.linear.com/product/LTC2357-16#demoboards
+http://www.linear.com/product/LTC2358-18#demoboards
+http://www.linear.com/product/LTC2358-16#demoboards
+http://www.linear.com/product/LTC2353-18#demoboards
+http://www.linear.com/product/LTC2353-16#demoboards
 
 REVISION HISTORY
 $Revision: 6834 $
