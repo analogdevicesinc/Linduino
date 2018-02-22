@@ -69,9 +69,15 @@ ongoing work.
 #include <stdint.h>
 #include <Arduino.h>
 #include "Linduino.h"
-#include "LT_I2C.h"
 #include "LTC2499.h"
 #include "LTC24XX_general.h"
+#include "USE_WIRE.h"
+
+#ifdef USEWIRE
+#include "LT_I2C_Wire.h"
+#else
+#include "LT_I2C.h"
+#endif
 
 // Reads from LTC2499.
 uint8_t LTC2499_read(uint8_t i2c_address, uint8_t adc_command_high, uint8_t adc_command_low, int32_t *adc_code, uint16_t timeout)

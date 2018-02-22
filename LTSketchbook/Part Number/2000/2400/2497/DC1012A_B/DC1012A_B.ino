@@ -87,10 +87,17 @@ ongoing work.
 #include "LT_SPI.h"
 #include <SPI.h>
 #include "UserInterface.h"
-#include "LT_I2C.h"
-#include "QuikEval_EEPROM.h"
 #include "LTC24XX_general.h"
 #include "LTC2497.h"
+#include "USE_WIRE.h"
+
+#ifdef USEWIRE
+#include "LT_I2C_Wire.h"
+#include "QuikEval_EEPROM_Wire.h"
+#else
+#include "LT_I2C.h"
+#include "QuikEval_EEPROM.h"
+#endif
 
 // Function Declaration
 void print_title();                             // Print the title block

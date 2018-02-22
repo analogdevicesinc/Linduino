@@ -10,14 +10,14 @@ NOTES
    and then the data is read. This makes data acquisition faster.
    Set the terminal baud rate to 115200 and select the newline terminator.
    Provide an external voltage supply of +/-9V or 10 V.
-   Drive MCLK with an external CLK source. Connect DRDY to INT1 pin. Connect 
+   Drive MCLK with an external CLK source. Connect DRDY to INT1 pin. Connect
    QUIKEVAL_GPIO pin to the SYNC pin.
    16 bits of configuration data: 1 0 0 0   0 0 0 0   0 SEL0 SEL1 0   0 0 0 0
 
-   In the Linduino code, data is continuously captured in the interrupt service 
-   routine and printed out to the serial console as hex values. Converting the data 
-   to voltage can be done later. The serially printed out data is logged into a 
-   file using TeraTerm. The data is read out, converted to voltage and plotted 
+   In the Linduino code, data is continuously captured in the interrupt service
+   routine and printed out to the serial console as hex values. Converting the data
+   to voltage can be done later. The serially printed out data is logged into a
+   file using TeraTerm. The data is read out, converted to voltage and plotted
    using a Python script.
 
 USER INPUT DATA FORMAT:

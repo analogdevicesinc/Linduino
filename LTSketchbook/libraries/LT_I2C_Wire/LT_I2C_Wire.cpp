@@ -6,12 +6,12 @@ LT_I2C_Wire: I2C Routines based on Wire library to communicate with Arduino base
 
   Wire.endTransmission() returns 0, 1, 2, 3, or 4. To maintain consistency with our Legacy LT_I2C library,
   a zero(false) or a non-zero(true) is tested.
-  
+
   0 .. success
   1 .. length to long for buffer
   2 .. address send, NACK received
   3 .. data send, NACK received
-  4 .. other twi error (lost bus arbitration, bus error, ..)  
+  4 .. other twi error (lost bus arbitration, bus error, ..)
 
 
 @endverbatim
@@ -61,20 +61,24 @@ ongoing work.
 #include "LT_I2C_Wire.h"
 #include <Wire.h>
 
-#if defined(ARDUINO_AVR_UNO)
+#if defined(ARDUINO_ARCH_AVR)
 #include <util/delay.h>
-#else
+#elif defined(ARDUINO_ARCH_SAM)
+#define Wire Wire1
+#define _delay_us delayMicroseconds
+#elif defined(ARDUINO_ARCH_SAMD)
 #include <delay.h>
+#define _delay_us delayMicroseconds
 #endif
 
 // Read a byte, store in "value".
 int8_t i2c_read_byte(uint8_t address, uint8_t *value)
 {
   Wire.beginTransmission(address);
-  Wire.requestFrom(address, (uint8_t)1, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)1, (uint8_t)true);
   while (Wire.available())
   {
-    *value = Wire.read();				// Read MSB from buffer
+    *value = Wire.read();       // Read MSB from buffer
   }
   delay(100);
   Wire.endTransmission();
@@ -85,10 +89,11 @@ int8_t i2c_read_byte(uint8_t address, uint8_t *value)
 // Write "value" byte to device at "address"
 int8_t i2c_write_byte(uint8_t address, uint8_t value)
 {
-  Wire.beginTransmission(address); 		// Transmit to device
-  Wire.write(byte(value));            	// Sends one byte
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  Wire.beginTransmission(address);    // Transmit to device
+  Wire.write(byte(value));              // Sends one byte
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   return(0);
@@ -96,21 +101,23 @@ int8_t i2c_write_byte(uint8_t address, uint8_t value)
 
 // Read a byte of data at register specified by "command", store in "value"
 int8_t i2c_read_byte_data(uint8_t address, uint8_t command, uint8_t *value)
-{					
+{
   Wire.beginTransmission(address);
   Wire.write(byte(command));
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
-  Wire.requestFrom(address, (uint8_t)1, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)1, (uint8_t)true);
   while (Wire.available())
   {
     *value = Wire.read();               // Read MSB from buffer
   }
   delay(100);
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   return(0);
@@ -119,11 +126,12 @@ int8_t i2c_read_byte_data(uint8_t address, uint8_t command, uint8_t *value)
 // Write a byte of data to register specified by "command"
 int8_t i2c_write_byte_data(uint8_t address, uint8_t command, uint8_t value)
 {
-  Wire.beginTransmission(address);    	// transmit to device
-  Wire.write(byte(command));          	// send instruction byte
-  Wire.write(byte(value));        		// send value byte
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  Wire.beginTransmission(address);      // transmit to device
+  Wire.write(byte(command));            // send instruction byte
+  Wire.write(byte(value));            // send value byte
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   return(0);
@@ -142,12 +150,13 @@ int8_t i2c_read_word_data(uint8_t address, uint8_t command, uint16_t *value)
 
   Wire.beginTransmission(address);
   Wire.write(byte(command));
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   Wire.beginTransmission(address);
-  Wire.requestFrom(address, (uint8_t)2, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)2, (uint8_t)true);
   int i = 1;
   while (Wire.available())
   {
@@ -174,12 +183,13 @@ int8_t i2c_write_word_data(uint8_t address, uint8_t command, uint16_t value)
   } data;
   data.w = value;
 
-  Wire.beginTransmission(address);    	// transmit to device
+  Wire.beginTransmission(address);      // transmit to device
   Wire.write(byte(command));            // sends instruction byte
-  Wire.write(byte(data.b[1]));        	// send value byte
-  Wire.write(byte(data.b[0]));        	// send value byte
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  Wire.write(byte(data.b[1]));          // send value byte
+  Wire.write(byte(data.b[0]));          // send value byte
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   return(0);
@@ -190,15 +200,16 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t command, uint8_t length, uin
 {
   uint8_t i = (length-1);
   int8_t ret = 0;
-  
+
   Wire.beginTransmission(address);
   Wire.write(byte(command));
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   Wire.beginTransmission(address);
-  Wire.requestFrom(address, length, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
 
   while (Wire.available())
   {
@@ -208,8 +219,9 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t command, uint8_t length, uin
       break;
   }
   delay(100);
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   return(0);
@@ -223,7 +235,7 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t length, uint8_t *values)
   int8_t ret = 0;
 
   Wire.beginTransmission(address);
-  Wire.requestFrom(address, length, (uint8_t)true);
+  Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
 
   while (Wire.available())
   {
@@ -233,8 +245,9 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t length, uint8_t *values)
       break;
   }
   delay(100);
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   return(0);
@@ -254,8 +267,9 @@ int8_t i2c_write_block_data(uint8_t address, uint8_t command, uint8_t length, ui
     Wire.write(byte(values[i]));        // send values
     i--;
   }
-  if(Wire.endTransmission())			// stop transmitting
-  {										// endTransmission returns zero on success			
+  if (Wire.endTransmission())     // stop transmitting
+  {
+    // endTransmission returns zero on success
     return(1);
   }
   return(0);
@@ -271,34 +285,41 @@ int8_t i2c_two_byte_command_read_block(uint8_t address, uint16_t command, uint8_
     uint16_t w;
   } comm;
   comm.w = command;
-
   uint8_t i = (length-1);
+  uint8_t readBack = 0;
+
+#if defined(ARDUINO_ARCH_SAM)
+  Wire.beginTransmission(address);
+  readBack = Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint32_t)command, (uint8_t)2, (uint8_t)false);
+#elif defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_AVR)
   Wire.beginTransmission(address);
   Wire.write(byte(comm.b[1]));
   Wire.write(byte(comm.b[0]));
 
-  if(Wire.endTransmission(false))	// endTransmission(false) is a repeated start
-  {									// endTransmission returns zero on success
-	Wire.endTransmission();			
-    return(1);
-  }
-  // Wire.beginTransmission(address);	// requestFrom calls beginTransmission(address)
-  Wire.requestFrom(address, length, (uint8_t)true);
-
-  while (Wire.available())
+  if (Wire.endTransmission(false)) // endTransmission(false) is a repeated start
   {
-    values[i] = Wire.read();
-    i--;
-    if (i == 0)
-      break;
-  }
-  delay(100);
-  if(Wire.endTransmission())	// endTransmission(false) is a repeated start
-  {									// endTransmission returns zero on success
-	Wire.endTransmission();			
+    // endTransmission returns zero on success
+    Wire.endTransmission();
     return(1);
   }
-  return(0);
+  readBack = Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
+#endif
+
+  if (readBack == length)
+  {
+    while (Wire.available())
+    {
+      values[i] = Wire.read();
+      if (i == 0)
+        break;
+      i--;
+    }
+    return (0);
+  }
+  else
+  {
+    return (1);
+  }
 }
 
 // Initializes Linduino I2C port.
@@ -395,7 +416,7 @@ int8_t i2c_write(uint8_t data)
     return(0);                                              //! 6) Return status
   else
     return(1);
-}											  
+}
 // Read a data byte from the hardware I2C port.
 // Returns the data byte read.
 uint8_t i2c_read(int8_t ack)
@@ -429,7 +450,7 @@ uint8_t i2c_read(int8_t ack)
     if (result == STATUS_READ_NACK) return_value = 0;
   }
   return(data);
-} 
+}
 
 // Poll the I2C port and look for an acknowledge
 // Returns 0 if successful, 1 if not successful

@@ -71,12 +71,16 @@ ongoing work.
 #include <stdint.h>
 #include <Arduino.h>
 #include "Linduino.h"
-#include <SPI.h>
 #include "LT_SPI.h"
-//#include <Wire.h>
-#include "LT_I2C.h"
+#include <SPI.h>
 #include "LTC24XX_general.h"
+#include "USE_WIRE.h"
 
+#ifdef USEWIRE
+#include "LT_I2C_Wire.h"
+#else
+#include "LT_I2C.h"
+#endif
 
 int8_t LTC24XX_EOC_timeout(uint8_t cs, uint16_t miso_timeout)
 // Checks for EOC with a specified timeout (ms)
