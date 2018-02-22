@@ -178,28 +178,28 @@ void spi_disable()
 // Write a data byte using the SPI hardware
 void spi_write(int8_t  data)  // Byte to be written to SPI port
 {
-  #if defined(ARDUINO_ARCH_AVR)
+#if defined(ARDUINO_ARCH_AVR)
   SPDR = data;                  //! 1) Start the SPI transfer
   while (!(SPSR & _BV(SPIF)));  //! 2) Wait until transfer complete
-  #else
+#else
   SPI.transfer(data);
-  #endif
-  
+#endif
+
 }
 
 // Read and write a data byte using the SPI hardware
 // Returns the data byte read
 int8_t spi_read(int8_t  data) //!The data byte to be written
 {
-  #if defined(ARDUINO_ARCH_AVR)
+#if defined(ARDUINO_ARCH_AVR)
   SPDR = data;                  //! 1) Start the SPI transfer
   while (!(SPSR & _BV(SPIF)));  //! 2) Wait until transfer complete
   return SPDR;                  //! 3) Return the data read
-  #else
+#else
   return SPI.transfer(data);
-  #endif
-  
-  
+#endif
+
+
 }
 
 // Below are implementations of spi_read, etc. that do not use the
