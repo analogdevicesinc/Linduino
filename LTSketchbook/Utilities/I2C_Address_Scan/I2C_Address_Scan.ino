@@ -10,9 +10,6 @@ int   = 2 bytes
 long  = 4 bytes
 float = 4 bytes
 
-REVISION HISTORY
-$Revision: 2649 $
-$Date: 2014-07-18 08:09:33 -0700 (Fri, 18 Jul 2014) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
