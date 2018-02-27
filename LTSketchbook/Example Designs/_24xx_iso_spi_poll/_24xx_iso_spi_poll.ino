@@ -4,9 +4,6 @@ Modified LTC24xx sketch for isoSPI LTC6820
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 6563 $
-$Date: 2017-02-17 15:45:17 -0800 (Fri, 17 Feb 2017) $
 
 
 Copyright 2018(c) Analog Devices, Inc.

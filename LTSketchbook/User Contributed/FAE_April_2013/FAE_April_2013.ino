@@ -2,10 +2,6 @@
 /*
 FAE Demonstration of DC934A and RGB Diode
 
-REVISION HISTORY
-$Revision: 1418 $
-$Date: 2013-03-29 10:14:23 -0700 (Fri, 29 Mar 2013) $
-
 Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.

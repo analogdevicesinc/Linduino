@@ -18,9 +18,6 @@ http://www.linear.com/product/LTC2977
 
 http://www.linear.com/demo/DC1962C
 
-REVISION HISTORY
-$Revision: 3033 $
-$Date: 2014-12-05 14:58:30 -0800 (Fri, 05 Dec 2014) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

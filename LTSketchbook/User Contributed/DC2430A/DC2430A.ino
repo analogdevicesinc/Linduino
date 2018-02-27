@@ -22,10 +22,6 @@ The Kxy bit bang command uses the following pin mappings :
 
 http://www.linear.com/demo/DC2430A
 
-REVISION HISTORY
-$Revision: 5670 $
-$Date: 2016-09-02 10:55:41 -0700 (Fri, 02 Sep 2016) $
-
 Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.
