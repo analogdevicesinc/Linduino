@@ -1,7 +1,4 @@
 /************************************
-REVISION HISTORY
-$Revision: 7139 $
-$Date: 2017-4-4
 
 Copyright 2018(c) Analog Devices, Inc.
 

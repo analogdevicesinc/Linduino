@@ -15,9 +15,6 @@ http://www.linear.com/product/LTC2970
 
 http://www.linear.com/demo/#demoboards
 
-REVISION HISTORY
-$Revision $
-$Date $
 
 Copyright 2018(c) Analog Devices, Inc.
 

@@ -9,9 +9,6 @@ and may not perform properly with other PMBus devices.
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 4080 $
-$Date: 2015-11-30 12:35:30 -0600 (Mon, 30 Nov 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
@@ -123,8 +120,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define READ_POUT               0x96
 #define READ_PIN                0x97
 #define MFR_MODEL               0x9A    // LTC388X only
-#define MFR_REVISION            0x9B
-#define PMBUS_REVISION          0x98
 #define USER_DATA_03            0xB3    // Not LTC2978/A
 #define USER_DATA_04            0xB4    // Not LTC2978/A
 #define MFR_EE_UNLOCK           0xBD

@@ -11,8 +11,6 @@ http://www.linear.com/product/LTC2983
 
 http://www.linear.com/product/LTC2983#demoboards
 
-$Revision: 5790 $
-$Date: 2016-09-23 09:58:16 -0700 (Fri, 23 Sep 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

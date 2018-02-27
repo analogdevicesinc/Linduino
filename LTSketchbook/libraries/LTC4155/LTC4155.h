@@ -13,9 +13,6 @@ http://www.linear.com/product/LTC4155
 
 http://www.linear.com/product/LTC4155#demoboards
 
-REVISION HISTORY
-$Revision: 4623 $
-$Date: 2016-01-26 12:29:50 -0800 (Tue, 26 Jan 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

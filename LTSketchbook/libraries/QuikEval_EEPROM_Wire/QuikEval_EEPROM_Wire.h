@@ -1,9 +1,6 @@
 /*!
 QuikEval EEPROM Library
 
-REVISION HISTORY
-$Revision: 3031 $
-$Date: 2014-12-05 10:05:27 -0800 (Fri, 05 Dec 2014) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

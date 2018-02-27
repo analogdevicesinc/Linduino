@@ -15,9 +15,6 @@ http://www.linear.com/product/LTC2492
 
 http://www.linear.com/product/LTC2492#demoboards
 
-REVISION HISTORY
-$Revision: 6870 $
-$Date: 2017-04-04 10:34:40 -0700 (Tue, 04 Apr 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

@@ -32,10 +32,6 @@ http://www.linear.com/product/LTC2641
 http://www.linear.com/product/LTC2642#demoboards
 http://www.linear.com/product/LTC2641#demoboards
 
-REVISION HISTORY
-$Revision: 6880 $
-$Date: 2017-04-05 15:34:50 -0700 (Wed, 05 Apr 2017) $
-
 Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.

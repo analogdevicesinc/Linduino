@@ -41,9 +41,6 @@ http://www.linear.com/product/LTC3335
 
 http://www.linear.com/product/LTC3335#demoboards
 
-REVISION HISTORY
- $Revision: 5045 $
- $Date: 2016-05-04 17:56:28 -0700 (Wed, 04 May 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

@@ -15,9 +15,6 @@ such as the 24LC025 found on all LTC QuikEval compatible demo boards. The routin
 use the ATMega328 hardware I2C port. The routines require the use of the hardware I2C
 routines found in LT_I2C.h
 
-REVISION HISTORY
-$Revision: 6237 $
-$Date: 2016-12-20 15:09:16 -0800 (Tue, 20 Dec 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

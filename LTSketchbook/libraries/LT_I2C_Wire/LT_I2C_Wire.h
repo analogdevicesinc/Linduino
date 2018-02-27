@@ -2,9 +2,6 @@
 /*!
 LT_I2C: Routines to communicate with ATmega328P's hardware I2C port.
 
-REVISION HISTORY
-$Revision: 6144 $
-$Date: 2016-12-05 16:00:27 -0800 (Mon, 05 Dec 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

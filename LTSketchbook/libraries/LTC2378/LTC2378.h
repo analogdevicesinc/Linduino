@@ -35,9 +35,6 @@ http://www.linear.com/product/LTC2376-20#demoboards
 http://www.linear.com/product/LTC2377-20#demoboards
 http://www.linear.com/product/LTC2378-20#demoboards
 
-REVISION HISTORY
-$Revision: 3659 $
-$Date: 2015-07-01 10:19:20 -0700 (Wed, 01 Jul 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

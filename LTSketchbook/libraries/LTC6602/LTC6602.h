@@ -30,9 +30,6 @@ http://www.linear.com/product/LTC6602
 
 http://www.linear.com/product/LTC6602#demoboards
 
-REVISION HISTORY
-$Revision: 4047 $
-$Date: 2015-09-22 17:01:37 -0700 (Tue, 22 Sep 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

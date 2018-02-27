@@ -4,9 +4,6 @@
   This library contains all of the hardware dependant functions used by the bms
   code
 @endverbatim
-REVISION HISTORY
-$Revision: 7139 $
-$Date: 2017-4
 
 Copyright 2018(c) Analog Devices, Inc.
 

@@ -20,9 +20,6 @@ http://www.linear.com/product/LTC2944
 
 http://www.linear.com/product/LTC2944#demoboards
 
-REVISION HISTORY
-$Revision: 6564 $
-$Date: 2017-02-17 15:50:10 -0800 (Fri, 17 Feb 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

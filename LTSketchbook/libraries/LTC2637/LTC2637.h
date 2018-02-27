@@ -62,9 +62,6 @@ http://www.linear.com/product/LTC2637#demoboards
 
 http://www.linear.com/product/LTC2635#demoboards
 
-REVISION HISTORY
-$Revision: 5080 $
-$Date: 2016-05-10 09:31:27 -0700 (Tue, 10 May 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

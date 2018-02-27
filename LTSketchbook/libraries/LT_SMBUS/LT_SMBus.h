@@ -8,9 +8,6 @@ API to enable use of the PMBus code without modifications.
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 4828 $
-$Date: 2016-03-29 16:21:09 -0600 (Tue, 29 Mar 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

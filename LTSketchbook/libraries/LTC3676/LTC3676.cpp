@@ -28,9 +28,6 @@ http://www.linear.com/product/LTC3676
 
 http://www.linear.com/product/LTC3676#demoboards
 
-REVISION HISTORY
-$Revision: 5091 $
-$Date: 2016-05-16 13:07:14 -0700 (Mon, 16 May 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

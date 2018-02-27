@@ -16,9 +16,6 @@ LT_I2C_Wire: I2C Routines based on Wire library to communicate with Arduino base
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 6144 $
-$Date: 2016-12-05 16:00:27 -0800 (Mon, 05 Dec 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

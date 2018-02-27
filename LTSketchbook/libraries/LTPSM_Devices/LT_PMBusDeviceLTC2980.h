@@ -7,9 +7,6 @@ Representation of a device and its capabilities.
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 3845 $
-$Date: 2015-08-24 14:11:21 -0600 (Mon, 24 Aug 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
