@@ -42,9 +42,6 @@ USER INPUT DATA FORMAT:
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 3481 $
-$Date: 2015-05-22 14:29:36 -0700 (Fri, 22 May 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

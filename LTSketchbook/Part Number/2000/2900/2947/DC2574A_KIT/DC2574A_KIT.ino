@@ -165,9 +165,6 @@ http://www.linear.com/product/LTC2947
 
 http://www.linear.com/product/LTC2947#demoboards
 
-REVISION HISTORY
-$Revision: 5954 $
-$Date: 2016-10-20 12:05:26 -0700 (Thu, 20 Oct 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

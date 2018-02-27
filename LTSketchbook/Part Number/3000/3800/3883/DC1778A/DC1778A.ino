@@ -14,9 +14,6 @@ http://www.linear.com/product/LTC3883
 
 http://www.linear.com/demo/DC177A
 
-REVISION HISTORY
-$Revision: 5928 $
-$Date: 2016-10-17 09:17:57 -0700 (Mon, 17 Oct 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
@@ -110,7 +107,6 @@ void loop()
         break;
       case 3:
         res = pmbus->readPmbusRevision(ltc3883_i2c_address);
-        Serial.print(F("REVISION "));
         Serial.println(res, HEX);
         break;
       case 4:

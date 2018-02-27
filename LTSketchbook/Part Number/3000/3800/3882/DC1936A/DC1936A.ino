@@ -14,9 +14,6 @@ http://www.linear.com/product/LTC3882
 
 http://www.linear.com/demo/DC1936A
 
-REVISION HISTORY
-$Revision: 4467 $
-$Date: 2015-12-02 11:28:55 -0800 (Wed, 02 Dec 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
@@ -108,7 +105,6 @@ void loop()
         break;
       case 3:
         res = pmbus->readPmbusRevision(ltc3882_i2c_address);
-        Serial.print(F("REVISION "));
         Serial.println(res, HEX);
         break;
       case 4:

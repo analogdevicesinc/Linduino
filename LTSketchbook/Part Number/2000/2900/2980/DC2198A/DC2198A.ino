@@ -14,9 +14,6 @@ http://www.linear.com/product/LTC2980
 
 http://www.linear.com/demo/DC2198A
 
-REVISION HISTORY
-$Revision: 3033 $
-$Date: 2014-12-05 14:58:30 -0800 (Fri, 05 Dec 2014) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

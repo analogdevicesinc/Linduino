@@ -43,9 +43,6 @@ http://www.linear.com/product/LTC2362-12#demoboards
 http://www.linear.com/product/LTC2365-12#demoboards
 http://www.linear.com/product/LTC2366-12#demoboards
 
-REVISION HISTORY
-$Revision: 3659 $
-$Date: 2015-07-01 10:19:20 -0700 (Wed, 01 Jul 2015) $2366
 
 Copyright 2018(c) Analog Devices, Inc.
 

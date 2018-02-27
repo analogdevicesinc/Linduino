@@ -11,9 +11,6 @@ NOTES
 
 http://www.linear.com/product/LTC2977
 
-REVISION HISTORY
-$Revision: 4467 $
-$Date: 2015-12-02 11:28:55 -0800 (Wed, 02 Dec 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

@@ -14,9 +14,6 @@ http://www.linear.com/product/LTC3887
 
 http://www.linear.com/demo/DC2263A
 
-REVISION HISTORY
-$Revision: 4376 $
-$Date: 2015-11-20 14:31:33 -0700 (Fri, 20 Nov 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
@@ -111,7 +108,6 @@ void loop()
         break;
       case 3:
         res = pmbus->readPmbusRevision(ltc3887_i2c_address);
-        Serial.print(F("REVISION "));
         Serial.println(res, HEX);
         break;
       case 4:

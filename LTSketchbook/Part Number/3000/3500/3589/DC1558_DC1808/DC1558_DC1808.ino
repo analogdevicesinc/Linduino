@@ -20,9 +20,6 @@ http://www.linear.com/product/LTC3589
 
 http://www.linear.com/product/LTC3589#demoboards
 
-REVISION HISTORY
-$Revision: 5045 $
-$Date: 2015-03-18$
 
 Copyright 2018(c) Analog Devices, Inc.
 

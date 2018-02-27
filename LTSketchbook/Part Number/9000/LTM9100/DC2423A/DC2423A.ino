@@ -21,9 +21,6 @@ http://www.linear.com/product/LTM9100
 
 http://www.linear.com/product/LTC9100#demoboards
 
-REVISION HISTORY
-$Revision: 6835 $
-$Date: 2017-03-30 11:37:36 -0700 (Thu, 30 Mar 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

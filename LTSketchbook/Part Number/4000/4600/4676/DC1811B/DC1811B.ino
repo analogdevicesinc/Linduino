@@ -14,9 +14,6 @@ http://www.linear.com/product/LTM4676
 
 http://www.linear.com/demo/DC1811B
 
-REVISION HISTORY
-$Revision: 4454 $
-$Date: 2015-12-01 16:41:13 -0700 (Tue, 01 Dec 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
@@ -111,7 +108,6 @@ void loop()
         break;
       case 3:
         res = pmbus->readPmbusRevision(LTM4676_i2c_address);
-        Serial.print(F("REVISION "));
         Serial.println(res, HEX);
         break;
       case 4:

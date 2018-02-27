@@ -2,9 +2,6 @@
 Linear Technology DC2259 Demonstration Board
 LTC6811-1: Battery stack monitor
 
-REVISION HISTORY
-$Revision: 7139 $
-$Date: 2017-06-01 13:55:14 -0700 (Thu, 01 Jun 2017) $
 
 @verbatim
 

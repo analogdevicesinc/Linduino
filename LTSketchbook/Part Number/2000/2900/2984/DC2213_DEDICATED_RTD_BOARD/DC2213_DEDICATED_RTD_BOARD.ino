@@ -14,8 +14,6 @@ http://www.linear.com/product/LTC2984
 
 http://www.linear.com/product/LTC2984#demoboards
 
-$Revision: 5797 $
-$Date: 2016-09-23 10:30:32 -0700 (Fri, 23 Sep 2016) $
 Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.

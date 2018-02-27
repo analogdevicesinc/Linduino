@@ -11,9 +11,6 @@ NOTES
 
 http://www.linear.com/product/LTC3887
 
-REVISION HISTORY
-$Revision: 4376 $
-$Date: 2015-11-20 14:31:33 -0700 (Fri, 20 Nov 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

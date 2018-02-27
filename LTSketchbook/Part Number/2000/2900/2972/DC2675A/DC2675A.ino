@@ -14,9 +14,6 @@ http://www.linear.com/product/LTC2972
 
 http://www.linear.com/demo/DC2675A
 
-REVISION HISTORY
-$Revision: 4080 $
-$Date: 2015-09-24 16:36:34 -0600 (Thu, 24 Sep 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

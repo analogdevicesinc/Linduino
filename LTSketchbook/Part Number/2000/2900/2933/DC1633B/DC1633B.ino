@@ -15,9 +15,6 @@ http://www.linear.com/product/LTC2933
 
 http://www.linear.com/demo/DC1633B
 
-REVISION HISTORY
-$Revision: 6084 $
-$Date: 2016-11-22 10:02:25 -0800 (Tue, 22 Nov 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

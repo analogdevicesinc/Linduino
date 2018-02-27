@@ -32,9 +32,6 @@ http://www.linear.com/product/LTC4280
 
 http://www.linear.com/product/LTC4280#demoboards
 
-REVISION HISTORY
-$Revision: 6066 $
-$Date: 2016-11-17 09:23:26 -0800 (Thu, 17 Nov 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
