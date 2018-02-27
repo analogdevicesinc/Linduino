@@ -656,9 +656,6 @@ int16_t EasySMU::IsPresent()
 }
 
 
-/*!REVISION HISTORY
-$Revision: 4430 $
-$Date: 2015-11-30 11:42:19 -0800 (Mon, 30 Nov 2015) $
 
 Copyright (c) 2013, Linear Technology Corp.(LTC)
 All rights reserved.

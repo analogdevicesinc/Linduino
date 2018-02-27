@@ -13,9 +13,6 @@ http://www.linear.com/product/LTC4282
 
 http://www.linear.com/product/LTC4282#demoboards
 
-REVISION HISTORY
-$Revision: 6415 $
-$Date: 2017-01-24 15:42:31 -0800 (Tue, 24 Jan 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

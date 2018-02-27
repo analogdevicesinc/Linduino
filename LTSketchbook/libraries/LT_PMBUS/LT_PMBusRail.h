@@ -9,9 +9,6 @@ and may not perform properly with other PMBus devices.
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 4080 $
-$Date: 2015-11-30 12:35:30 -0600 (Mon, 30 Nov 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

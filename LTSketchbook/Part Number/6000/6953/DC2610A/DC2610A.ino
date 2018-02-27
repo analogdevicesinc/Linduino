@@ -45,9 +45,6 @@ http://www.linear.com/product/LTC6953
 
 http://www.linear.com/product/LTC6953#demoboards
 
-REVISION HISTORY
-$Revision: 1879 $
-$Date: 2013-08-15 08:49:40 -0700 (Thu, 15 Aug 2013) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

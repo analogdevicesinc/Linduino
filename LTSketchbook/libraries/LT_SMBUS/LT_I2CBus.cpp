@@ -5,9 +5,6 @@ LTC I2CBus Support: Routines to communicate to I2C by Wire Library.
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 4630 $
-$Date: 2016-01-27 16:52:32 -0700 (Wed, 27 Jan 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

@@ -1,9 +1,6 @@
 /*!
 LT_I2CBus: Routines to communicate to I2C by Wire Library.
 
-REVISION HISTORY
-$Revision: 3989 $
-$Date: 2015-09-16 17:28:48 -0600 (Wed, 16 Sep 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

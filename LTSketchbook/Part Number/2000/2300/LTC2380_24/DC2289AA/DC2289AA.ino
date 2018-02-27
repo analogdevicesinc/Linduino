@@ -7,9 +7,6 @@ LTC2380-24: Low Noise, High Speed, 24-Bit SAR ADC With Digital Filter
 @endverbatim
 http://www.linear.com/product/LTC2380-24
 
-REVISION HISTORY
-$Revision: 4437 $
-$Date: 2015-12-01 08:26:42 -0800 (Tue, 01 Dec 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

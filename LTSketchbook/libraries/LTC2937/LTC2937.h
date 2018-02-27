@@ -15,9 +15,6 @@ http://www.linear.com/product/LTC2937
 
 http://www.linear.com/demo/DC2313A
 
-REVISION HISTORY
-$Revision: 4037 $
-$Date: 2015-09-22 10:20:48 -0600 (Tue, 22 Sep 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

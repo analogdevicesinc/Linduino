@@ -51,9 +51,6 @@ http://www.linear.com/product/LTC4245
 
 http://www.linear.com/product/LTC4245#demoboards
 
-REVISION HISTORY
-$Revision: 3488 $
-$Date: 2015-05-26 11:01:05 -0700 (Tue, 26 May 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

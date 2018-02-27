@@ -74,9 +74,6 @@ http://www.linear.com/product/LTC2941
 http://www.linear.com/product/LTC2942#demoboards
 http://www.linear.com/product/LTC2941#demoboards
 
-REVISION HISTORY
-$Revision: 6595 $
-$Date: 2017-02-27 15:04:18 -0800 (Mon, 27 Feb 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

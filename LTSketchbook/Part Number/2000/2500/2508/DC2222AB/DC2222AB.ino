@@ -38,9 +38,6 @@ http://www.linear.com/product/LTC2508-32
 
 http://www.linear.com/product/LTC2508-32#demoboards
 
-REVISION HISTORY
-$Revision: 7191 $
-$Date: 2017-07-10 15:21:37 -0700 (Mon, 10 Jul 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

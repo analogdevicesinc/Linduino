@@ -15,9 +15,6 @@ The Kxy bit bang command uses the following pin mappings :
 4-Linduino 6
 5-Linduino 7
 
-REVISION HISTORY
-$Revision: 5019 $
-$Date: 2016-04-27 10:36:16 -0700 (Wed, 27 Apr 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

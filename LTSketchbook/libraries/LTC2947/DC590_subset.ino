@@ -55,9 +55,6 @@ MX        Switch to auxillary I2C mode
 @endverbatim
 
 
-REVISION HISTORY
-$Revision: 5902 $
-$Date: 2016-10-07 14:22:52 -0700 (Fri, 07 Oct 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

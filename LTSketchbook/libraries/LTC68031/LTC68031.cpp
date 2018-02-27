@@ -16,9 +16,6 @@ http://www.linear.com/product/LTC6803-1
 
 http://www.linear.com/product/LTC6803-1#demoboards
 
-REVISION HISTORY
-$Revision: 7138 $
-$Date: 2017-05-31 12:40:38 -0700 (Wed, 31 May 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

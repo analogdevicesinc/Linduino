@@ -45,9 +45,6 @@ http://www.linear.com/product/LTC2758
 
 http://www.linear.com/product/LTC2758#demoboards
 
-REVISION HISTORY
-$Revision: 4564 $
-$Date: 2016-01-11 16:40:12 -0800 (Mon, 11 Jan 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

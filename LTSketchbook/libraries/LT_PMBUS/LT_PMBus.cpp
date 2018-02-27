@@ -9,9 +9,6 @@ and may not perform properly with other PMBus devices.
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 4080 $
-$Date: 2015-11-30 12:35:30 -0600 (Mon, 30 Nov 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 
@@ -2384,7 +2381,6 @@ uint8_t LT_PMBus::readPmbusRevision(uint8_t address)
 {
   uint8_t revision;
 
-  revision = smbus_->readByte(address, PMBUS_REVISION);
   return revision;
 }
 
@@ -2397,7 +2393,6 @@ uint8_t LT_PMBus::readPmbusRevision(uint8_t address)
 void LT_PMBus::readRevision(uint8_t address, uint8_t *revision)
 {
   uint8_t buffer[8];
-  smbus_->readBlock(address, MFR_REVISION, buffer, 4);
 
   // This keeps memory problems out of the driver code where it is
   // easier to deal with.

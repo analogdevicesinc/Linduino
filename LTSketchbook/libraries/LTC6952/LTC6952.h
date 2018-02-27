@@ -26,9 +26,6 @@ http://www.linear.com/product/LTC6952
 
 http://www.linear.com/product/LTC6952#demoboards
 
-REVISION HISTORY
-$Revision: 1877 $
-$Date: 2013-08-14 14:58:41 -0700 (Wed, 14 Aug 2013) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

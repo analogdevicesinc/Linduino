@@ -59,9 +59,6 @@ http://www.linear.com/product/LTC4261
 
 http://www.linear.com/product/LTC4261#demoboards
 
-REVISION HISTORY
-$Revision: 3238 $
-$Date: 2015-03-06 16:40:13 -0800 (Fri, 06 Mar 2015) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

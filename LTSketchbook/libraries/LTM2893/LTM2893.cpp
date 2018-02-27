@@ -10,9 +10,6 @@ http://www.linear.com/product/LTM2893
 http://www.linear.com/product/LTM2893#demoboards
 
 
-REVISION HISTORY
-$Revision: 6678 $
-$Date: 2017-03-09 15:00:06 -0800 (Thu, 09 Mar 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

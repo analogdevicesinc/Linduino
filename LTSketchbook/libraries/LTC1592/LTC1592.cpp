@@ -28,10 +28,6 @@ http://www.linear.com/product/LTC1592
 
 http://www.linear.com/product/LTC1592#demoboards
 
-REVISION HISTORY
-$Revision: 6237 $
-$Date: 2016-12-20 15:09:16 -0800 (Tue, 20 Dec 2016) $
-
 Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.

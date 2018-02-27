@@ -81,9 +81,6 @@ http://www.linear.com/product/LTC2358-16#demoboards
 http://www.linear.com/product/LTC2353-18#demoboards
 http://www.linear.com/product/LTC2353-16#demoboards
 
-REVISION HISTORY
-$Revision: 6834 $
-$Date: 2015-1-17
 
 Copyright 2018(c) Analog Devices, Inc.
 

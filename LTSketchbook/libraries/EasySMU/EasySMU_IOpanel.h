@@ -45,9 +45,6 @@ impressive results from a reasonably simple circuit.
 
 @endverbatim
 
-REVISION HISTORY
-$Revision: 4780 $
-$Date: 2016-03-14 13:58:55 -0700 (Mon, 14 Mar 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

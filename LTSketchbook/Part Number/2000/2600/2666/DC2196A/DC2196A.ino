@@ -78,9 +78,6 @@ http://www.linear.com/product/LTC2666
 
 http://www.linear.com/product/LTC2666#demoboards
 
-REVISION HISTORY
-$Revision: 5039 $
-$Date: 2016-05-03 18:21:37 -0700 (Tue, 03 May 2016) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

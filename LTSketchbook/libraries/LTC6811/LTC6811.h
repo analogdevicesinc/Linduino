@@ -5,9 +5,6 @@ http://www.linear.com/product/LTC6811-1
 
 http://www.linear.com/product/LTC6811-1#demoboards
 
-REVISION HISTORY
-$Revision: 7139 $
-$Date: 2017-06-01 13:55:14 -0700 (Thu, 01 Jun 2017) $
 
 Copyright 2018(c) Analog Devices, Inc.
 

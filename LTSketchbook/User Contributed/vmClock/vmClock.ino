@@ -14,10 +14,6 @@ http://www.linear.com/product/LTC2607
 
 http://www.linear.com/product/LTC2607#demoboards
 
-REVISION HISTORY
-$Revision: 1509 $
-$Date: 2013-04-17 09:28:33 -0700 (Wed, 17 Apr 2013) $
-
 Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.
