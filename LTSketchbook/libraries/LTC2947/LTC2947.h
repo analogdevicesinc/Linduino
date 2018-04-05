@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #undef LTC2947_DEBUG
 
-#include "arduino.h"
+//#include "arduino.h"
 
 #define bitMaskSetChk(value, bitMask) (((value) & (bitMask)) == (bitMask))
 #define bitMaskClrChk(value, bitMask) (((value) & (bitMask)) == 0)
