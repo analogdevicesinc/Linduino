@@ -62,18 +62,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Function Declarations
 void LTC5556_print_title();         // Print the title block
+void LTC5556_print_prompt();        // Print the initial prompt
 
+//! Initialize Linduino
+//! @return void
 void setup()
-// Initialize Linduino
 {
-  quikeval_SPI_init();              // Configure the spi port for 4MHz SCK
+  quikeval_SPI_init();              // Configure the SPI port for 4MHz SCK
   Serial.begin(115200);             // Initialize the serial port to the PC
   LTC5556_print_title();            // Displays the title
   LTC5556_print_prompt();           // Displays the initial prompt
 }
 
+//! Repeats Linduino loop
+//! @return void
 void loop()
-// Repeats Linduino loop
 {
   uint8_t user_command;                                         // The user input command
   uint16_t output_register;                                     // The register value read back from the LTC5556
@@ -109,8 +112,9 @@ void loop()
   }
 }
 
+//! Prints the title block
+//! @return void
 void LTC5556_print_title()
-// Print the title block
 {
   Serial.println(F("*****************************************************************"));
   Serial.println(F("* DC2693A Demonstration Program                                 *"));
@@ -119,7 +123,8 @@ void LTC5556_print_title()
   Serial.println(F("*****************************************************************"));
 }
 
-//! Prints the main menu
+//! Prints the initial prompt
+//! @return void
 void LTC5556_print_prompt()
 {
   Serial.println(F("\n1. Same settings for Channels 1 and 2"));

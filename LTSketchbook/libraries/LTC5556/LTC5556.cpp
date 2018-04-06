@@ -49,12 +49,12 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-//! @ingroup WIP
-//! @{  
-//! @defgroup LTC5556 LTC5556: Dual Programmable Downconverting Mixer with IF DVGAs
-//! @}
+/*! @ingroup RF
+    @{  
+    @defgroup LTC5556 Dual Programmable Downconverting Mixer with IF DVGAs
+    @}
 
-/*! @file
+        @file
     @ingroup LTC5556
     Library for LTC5556: Dual Programmable Downconverting Mixer with IF DVGAs
 */
