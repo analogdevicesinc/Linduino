@@ -71,15 +71,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // Read a byte, store in "value".
 int8_t i2c_read_byte(uint8_t address, uint8_t *value)
 {
-  Wire.beginTransmission(address);
+  // Wire.requestFrom returns the number of bytes that were requested from the slave.
+  // If the address NAcked, the function returns 0. 
+  int8_t ret = 0;
   Wire.requestFrom((uint8_t)address, (uint8_t)1, (uint8_t)true);
   while (Wire.available())
   {
     *value = Wire.read();       // Read MSB from buffer
   }
   delay(100);
-  Wire.endTransmission();
-  return(0);
+  if(ret == 0)
+	return (1);		// Unsuccessful
+  else
+	return(0);		// Successful
 
 }
 
@@ -99,6 +103,7 @@ int8_t i2c_write_byte(uint8_t address, uint8_t value)
 // Read a byte of data at register specified by "command", store in "value"
 int8_t i2c_read_byte_data(uint8_t address, uint8_t command, uint8_t *value)
 {
+  int8_t ret = 0;
   Wire.beginTransmission(address);
   Wire.write(byte(command));
   if (Wire.endTransmission())     // stop transmitting
@@ -106,18 +111,16 @@ int8_t i2c_read_byte_data(uint8_t address, uint8_t command, uint8_t *value)
     // endTransmission returns zero on success
     return(1);
   }
-  Wire.requestFrom((uint8_t)address, (uint8_t)1, (uint8_t)true);
+  ret = Wire.requestFrom((uint8_t)address, (uint8_t)1, (uint8_t)true);
   while (Wire.available())
   {
     *value = Wire.read();               // Read MSB from buffer
   }
   delay(100);
-  if (Wire.endTransmission())     // stop transmitting
-  {
-    // endTransmission returns zero on success
-    return(1);
-  }
-  return(0);
+  if(ret == 0)
+	return (1);		// Unsuccessful
+  else
+	return(0);		// Successful
 }
 
 // Write a byte of data to register specified by "command"
@@ -152,8 +155,7 @@ int8_t i2c_read_word_data(uint8_t address, uint8_t command, uint16_t *value)
     // endTransmission returns zero on success
     return(1);
   }
-  Wire.beginTransmission(address);
-  Wire.requestFrom((uint8_t)address, (uint8_t)2, (uint8_t)true);
+  ret = Wire.requestFrom((uint8_t)address, (uint8_t)2, (uint8_t)true);
   int i = 1;
   while (Wire.available())
   {
@@ -163,9 +165,11 @@ int8_t i2c_read_word_data(uint8_t address, uint8_t command, uint16_t *value)
       break;
   }
   delay(100);
-  Wire.endTransmission();
   *value = data.w;
-  return(0);
+  if(ret == 0)
+	return (1);		// Unsuccessful
+  else
+	return(0);		// Successful
 }
 
 // Write a 16-bit word of data to register specified by "command"
@@ -205,8 +209,7 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t command, uint8_t length, uin
     // endTransmission returns zero on success
     return(1);
   }
-  Wire.beginTransmission(address);
-  Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
+  ret = Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
 
   while (Wire.available())
   {
@@ -216,12 +219,10 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t command, uint8_t length, uin
       break;
   }
   delay(100);
-  if (Wire.endTransmission())     // stop transmitting
-  {
-    // endTransmission returns zero on success
-    return(1);
-  }
-  return(0);
+  if(ret == 0)
+	return (1);		// Unsuccessful
+  else
+	return(0);		// Successful
 }
 
 
@@ -231,8 +232,7 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t length, uint8_t *values)
   uint8_t i = (length-1);
   int8_t ret = 0;
 
-  Wire.beginTransmission(address);
-  Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
+  ret = Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint8_t)true);
 
   while (Wire.available())
   {
@@ -242,12 +242,10 @@ int8_t i2c_read_block_data(uint8_t address, uint8_t length, uint8_t *values)
       break;
   }
   delay(100);
-  if (Wire.endTransmission())     // stop transmitting
-  {
-    // endTransmission returns zero on success
-    return(1);
-  }
-  return(0);
+  if(ret == 0)
+	return (1);		// Unsuccessful
+  else
+	return(0);		// Successful
 }
 
 
