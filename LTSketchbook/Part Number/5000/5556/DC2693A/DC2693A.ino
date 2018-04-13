@@ -54,55 +54,89 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     @ingroup LTC5556
 */
  
-#include "libraries/LTC5556/LTC5556.h"
+#include "LTC5556.h"
 #include <SPI.h>
-#include "libraries/LT_SPI/LT_SPI.h"
-#include "libraries/UserInterface/UserInterface.h"
-#include "libraries/Linduino/Linduino.h"
+#include "LT_SPI.h"
+#include "UserInterface.h"
+#include "Linduino.h"
 
 // Function Declarations
-void LTC5556_print_title();         // Print the title block
-void LTC5556_print_prompt();        // Print the initial prompt
+
+// Print the title block
+void LTC5556_print_title();
+
+// Print the initial prompt
+void LTC5556_print_prompt();
 
 //! Initialize Linduino
 //! @return void
-void setup()
-{
-  quikeval_SPI_init();              // Configure the SPI port for 4MHz SCK
-  Serial.begin(115200);             // Initialize the serial port to the PC
-  LTC5556_print_title();            // Displays the title
-  LTC5556_print_prompt();           // Displays the initial prompt
+void setup(){
+
+  // Configure the SPI port for 4MHz SCK
+  quikeval_SPI_init();
+
+  // Initialize the serial port to the PC
+  Serial.begin(115200);
+
+  // Displays the title
+  LTC5556_print_title();
+
+  // Displays the initial prompt
+  LTC5556_print_prompt();
 }
 
 //! Repeats Linduino loop
 //! @return void
-void loop()
-{
-  uint8_t user_command;                                         // The user input command
-  uint16_t output_register;                                     // The register value read back from the LTC5556
-  uint8_t byte_1;                                               // Variable for decoding mixer 1's register value
-  uint8_t byte_2;                                               // Variable for decoding mixer 2's register value
+void loop(){
 
-  if (Serial.available())
-  {
-    user_command = read_int();                                  // Read the user command
-    Serial.println(user_command);                               // Print the command to the screen
-    switch (user_command)
-    {
+  // The user input command
+  uint8_t user_command;
+
+  // The register value read back from the LTC5556
+  uint16_t output_register;
+
+  // Variable for decoding mixer 1's register value
+  uint8_t byte_1;
+
+  // Variable for decoding mixer 2's register value
+  uint8_t byte_2;
+
+  if (Serial.available()){
+
+    // Read the user command
+    user_command = read_int();
+
+    // Print the command to the screen
+    Serial.println(user_command);
+    switch (user_command){
       case 1:
-        output_register = LTC5556_dupl_settings();              // Run the duplicate settings function
+
+        // Run the duplicate settings function
+        output_register = LTC5556_dupl_settings();
         Serial.println(F("\n\n\nLTC5556 settings:\n"));
-        LTC5556_decode_output(output_register);                 // Decode the resulting value
+
+        // Decode the resulting value
+        LTC5556_decode_output(output_register);
         break;
       case 2:
-        output_register = LTC5556_diff_settings();              // Run the different settings function
-        byte_1 = output_register & 0xFF;                        // Pick off the least significant 8 bits for decoding
-        byte_2 = output_register >> 8;                          // Pick off the most significant 8 bits for decoding
+
+        // Run the different settings function
+        output_register = LTC5556_diff_settings();
+
+        // Pick off the least significant 8 bits for decoding
+        byte_1 = output_register & 0xFF;
+
+        // Pick off the most significant 8 bits for decoding
+        byte_2 = output_register >> 8;
         
         Serial.println(F("\n\n\nLTC5556 Mixer 1 settings:\n"));
-        LTC5556_decode_output(byte_1);                          // Decode the resulting value
+
+        // Decode the resulting value
+        LTC5556_decode_output(byte_1);
         Serial.println(F("\n\n\nLTC5556 Mixer 2 settings:\n"));
-        LTC5556_decode_output(byte_2);                          // Decode the resulting value
+
+        // Decode the resulting value
+        LTC5556_decode_output(byte_2);
         break;
       default:
         Serial.println(F("\n\nIncorrect Option\n"));
@@ -114,8 +148,7 @@ void loop()
 
 //! Prints the title block
 //! @return void
-void LTC5556_print_title()
-{
+void LTC5556_print_title(){
   Serial.println(F("*****************************************************************"));
   Serial.println(F("* DC2693A Demonstration Program                                 *"));
   Serial.println(F("*                                                               *"));
@@ -125,8 +158,7 @@ void LTC5556_print_title()
 
 //! Prints the initial prompt
 //! @return void
-void LTC5556_print_prompt()
-{
+void LTC5556_print_prompt(){
   Serial.println(F("\n1. Same settings for Channels 1 and 2"));
   Serial.println(F("2. Different settings for Channels 1 and 2\n"));
   Serial.print(F("Enter a command: "));

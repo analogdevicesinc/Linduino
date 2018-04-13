@@ -62,8 +62,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     Header File for LTC5556: Dual Programmable Downconverting Mixer with IF DVGAs
 */
 
-#ifndef LTSKETCHBOOK_LIBRARIES_LTC5556_LTC5556_H_
-#define LTSKETCHBOOK_LIBRARIES_LTC5556_LTC5556_H_
+#ifndef LTC5556_H
+#define LTC5556_H
 
 #include <SPI.h>
 
@@ -117,5 +117,5 @@ void LTC5556_decode_output(
     uint8_t output   //! Raw output from the LTC5556 to decode
     );
 
-#endif  // LTSKETCHBOOK_LIBRARIES_LTC5556_LTC5556_H_
+#endif  // LTC5556_H
 

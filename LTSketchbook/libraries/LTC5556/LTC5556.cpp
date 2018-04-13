@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*! @ingroup RF_Timing
     @{
-    @defgroup LTC5556 Dual Programmable Downconverting Mixer with IF DVGAs
+    @defgroup LTC5556 LTC5556: Dual Programmable Downconverting Mixer with IF DVGAs
     @}
 
         @file
@@ -60,11 +60,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     Library for LTC5556: Dual Programmable Downconverting Mixer with IF DVGAs
 */
 
-#include "libraries/LTC5556/LTC5556.h"
+#include "LTC5556.h"
 #include <SPI.h>
-#include "libraries/LT_SPI/LT_SPI.h"
-#include "libraries/UserInterface/UserInterface.h"
-#include "libraries/Linduino/Linduino.h"
+#include "LT_SPI.h"
+#include "UserInterface.h"
+#include "Linduino.h"
 
 /// Global Variables
 // 8 control bits for mixer 1 (1/2 of the register)
@@ -259,17 +259,20 @@ uint8_t LTC5556_get_att(char *prompt) {
       Serial.println(F("\n\nIncorrect Option - Choose a number "
         "between 0 and 15.5dB in 0.5dB increments\n"));
       keep_looping = 1;
-    } else if (att_command < 0) {
+    }
+    else if (att_command < 0) {
       // User input was negative, ask again
       Serial.println(F("\n\nIncorrect Option - Choose a number "
         "between 0 and 15.5dB in 0.5dB increments\n"));
       keep_looping = 1;
-    } else if (att_command > 31) {
+    }
+    else if (att_command > 31) {
       // User input was too high, ask again
       Serial.println(F("\n\nIncorrect Option - Choose a number "
         "between 0 and 15.5dB in 0.5dB increments\n"));
       keep_looping = 1;
-    } else {
+    }
+    else {
       // User input was within the accepted parameters
 
       // Double the input to convert it to a number between 0-31
