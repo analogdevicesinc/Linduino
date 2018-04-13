@@ -1,1 +1,1 @@
-astyle.exe --recursive --options=Linduino.style ..\LTSketchbook\*.cpp ..\LTSketchbook\*.h ..\LTSketchbook\*.ino
+astyle.exe --recursive --options=Linduino.style ..\LTSketchbook\libraries\LTC5556\*.cpp ..\LTSketchbook\libraries\LTC5556\*.h ..\LTSketchbook\Part Number\5000\5556\DC2693A\*.ino

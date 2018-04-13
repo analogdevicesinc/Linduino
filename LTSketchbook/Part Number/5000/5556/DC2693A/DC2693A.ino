@@ -54,11 +54,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     @ingroup LTC5556
 */
  
-#include "LTC5556.h"
-#include "LT_SPI.h"
-#include "UserInterface.h"
-#include "Linduino.h"
+#include "libraries/LTC5556/LTC5556.h"
 #include <SPI.h>
+#include "libraries/LT_SPI/LT_SPI.h"
+#include "libraries/UserInterface/UserInterface.h"
+#include "libraries/Linduino/Linduino.h"
 
 // Function Declarations
 void LTC5556_print_title();         // Print the title block

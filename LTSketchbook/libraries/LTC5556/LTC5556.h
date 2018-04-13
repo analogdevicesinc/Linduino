@@ -1,4 +1,6 @@
 /*!
+Copyright 2018(c) Analog Devices, Inc.
+
 LTC5556: Dual Programmable Downconverting Mixer with IF DVGA
 
 @verbatim
@@ -22,8 +24,6 @@ IF : IF Attenuation Control Bits
 @endverbatim
 
 http://www.analog.com/en/products/rf-microwave/mixers/single-double-triple-balanced-mixers/ltc5556.html
-
-Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.
 
@@ -62,8 +62,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     Header File for LTC5556: Dual Programmable Downconverting Mixer with IF DVGAs
 */
 
-#ifndef LTC5556_H
-#define LTC5556_H
+#ifndef LTSKETCHBOOK_LIBRARIES_LTC5556_LTC5556_H_
+#define LTSKETCHBOOK_LIBRARIES_LTC5556_LTC5556_H_
 
 #include <SPI.h>
 
@@ -78,13 +78,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define LTC5556_REDUCED_POWER   0x80
 //! @}
 
-//! Writes to the LTC5556 twice and reads back the last byte to make sure the 
+//! Writes to the LTC5556 twice and reads back the last byte to make sure the
 //! LTC5556 was loaded properly
 //! @return void
-void LTC5556_write(uint8_t cs,                  //! Chip Select pin
-                   uint16_t tx,                 //! Word to be transmitted
-                   uint16_t *rx                 //! Output pointer
-				   );
+void LTC5556_write(
+    uint8_t cs,                  //! Chip Select pin
+    uint16_t tx,                 //! Word to be transmitted
+    uint16_t *rx                 //! Output pointer
+    );
 
 //! Function to duplicate settings for both LTC5556 channels
 //! @return Readback after writing duplicate settings to both channels
@@ -93,25 +94,28 @@ uint8_t LTC5556_dupl_settings();
 //! Function to apply unique settings for each LTC5556 channel
 //! @return Readback after writing different settings for each channel
 uint16_t LTC5556_diff_settings();
-				   
+
 //! Take inputs and apply the settings to the mixer
 //! @return uint8_t
 uint8_t LTC5556_settings();
 
 //! Function to get data from user for power mode
 //! @return uint8_t
-uint8_t LTC5556_get_power_mode(char *prompt     //! Prompt to ask for the desired power mode
-                              );
+uint8_t LTC5556_get_power_mode(
+    char *prompt     //! Prompt to ask for the desired power mode
+    );
 
 //! Get attenuation value from user
 //! @return uint8_t
-uint8_t LTC5556_get_att(char *prompt     //! Prompt to ask for the desired attenuation
-                       );
+uint8_t LTC5556_get_att(
+    char *prompt     //! Prompt to ask for the desired attenuation
+    );
 
 //! Decode the register value read from the LTC5556
 //! @return void
-void LTC5556_decode_output(uint8_t output   //! Raw output from the LTC5556 to decode
-                          );
+void LTC5556_decode_output(
+    uint8_t output   //! Raw output from the LTC5556 to decode
+    );
 
-#endif  // LTC5556_H
+#endif  // LTSKETCHBOOK_LIBRARIES_LTC5556_LTC5556_H_
 
