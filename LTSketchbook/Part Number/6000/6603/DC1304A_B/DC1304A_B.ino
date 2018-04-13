@@ -2,10 +2,9 @@
 
 /*!
 Linear Technology DC1304A-B Demonstration Board.
-DC1304: Dual Matched, High Frequency Bandpass/Lowpass Filters
+LTC6603: Dual Matched, High Frequency Bandpass/Lowpass Filters
 
 @verbatim
-1304
 NOTES
   Setup:
     Set the terminal baud rate to 115200 and select the newline terminator.
@@ -74,7 +73,7 @@ ongoing work.
  */
 
 /*! @file
-    @ingroup DC1304
+    @ingroup LTC6603
 */
 
 #include <Arduino.h>
@@ -141,9 +140,6 @@ void loop()
         break;
       case 4:
         menu_4_poweron();
-        break;
-      case 5:
-        menu_5_changeclockfrequency();
         break;
       default:
         Serial.println("Incorrect Option");
@@ -320,16 +316,12 @@ void menu_4_poweron()
 
 }
 
-void menu_5_changeclockfrequency()
-{
-  
-}
 
 //! Prints the title block when program first starts.
 void print_title()
 {
   (F("\n*****************************************************************\n"));
-  Serial.print(F("* DC1304A-A Demonstration Program                               *\n"));
+  Serial.print(F("* DC1304A-B Demonstration Program                               *\n"));
   Serial.print(F("*                                                               *\n"));
   Serial.print(F("* This program demonstrates how to send data to the LTC6603.    *\n"));
   Serial.print(F("*                                                               *\n"));
