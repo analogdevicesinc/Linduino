@@ -1,4 +1,6 @@
 /*!
+Copyright 2018(c) Analog Devices, Inc.
+
 Linear Technology DC2460A Demonstration Board
 LTC5566: Dual Programmable Gain Downconverting Mixer
 
@@ -17,15 +19,9 @@ USER INPUT DATA FORMAT:
  binary  : B10000000000
  float   : 1024.0
 
-
 @endverbatim
 
 http://www.linear.com/product/LTC5566
-
-http://www.linear.com/product/LTC5566#demoboards
-
-
-Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.
 
@@ -70,44 +66,75 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <SPI.h>
 
 // Function Declarations
-void LTC5566_print_title();                 // Print the title block
-void LTC5566_print_prompt();                // Print the prompt block
+
+// Print the title block
+void LTC5566_print_title();
+
+// Print the prompt block
+void LTC5566_print_prompt();
 
 //! Initialize Linduino
-void setup()
-{
-  quikeval_SPI_init();              // Configure the spi port for 4MHz SCK
-  Serial.begin(115200);             // Initialize the serial port to the PC
-  LTC5566_print_title();            // Displays the title
-  LTC5566_print_prompt();           // Displays the initial prompt
+void setup() {
+  // Configure the spi port for 4MHz SCK
+  quikeval_SPI_init();
+
+  // Initialize the serial port to the PC
+  Serial.begin(115200);
+
+  // Displays the title
+  LTC5566_print_title();
+
+  // Displays the initial prompt
+  LTC5566_print_prompt();
 }
 
 //! Repeats Linduino loop
-void loop()
-{
-  uint8_t user_command;             // The user input command
-  uint16_t output_register;         // The register value read back from the LTC5566
-  uint8_t byte_1;                   // Dummy variable for decoding Mixer 1's register value
-  uint8_t byte_2;                   // Dummy variable for decoding Mixer 2's register value
-  if (Serial.available())           // Check for user input
-  {
-    user_command = read_int();      // Read the user command
-    Serial.println(user_command);   // Print the command to the screen
-    switch (user_command)
-    {
+void loop() {
+  // The user input command
+  uint8_t user_command;
+
+  // The register value read back from the LTC5566
+  uint16_t output_register;
+
+  // Dummy variable for decoding Mixer 1's register value
+  uint8_t byte_1;
+
+  // Dummy variable for decoding Mixer 2's register value
+  uint8_t byte_2;
+
+  // Check for user input
+  if (Serial.available()) {
+    // Read the user command
+    user_command = read_int();
+
+    // Print the command to the screen
+    Serial.println(user_command);
+    switch (user_command) {
       case 1:
-        output_register = LTC5566_dupl_settings();  // Run the duplicate settings function
+        // Run the duplicate settings function
+        output_register = LTC5566_dupl_settings();
         Serial.println(F("\n\n\nLTC5566 settings:\n"));
-        LTC5566_decode_output(output_register);     // Decode the resulting value
+
+        // Decode the resulting value
+        LTC5566_decode_output(output_register);
         break;
       case 2:
-        output_register = LTC5566_diff_settings();  // Run the different settings function
-        byte_1 = output_register & 0xFF;            // Pick off least significant 8 bits for decoding
-        byte_2 = output_register >> 8;              // Pick off most significant 8 bits for decoding
+        // Run the different settings function
+        output_register = LTC5566_diff_settings();
+
+        // Pick off least significant 8 bits for decoding
+        byte_1 = output_register & 0xFF;
+
+        // Pick off most significant 8 bits for decoding
+        byte_2 = output_register >> 8;
         Serial.println(F("\n\n\nMixer 1 settings:\n"));
-        LTC5566_decode_output(byte_1);              // Decode the resulting value
+
+        // Decode the resulting value
+        LTC5566_decode_output(byte_1);
         Serial.println(F("\n\n\nMixer 2 settings:\n"));
-        LTC5566_decode_output(byte_2);              // Decode the resulting value
+
+        // Decode the resulting value
+        LTC5566_decode_output(byte_2);
         break;
       default:
         Serial.println(F("\n\nIncorrect Option\n"));
@@ -118,8 +145,7 @@ void loop()
 }
 
 //! Print the title block
-void LTC5566_print_title()
-{
+void LTC5566_print_title() {
   Serial.println(F("*****************************************************************"));
   Serial.println(F("* DC2460A Demonstration Program                                 *"));
   Serial.println(F("*                                                               *"));
@@ -128,8 +154,7 @@ void LTC5566_print_title()
 }
 
 //! Prints the main menu
-void LTC5566_print_prompt()
-{
+void LTC5566_print_prompt() {
   Serial.println(F("\n1. Same settings for Channels A and B"));
   Serial.println(F("2. Different settings for Channels A and B\n"));
   Serial.print(F("Enter a command: "));

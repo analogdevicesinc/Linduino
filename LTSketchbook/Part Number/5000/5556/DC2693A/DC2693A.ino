@@ -70,8 +70,7 @@ void LTC5556_print_prompt();
 
 //! Initialize Linduino
 //! @return void
-void setup(){
-
+void setup() {
   // Configure the SPI port for 4MHz SCK
   quikeval_SPI_init();
 
@@ -87,8 +86,7 @@ void setup(){
 
 //! Repeats Linduino loop
 //! @return void
-void loop(){
-
+void loop() {
   // The user input command
   uint8_t user_command;
 
@@ -101,8 +99,7 @@ void loop(){
   // Variable for decoding mixer 2's register value
   uint8_t byte_2;
 
-  if (Serial.available()){
-
+  if (Serial.available()) {
     // Read the user command
     user_command = read_int();
 
@@ -110,7 +107,6 @@ void loop(){
     Serial.println(user_command);
     switch (user_command){
       case 1:
-
         // Run the duplicate settings function
         output_register = LTC5556_dupl_settings();
         Serial.println(F("\n\n\nLTC5556 settings:\n"));
@@ -119,7 +115,6 @@ void loop(){
         LTC5556_decode_output(output_register);
         break;
       case 2:
-
         // Run the different settings function
         output_register = LTC5556_diff_settings();
 
@@ -148,7 +143,7 @@ void loop(){
 
 //! Prints the title block
 //! @return void
-void LTC5556_print_title(){
+void LTC5556_print_title() {
   Serial.println(F("*****************************************************************"));
   Serial.println(F("* DC2693A Demonstration Program                                 *"));
   Serial.println(F("*                                                               *"));
@@ -158,7 +153,7 @@ void LTC5556_print_title(){
 
 //! Prints the initial prompt
 //! @return void
-void LTC5556_print_prompt(){
+void LTC5556_print_prompt() {
   Serial.println(F("\n1. Same settings for Channels 1 and 2"));
   Serial.println(F("2. Different settings for Channels 1 and 2\n"));
   Serial.print(F("Enter a command: "));

@@ -260,14 +260,14 @@ uint8_t LTC5556_get_att(char *prompt) {
         "between 0 and 15.5dB in 0.5dB increments\n"));
       keep_looping = 1;
     }
+    // User input was negative, ask again
     else if (att_command < 0) {
-      // User input was negative, ask again
       Serial.println(F("\n\nIncorrect Option - Choose a number "
         "between 0 and 15.5dB in 0.5dB increments\n"));
       keep_looping = 1;
     }
+    // User input was too high, ask again
     else if (att_command > 31) {
-      // User input was too high, ask again
       Serial.println(F("\n\nIncorrect Option - Choose a number "
         "between 0 and 15.5dB in 0.5dB increments\n"));
       keep_looping = 1;

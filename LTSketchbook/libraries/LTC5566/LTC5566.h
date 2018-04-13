@@ -1,4 +1,6 @@
 /*!
+Copyright 2018(c) Analog Devices, Inc.
+
 LTC5566: Dual Programmable Gain Downconverting Mixer
 
 @verbatim
@@ -22,11 +24,6 @@ IFx : IF Attenuation Control Bits
 @endverbatim
 
 http://www.linear.com/product/LTC5566
-
-http://www.linear.com/product/LTC5566#demoboards
-
-
-Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.
 
@@ -91,43 +88,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define LTC5566_RF_TUNE_11      0x60
 //! @}
 
-//! @name LTC5566 gain configuration bits.
-//! @{
-// gain configuration bits.
-#define LTC5566_ATT_0_0dB      0x00
-#define LTC5566_ATT_0_5dB      0x01
-#define LTC5566_ATT_1_0dB      0x02
-#define LTC5566_ATT_1_5dB      0x03
-#define LTC5566_ATT_2_0dB      0x04
-#define LTC5566_ATT_2_5dB      0x05
-#define LTC5566_ATT_3_0dB      0x06
-#define LTC5566_ATT_3_5dB      0x07
-#define LTC5566_ATT_4_0dB      0x08
-#define LTC5566_ATT_4_5dB      0x09
-#define LTC5566_ATT_5_0dB      0x0A
-#define LTC5566_ATT_5_5dB      0x0B
-#define LTC5566_ATT_6_0dB      0x0C
-#define LTC5566_ATT_6_5dB      0x0D
-#define LTC5566_ATT_7_0dB      0x0E
-#define LTC5566_ATT_7_5dB      0x0F
-#define LTC5566_ATT_8_0dB      0x10
-#define LTC5566_ATT_8_5dB      0x11
-#define LTC5566_ATT_9_0dB      0x12
-#define LTC5566_ATT_9_5dB      0x13
-#define LTC5566_ATT_10_0dB     0x14
-#define LTC5566_ATT_10_5dB     0x15
-#define LTC5566_ATT_11_0dB     0x16
-#define LTC5566_ATT_11_5dB     0x17
-#define LTC5566_ATT_12_0dB     0x18
-#define LTC5566_ATT_12_5dB     0x19
-#define LTC5566_ATT_13_0dB     0x1A
-#define LTC5566_ATT_13_5dB     0x1B
-#define LTC5566_ATT_14_0dB     0x1C
-#define LTC5566_ATT_14_5dB     0x1D
-#define LTC5566_ATT_15_0dB     0x1E
-#define LTC5566_ATT_15_5dB     0x1F
-//! @}
-
 //! Writes to the LTC5566 twice and reads back the last two bytes to make sure
 //! the LTC5566 was loaded properly
 //! @return void
@@ -137,31 +97,35 @@ void LTC5566_write(uint8_t cs,                  //! Chip Select pin
                   );
 
 //! Function to duplicate settings for both LTC5566 channels
-//! @return @tbd
+//! @return Readback after writing duplicate settings to both channels
 uint8_t LTC5566_dupl_settings();
 
 //! Function to apply unique settings for each LTC5566 channel
-//! @return @tbd
+//! @return Readback after writing different settings for each channel
 uint16_t LTC5566_diff_settings();
 
 //! Function to get data from user for power mode
-//! @return @tbd
-uint8_t LTC5566_get_power_mode(char *prompt   //! @tbd
-                              );
+//! @return uint8_t
+uint8_t LTC5566_get_power_mode(
+    char *prompt   //! Prompt to ask for the desired power mode
+    );
 
 //! Function to get data from user for RF input tune mode
-//! @return @tbd
-uint8_t LTC5566_get_tune_mode(char *prompt    //! @tbd
-                             );
+//! @return uint8_t
+uint8_t LTC5566_get_tune_mode(
+    char *prompt    //! Prompt to ask for the desired RF tune mode
+    );
 
 //! Function to get data from user for IF attenuation
-//! @return @tbd
-uint8_t LTC5566_get_att(char *prompt      //! @tbd
-                       );
+//! @return uint8_t
+uint8_t LTC5566_get_att(
+    char *prompt      //! Prompt to ask for the desired attenuation
+    );
 
 //! Decode the register value read from the LTC5555
 //! @return void
-void LTC5566_decode_output(uint8_t output   //! @tbd
-                          );
+void LTC5566_decode_output(
+    uint8_t output   //! Raw output from the LTC5566 to decode
+    );
 
 #endif  // LTC5566_H
