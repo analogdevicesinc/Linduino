@@ -1,6 +1,7 @@
 /*!
 Modified LTC24xx sketch for isoSPI LTC6820
 
+modified by clarence
 
 @endverbatim
 
