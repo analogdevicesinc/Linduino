@@ -1,4 +1,6 @@
 /*!
+Copyright 2018(c) Analog Devices, Inc.
+
 LTC5566: Dual Programmable Gain Downconverting Mixer
 
 @verbatim
@@ -12,11 +14,6 @@ each channel is programmed in 0.5dB steps through the SPI.
 @endverbatim
 
 http://www.linear.com/product/LTC5566
-
-http://www.linear.com/product/LTC5566#demoboards
-
-
-Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.
 
@@ -67,302 +64,349 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <SPI.h>
 
 // Global Variables
-uint8_t mixer_1_value;                                                  // 8 control bits for mixer 1 (1/2 of the register)
-uint8_t mixer_2_value;                                                  // 8 control bits for mixer 2 (1/2 of the register)
-uint16_t whole_register;                                                // 16 bit register for writing to the part
-uint16_t output;                                                        // 16 bit output from the part
-uint8_t mixer_1_output;                                                 // 8 bits read from the LTC5566's internal register
-uint8_t mixer_2_output;                                                 // 8 bits read from the LTC5566's internal register
 
-// Writes to the LTC5566 twice and reads back the last two bytes to make sure the LTC5566 was loaded properly
-void LTC5566_write(uint8_t cs,  uint16_t tx, uint16_t *rx)
-{
-  spi_transfer_word(cs, tx, rx);                                        // Transfer 2 bytes
-  spi_transfer_word(cs, tx, rx);                                        // Transfer 2 bytes
+// 8 control bits for mixer 1 (1/2 of the register)
+uint8_t mixer_1_value;
+
+// 8 control bits for mixer 2 (1/2 of the register)
+uint8_t mixer_2_value;
+
+// 16 bit register for writing to the part
+uint16_t whole_register;
+
+// 16 bit output from the part
+uint16_t full_output;
+
+// 8 bits read from the LTC5566's internal register
+uint8_t mixer_1_output;
+
+// 8 bits read from the LTC5566's internal register
+uint8_t mixer_2_output;
+
+// Writes to the LTC5566 twice and reads back the last
+// two bytes to make sure the LTC5566 was loaded properly
+void LTC5566_write(uint8_t cs,  uint16_t tx, uint16_t *rx) {
+  // Transfer 4 bytes
+  spi_transfer_word(cs, tx, rx);
+  spi_transfer_word(cs, tx, rx);
 }
 
 // Take inputs and apply same settings to both mixer channels
-uint8_t LTC5566_dupl_settings()
-{
-  uint8_t power_bit;                                                    // Bit for controlling the LTC5566's power mode
-  char *power_prompt = "Enter a command: ";                             // Prompt for getting power mode
-  uint8_t tune_bits;                                                    // Bit for controlling the LTC5566's RF input tune mode
-  char *tune_prompt = "\nDesired RF Input Tune setting: ";              // Prompt for getting tune mode
-  uint8_t att_bits;                                                     // Bit for controlling the LTC5566's IF attenuation
-  char *att_prompt = "\nDesired IF Attenuation (dB): ";                 // Prompt for getting att level
-  uint8_t output_register;
+uint8_t LTC5566_dupl_settings() {
+  // Bit for controlling the LTC5566's power mode
+  uint8_t power_bit;
 
-  power_bit = LTC5566_get_power_mode(power_prompt);                     // Get power mode bit
-  tune_bits = LTC5566_get_tune_mode(tune_prompt);                       // Get RF input tune mode
-  att_bits = LTC5566_get_att(att_prompt);                               // Get IF attenuation level
+  // Prompt for getting power mode
+  char *power_prompt = "Enter a command: ";
 
-  mixer_1_value = ((power_bit | tune_bits) | att_bits);                 // Build mixer command byte
-  whole_register = mixer_1_value;                                       // Load the register command with the first command byte
-  whole_register  = whole_register << 8;                                // Shift the first command byte up to the most significant byte
-  whole_register = whole_register | mixer_1_value;                      // Load the least significant byte with the mixer command byte
+  // Bit for controlling the LTC5566's RF input tune mode
+  uint8_t tune_bits;
 
-  LTC5566_write(LTC5566_CS, whole_register, &output);                   // Send the data to the LTC5566 and read back the previously loaded value
+  // Prompt for getting tune mode
+  char *tune_prompt = "\nDesired RF Input Tune setting: ";
 
-  output_register = output & 0xFF;                                      // Truncate to 8 bits since the registers received the same settings
-  return output_register;                                               // Return the register's value to the main program
+  // Bit for controlling the LTC5566's IF attenuation
+  uint8_t att_bits;
+
+  // Prompt for getting att level
+  char *att_prompt = "\nDesired IF Attenuation (dB): ";
+
+  // Get power mode bit
+  power_bit = LTC5566_get_power_mode(power_prompt);
+
+  // Get RF input tune mode
+  tune_bits = LTC5566_get_tune_mode(tune_prompt);
+
+  // Get IF attenuation level
+  att_bits = LTC5566_get_att(att_prompt);
+
+  // Build mixer command byte
+  mixer_1_value = ((power_bit | tune_bits) | att_bits);
+
+  // Load the register command with the first command byte
+  whole_register = mixer_1_value;
+
+  // Shift the first command byte up to the most significant byte
+  whole_register  = whole_register << 8;
+
+  // Load the least significant byte with the mixer command byte
+  whole_register = whole_register | mixer_1_value;
+
+  // Send the data to the LTC5566 and read back the previously loaded value
+  LTC5566_write(LTC5566_CS, whole_register, &full_output);
+
+  // Return the register's value to the main program
+  return full_output;
 }
 
 // Take inputs and apply different settings to each Mixer Channel
-uint16_t LTC5566_diff_settings()
-{
-  uint8_t power_1_bit;                                                  // Bit for controlling the LTC5566's power mode (Channel 1)
-  char *power_1_prompt = "Enter a command for Channel 1: ";             // Prompt for getting power mode (Channel 1)
-  uint8_t power_2_bit;                                                  // Bit for controlling the LTC5566's power mode (Channel 2)
-  char *power_2_prompt = "Enter a command for Channel 2: ";             // Prompt for getting power mode (Channel 2)
-  uint8_t tune_1_bits;                                                  // Bit for controlling the LTC5566's RF input tune mode (Channel 1)
-  char *tune_1_prompt = "\nDesired Channel 1 RF Input Tune setting: ";  // Prompt for getting tune mode (Channel 1)
-  uint8_t tune_2_bits;                                                  // Bit for controlling the LTC5566's RF input tune mode (Channel 2)
-  char *tune_2_prompt = "\nDesired Channel 2 RF Input Tune setting: ";  // Prompt for getting tune mode (Channel 2)
-  uint8_t att_1_bits;                                                   // Bit for controlling the LTC5566's IF attenuation (Channel 1)
-  char *att_1_prompt = "\nDesired Channel 1 IF Attenuation (dB): ";     // Prompt for getting att level (Channel 1)
-  uint8_t att_2_bits;                                                   // Bit for controlling the LTC5566's IF attenuation (Channel 2)
-  char *att_2_prompt = "\nDesired Channel 2 IF Attenuation (dB): ";     // Prompt for getting att level (Channel 2)
+uint16_t LTC5566_diff_settings() {
+  // Bit for controlling the LTC5566's power mode (Channel 1)
+  uint8_t power_1_bit;
 
-  power_1_bit = LTC5566_get_power_mode(power_1_prompt);                 // Get channel 1 power mode bit
-  power_2_bit = LTC5566_get_power_mode(power_2_prompt);                 // Get channel 2 power mode bit
-  tune_1_bits = LTC5566_get_tune_mode(tune_1_prompt);                   // Get RF1 input tune mode
-  tune_2_bits = LTC5566_get_tune_mode(tune_2_prompt);                   // Get RF2 input tune mode
-  att_1_bits = LTC5566_get_att(att_1_prompt);                           // Get IF1 attenuation level
-  att_2_bits = LTC5566_get_att(att_2_prompt);                           // Get IF2 attenuation level
+  // Prompt for getting power mode (Channel 1)
+  char *power_1_prompt = "Enter a command for Channel 1: ";
 
-  mixer_1_value = ((power_1_bit | tune_1_bits) | att_1_bits);           // Build mixer 1 command byte
-  mixer_2_value = ((power_2_bit | tune_2_bits) | att_2_bits);           // Build mixer 2 command byte
-  whole_register = mixer_2_value;                                       // Load the register command with channel 2's command byte
-  whole_register  = whole_register << 8;                                // Shift channel 2's command byte up to the most significant byte
-  whole_register = whole_register | mixer_1_value;                      // Load the least significant byte with channel 1's command byte
+  // Bit for controlling the LTC5566's power mode (Channel 2)
+  uint8_t power_2_bit;
 
-  LTC5566_write(LTC5566_CS, whole_register, &output);                   // Send the data to the LTC5566 and read back the previously loaded value
-  return output;                                                        // Return the register's value to the main program
+  // Prompt for getting power mode (Channel 2)
+  char *power_2_prompt = "Enter a command for Channel 2: ";
+
+  // Bit for controlling the LTC5566's RF input tune mode (Channel 1)
+  uint8_t tune_1_bits;
+
+  // Prompt for getting tune mode (Channel 1)
+  char *tune_1_prompt = "\nDesired Channel 1 RF Input Tune setting: ";
+
+  // Bit for controlling the LTC5566's RF input tune mode (Channel 2)
+  uint8_t tune_2_bits;
+
+  // Prompt for getting tune mode (Channel 2)
+  char *tune_2_prompt = "\nDesired Channel 2 RF Input Tune setting: ";
+
+  // Bit for controlling the LTC5566's IF attenuation (Channel 1)
+  uint8_t att_1_bits;
+
+  // Prompt for getting att level (Channel 1)
+  char *att_1_prompt = "\nDesired Channel 1 IF Attenuation (dB): ";
+
+  // Bit for controlling the LTC5566's IF attenuation (Channel 2)
+  uint8_t att_2_bits;
+
+  // Prompt for getting att level (Channel 2)
+  char *att_2_prompt = "\nDesired Channel 2 IF Attenuation (dB): ";
+
+  // Get channel 1 power mode bit
+  power_1_bit = LTC5566_get_power_mode(power_1_prompt);
+
+  // Get channel 2 power mode bit
+  power_2_bit = LTC5566_get_power_mode(power_2_prompt);
+
+  // Get RF1 input tune mode
+  tune_1_bits = LTC5566_get_tune_mode(tune_1_prompt);
+
+  // Get RF2 input tune mode
+  tune_2_bits = LTC5566_get_tune_mode(tune_2_prompt);
+
+  // Get IF1 attenuation level
+  att_1_bits = LTC5566_get_att(att_1_prompt);
+
+  // Get IF2 attenuation level
+  att_2_bits = LTC5566_get_att(att_2_prompt);
+
+  // Build mixer 1 command byte
+  mixer_1_value = ((power_1_bit | tune_1_bits) | att_1_bits);
+
+  // Build mixer 2 command byte
+  mixer_2_value = ((power_2_bit | tune_2_bits) | att_2_bits);
+
+  // Load the register command with channel 2's command byte
+  whole_register = mixer_2_value;
+
+  // Shift channel 2's command byte up to the most significant byte
+  whole_register  = whole_register << 8;
+
+  // Load the least significant byte with channel 1's command byte
+  whole_register = whole_register | mixer_1_value;
+
+  // Send the data to the LTC5566 and read back the previously loaded value
+  LTC5566_write(LTC5566_CS, whole_register, &full_output);
+
+  // Return the register's value to the main program
+  return full_output;
 }
 
 // Get power mode value from user
-uint8_t LTC5566_get_power_mode(char *prompt)
-{
-  int keep_looping = 0;                                                 // Variable to break out of while loop
-  int8_t power_command;                                                 // The user command for power mode
-  uint8_t power_bit = LTC5566_FULL_POWER;                               // Bits for controlling the LTC5566's power mode
-  while (1)
-  {
+uint8_t LTC5566_get_power_mode(char *prompt) {
+  // Variable to break out of while loop
+  int keep_looping = 0;
+
+  // The user command for power mode
+  int8_t power_command;
+
+  // Bits for controlling the LTC5566's power mode
+  uint8_t power_bit = LTC5566_FULL_POWER;
+  while (1) {
     keep_looping = 0;
     Serial.println(F("\n\n1. Full Power Mode"));
     Serial.println(F("2. Low Power Mode\n"));
     Serial.print(prompt);
-    power_command = read_int();                                         // Take input from the user
-    Serial.println(power_command);                                      // Prints the user command to com port
-    switch (power_command)
-      // Act on user input
-    {
+
+    // Take input from the user
+    power_command = read_int();
+
+    // Prints the user command to com port
+    Serial.println(power_command);
+    switch (power_command) {
+    // Act on user input
       case 1:
-        power_bit = LTC5566_FULL_POWER;                                 // Set the power bit to full power
+        // Set the power bit to full power
+        power_bit = LTC5566_FULL_POWER;
         break;
       case 2:
-        power_bit = LTC5566_REDUCED_POWER;                              // Set the power bit to reduced power
+        // Set the power bit to reduced power
+        power_bit = LTC5566_REDUCED_POWER;
         break;
       default:
-        Serial.println(F("\n\nIncorrect Option\n"));                    // User input was wrong, ask again
+        // User input was wrong, ask again
+        Serial.println(F("\n\nIncorrect Option\n"));
         keep_looping = 1;
     }
-    if (keep_looping == 0)
-    {
-      return power_bit;                                                 // Return power bit value to the main program
+    
+    if (keep_looping == 0) {
+      // Return power bit value to the main program
+      return power_bit;
     }
   }
 }
 
 // Get RF input tune mode value from user
-uint8_t LTC5566_get_tune_mode(char *prompt)
-{
-  int keep_looping = 0;                                                 // Variable to break out of while loop
-  int8_t tune_command;                                                  // The user command for RF input tune mode
-  uint8_t tune_bits = LTC5566_RF_TUNE_11;                               // Bits for controlling the LTC5566's RF input tune mode
-  while (1)
-  {
+uint8_t LTC5566_get_tune_mode(char *prompt) {
+  // Variable to break out of while loop
+  int keep_looping = 0;
+
+  // The user command for RF input tune mode
+  int8_t tune_command;
+
+  // Bits for controlling the LTC5566's RF input tune mode
+  uint8_t tune_bits = LTC5566_RF_TUNE_11;
+  while (1) {
     keep_looping = 0;
     Serial.println(F("\n1. RF Tune 00 (3.1GHz - 5.1GHz)"));
     Serial.println(F("2. RF Tune 01 (1.8GHz - 4.4GHz)"));
     Serial.println(F("3. RF Tune 10 (1.3GHz - 3.9GHz)"));
     Serial.println(F("4. RF Tune 11 (Less than 1.3GHz)"));
     Serial.print(prompt);
-    tune_command = read_int();                                          // Take input from the user
-    Serial.println(tune_command);                                       // Prints the user command to com port
-    switch (tune_command)
+
+    // Take input from the user
+    tune_command = read_int();
+
+    // Prints the user command to com port
+    Serial.println(tune_command);
+    switch (tune_command) {
       // Act on user input
-    {
       case 1:
-        tune_bits = LTC5566_RF_TUNE_00;                                 // Set the RF input tune bits to 00
+        // Set the RF input tune bits to 00
+        tune_bits = LTC5566_RF_TUNE_00;
         break;
       case 2:
-        tune_bits = LTC5566_RF_TUNE_01;                                 // Set the RF input tune bits to 01
+        // Set the RF input tune bits to 01
+        tune_bits = LTC5566_RF_TUNE_01;
         break;
       case 3:
-        tune_bits = LTC5566_RF_TUNE_10;                                 // Set the RF input tune bits to 10
+        // Set the RF input tune bits to 10
+        tune_bits = LTC5566_RF_TUNE_10;
         break;
       case 4:
-        tune_bits = LTC5566_RF_TUNE_11;                                 // Set the RF input tune bits to 11
+        // Set the RF input tune bits to 11
+        tune_bits = LTC5566_RF_TUNE_11;
         break;
       default:
-        Serial.println(F("\n\nIncorrect Option\n"));                    // User input was wrong, ask again
+        // User input was wrong, ask again
+        Serial.println(F("\n\nIncorrect Option\n"));
         keep_looping = 1;
     }
-    if (keep_looping == 0)
-    {
-      return tune_bits;                                                 // Return tune bits value to the main program
+    
+    if (keep_looping == 0) {
+      // Return tune bits value to the main program
+      return tune_bits;
     }
   }
 }
 
 // Get attenuation value from user
-uint8_t LTC5566_get_att(char *prompt)
-{
-  int keep_looping = 0;                                                 // Variable to break out of while loop
-  float att_command;                                                    // The user command for IF attenuation level
-  uint8_t att_bits;                                                     // Bit for controlling the LTC5566's IF attenuation
-  while (1)
-  {
+uint8_t LTC5566_get_att(char *prompt) {
+  // Variable to break out of while loop
+  int keep_looping = 0;
+
+  // The user command for IF attenuation level
+  float att_command;
+
+  // Bit for controlling the LTC5566's IF attenuation
+  uint8_t att_bits;
+  while (1) {
     keep_looping = 0;
     Serial.print(prompt);
     att_command = read_float();
-    Serial.println(att_command, 1);                                     // Prints the user command to com port
-    att_command = round(att_command * 2);                               // Converts the attenuation input to an integer from 1-32 so a switch-case statement can be used
-    switch ((uint8_t)att_command)
-    {
-      case 0:
-        att_bits = LTC5566_ATT_0_0dB;                                   // Set the IF attenuation to 0.0dB
-        break;
-      case 1:
-        att_bits = LTC5566_ATT_0_5dB;                                   // Set the IF attenuation to 0.5dB
-        break;
-      case 2:
-        att_bits = LTC5566_ATT_1_0dB;                                   // Set the IF attenuation to 1.0dB
-        break;
-      case 3:
-        att_bits = LTC5566_ATT_1_5dB;                                   // Set the IF attenuation to 1.5dB
-        break;
-      case 4:
-        att_bits = LTC5566_ATT_2_0dB;                                   // Set the IF attenuation to 2.0dB
-        break;
-      case 5:
-        att_bits = LTC5566_ATT_2_5dB;                                   // Set the IF attenuation to 2.5dB
-        break;
-      case 6:
-        att_bits = LTC5566_ATT_3_0dB;                                   // Set the IF attenuation to 3.0dB
-        break;
-      case 7:
-        att_bits = LTC5566_ATT_3_5dB;                                   // Set the IF attenuation to 3.5dB
-        break;
-      case 8:
-        att_bits = LTC5566_ATT_4_0dB;                                   // Set the IF attenuation to 4.0dB
-        break;
-      case 9:
-        att_bits = LTC5566_ATT_4_5dB;                                   // Set the IF attenuation to 4.5dB
-        break;
-      case 10:
-        att_bits = LTC5566_ATT_5_0dB;                                   // Set the IF attenuation to 5.0dB
-        break;
-      case 11:
-        att_bits = LTC5566_ATT_5_5dB;                                   // Set the IF attenuation to 5.5dB
-        break;
-      case 12:
-        att_bits = LTC5566_ATT_6_0dB;                                   // Set the IF attenuation to 6.0dB
-        break;
-      case 13:
-        att_bits = LTC5566_ATT_6_5dB;                                   // Set the IF attenuation to 6.5dB
-        break;
-      case 14:
-        att_bits = LTC5566_ATT_7_0dB;                                   // Set the IF attenuation to 7.0dB
-        break;
-      case 15:
-        att_bits = LTC5566_ATT_7_5dB;                                   // Set the IF attenuation to 7.5dB
-        break;
-      case 16:
-        att_bits = LTC5566_ATT_8_0dB;                                   // Set the IF attenuation to 8.0dB
-        break;
-      case 17:
-        att_bits = LTC5566_ATT_8_5dB;                                   // Set the IF attenuation to 8.5dB
-        break;
-      case 18:
-        att_bits = LTC5566_ATT_9_0dB;                                   // Set the IF attenuation to 9.0dB
-        break;
-      case 19:
-        att_bits = LTC5566_ATT_9_5dB;                                   // Set the IF attenuation to 9.5dB
-        break;
-      case 20:
-        att_bits = LTC5566_ATT_10_0dB;                                  // Set the IF attenuation to 10.0dB
-        break;
-      case 21:
-        att_bits = LTC5566_ATT_10_5dB;                                  // Set the IF attenuation to 10.5dB
-        break;
-      case 22:
-        att_bits = LTC5566_ATT_11_0dB;                                  // Set the IF attenuation to 11.0dB
-        break;
-      case 23:
-        att_bits = LTC5566_ATT_11_5dB;                                  // Set the IF attenuation to 11.5dB
-        break;
-      case 24:
-        att_bits = LTC5566_ATT_12_0dB;                                  // Set the IF attenuation to 12.0dB
-        break;
-      case 25:
-        att_bits = LTC5566_ATT_12_5dB;                                  // Set the IF attenuation to 12.5dB
-        break;
-      case 26:
-        att_bits = LTC5566_ATT_13_0dB;                                  // Set the IF attenuation to 13.0dB
-        break;
-      case 27:
-        att_bits = LTC5566_ATT_13_5dB;                                  // Set the IF attenuation to 13.5dB
-        break;
-      case 28:
-        att_bits = LTC5566_ATT_14_0dB;                                  // Set the IF attenuation to 14.0dB
-        break;
-      case 29:
-        att_bits = LTC5566_ATT_14_5dB;                                  // Set the IF attenuation to 14.5dB
-        break;
-      case 30:
-        att_bits = LTC5566_ATT_15_0dB;                                  // Set the IF attenuation to 15.0dB
-        break;
-      case 31:
-        att_bits = LTC5566_ATT_15_5dB;                                  // Set the IF attenuation to 15.5dB
-        break;
-      default:                                                          // User input was wrong, ask again
-        Serial.println(F("\n\nIncorrect Option - Choose a number between 0 and 15.5dB in 0.5dB increments\n"));
-        keep_looping = 1;
+
+    // Prints the user command to com port
+    Serial.println(att_command, 1);
+
+    // User input wasn't in 0.5dB increments, ask again
+    if (fmod(att_command, 0.5) != 0) {
+      Serial.println(F("\n\nIncorrect Option - Choose a number "
+        "between 0 and 15.5dB in 0.5dB increments\n"));
+      keep_looping = 1;
     }
-    if (keep_looping == 0)
-    {
-      return att_bits;                                                  // Return att bits value to the main program
+    // User input was negative, ask again
+    else if (att_command < 0) {
+      Serial.println(F("\n\nIncorrect Option - Choose a number "
+        "between 0 and 15.5dB in 0.5dB increments\n"));
+      keep_looping = 1;
+    }
+    // User input was too high, ask again
+    else if (att_command > 31) {
+      Serial.println(F("\n\nIncorrect Option - Choose a number "
+        "between 0 and 15.5dB in 0.5dB increments\n"));
+      keep_looping = 1;
+    }
+    else {
+      // User input was within the accepted parameters
+
+      // Double the input to convert it to a number between 0-31
+      att_command = att_command * 2.;
+
+      // Set the bits to an integer of the commanded value
+      att_bits = static_cast<int>(att_command);
+    }
+
+    if (keep_looping == 0) {
+      // Return att bits value to the main program
+      return att_bits;
     }
   }
 }
 
 // Decode the register value read from the LTC5566
-void LTC5566_decode_output(uint8_t output_register)
-{
-  uint8_t power_bit_read;                                               // Power bit read back from the LTC5566
-  String power_setting_read;                                            // Power setting read back from the LTC5566
-  uint8_t tune_bits_read;                                               // Tune bits read back from the LTC5566
-  String tune_setting_read;                                             // RF Tune setting read back from the LTC5566
-  uint8_t att_bits_read;                                                // Att bits read back from the LTC5566
-  String att_setting_read;                                              // Attenuation setting read back from the LTC5566
+void LTC5566_decode_output(uint8_t output_register) {
+  // Power bit read back from the LTC5566
+  uint8_t power_bit_read;
 
-  power_bit_read = (output_register & 0x90) >> 7;                       // Read bit 7 to get power bit back
-  switch (power_bit_read)
-  {
+  // Power setting read back from the LTC5566
+  String power_setting_read;
+
+  // Tune bits read back from the LTC5566
+  uint8_t tune_bits_read;
+
+  // RF Tune setting read back from the LTC5566
+  String tune_setting_read;
+
+  // Att bits read back from the LTC5566
+  uint8_t att_bits_read;
+
+  // Attenuation setting read back from the LTC5566
+  float att_setting_read;
+
+  // Read bit 7 to get power bit back
+  power_bit_read = (output_register & 0x90) >> 7;
+  switch (power_bit_read) {
+    // The LTC5566 was in Full Power mode
     case 0:
-      power_setting_read = "Full Power";                                // The LTC5566 was in Full Power mode
+      power_setting_read = "Full Power";
       break;
+    // The LTC5566 was in Low Power mode
     case 1:
-      power_setting_read = "Low Power";                                 // The LTC5566 was in Low Power mode
+      power_setting_read = "Low Power";
       break;
   }
-  Serial.println("Power Setting: " + power_setting_read);               // Print the Power setting to the serial monitor
 
-  tune_bits_read = (output_register & 0x60) >> 5;                       // Read bits 5 and 6 to get RF tune bits back
-  switch (tune_bits_read)
-  {
+  // Print the Power setting to the serial monitor
+  Serial.println("Power Setting: " + power_setting_read);
+
+  // Read bits 5 and 6 to get RF tune bits back
+  tune_bits_read = (output_register & 0x60) >> 5;
+  switch (tune_bits_read) {
     case 0:
       tune_setting_read = "RF Tune 00 (3.1GHz - 5.1GHz)";
       break;
@@ -376,107 +420,16 @@ void LTC5566_decode_output(uint8_t output_register)
       tune_setting_read = "RF Tune 11 (Less than 1.3GHz)";
       break;
   }
-  Serial.println("RF Input Setting: " + tune_setting_read);             // Print the RF Tune setting to the serial monitor
 
-  att_bits_read = output_register & 0x1F;                               // Read bits 0-4 to get attenuation bits back
-  switch (att_bits_read)
-  {
-    case 0:
-      att_setting_read = "0dB";
-      break;
-    case 1:
-      att_setting_read = "0.5dB";
-      break;
-    case 2:
-      att_setting_read = "1dB";
-      break;
-    case 3:
-      att_setting_read = "1.5dB";
-      break;
-    case 4:
-      att_setting_read = "2dB";
-      break;
-    case 5:
-      att_setting_read = "2.5dB";
-      break;
-    case 6:
-      att_setting_read = "3dB";
-      break;
-    case 7:
-      att_setting_read = "3.5dB";
-      break;
-    case 8:
-      att_setting_read = "4dB";
-      break;
-    case 9:
-      att_setting_read = "4.5dB";
-      break;
-    case 10:
-      att_setting_read = "5dB";
-      break;
-    case 11:
-      att_setting_read = "5.5dB";
-      break;
-    case 12:
-      att_setting_read = "6dB";
-      break;
-    case 13:
-      att_setting_read = "6.5dB";
-      break;
-    case 14:
-      att_setting_read = "7dB";
-      break;
-    case 15:
-      att_setting_read = "7.5dB";
-      break;
-    case 16:
-      att_setting_read = "8dB";
-      break;
-    case 17:
-      att_setting_read = "8.5dB";
-      break;
-    case 18:
-      att_setting_read = "9dB";
-      break;
-    case 19:
-      att_setting_read = "9.5dB";
-      break;
-    case 20:
-      att_setting_read = "10dB";
-      break;
-    case 21:
-      att_setting_read = "10.5dB";
-      break;
-    case 22:
-      att_setting_read = "11dB";
-      break;
-    case 23:
-      att_setting_read = "11.5dB";
-      break;
-    case 24:
-      att_setting_read = "12dB";
-      break;
-    case 25:
-      att_setting_read = "12.5dB";
-      break;
-    case 26:
-      att_setting_read = "13dB";
-      break;
-    case 27:
-      att_setting_read = "13.5dB";
-      break;
-    case 28:
-      att_setting_read = "14dB";
-      break;
-    case 29:
-      att_setting_read = "14.5dB";
-      break;
-    case 30:
-      att_setting_read = "15dB";
-      break;
-    case 31:
-      att_setting_read = "15.5dB";
-      break;
-  }
-  Serial.println("Attenuation Setting: " + att_setting_read);           // Print the Attenuation setting to the serial monitor
+  // Print the RF Tune setting to the serial monitor
+  Serial.println("RF Input Setting: " + tune_setting_read);
+
+  // Read bits 0-4 to get attenuation bits back
+  att_bits_read = output_register & 0x1F;
+
+  // Convert the 5 Attenuation bits (0-31) to an attenuation setting (0-15.5)
+  att_setting_read = (att_bits_read / 2.);
+
+  // Print the Attenuation setting to the serial monitor
+  Serial.println("Attenuation Setting: " + String(att_setting_read, 1) + " dB");
 }
