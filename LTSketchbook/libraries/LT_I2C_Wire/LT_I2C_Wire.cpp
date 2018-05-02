@@ -284,7 +284,7 @@ int8_t i2c_two_byte_command_read_block(uint8_t address, uint16_t command, uint8_
   uint8_t readBack = 0;
 
 #if defined(ARDUINO_ARCH_SAM)
-  Wire.beginTransmission(address);
+  //Wire.beginTransmission(address);
   readBack = Wire.requestFrom((uint8_t)address, (uint8_t)length, (uint32_t)command, (uint8_t)2, (uint8_t)false);
 #elif defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_AVR)
   Wire.beginTransmission(address);
