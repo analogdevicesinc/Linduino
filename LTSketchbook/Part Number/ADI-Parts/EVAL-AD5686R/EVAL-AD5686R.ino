@@ -86,7 +86,7 @@ spi_init_param spi_params =
   GENERIC_SPI,
   QUIKEVAL_CS,
   50000000,
-  SPI_MODE_1,
+  1, // SPI mode
   QUIKEVAL_CS,
 };
 
