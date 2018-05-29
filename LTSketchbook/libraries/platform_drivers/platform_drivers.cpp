@@ -40,6 +40,7 @@
 /******************************************************************************/
 /***************************** Include Files **********************************/
 /******************************************************************************/
+#include <Arduino.h>
 #include <stdint.h>
 #include <Linduino.h>
 #include <SPI.h>
@@ -126,6 +127,17 @@ int32_t i2c_read(i2c_desc *desc,
 	return Wire_Read(desc->slave_address, data, bytes_number, stop_bit);
 }
 
+
+// Converts 1-3 into arduino SPI codes
+const uint8_t arduino_spi_modes[4] = {
+	SPI_MODE0, //0x00, //SPI_MODE0
+	SPI_MODE1, //0x04, //SPI_MODE1
+	SPI_MODE2, //0x08, //SPI_MODE2
+	SPI_MODE3 //0x0C  //SPI_MODE3
+};
+
+
+
 /**
  * @brief Initialize the SPI communication peripheral.
  * @param desc - The SPI descriptor.
@@ -202,22 +214,38 @@ int32_t spi_write_and_read(spi_desc *desc,
 		tx[i] = data[i];
 	}
 
-	if(false)
-	{
-		Serial.print(F("SPI writing: "));
-		Serial.print(tx[0], HEX);
-		Serial.print(tx[1], HEX);
-		Serial.println(tx[2], HEX);
-	}
+	// if(false)
+	// {
+		// Serial.print(F("SPI writing: "));
+		// Serial.print(tx[0], HEX);
+		// Serial.print(tx[1], HEX);
+		// Serial.println(tx[2], HEX);
+	// }
 
-	Lin_SPI_Transfer_Block(id, tx, rx, bytes_number);
+//	Lin_SPI_Transfer_Block(id, tx, rx, bytes_number);
 
 	// Copy rx back into data
-	for(int i = 0; i < bytes_number; i++)
-	{
-		data[i] = rx[i];
-	}
+//	Serial.println(F("read from SPI"));
+//	for(int i = 0; i < bytes_number; i++)
+//	{
+//		data[i] = rx[i];
+//		Serial.print(data[i], HEX);
+//	}
 
+	
+	
+    output_low(id); //! 1) Pull CS low
+
+	//for (i = length; i > 0; i--)
+	for (int i = 0; i < bytes_number; i++)
+    {
+        data[i] = SPI.transfer(tx[i]); //! 2) Read and send byte array
+    }
+
+    output_high(id); //! 3) Pull CS high
+	
+	
+	
 	return SUCCESS;
 }
 
@@ -425,31 +453,6 @@ uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char leng
  * LINDUINO SPI FUNCTIONS
  */
 
-/*void Lin_SPI_Enable(uint8_t spi_clock_divider)
-{
-    //SPI.begin();
-	//SPI.setClockDivider(spi_clock_divider);
-	
-	SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE1));
-	SPI.endTransaction();
-	
-	SPI.begin();
-}
-
-void Lin_SPI_Init(void)
-{
-    Lin_SPI_Enable(SPI_CLOCK_DIV16); //! 1) Configure the spi port for 4MHz SCK
-}
-
-void Lin_SPI_Connect()
-{
-    output_high(QUIKEVAL_CS); //! 1) Pull Chip Select High
-
-    //! 2) Enable Main SPI
-    pinMode(QUIKEVAL_MUX_MODE_PIN, OUTPUT);
-    digitalWrite(QUIKEVAL_MUX_MODE_PIN, LOW);
-}*/
-
 /***************************************************************************/ /**
  * @brief Sets the Linduino MUX that selects SPI or I2C for the 
  *        quikeval port
@@ -474,28 +477,4 @@ void quikeval_set_mux(uint8_t mux)
 		digitalWrite(QUIKEVAL_MUX_MODE_PIN, LOW);
 		delay(1);
 	}
-}
-
-/***************************************************************************/ /**
- * @brief Reads and sends a byte array.
- *
- * @param cs_pin - Chipselect pin
- * @param tx - Byte array to transfer/send
- * @param rx - Byte array returned by device
- * @param length - length of tx array
- *
-*******************************************************************************/
-void Lin_SPI_Transfer_Block(uint8_t cs_pin, uint8_t *tx, uint8_t *rx, uint8_t length)
-{
-    int8_t i;
-
-    output_low(cs_pin); //! 1) Pull CS low
-
-	//for (i = length; i > 0; i--)
-	for (i = 0; i < length; i++)
-    {
-        rx[i] = SPI.transfer(tx[i]); //! 2) Read and send byte array
-    }
-
-    output_high(cs_pin); //! 3) Pull CS high
 }
