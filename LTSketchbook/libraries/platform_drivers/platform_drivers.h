@@ -223,6 +223,8 @@ uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char leng
 /*! Connect to SPI, matches quikeval_spi_connect */
 //void Lin_SPI_Connect();
 
+void uartTX(char *buf);
+
 #ifdef __cplusplus // Closing extern c
 }
 #endif

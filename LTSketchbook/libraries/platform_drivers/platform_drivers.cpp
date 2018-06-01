@@ -478,3 +478,9 @@ void quikeval_set_mux(uint8_t mux)
 		delay(1);
 	}
 }
+
+// Simple wrapper around Arduino Serial.print method.
+void uartTX(char *buf)
+{
+  Serial.print(buf);
+}

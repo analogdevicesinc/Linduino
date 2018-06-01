@@ -14,7 +14,7 @@
 
   Derived from AnalogInOutSerial example:
   http://www.arduino.cc/en/Tutorial/AnalogInOutSerial
-  PWM frequency adjustment derived from:
+  PWM frequency adjustment function from:
   https://playground.arduino.cc/Code/PwmFrequency
   
 Copyright 2018(c) Analog Devices, Inc.
@@ -86,8 +86,6 @@ void loop() {
   // (could probably just right-shift by two...)
   outputValue = map(integral, 0, 1023, 0, 255);
   // change the analog out value:
-//  analogWrite(analogOutPin, outputValue);
-//  setPwmFrequency(3, 4);
   analogWrite(analogOutPin, outputValue);
 #ifdef verbose
   // print the results to the Serial Monitor:
