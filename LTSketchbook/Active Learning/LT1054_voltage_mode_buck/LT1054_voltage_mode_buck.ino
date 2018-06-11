@@ -67,7 +67,7 @@ int integral = 128;
 #define verbose
 
 void setup() {
-  // initialize serial communications at 9600 bps:
+  // initialize serial communications at 115200 bps:
 #ifdef verbose  
   Serial.begin(115200);
 #endif
