@@ -56,7 +56,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 const int analogInPin = A0;  // Analog input pin that the potentiometer is attached to
 const int analogOutPin = 3; // Analog output pin that the LED is attached to
 
-float vout = 3.14159; // Floating poiont output voltage.
+float vout = 3.3; // Floating poiont output voltage.
 int setpoint = int (vout * 1024.0 / 5.0);
 //int setpoint = 512; // 1.25V
 int feedback = 0;        // value read from the pot
