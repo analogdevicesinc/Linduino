@@ -13,7 +13,7 @@ bandwidth analog multiplication of voltage and current
 provides accurate power measurement in a wide range of
 applications. Internal or external clocking options enable
 precise charge and energy measurements.
-An internal 300 micro ohms, temperature-compensated sense
+An internal 150 micro ohms, temperature-compensated sense
 resistor minimizes efficiency loss and external compo-
 nents, simplifying energy measurement applications while
 enabling high accuracy current measurement over the full
@@ -33,7 +33,7 @@ octal   : 02000  (leading 0 "zero")
 binary  : B10000000000
 float   : 1024.0
 
-See the DC2334 demo manual and LTC2947-65 datasheet  for  more  details on
+See the DC2826 demo manual and LTC2947-65 datasheet  for  more  details on
 operation.
 
 @endverbatim
@@ -195,7 +195,7 @@ void print_title()
 {
   Serial.println();
   Serial.println(F("********************************************************************"));
-  Serial.println(F("* DC2334A Demonstration Program                                    *"));
+  Serial.println(F("* DC2826A Demonstration Program                                    *"));
   Serial.println(F("*                                                                  *"));
   Serial.println(F("* This program demonstrates the basic features of the LTC2947-65   *"));
   Serial.println(F("* a high-precision power and energy monitor with an internal       *"));
