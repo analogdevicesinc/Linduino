@@ -54,6 +54,7 @@ char ch;
     ch = Serial.read();
 	if(ch == chaddr){
 	  digitalWrite(DE, HIGH);
+	  delay(1);
       Serial.print("Hello from node "); // read it and send it out Serial1 (pins 0 & 1)
 	  Serial.print(ch);
 	  Serial.println("!");
