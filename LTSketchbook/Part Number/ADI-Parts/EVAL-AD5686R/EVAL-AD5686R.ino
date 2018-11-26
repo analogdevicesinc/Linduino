@@ -397,22 +397,22 @@ uint8_t menu_5_power_down_mode(int16_t selected_dac)
   if (dac1)
   {
     Serial.println(F("  Applying power mode to DAC A..."));
-    ad5686_power_mode(device, AD5686_CH_A, selected_mode);
+    ad5686_power_mode(device, AD5686_CH_0, selected_mode);
   }
   if (dac2)
   {
     Serial.println(F("  Applying power mode to DAC B..."));
-    ad5686_power_mode(device, AD5686_CH_B, selected_mode);
+    ad5686_power_mode(device, AD5686_CH_1, selected_mode);
   }
   if (dac3)
   {
     Serial.println(F("  Applying power mode to DAC C..."));
-    ad5686_power_mode(device, AD5686_CH_C, selected_mode);
+    ad5686_power_mode(device, AD5686_CH_2, selected_mode);
   }
   if (dac4)
   {
     Serial.println(F("  Applying power mode to DAC D..."));
-    ad5686_power_mode(device, AD5686_CH_D, selected_mode);
+    ad5686_power_mode(device, AD5686_CH_3, selected_mode);
   }
 
   Serial.println(F("  Done!"));
@@ -459,10 +459,10 @@ uint8_t menu_6_select_ref_voltage(float *vref)
 // Reads back all DAC registers
 uint8_t menu_7_read_back_registers()
 {
-  uint32_t reg1 = ad5686_read_back_register(device, AD5686_CH_A);
-  uint32_t reg2 = ad5686_read_back_register(device, AD5686_CH_B);
-  uint32_t reg3 = ad5686_read_back_register(device, AD5686_CH_C);
-  uint32_t reg4 = ad5686_read_back_register(device, AD5686_CH_D);
+  uint32_t reg1 = ad5686_read_back_register(device, AD5686_CH_0);
+  uint32_t reg2 = ad5686_read_back_register(device, AD5686_CH_1);
+  uint32_t reg3 = ad5686_read_back_register(device, AD5686_CH_2);
+  uint32_t reg4 = ad5686_read_back_register(device, AD5686_CH_3);
 
   Serial.println(F("\n  All DAC register values:"));
   Serial.print(F("    DAC A - "));
@@ -488,7 +488,7 @@ uint8_t menu_8_set_ldac_mask()
   if (mask > 15) mask = 15; // Clamp at 1111
   Serial.println(mask, BIN);
 
-  ad5686_ldac_mask(device, mask);
+  ad5686_ldac_mask(device, mask, 0x01);
 
   Serial.println(F("  Updated LDAC mask"));
 

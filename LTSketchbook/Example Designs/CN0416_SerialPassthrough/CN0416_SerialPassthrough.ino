@@ -36,9 +36,9 @@ void setup() {
 void loop() {
   if (Serial.available()) {      // If anything comes in Serial (USB),
     digitalWrite(2, HIGH);
+    delay(1);
     Serial1.write(Serial.read());   // read it and send it out Serial1 (pins 0 & 1)
-	delay(2);
-	digitalWrite(2, LOW);
+    digitalWrite(2, LOW);
   }
 
   if (Serial1.available()) {     // If anything comes in Serial1 (pins 0 & 1)
