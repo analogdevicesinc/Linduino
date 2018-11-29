@@ -1,5 +1,5 @@
 /*!
-Two-Channel Panel Meter based on the LTC2492, using any LCD display
+Two-Channel Panel Meter based on the LTC2492, using any 2x16 LCD display
 compatible with the Arduino LiquidCrystal library.
 
 (The LTC2492 is a code-compatible subset of the LTC2498.)
@@ -7,10 +7,22 @@ compatible with the Arduino LiquidCrystal library.
 Initial scaling factors are for the DC2132A, Constant Voltage, Constant Current
 Bench Supply, which uses two LT3018 regulators.
 
+LTC2492 mapping:
+CH0 - voltage measurement divider, define vdiv_gain accordingly
+CH1 - current monitor output
+CH2 - LT3080 junction temperature monitor output
+(Ambient temperature read from LTC2498 internal sensor)
 
 @verbatim
 
-NOTES
+NOTES:
+
+LCD pin mapping is designed to be "minimally obtrusive", not interfering
+with an Uno's SPI, I2C or UART. Since we're using an external,
+high-performance ADC, the "analog" pins can be re-used as digital outputs.
+
+LiquidCrystal lcd(2, 3, 4, A0, A1, A2, A3); // RS, RW, EN, D4:D7. 
+
 For reference, the standard character LCD pinout is as follows:
 1 GROUND
 2 VDD (usually +5V)
@@ -50,19 +62,6 @@ For reference, the standard character LCD pinout is as follows:
    analog input voltage range -0.3V to +2.5V. Swapping input voltages results in a
    reversed polarity reading.
 
-  How to calibrate:
-   Apply 100mV CH0 with respect to COM. Next, measure this voltage with a precise
-   voltmeter and enter this value. (This takes the reading.) Now apply approximately
-   2.40 volts to CH0. Measure this voltage with a precise voltmeter and enter this
-   value. Calibration is now stored in EEPROM. Upon start-up the calibration values
-   will be restored.
-
-USER INPUT DATA FORMAT:
- decimal : 1024
- hex     : 0x400
- octal   : 02000  (leading 0 "zero")
- binary  : B10000000000
- float   : 1024.0
 
 @endverbatim
 
@@ -127,14 +126,6 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "LTC2498.h"
 
 // Function Declaration
-void print_title();                             // Print the title block
-void print_prompt();                            // Prompt the user for an input command
-void print_user_command(uint8_t menu);          // Display selected differential channels
-
-uint8_t menu_1_read_single_ended();
-uint8_t menu_2_read_differential();
-uint8_t menu_3_read_temperature();
-void menu_4_set_1X2X();
 
 // Global variables
 static uint8_t demo_board_connected;                //!< Set to 1 if the board is connected
@@ -144,7 +135,7 @@ static float LTC2498_vref = 5.0;                    //!< The LTC2498 ideal refer
 static uint16_t eoc_timeout = 250;                  //!< timeout in ms
 // Constants
 #define vdiv_gain 10.75 // Measured from actual supply
-#define imon_gain 11.1
+#define imon_gain 10.0
 #define tmon_gain 100.0
 
 
@@ -188,7 +179,6 @@ void setup()
   quikeval_SPI_connect();       // Connect SPI to main data port
   quikeval_I2C_init();          // Configure the EEPROM I2C port for 100kHz
   Serial.begin(115200);         // Initialize the serial port to the PC
-//  print_title();
 
   demo_board_connected = discover_demo_board(demo_name);
   // if (demo_board_connected)
@@ -212,7 +202,7 @@ void loop()
   int16_t user_command;                 // The user input command
   uint8_t ack_EOC = 0;                  // Keeps track of the EOC timeout
   int32_t adc_code = 0;            // The LTC2498 code
-  float temperature, adc_voltage, vout_voltage, iout_current;
+  float temperature, tj, adc_voltage, vout_voltage, iout_current;
 
 // Program channel 1, read channel 0
   adc_command_high = BUILD_COMMAND_SINGLE_ENDED[1];     // Build ADC command for channel 0
@@ -232,7 +222,7 @@ void loop()
   LTC2498_EOC_timeout(LTC2498_CS, eoc_timeout);
   LTC2498_read(LTC2498_CS, adc_command_high, adc_command_low, &adc_code);   // Throws out last reading
   adc_voltage = LTC2498_code_to_voltage(adc_code, LTC2498_vref);
-  iout_current = adc_voltage * 10.0;
+  iout_current = adc_voltage * imon_gain;
   lcd.setCursor(8, 0);
   lcd.print("        ");
   lcd.setCursor(8, 0);
@@ -240,20 +230,35 @@ void loop()
   lcd.print(iout_current, 2);
 
 
-// Program channel 0, read temperature
+// Program channel 2, read temperature
 
 
+  adc_command_high = BUILD_COMMAND_SINGLE_ENDED[2]; // Any channel can be selected
+  adc_command_low = rejection_mode | two_x_mode;
+  LTC2498_EOC_timeout(LTC2498_CS, eoc_timeout);
+  LTC2498_read(LTC2498_CS, adc_command_high, adc_command_low, &adc_code);   // Throws out last reading
+  adc_voltage = LTC2498_code_to_voltage(adc_code, LTC2498_vref);
+  temperature = 27.0 + ((adc_voltage-0.028) / 93.5e-6);
+  lcd.setCursor(0, 1);
+  lcd.print("        ");
+  lcd.setCursor(0, 1);
+  lcd.print("Ta=");
+  lcd.print(temperature, 1);
+  
+// Program channel 0, read channel 2
   adc_command_high = BUILD_COMMAND_SINGLE_ENDED[0]; // Any channel can be selected
   adc_command_low = rejection_mode | two_x_mode;
   LTC2498_EOC_timeout(LTC2498_CS, eoc_timeout);
   LTC2498_read(LTC2498_CS, adc_command_high, adc_command_low, &adc_code);   // Throws out last reading
   adc_voltage = LTC2498_code_to_voltage(adc_code, LTC2498_vref);
-  temperature = (adc_voltage/93.5e-6)-273.15;
-  lcd.setCursor(0, 1);
+  tj = (adc_voltage * tmon_gain);
+  lcd.setCursor(8, 1);
   lcd.print("        ");
-  lcd.setCursor(0, 1);
-  lcd.print("Ta=");
-  lcd.print(temperature, 2);
+  lcd.setCursor(8, 1);
+  lcd.print("Tj=");
+  lcd.print(tj, 1);
+  
+  
 
 }
 
