@@ -149,6 +149,7 @@ uint8_t menu_8_toggle_select_word();                           // Menu  8: promp
 uint8_t menu_9_set_mux();                                      // Menu  9: sets MEX
 uint8_t menu_10_global_toggle_settings();                      // Menu 10: sets the global toggle bit
 void menu_11_enable_disable_eeprom_restore();                  // Menu 11: EEPOM restore settings
+void menu_13_settling_test();                               // Menu 13: Settling time test
 void menu_14_demo_board_test();                                // Menu 14: Demo Board functional test
 
 
@@ -251,6 +252,9 @@ void loop()
         break;
       case 11:
         menu_11_enable_disable_eeprom_restore();
+		break;
+      case 13:
+        menu_13_settling_test();
         break;
       case 14:
         menu_14_demo_board_test();
@@ -870,4 +874,108 @@ void display_fault(uint8_t fault)
     Serial.println(F("********    10V Power Limit Exceeded on VDD to IOUT    ********"));
   if (fault & 0x80)
     Serial.println(F("********    Invalid SPI Sequence Length    ********"));
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+// The following functions are used internally for testing, and included //
+// here for reference.                                                   //
+///////////////////////////////////////////////////////////////////////////
+
+// Settling time routine, used for datasheet pictures. Set scope to ARM trigger on SETTLE_TRIGGER
+// Rising edge, trigger on CS pin for the actual edge that causes the update.
+// You can test any other channel / starting / final values by setting up the DAC's
+// register A to the initial (starting) voltage and register B to the final (settled) voltage.
+// The channel's toggle bit must be set as well.
+
+#define INTEGRATOR_CONTROL  2               // Pin to control integrator on settling time circuit
+// Set low for 100ms after full settling has occurred,
+// high to run test.
+#define SETTLE_TRIGGER      3               // High to low edge close to DAC active edge. Can also be
+// used to drive DAC simulator.
+
+void menu_13_settling_test()
+{
+  int16_t user_input, initial, final;
+  int8_t range;
+  int8_t settle_channel;// Which DAC to test for settling (only one at a time to prevent
+                        // crosstalk artefacts.)
+  Serial.println(F("Select test to run:"));
+  Serial.println(F("0: presently programmed DAC values"));
+  Serial.println(F("1: 0-200mA rising, CH1"));
+  Serial.println(F("2: 200mA-0 falling, CH1"));
+  Serial.println(F("3: 145mA-155mA rising, CH1"));
+  Serial.println(F("4: 155mA-145mA falling, CH1"));
+  Serial.println(F("5: 0-3.125mA rising, CH3"));
+  Serial.println(F("6: 3.125-0 falling, CH3"));
+
+  Serial.flush();
+  user_input = read_int();
+  switch (user_input)
+  {
+    case 1:
+	  settle_channel = 1;
+      initial = 0x0000;
+      final = 0xFFFF;
+      range = LTC2662_SPAN_200MA;
+      break;
+    case 2:
+	  settle_channel = 1;
+      initial = 0xFFFF;
+      final = 0x0000;
+      range = LTC2662_SPAN_200MA;
+      break;
+    case 3:
+	  settle_channel = 1;
+      initial = 0xB99A;
+      final = 0xC666;
+      range = LTC2662_SPAN_200MA;
+      break;
+    case 4:
+	  settle_channel = 1;
+      initial = 0xC666;
+      final = 0xB99A;
+      range = LTC2662_SPAN_200MA;
+      break;
+    case 5:
+	  settle_channel = 3;
+      initial = 0x0000;
+      final = 0xFFFF;
+      range = LTC2662_SPAN_3_125MA;
+      break;
+    case 6:
+	  settle_channel = 3;
+      initial = 0xFFFF;
+      final = 0x0000;
+      range = LTC2662_SPAN_3_125MA;
+      break;
+    default:
+      Serial.println("Using presently programmed DAC values");
+  }
+  if (user_input != 0) // Load DAC to be tested with range, initial, and final values.
+  {
+    LTC2662_write(LTC2662_CS, LTC2662_CMD_SPAN, settle_channel, range); // Set Span
+    LTC2662_write(LTC2662_CS, LTC2662_CMD_TOGGLE_SEL, 0, 0x0000); // Point to register A
+    LTC2662_write(LTC2662_CS, LTC2662_CMD_WRITE_N_UPDATE_N, settle_channel, initial); // Send dac_code
+    LTC2662_write(LTC2662_CS, LTC2662_CMD_TOGGLE_SEL, 0, 0x0001 << settle_channel); // Point to register B
+    LTC2662_write(LTC2662_CS, LTC2662_CMD_WRITE_N_UPDATE_N, settle_channel, final); // Send dac_code
+  }
+  Serial.println("Settling time test running, send any character to terminate.");
+  pinMode(INTEGRATOR_CONTROL, OUTPUT);
+  pinMode(SETTLE_TRIGGER, OUTPUT);
+  while (!Serial.available())
+  {
+    PORTD |= 1 << INTEGRATOR_CONTROL; // Disable integrator
+    PORTD |= 1 << SETTLE_TRIGGER;
+    LTC2662_write(LTC2662_CS, LTC2662_CMD_GLOBAL_TOGGLE, 0, 0); // Set global toggle bit LOW, INITIAL value
+    PORTD &= ~(1 << SETTLE_TRIGGER); // Reset settle trigger LOW
+    delay(10); // Wait to get to initial value
+    LTC2662_write(LTC2662_CS, LTC2662_CMD_GLOBAL_TOGGLE, 0, 1); // Set global toggle HIGH, FINAL value
+    delay(10); // Wait to get to final value, here is where you look at the settling
+    PORTD &= ~(1 << INTEGRATOR_CONTROL); // Enable integrator
+    delay(100);
+  }
+  Serial.read();
+  Serial.println("Exiting Settling time test.");
 }

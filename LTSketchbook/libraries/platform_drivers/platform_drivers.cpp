@@ -58,14 +58,14 @@
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
 int32_t i2c_init(i2c_desc **desc,
-		 i2c_init_param param)
+		 const struct i2c_init_param *param)
 {
 	// Create the i2c description object for the device
 	i2c_desc * new_desc = (i2c_desc*) malloc(sizeof(*new_desc));
-	new_desc->type = param.type;
-	new_desc->id = param.id;
-	new_desc->max_speed_hz = param.max_speed_hz;
-	new_desc->slave_address = param.slave_address;
+	new_desc->type = param->type;
+	new_desc->id = param->id;
+	new_desc->max_speed_hz = param->max_speed_hz;
+	new_desc->slave_address = param->slave_address;
 	
 	*desc = new_desc;
 	
@@ -145,13 +145,13 @@ const uint8_t arduino_spi_modes[4] = {
  * @return SUCCESS in case of success, FAILURE otherwise.
  */
 int32_t spi_init(spi_desc **desc,
-		 spi_init_param param)
+		 const struct spi_init_param *param)
 {
 	// Create the spi description object for the device
 	spi_desc * new_desc = (spi_desc*) malloc(sizeof(*new_desc));
-	new_desc->chip_select = param.chip_select;
-	new_desc->mode = param.mode;
-	new_desc->max_speed_hz = param.max_speed_hz;
+	new_desc->chip_select = param->chip_select;
+	new_desc->mode = param->mode;
+	new_desc->max_speed_hz = param->max_speed_hz;
 	
 	*desc = new_desc;
 	

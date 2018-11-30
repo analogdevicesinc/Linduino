@@ -70,25 +70,25 @@ extern "C" {
 /*************************** Types Declarations *******************************/
 /******************************************************************************/
 
-typedef enum {
+typedef enum i2c_type{
 	GENERIC_I2C
 } i2c_type;
 
-typedef struct {
+typedef struct i2c_init_param{
 	i2c_type	type;
 	uint32_t	id;
 	uint32_t	max_speed_hz;
 	uint8_t		slave_address;
 } i2c_init_param;
 
-typedef struct {
+typedef struct i2c_desc{
 	i2c_type	type;
 	uint32_t	id;
 	uint32_t	max_speed_hz;
 	uint8_t		slave_address;
 } i2c_desc;
 
-typedef enum {
+typedef enum spi_type{
 	GENERIC_SPI
 } spi_type;
 
@@ -101,7 +101,7 @@ typedef enum {
 
 
 
-typedef struct {
+typedef struct spi_init_param{
 	spi_type	type;
 	uint32_t	id;
 	uint32_t	max_speed_hz;
@@ -133,7 +133,7 @@ typedef struct {
 
 /* Initialize the I2C communication peripheral. */
 int32_t i2c_init(i2c_desc **desc,
-		 i2c_init_param param);
+		 const struct i2c_init_param *param);
 
 /* Free the resources allocated by i2c_init(). */
 int32_t i2c_remove(i2c_desc *desc);
@@ -152,7 +152,7 @@ int32_t i2c_read(i2c_desc *desc,
 
 /* Initialize the SPI communication peripheral. */
 int32_t spi_init(spi_desc **desc,
-		 spi_init_param param);
+		 const struct spi_init_param *param);
 
 /* Free the resources allocated by spi_init() */
 int32_t spi_remove(spi_desc *desc);
