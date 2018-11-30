@@ -21,7 +21,7 @@ LCD pin mapping is designed to be "minimally obtrusive", not interfering
 with an Uno's SPI, I2C or UART. Since we're using an external,
 high-performance ADC, the "analog" pins can be re-used as digital outputs.
 
-LiquidCrystal lcd(2, 3, 4, A0, A1, A2, A3); // RS, RW, EN, D4:D7. 
+LiquidCrystal lcd(2, 3, 4, A0, A1, A2, A3); // RS, RW, EN, D4:D7.
 
 For reference, the standard character LCD pinout is as follows:
 1 GROUND
@@ -40,7 +40,7 @@ For reference, the standard character LCD pinout is as follows:
 14 D7
 15 - Pins 15, 16 are often used for backlight.
 16 - Check datasheet for voltage / polarity.
- 
+
 
 
   Setup:
@@ -99,16 +99,16 @@ are permitted provided that the following conditions are met:
       patent holders to use this software.
     - Use of the software either in source or binary form, must be run
       on or directly connected to an Analog Devices Inc. component.
-   
+
 THIS SOFTWARE IS PROVIDED BY ANALOG DEVICES "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A
 PARTICULAR PURPOSE ARE DISCLAIMED.
 
 IN NO EVENT SHALL ANALOG DEVICES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
 EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, INTELLECTUAL PROPERTY
-RIGHTS, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+RIGHTS, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
 BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
-STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -156,8 +156,8 @@ const uint8_t BUILD_COMMAND_DIFF[16] = {LTC2498_P0_N1, LTC2498_P2_N3, LTC2498_P4
 //! Lookup table to build 1X / 2X bits
 const uint8_t BUILD_1X_2X_COMMAND[2] = {LTC2498_SPEED_1X, LTC2498_SPEED_2X};   //!< Build the command for 1x or 2x mode
 
-  LiquidCrystal lcd(2, 3, 4, A0, A1, A2, A3); // RS, RW, EN, D4:D7. This pinout does not
-                                          // interfere with any Linduino functionality.
+LiquidCrystal lcd(2, 3, 4, A0, A1, A2, A3); // RS, RW, EN, D4:D7. This pinout does not
+// interfere with any Linduino functionality.
 
 //! Initialize Linduino
 void setup()
@@ -183,13 +183,13 @@ void setup()
   demo_board_connected = discover_demo_board(demo_name);
   // if (demo_board_connected)
   // {
-    // print_prompt();
+  // print_prompt();
   // }
   // else
   // {
-    // Serial.println(F("EEPROM not detected, will attempt to proceed"));
-    // demo_board_connected = 1;
-    // print_prompt();
+  // Serial.println(F("EEPROM not detected, will attempt to proceed"));
+  // demo_board_connected = 1;
+  // print_prompt();
   // }
   quikeval_SPI_connect();       //Initialize for SPI
 }
@@ -244,7 +244,7 @@ void loop()
   lcd.setCursor(0, 1);
   lcd.print("Ta=");
   lcd.print(temperature, 1);
-  
+
 // Program channel 0, read channel 2
   adc_command_high = BUILD_COMMAND_SINGLE_ENDED[0]; // Any channel can be selected
   adc_command_low = rejection_mode | two_x_mode;
@@ -257,8 +257,8 @@ void loop()
   lcd.setCursor(8, 1);
   lcd.print("Tj=");
   lcd.print(tj, 1);
-  
-  
+
+
 
 }
 
