@@ -70,48 +70,42 @@ extern "C" {
 /*************************** Types Declarations *******************************/
 /******************************************************************************/
 
-typedef enum {
+typedef enum i2c_type{
 	GENERIC_I2C
 } i2c_type;
 
-typedef struct {
+typedef struct i2c_init_param{
 	i2c_type	type;
 	uint32_t	id;
 	uint32_t	max_speed_hz;
 	uint8_t		slave_address;
 } i2c_init_param;
 
-typedef struct {
+typedef struct i2c_desc{
 	i2c_type	type;
 	uint32_t	id;
 	uint32_t	max_speed_hz;
 	uint8_t		slave_address;
 } i2c_desc;
 
-typedef enum {
+typedef enum spi_type{
 	GENERIC_SPI
 } spi_type;
 
-typedef enum {
-	SPI_MODE_0 = (0 | 0),
-	SPI_MODE_1 = (0 | SPI_CPHA),
-	SPI_MODE_2 = (SPI_CPOL | 0),
-	SPI_MODE_3 = (SPI_CPOL | SPI_CPHA)
-} spi_mode;
+// typedef enum {
+	// SPI_MODE_0 = (0 | 0),
+	// SPI_MODE_1 = (0 | SPI_CPHA),
+	// SPI_MODE_2 = (SPI_CPOL | 0),
+	// SPI_MODE_3 = (SPI_CPOL | SPI_CPHA)
+// } spi_mode;
 
-// Converts 1-3 into arduino SPI codes
-const uint8_t arduino_spi_modes[4] = {
-	0x00, //SPI_MODE0
-	0x04, //SPI_MODE1
-	0x08, //SPI_MODE2
-	0x0C  //SPI_MODE3
-};
 
-typedef struct {
+
+typedef struct spi_init_param{
 	spi_type	type;
 	uint32_t	id;
 	uint32_t	max_speed_hz;
-	spi_mode	mode;
+	uint8_t mode;  // spi_mode	mode;
 	uint8_t		chip_select;
 } spi_init_param;
 
@@ -119,7 +113,7 @@ typedef struct {
 	spi_type	type;
 	uint32_t	id;
 	uint32_t	max_speed_hz;
-	spi_mode	mode;
+	uint8_t mode; // spi_mode	mode;
 	uint8_t		chip_select;
 } spi_desc;
 
@@ -139,7 +133,7 @@ typedef struct {
 
 /* Initialize the I2C communication peripheral. */
 int32_t i2c_init(i2c_desc **desc,
-		 i2c_init_param param);
+		 const struct i2c_init_param *param);
 
 /* Free the resources allocated by i2c_init(). */
 int32_t i2c_remove(i2c_desc *desc);
@@ -158,7 +152,7 @@ int32_t i2c_read(i2c_desc *desc,
 
 /* Initialize the SPI communication peripheral. */
 int32_t spi_init(spi_desc **desc,
-		 spi_init_param param);
+		 const struct spi_init_param *param);
 
 /* Free the resources allocated by spi_init() */
 int32_t spi_remove(spi_desc *desc);
@@ -229,8 +223,7 @@ uint8_t Wire_Read(unsigned char address, unsigned char* data, unsigned char leng
 /*! Connect to SPI, matches quikeval_spi_connect */
 //void Lin_SPI_Connect();
 
-/*! Transfer block of SPI data, matches spi_transfer_block */
-void Lin_SPI_Transfer_Block(uint8_t cs_pin, uint8_t *tx, uint8_t *rx, uint8_t length);
+void uartTX(char *buf);
 
 #ifdef __cplusplus // Closing extern c
 }

@@ -41,14 +41,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 #include <Arduino.h>
 #include "Linduino.h"
-#include "QuikEval_EEPROM.h"
 #include "UserInterface.h"
 #include <SPI.h>
 #include "LT_SPI.h"
-//#include <Wire.h>
-#include "LT_I2C.h"
+
+
 #include "LTC24XX_general.h"
 #include "LTC2668.h"
+
+#include "USE_WIRE.h"
+#ifdef USEWIRE
+#include "LT_I2C_Wire.h"
+#include "QuikEval_EEPROM_Wire.h"
+#else
+#include "LT_I2C.h"
+#include "QuikEval_EEPROM.h"
+#endif
 
 #define CS QUIKEVAL_CS      //!< The chip select 
 

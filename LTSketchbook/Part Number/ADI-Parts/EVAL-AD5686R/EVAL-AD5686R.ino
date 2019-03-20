@@ -53,25 +53,14 @@ extern "C" {
 /******************************************************************************/
 
 // Converts our DAC code into letters of which DAC is selected
-const String dac_selection[16] =
+const String dac_selection[4] =
 {
-  "None",
   "A",
   "B",
-  "A,B",
   "C",
-  "A,C",
-  "B,C",
-  "A,B,C",
-  "D",
-  "A,D",
-  "B,D",
-  "A,B,D",
-  "C,D",
-  "A,C,D",
-  "B,C,D",
-  "All"
+  "D"
 };
+
 
 i2c_init_param i2c_params =
 {
@@ -86,7 +75,7 @@ spi_init_param spi_params =
   GENERIC_SPI,
   QUIKEVAL_CS,
   50000000,
-  SPI_MODE_1,
+  1, // SPI mode
   QUIKEVAL_CS,
 };
 
@@ -103,9 +92,9 @@ ad5686_dev *device;
 
 gpio_desc gpio_gain =
 {
-  GENERIC_GPIO,
-  0,
-  2,
+  GENERIC_GPIO,   // type
+  0,              // ID
+  2,              // Number
 };
 
 int32_t connected = -1;
@@ -156,8 +145,9 @@ void loop()
   //   1010 = B & D
   //   1101 = A, C & D
   //   1111 = All
-  static int16_t selected_dac = 1;
+  static uint8_t selected_dac = 0;
   static float ref_voltage = 2.5;
+
 
   // Switch menu based on user's input
   print_prompt(selected_dac, ref_voltage);
@@ -183,7 +173,7 @@ void loop()
       break;
 
     case 5:
-      menu_5_power_down_mode(selected_dac);
+      menu_5_set_DAC_power_mode(selected_dac);
       break;
 
     case 6:
@@ -220,6 +210,10 @@ void loop()
   }
 }
 
+
+
+
+
 //! Prints the title block
 void print_title()
 {
@@ -234,7 +228,7 @@ void print_title()
 }
 
 // Prints the "main menu" prompt to the console
-void print_prompt(int16_t selected_dac, float ref_voltage) //!< this parameter is passed so that it can be printed at the bottom of the menu.
+void print_prompt(uint8_t selected_dac, float ref_voltage) //!< this parameter is passed so that it can be printed at the bottom of the menu.
 {
   Serial.println(F("\nCommand Summary:"));
 
@@ -253,10 +247,7 @@ void print_prompt(int16_t selected_dac, float ref_voltage) //!< this parameter i
   Serial.println();
 
   Serial.print(F("  Selected DAC: "));
-  if (selected_dac < 2) Serial.print(0); // Print leading zeroes
-  if (selected_dac < 4) Serial.print(0);
-  if (selected_dac < 8) Serial.print(0);
-  Serial.print(selected_dac, BIN);
+  Serial.print(selected_dac, DEC);
   Serial.print(F(" "));
   Serial.println(dac_selection[selected_dac]);
 
@@ -270,24 +261,24 @@ void print_prompt(int16_t selected_dac, float ref_voltage) //!< this parameter i
 
 // Menu for user to select a DAC
 // @param selected_dac - Reference of DAC identifier
-uint8_t menu_1_select_dac(int16_t *selected_dac)
+uint8_t menu_1_select_dac(uint8_t *selected_dac)
 {
-  Serial.println(F("  DAC selections are represented in binary with"));
-  Serial.println(F("  bits corresponding to: DCBA"));
-  Serial.println(F("  (See datasheet for details and explanation)"));
-  Serial.println(F("  For example:"));
-  Serial.println(F("    B0001 - DAC A"));
-  Serial.println(F("    B0010 - DAC B"));
-  Serial.println(F("    B0100 - DAC C"));
-  Serial.println(F("    B1000 - DAC D"));
-  Serial.println(F("    B0101 - DAC A&C"));
-  Serial.println(F("    B1111 - ALL"));
-  Serial.print(F("  Enter any combination of DAC(s): "));
+  // Serial.println(F("  DAC selections are represented in binary with"));
+  // Serial.println(F("  bits corresponding to: DCBA"));
+  // Serial.println(F("  (See datasheet for details and explanation)"));
+  // Serial.println(F("  For example:"));
+  // Serial.println(F("    B0001 - DAC A"));
+  // Serial.println(F("    B0010 - DAC B"));
+  // Serial.println(F("    B0100 - DAC C"));
+  // Serial.println(F("    B1000 - DAC D"));
+  // Serial.println(F("    B0101 - DAC A&C"));
+  // Serial.println(F("    B1111 - ALL"));
+  Serial.print(F("  Enter DAC to select (0 - 3, corresponding to DAC A - D)"));
 
-  *selected_dac = read_int();
+  *selected_dac = (uint8_t)read_int();
 
-  if (*selected_dac > 15)
-    *selected_dac = 15; // If user enters and invalid option, default to ALL.
+  if (*selected_dac > 3)
+    *selected_dac = 3; // If user enters and invalid option, default to 3.
   if (*selected_dac < 0)
     *selected_dac = 0;
 
@@ -300,17 +291,17 @@ uint8_t menu_1_select_dac(int16_t *selected_dac)
 
 //! Menu 2: Write to input register only.  Does not update the output voltage.
 //! @return Returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
-uint8_t menu_2_write_to_input_register(int16_t selected_dac, float vref) //!< DAC to be updated. 0=A, 1=B, 2=All
+uint8_t menu_2_write_to_input_register(uint8_t selected_dac, float vref) //!< DAC to be updated. 0=A, 1=B, 2=All
 {
   unsigned short vdata = get_voltage_code(vref);
 
   ad5686_write_register(device, selected_dac, vdata);
 
-  return SUCCESS;
+  return SUCCESS;// Always returns success, consider adding a fail code later.
 }
 
 // Updates DAC outputs from its input registers
-uint8_t menu_3_update_dac(int16_t selected_dac)
+uint8_t menu_3_update_dac(uint8_t selected_dac)
 {
   //AD568X_WriteFunction(AD568X_CMD_UPDATE_DAC_N, selected_dac, 0);
   ad5686_update_register(device, selected_dac);
@@ -322,7 +313,7 @@ uint8_t menu_3_update_dac(int16_t selected_dac)
 // Menu for user to change a DAC's output voltage
 // @param selected_dac - Reference of DAC identifier to update,
 // corresponding to 0=A, 1=B, 2=C, 3=D, 4=A&B, 5=ALL
-uint8_t menu_4_write_and_update_dac(int16_t selected_dac, float vref) //!< DAC to be updated. 0=A, 1=B, 2=All
+uint8_t menu_4_write_and_update_dac(uint8_t selected_dac, float vref) //!< DAC to be updated. 0=A, 1=B, 2=All
 {
   unsigned short vdata = get_voltage_code(vref);
 
@@ -335,7 +326,7 @@ uint8_t menu_4_write_and_update_dac(int16_t selected_dac, float vref) //!< DAC t
 }
 
 
-uint8_t menu_5_power_down_mode(int16_t selected_dac)
+uint8_t menu_5_set_DAC_power_mode(uint8_t selected_dac)
 {
   // Cancel if no DAC selected
   if (selected_dac == 0)
@@ -397,22 +388,22 @@ uint8_t menu_5_power_down_mode(int16_t selected_dac)
   if (dac1)
   {
     Serial.println(F("  Applying power mode to DAC A..."));
-    ad5686_power_mode(device, AD5686_CH_A, selected_mode);
+    ad5686_power_mode(device, AD5686_CH_0, selected_mode);
   }
   if (dac2)
   {
     Serial.println(F("  Applying power mode to DAC B..."));
-    ad5686_power_mode(device, AD5686_CH_B, selected_mode);
+    ad5686_power_mode(device, AD5686_CH_1, selected_mode);
   }
   if (dac3)
   {
     Serial.println(F("  Applying power mode to DAC C..."));
-    ad5686_power_mode(device, AD5686_CH_C, selected_mode);
+    ad5686_power_mode(device, AD5686_CH_2, selected_mode);
   }
   if (dac4)
   {
     Serial.println(F("  Applying power mode to DAC D..."));
-    ad5686_power_mode(device, AD5686_CH_D, selected_mode);
+    ad5686_power_mode(device, AD5686_CH_3, selected_mode);
   }
 
   Serial.println(F("  Done!"));
@@ -459,10 +450,10 @@ uint8_t menu_6_select_ref_voltage(float *vref)
 // Reads back all DAC registers
 uint8_t menu_7_read_back_registers()
 {
-  uint32_t reg1 = ad5686_read_back_register(device, AD5686_CH_A);
-  uint32_t reg2 = ad5686_read_back_register(device, AD5686_CH_B);
-  uint32_t reg3 = ad5686_read_back_register(device, AD5686_CH_C);
-  uint32_t reg4 = ad5686_read_back_register(device, AD5686_CH_D);
+  uint32_t reg1 = ad5686_read_back_register(device, AD5686_CH_0);
+  uint32_t reg2 = ad5686_read_back_register(device, AD5686_CH_1);
+  uint32_t reg3 = ad5686_read_back_register(device, AD5686_CH_2);
+  uint32_t reg4 = ad5686_read_back_register(device, AD5686_CH_3);
 
   Serial.println(F("\n  All DAC register values:"));
   Serial.print(F("    DAC A - "));
@@ -488,7 +479,7 @@ uint8_t menu_8_set_ldac_mask()
   if (mask > 15) mask = 15; // Clamp at 1111
   Serial.println(mask, BIN);
 
-  ad5686_ldac_mask(device, mask);
+  ad5686_ldac_mask(device, mask, 0x01);
 
   Serial.println(F("  Updated LDAC mask"));
 
