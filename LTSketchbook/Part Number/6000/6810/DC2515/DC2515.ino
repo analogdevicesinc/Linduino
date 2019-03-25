@@ -1,11 +1,23 @@
-/***************************************************************************//**
-*   @file DC2515.ino
-*   @brief LTC6810-1: Battery stack monitor
-*   @author BMS (bms.support@analog.com)
-
-REVISION HISTORY
-$Revision: 1.0 $
-$Date: 2019-3 $
+/*! Analog Devices DC2515 Demonstration Board. 
+* LTC6810: 6-Channel Battery Stack Monitors
+*
+*@verbatim
+*NOTES
+* Setup:
+*   Set the terminal baud rate to 115200 and select the newline terminator.
+*   Ensure all jumpers on the demo board are installed in their default positions from the factory.
+*   Refer to Demo Manual.
+*
+*USER INPUT DATA FORMAT:
+* decimal : 1024
+* hex     : 0x400
+* octal   : 02000  (leading 0)
+* binary  : B10000000000
+* float   : 1024.0
+*@endverbatim
+*
+* https://www.analog.com/en/products/ltc6810-1.html
+*
 ********************************************************************************
 * Copyright 2019(c) Analog Devices, Inc.
 *

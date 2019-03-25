@@ -1,11 +1,20 @@
-/***************************************************************************//**
-*   @file LTC6812.h  
-*   @brief Header for LTC6812-1 Multi-cell Battery Monitor
-*   @author BMS (bms.support@analog.com)
-
-REVISION HISTORY
-$Revision: 1.0 $
-$Date: 2019-3 $
+/*! LTC6812: Multicell Battery Monitors
+*
+*@verbatim
+*The LTC6812 is multicell battery stack monitor that measures up to 15 series 
+*connected battery cells with a total measurement error of less than 2.2mV. 
+*The cell measurement range of 0V to 5V makes the LTC6812 suitable for most 
+*battery chemistries. All 15 cell voltages can be captured in 245uS, and lower 
+*data acquisition rates can be selected for high noise reduction.
+*Using the LTC6812-1, multiple devices are connected in a daisy-chain with one 
+*host processor connection for all devices, permitting simultaneous cell monitoring 
+*of long, high voltage battery strings.
+*@endverbatim
+*
+* https://www.analog.com/en/products/ltc6812-1.html
+* The schematic of DC2350A : https://www.analog.com/media/en/technical-documentation/eval-board-schematic/DC2350A-4-SCH.PDF 
+* ( Ensure that you modify the DC2350A board as mentioned on the schematic to work for LTC6812 (DC2350A-A) )
+*
 *********************************************************************************
 * Copyright 2019(c) Analog Devices, Inc.
 *

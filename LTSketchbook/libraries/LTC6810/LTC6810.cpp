@@ -1,11 +1,18 @@
-/***************************************************************************//**
-*   @file LTC6810.cpp  
-*   @brief LTC6810-1: Battery stack monitor
-*   @author BMS (bms.support@analog.com)
-
-REVISION HISTORY
-$Revision: 1.0 $
-$Date: 2019-03 $
+/*! LTC6810: 6-Channel Battery Stack Monitors
+*
+*@verbatim
+*The LTC6810 is multicell battery stack monitor that measures up to 6 series 
+*connected battery cells with a total measurement error of less than 1.8mV. 
+*The cell measurement range of 0V to 5V makes the LTC6813 suitable for most 
+*battery chemistries. All 6 cell voltages can be captured in 290uS, and lower 
+*data acquisition rates can be selected for high noise reduction.
+*Using the LTC6810-1, multiple devices are connected in a daisy-chain with one 
+*host processor connection for all devices, permitting simultaneous cell monitoring 
+*of long, high voltage battery strings.
+*@endverbatim
+*
+* https://www.analog.com/en/products/ltc6810-1.html
+*
 ********************************************************************************
 * Copyright 2019(c) Analog Devices, Inc.
 *

@@ -1,10 +1,8 @@
-/***************************************************************************//**
+/*! General BMS Library
+***************************************************************************//**
 *   @file     LTC681x.cpp  
 *   @author BMS (bms.support@analog.com)
 
-REVISION HISTORY
-$Revision: 1.0 $
-$Date: 2019-3 $
 ********************************************************************************
 * Copyright 2019(c) Analog Devices, Inc.
 *
@@ -1846,6 +1844,9 @@ void LTC681x_run_openwire_single(uint8_t total_ic,
 		  for (int cic=0; cic<total_ic; cic++)
 		  { 
 				n=0;
+								
+				Serial.print("IC:");
+				Serial.println(cic+1, DEC);
 				
 				for (int cell=0; cell<N_CHANNELS; cell++)
 				{  
@@ -1922,9 +1923,6 @@ void LTC681x_run_openwire_single(uint8_t total_ic,
 						}
 					}
 				}
-				
-				Serial.print("IC:");
-				Serial.println(cic+1, DEC);
 							
 			//Checking the value of n				
 				Serial.println("Number of Open wires:");

@@ -1,11 +1,18 @@
-/***************************************************************************//**
-*   @file LTC6811.h  
-*   @brief Header for LTC6811-1 Multi-cell Battery Monitor
-*   @author BMS (bms.support@analog.com)
-
-REVISION HISTORY
-$Revision: 1.0 $
-$Date: 2019-3 $
+/*! LTC6811: Multicell Battery Monitors
+*
+*@verbatim
+*The LTC6811 is multicell battery stack monitor that measures up to 12 series 
+*connected battery cells with a total measurement error of less than 1.2mV. 
+*The cell measurement range of 0V to 5V makes the LTC6811 suitable for most 
+*battery chemistries. All 12 cell voltages can be captured in 290uS, and lower 
+*data acquisition rates can be selected for high noise reduction.
+*Using the LTC6811-1, multiple devices are connected in a daisy-chain with one 
+*host processor connection for all devices.
+*@endverbatim
+*
+* https://www.analog.com/en/products/ltc6811-1.html
+* https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc2259a.html
+*
 ********************************************************************************
 * Copyright 2019(c) Analog Devices, Inc.
 *
