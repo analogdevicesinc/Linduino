@@ -68,7 +68,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 #include <Arduino.h>
 #include "Linduino.h"
-#include "LT_I2C.h"
+//#include "LT_I2C.h"
 #include "LT_SPI.h"
 #include "LTC2422.h"
 #include <SPI.h>

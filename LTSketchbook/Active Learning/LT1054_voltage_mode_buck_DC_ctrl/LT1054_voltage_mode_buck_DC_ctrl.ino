@@ -79,22 +79,31 @@ void setup() {
 uint8_t state = closed_loop;
 void loop() {
   char ch;
+  float fbv, dc;
   if(Serial.available()){
     ch = Serial.read();
     switch(ch) {
-      case '0': state = fixed; analogWrite(analogOutPin, 0); break;
-      case '1': state = fixed; analogWrite(analogOutPin, 26); break;
-      case '2': state = fixed; analogWrite(analogOutPin, 51); break;
-      case '3': state = fixed; analogWrite(analogOutPin, 77); break;
-      case '4': state = fixed; analogWrite(analogOutPin, 102); break;
-      case '5': state = fixed; analogWrite(analogOutPin, 128); break;
-      case '6': state = fixed; analogWrite(analogOutPin, 153); break;
-      case '7': state = fixed; analogWrite(analogOutPin, 179); break;
-      case '8': state = fixed; analogWrite(analogOutPin, 204); break;
-      case '9': state = fixed; analogWrite(analogOutPin, 230); break;
-      case 'A': state = fixed; analogWrite(analogOutPin, 255); break;
+      case '0': state = fixed; outputValue = 0  ; break;
+      case '1': state = fixed; outputValue = 26 ; break;
+      case '2': state = fixed; outputValue = 51 ; break;
+      case '3': state = fixed; outputValue = 77 ; break;
+      case '4': state = fixed; outputValue = 102; break;
+      case '5': state = fixed; outputValue = 128; break;
+      case '6': state = fixed; outputValue = 153; break;
+      case '7': state = fixed; outputValue = 179; break;
+      case '8': state = fixed; outputValue = 204; break;
+      case '9': state = fixed; outputValue = 230; break;
+      case 'A': state = fixed; outputValue = 255; break;
+      case '\r': break;
+      case '\n': break;
       default: state = closed_loop;
     }
+  if(ch != '\r' && ch != '\n'){
+  Serial.print("Setting PWM to ");
+  Serial.print(outputValue);
+  Serial.println("/255");
+  }
+  analogWrite(analogOutPin, outputValue);
   }
   if(state == closed_loop){
     // read the analog in value:
@@ -106,15 +115,18 @@ void loop() {
     
     // map it to the range of the analog out
     // (could probably just right-shift by two...)
-    outputValue = map(integral, 0, 1023, 0, 255);
+    // outputValue = map(integral, 0, 1023, 0, 255);
+    outputValue = integral >> 2; // Map 10 bit integral to 8 bit output, maintainting integral precision
     // change the analog out value:
     analogWrite(analogOutPin, outputValue);
   #ifdef verbose
     // print the results to the Serial Monitor:
     Serial.print("feedback = ");
-    Serial.print(feedback);
-    Serial.print("\t output = ");
-    Serial.println(outputValue);
+    fbv = (float) feedback * (5.0 / 1024.0);
+    Serial.print(fbv, 2);
+    Serial.print("\t PWM duty cycle = ");
+    dc = (float) outputValue * (100.0 / 256.0);
+    Serial.println(dc, 1);
   #endif
     // wait some milliseconds before the next loop for the analog-to-digital
     // converter to settle after the last reading:
