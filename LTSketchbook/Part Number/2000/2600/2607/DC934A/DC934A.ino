@@ -76,13 +76,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 #include "Linduino.h"
 #include "UserInterface.h"
-#include "LT_I2C.h"
+//#include "LT_I2C.h"
 #include "LT_SPI.h"
 #include "LTC2607.h"
 #include "LTC2422.h"
-#include "QuikEval_EEPROM.h"
+//#include "QuikEval_EEPROM.h"
 #include <Wire.h>
 #include <SPI.h>
+#include "USE_WIRE.h"
+
+#ifdef USEWIRE
+#include "LT_I2C_Wire.h"
+#include "QuikEval_EEPROM_Wire.h"
+#else
+#include "LT_I2C.h"
+#include "QuikEval_EEPROM.h"
+#endif
 
 // Function Declaration
 void print_title();

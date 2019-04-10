@@ -16,7 +16,7 @@
   http://www.arduino.cc/en/Tutorial/AnalogInOutSerial
   PWM frequency adjustment function from:
   https://playground.arduino.cc/Code/PwmFrequency
-  
+
 Copyright 2018(c) Analog Devices, Inc.
 
 All rights reserved.
@@ -68,54 +68,108 @@ int integral = 128;
 
 #define verbose
 
-void setup() {
+void setup()
+{
   // initialize serial communications at 115200 bps:
-#ifdef verbose  
+#ifdef verbose
   Serial.begin(115200);
 #endif
   setPwmFrequency(analogOutPin, 1);
 }
 
 uint8_t state = closed_loop;
-void loop() {
+void loop()
+{
   char ch;
-  if(Serial.available()){
+  float fbv, dc;
+  if (Serial.available())
+  {
     ch = Serial.read();
-    switch(ch) {
-      case '0': state = fixed; analogWrite(analogOutPin, 0); break;
-      case '1': state = fixed; analogWrite(analogOutPin, 26); break;
-      case '2': state = fixed; analogWrite(analogOutPin, 51); break;
-      case '3': state = fixed; analogWrite(analogOutPin, 77); break;
-      case '4': state = fixed; analogWrite(analogOutPin, 102); break;
-      case '5': state = fixed; analogWrite(analogOutPin, 128); break;
-      case '6': state = fixed; analogWrite(analogOutPin, 153); break;
-      case '7': state = fixed; analogWrite(analogOutPin, 179); break;
-      case '8': state = fixed; analogWrite(analogOutPin, 204); break;
-      case '9': state = fixed; analogWrite(analogOutPin, 230); break;
-      case 'A': state = fixed; analogWrite(analogOutPin, 255); break;
-      default: state = closed_loop;
+    switch (ch)
+    {
+      case '0':
+        state = fixed;
+        outputValue = 0  ;
+        break;
+      case '1':
+        state = fixed;
+        outputValue = 26 ;
+        break;
+      case '2':
+        state = fixed;
+        outputValue = 51 ;
+        break;
+      case '3':
+        state = fixed;
+        outputValue = 77 ;
+        break;
+      case '4':
+        state = fixed;
+        outputValue = 102;
+        break;
+      case '5':
+        state = fixed;
+        outputValue = 128;
+        break;
+      case '6':
+        state = fixed;
+        outputValue = 153;
+        break;
+      case '7':
+        state = fixed;
+        outputValue = 179;
+        break;
+      case '8':
+        state = fixed;
+        outputValue = 204;
+        break;
+      case '9':
+        state = fixed;
+        outputValue = 230;
+        break;
+      case 'A':
+        state = fixed;
+        outputValue = 255;
+        break;
+      case '\r':
+        break;
+      case '\n':
+        break;
+      default:
+        state = closed_loop;
     }
+    if (ch != '\r' && ch != '\n')
+    {
+      Serial.print("Setting PWM to ");
+      Serial.print(outputValue);
+      Serial.println("/255");
+    }
+    analogWrite(analogOutPin, outputValue);
   }
-  if(state == closed_loop){
+  if (state == closed_loop)
+  {
     // read the analog in value:
     feedback = analogRead(analogInPin);
     error = setpoint - feedback;
     integral = integral + error/4; //kI = 0.25
-    if(integral > 1023) integral = 1023;
-    if(integral < 0) integral = 0;
-    
+    if (integral > 1023) integral = 1023;
+    if (integral < 0) integral = 0;
+
     // map it to the range of the analog out
     // (could probably just right-shift by two...)
-    outputValue = map(integral, 0, 1023, 0, 255);
+    // outputValue = map(integral, 0, 1023, 0, 255);
+    outputValue = integral >> 2; // Map 10 bit integral to 8 bit output, maintainting integral precision
     // change the analog out value:
     analogWrite(analogOutPin, outputValue);
-  #ifdef verbose
+#ifdef verbose
     // print the results to the Serial Monitor:
     Serial.print("feedback = ");
-    Serial.print(feedback);
-    Serial.print("\t output = ");
-    Serial.println(outputValue);
-  #endif
+    fbv = (float) feedback * (5.0 / 1024.0);
+    Serial.print(fbv, 2);
+    Serial.print("\t PWM duty cycle = ");
+    dc = (float) outputValue * (100.0 / 256.0);
+    Serial.println(dc, 1);
+#endif
     // wait some milliseconds before the next loop for the analog-to-digital
     // converter to settle after the last reading:
     delay(10);
@@ -125,7 +179,7 @@ void loop() {
 
 /**
  * Divides a given PWM pin frequency by a divisor.
- * 
+ *
  * The resulting frequency is equal to the base frequency divided by
  * the given divisor:
  *   - Base frequencies:
@@ -136,13 +190,13 @@ void loop() {
  *        256, and 1024.
  *      o The divisors available on pins 3 and 11 are: 1, 8, 32, 64,
  *        128, 256, and 1024.
- * 
+ *
  * PWM frequencies are tied together in pairs of pins. If one in a
  * pair is changed, the other is also changed to match:
  *   - Pins 5 and 6 are paired on timer0
  *   - Pins 9 and 10 are paired on timer1
  *   - Pins 3 and 11 are paired on timer2
- * 
+ *
  * Note that this function will have side effects on anything else
  * that uses timers:
  *   - Changes on pins 3, 5, 6, or 11 may cause the delay() and
@@ -150,37 +204,72 @@ void loop() {
  *     functions may also be affected.
  *   - Changes on pins 9 or 10 will cause the Servo library to function
  *     incorrectly.
- * 
+ *
  * Thanks to macegr of the Arduino forums for his documentation of the
  * PWM frequency divisors. His post can be viewed at:
  *   http://forum.arduino.cc/index.php?topic=16612#msg121031
  */
-void setPwmFrequency(int pin, int divisor) {
+void setPwmFrequency(int pin, int divisor)
+{
   byte mode;
-  if(pin == 5 || pin == 6 || pin == 9 || pin == 10) {
-    switch(divisor) {
-      case 1: mode = 0x01; break;
-      case 8: mode = 0x02; break;
-      case 64: mode = 0x03; break;
-      case 256: mode = 0x04; break;
-      case 1024: mode = 0x05; break;
-      default: return;
+  if (pin == 5 || pin == 6 || pin == 9 || pin == 10)
+  {
+    switch (divisor)
+    {
+      case 1:
+        mode = 0x01;
+        break;
+      case 8:
+        mode = 0x02;
+        break;
+      case 64:
+        mode = 0x03;
+        break;
+      case 256:
+        mode = 0x04;
+        break;
+      case 1024:
+        mode = 0x05;
+        break;
+      default:
+        return;
     }
-    if(pin == 5 || pin == 6) {
+    if (pin == 5 || pin == 6)
+    {
       TCCR0B = TCCR0B & 0b11111000 | mode;
-    } else {
+    }
+    else
+    {
       TCCR1B = TCCR1B & 0b11111000 | mode;
     }
-  } else if(pin == 3 || pin == 11) {
-    switch(divisor) {
-      case 1: mode = 0x01; break;
-      case 8: mode = 0x02; break;
-      case 32: mode = 0x03; break;
-      case 64: mode = 0x04; break;
-      case 128: mode = 0x05; break;
-      case 256: mode = 0x06; break;
-      case 1024: mode = 0x07; break;
-      default: return;
+  }
+  else if (pin == 3 || pin == 11)
+  {
+    switch (divisor)
+    {
+      case 1:
+        mode = 0x01;
+        break;
+      case 8:
+        mode = 0x02;
+        break;
+      case 32:
+        mode = 0x03;
+        break;
+      case 64:
+        mode = 0x04;
+        break;
+      case 128:
+        mode = 0x05;
+        break;
+      case 256:
+        mode = 0x06;
+        break;
+      case 1024:
+        mode = 0x07;
+        break;
+      default:
+        return;
     }
     TCCR2B = TCCR2B & 0b11111000 | mode;
   }

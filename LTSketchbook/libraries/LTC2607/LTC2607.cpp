@@ -83,9 +83,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 #include <math.h>
 #include "Linduino.h"
-#include "LT_I2C.h"
+//#include "LT_I2C.h"
 #include "LTC2607.h"
 #include <Wire.h>
+
+#include "USE_WIRE.h"
+
+#ifdef USEWIRE
+#include "LT_I2C_Wire.h"
+#else
+#include "LT_I2C.h"
+#endif
 
 // Writes command, DAC address, and DAC code to the LTC2607.
 // Configures command (write, update, power down, etc.), address (DAC A, DAC B, or BOTH), and 16-bit dac_code for output voltage.
