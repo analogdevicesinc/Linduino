@@ -8,7 +8,7 @@ Each Linduino-supported product includes an example main program, defined in the
 A Detailed User Guide for the Linduino, showing how to set up the hardware and use the software tools is available at https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc2026c.html
 
 ## Purchase ##
-For details on where and how to purchase the Linduino, please visit the Analog Devices website (https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc2026c.html#eb-relatedhardware ) or any of Analog Devices authorized distribution partners.
+For details on where and how to purchase the Linduino, please visit the Analog Devices website (https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc2026c.html#eb-buy ) or any of Analog Devices authorized distribution partners.
 
 ## How to run an example code ##
 1. Download and run Arduino.exe (Version 1.8.5). You can find the installer here:
