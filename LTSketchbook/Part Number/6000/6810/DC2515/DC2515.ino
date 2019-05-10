@@ -18,7 +18,7 @@
 *
 * https://www.analog.com/en/products/ltc6810-1.html
 *
-********************************************************************************
+*********************************************************************************
 * Copyright 2019(c) Analog Devices, Inc.
 *
 * All rights reserved.
@@ -51,7 +51,7 @@
 * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*******************************************************************************/
+********************************************************************************/
 
 /*! @file
     @ingroup LTC6810-1
