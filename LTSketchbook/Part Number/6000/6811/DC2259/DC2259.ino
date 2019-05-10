@@ -58,63 +58,67 @@
     @ingroup LTC6811-1
 */
 
-/*
-NOTES
- Setup:
-   Set the terminal baud rate to 115200 and select the newline terminator.
-   Ensure all jumpers on the demo board are installed in their default positions from the factory.
-   Refer to Demo Manual DC2259.
+/************************************* Read me *******************************************
+In this sketch book:
+  -All Global Variables are in Upper casing
+  -All Local Variables are in lower casing
+  -The Function wakeup_sleep(TOTAL_IC) : is used to wake the LTC681x from sleep state.
+   It is defined in LTC681x.cpp
+  -The Function wakeup_idle(TOTAL_IC) : is used to wake the ICs connected in daisy chain 
+   via the LTC6820 by initiating a dummy SPI communication. It is defined in LTC681x.cpp  
+*******************************************************************************************/
 
-USER INPUT DATA FORMAT:
- decimal : 1024
- hex     : 0x400
- octal   : 02000  (leading 0)
- binary  : B10000000000
- float   : 1024.0
- */
-
+/************************* Includes ***************************/
 #include <Arduino.h>
 #include <stdint.h>
+#include <SPI.h>
 #include "Linduino.h"
 #include "LT_SPI.h"
-#include "LT_I2C.h"           // Hardware I2C driver
+#include "LT_I2C.h"          
 #include "QuikEval_EEPROM.h"
-#include "UserInterface.h"   // serial interface routines to communicate with the user
+#include "UserInterface.h"   
 #include "LTC681x.h"
 #include "LTC6811.h"
-#include <SPI.h>
 
+/************************* Defines *****************************/
 #define ENABLED 1
 #define DISABLED 0
-
 #define DATALOG_ENABLED 1
 #define DATALOG_DISABLED 0
 
-void print_menu();
+/**************** Local Function Declaration *******************/
+void measurement_loop(uint8_t datalog_en);
+void print_menu(void);
+void print_wrconfig(void);
+void print_rxconfig(void);
 void print_cells(uint8_t datalog_en);
 void print_aux(uint8_t datalog_en);
-void print_stat();
-void print_open();
-void print_config();
-void print_rxconfig();
-void print_comm();
-void print_rxcomm();
-void print_pwmconfig();
-void print_rxpwmconfig();
-void print_sctrl();
-void print_rxsctrl(); 
-void print_statsoc();
-void print_aux1();
+void print_stat(void);
+void print_sumofcells(void);
+void check_mux_fail(void);
+void print_selftest_errors(uint8_t adc_reg ,int8_t error);
+void print_overlap_results(int8_t error);
+void print_digital_redundancy_errors(uint8_t adc_reg ,int8_t error);
+void print_open_wires(void);
+void print_pec_error_count(void);
+int8_t select_s_pin(void);
+void print_wrpwm(void);
+void print_rxpwm(void);
+void print_wrsctrl(void);
+void print_rxsctrl(void); 
+void print_wrcomm(void);
+void print_rxcomm(void);
+void print_conv_time(uint32_t conv_time);
 void check_error(int error);
-void print_pec();
+void serial_print_text(char data[]);
 void serial_print_hex(uint8_t data);
-char get_char();
+char read_hex(void);   
+char get_char(void);
 
-/**********************************************************
+/*******************************************************************
   Setup Variables
-  The following variables can be modified to
-  configure the software.
-***********************************************************/
+  The following variables can be modified to configure the software.
+********************************************************************/
 const uint8_t TOTAL_IC = 2;//!< Number of ICs in the daisy chain
 
 //ADC Command Configurations. See LTC681x.h for options.
@@ -124,7 +128,10 @@ const uint8_t ADC_DCP = DCP_ENABLED; //!< Discharge Permitted
 const uint8_t CELL_CH_TO_CONVERT = CELL_CH_ALL; //!< Channel Selection for ADC conversion
 const uint8_t AUX_CH_TO_CONVERT = AUX_CH_ALL; //!< Channel Selection for ADC conversion
 const uint8_t STAT_CH_TO_CONVERT = STAT_CH_ALL; //!< Channel Selection for ADC conversion
-const uint8_t NO_OF_REG = REG_ALL; //!< Register Selection
+const uint8_t SEL_ALL_REG = REG_ALL; //!< Register Selection 
+const uint8_t SEL_REG_A = REG_1; //!< Register Selection 
+const uint8_t SEL_REG_B = REG_2; //!< Register Selection 
+
 const uint16_t MEASUREMENT_LOOP_TIME = 500; //!< Loop Time in milliseconds(ms)
 
 //Under Voltage and Over Voltage Thresholds
@@ -132,12 +139,12 @@ const uint16_t OV_THRESHOLD = 41000; //!< Over voltage threshold ADC Code. LSB =
 const uint16_t UV_THRESHOLD = 30000; //!< Under voltage threshold ADC Code. LSB = 0.0001 ---(3V)
 
 //Loop Measurement Setup. These Variables are ENABLED or DISABLED. Remember ALL CAPS
-const uint8_t WRITE_CONFIG = DISABLED; //!< Loop Measurement Setup
-const uint8_t READ_CONFIG = DISABLED; //!< Loop Measurement Setup
-const uint8_t MEASURE_CELL = ENABLED; //!< Loop Measurement Setup
-const uint8_t MEASURE_AUX = DISABLED; //!< Loop Measurement Setup
-const uint8_t MEASURE_STAT = DISABLED; //!< Loop Measurement Setup
-const uint8_t PRINT_PEC = DISABLED; //!< Loop Measurement Setup
+const uint8_t WRITE_CONFIG = DISABLED;  //!< This is to ENABLED or DISABLED writing into to configuration registers in a continuous loop
+const uint8_t READ_CONFIG = DISABLED; //!< This is to ENABLED or DISABLED reading the configuration registers in a continuous loop
+const uint8_t MEASURE_CELL = ENABLED; //!< This is to ENABLED or DISABLED measuring the cell voltages in a continuous loop
+const uint8_t MEASURE_AUX = DISABLED; //!< This is to ENABLED or DISABLED reading the auxiliary registers in a continuous loop
+const uint8_t MEASURE_STAT = DISABLED; //!< This is to ENABLED or DISABLED reading the status registers in a continuous loop
+const uint8_t PRINT_PEC = DISABLED; //!< This is to ENABLED or DISABLED printing the PEC Error Count in a continuous loop
 /************************************
   END SETUP
 *************************************/
@@ -148,7 +155,7 @@ const uint8_t PRINT_PEC = DISABLED; //!< Loop Measurement Setup
  register reads and the array lengths must be based
  on the number of ICs on the stack
  ******************************************************/
-cell_asic bms_ic[TOTAL_IC]; //!< Global Battery Variable
+cell_asic BMS_IC[TOTAL_IC]; //!< Global Battery Variable
 
 /*********************************************************
  Set the configuration bits. 
@@ -156,11 +163,11 @@ cell_asic bms_ic[TOTAL_IC]; //!< Global Battery Variable
 **********************************************************/
 bool REFON = true; //!< Reference Powered Up Bit
 bool ADCOPT = false; //!< ADC Mode option bit
-bool gpioBits_a[5] = {false,false,false,false,false}; //!< GPIO Pin Control // Gpio 1,2,3,4,5
+bool GPIOBITS_A[5] = {false,false,true,true,true}; //!< GPIO Pin Control // Gpio 1,2,3,4,5
 uint16_t UV=UV_THRESHOLD; //!< Under-voltage Comparison Voltage
 uint16_t OV=OV_THRESHOLD; //!< Over-voltage Comparison Voltage
-bool dccBits_a[12] = {false,false,false,false,false,false,false,false,false,false,false,false}; //!< Discharge cell switch //Dcc 1,2,3,4,5,6,7,8,9,10,11,12
-bool dctoBits[4] = {true, false, true, false}; //!< Discharge time value // Dcto 0,1,2,3 // Programed for 4 min 
+bool DCCBITS_A[12] = {false,false,false,false,false,false,false,false,false,false,false,false}; //!< Discharge cell switch //Dcc 1,2,3,4,5,6,7,8,9,10,11,12
+bool DCTOBITS[4] = {true, false, true, false}; //!< Discharge time value // Dcto 0,1,2,3 // Programed for 4 min 
 /*Ensure that Dcto bits are set according to the required discharge time. Refer to the data sheet */
 
 /*!**********************************************************************
@@ -172,13 +179,13 @@ void setup()
   Serial.begin(115200);
   quikeval_SPI_connect();
   spi_enable(SPI_CLOCK_DIV16); // This will set the Linduino to have a 1MHz Clock
-  LTC6811_init_cfg(TOTAL_IC, bms_ic);
+  LTC6811_init_cfg(TOTAL_IC, BMS_IC);
   for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
   {
-    LTC6811_set_cfgr(current_ic,bms_ic,REFON,ADCOPT,gpioBits_a,dccBits_a, dctoBits, UV, OV);
+    LTC6811_set_cfgr(current_ic,BMS_IC,REFON,ADCOPT,GPIOBITS_A,DCCBITS_A, DCTOBITS, UV, OV);
   }
-  LTC6811_reset_crc_count(TOTAL_IC,bms_ic);
-  LTC6811_init_reg_limits(TOTAL_IC,bms_ic);
+  LTC6811_reset_crc_count(TOTAL_IC,BMS_IC);
+  LTC6811_init_reg_limits(TOTAL_IC,BMS_IC);
   print_menu();
 }
 
@@ -204,35 +211,32 @@ void loop()
   }
 }
 
-
 /*!*****************************************
  \brief Executes the user command
  @return void
 *******************************************/
 void run_command(uint32_t cmd)
 {
-  const uint8_t STREG=0;
+  uint8_t streg=0;
   int8_t error = 0;
   uint32_t conv_time = 0;
-  uint32_t user_command;
-  int8_t readIC=0;
-  char input = 0;
+  int8_t s_pin_read=0;
   
   switch (cmd)
   {
     case 1: // Write and Read Configuration Register
       wakeup_sleep(TOTAL_IC);
-      LTC6811_wrcfg(TOTAL_IC,bms_ic);
-      print_config();
+      LTC6811_wrcfg(TOTAL_IC,BMS_IC); // Write into Configuration Register
+      print_wrconfig();
       wakeup_idle(TOTAL_IC);
-      error = LTC6811_rdcfg(TOTAL_IC,bms_ic);
+      error = LTC6811_rdcfg(TOTAL_IC,BMS_IC); // Read Configuration Register
       check_error(error);
       print_rxconfig();
       break;
 
     case 2: // Read Configuration Register
       wakeup_sleep(TOTAL_IC);
-      error = LTC6811_rdcfg(TOTAL_IC,bms_ic);
+      error = LTC6811_rdcfg(TOTAL_IC,BMS_IC);
       check_error(error);
       print_rxconfig();
       break;
@@ -241,15 +245,12 @@ void run_command(uint32_t cmd)
       wakeup_sleep(TOTAL_IC);
       LTC6811_adcv(ADC_CONVERSION_MODE,ADC_DCP,CELL_CH_TO_CONVERT);
       conv_time = LTC6811_pollAdc();
-      Serial.print(F("Cell conversion completed in:"));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F("ms"));
-      Serial.println();
+      print_conv_time(conv_time);
       break;
 
     case 4: // Read Cell Voltage Registers
       wakeup_sleep(TOTAL_IC);
-      error = LTC6811_rdcv(NO_OF_REG, TOTAL_IC,bms_ic); // Set to read back all cell voltage registers
+      error = LTC6811_rdcv(SEL_ALL_REG, TOTAL_IC,BMS_IC); // Set to read back all cell voltage registers
       check_error(error);
       print_cells(DATALOG_DISABLED);
       break;
@@ -258,15 +259,12 @@ void run_command(uint32_t cmd)
       wakeup_sleep(TOTAL_IC);
       LTC6811_adax(ADC_CONVERSION_MODE, AUX_CH_TO_CONVERT);
       conv_time = LTC6811_pollAdc();
-      Serial.print(F("Aux conversion completed in: "));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F(" ms"));    
-      Serial.println(); 
+      print_conv_time(conv_time); 
       break;
 
     case 6: // Read AUX Voltage Registers
       wakeup_sleep(TOTAL_IC);
-      error = LTC6811_rdaux(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all aux registers
+      error = LTC6811_rdaux(SEL_ALL_REG,TOTAL_IC,BMS_IC); // Set to read back all aux registers
       check_error(error);
       print_aux(DATALOG_DISABLED);
       break;
@@ -275,15 +273,12 @@ void run_command(uint32_t cmd)
       wakeup_sleep(TOTAL_IC);
       LTC6811_adstat(ADC_CONVERSION_MODE, STAT_CH_TO_CONVERT);
       conv_time=LTC6811_pollAdc();
-      Serial.print(F("Stat conversion completed in "));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F(" ms"));
-      Serial.println();
+      print_conv_time(conv_time);
       break;
 
     case 8: // Read Status registers
       wakeup_sleep(TOTAL_IC);
-      error = LTC6811_rdstat(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all aux registers
+      error = LTC6811_rdstat(SEL_ALL_REG,TOTAL_IC,BMS_IC); // Set to read back all stat registers
       check_error(error);
       print_stat();
       break;
@@ -292,187 +287,182 @@ void run_command(uint32_t cmd)
       wakeup_sleep(TOTAL_IC);
       LTC6811_adcvax(ADC_CONVERSION_MODE,ADC_DCP);
       conv_time = LTC6811_pollAdc();
-      Serial.println(F("Start Combined Cell Voltage and GPIO1, GPIO2 conversion completed"));
-      Serial.print(F("conversion completed in:"));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F("ms"));
-      Serial.println();
+      print_conv_time(conv_time);
       wakeup_idle(TOTAL_IC);
-      error =LTC6811_rdcv(NO_OF_REG, TOTAL_IC,bms_ic); // Set to read back all cell voltage registers
+      error =LTC6811_rdcv(SEL_ALL_REG, TOTAL_IC,BMS_IC); // Set to read back all cell voltage registers
       check_error(error);
       print_cells(DATALOG_DISABLED);     
       wakeup_idle(TOTAL_IC);
-      error = LTC6811_rdaux(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all aux registers
+      error = LTC6811_rdaux(SEL_REG_A,TOTAL_IC,BMS_IC); // Set to read back aux registers A
       check_error(error);
-      print_aux1(DATALOG_DISABLED);
-      Serial.println();
+      print_aux(DATALOG_DISABLED);
       break;
       
     case 10: //Start Combined Cell Voltage and Sum of cells
       wakeup_sleep(TOTAL_IC);
       LTC6811_adcvsc(ADC_CONVERSION_MODE,ADC_DCP);
       conv_time = LTC6811_pollAdc();
-      Serial.print(F("Combined Cell Voltage conversion completed in:"));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F("ms"));
-      Serial.println();
+      print_conv_time(conv_time);
       wakeup_idle(TOTAL_IC);
-      error = LTC6811_rdcv(NO_OF_REG, TOTAL_IC,bms_ic); // Set to read back all cell voltage registers
+      error = LTC6811_rdcv(SEL_ALL_REG, TOTAL_IC,BMS_IC); // Set to read back all cell voltage registers
       check_error(error);
       print_cells(DATALOG_DISABLED);
       wakeup_idle(TOTAL_IC);
-      error = LTC6811_rdstat(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all stat registers
+      error = LTC6811_rdstat(SEL_REG_A,TOTAL_IC,BMS_IC); // Set to read stat registers A
       check_error(error);
-      print_statsoc();
-      Serial.println();
+      print_sumofcells();
       break;
       
-    case 11: // Loop Measurements without data-log output
-      Serial.println(F("transmit 'm' to quit"));
+    case 11: // Loop Measurements of configuration register or cell voltages or auxiliary register or status register without data-log output
       wakeup_sleep(TOTAL_IC);
-      LTC6811_wrcfg(TOTAL_IC,bms_ic);
-      while (input != 'm')
-      {
-        if (Serial.available() > 0)
-        {
-          input = read_char();
-        }
-
-        measurement_loop(DATALOG_DISABLED);
-
-        delay(MEASUREMENT_LOOP_TIME);
-      }
+      LTC6811_wrcfg(TOTAL_IC,BMS_IC);
+      measurement_loop(DATALOG_DISABLED);
       print_menu();
       break;
 
-    case 12: //Data-log print option Loop Measurements
-      Serial.println(F("transmit 'm' to quit"));
+    case 12: //Data-log print option Loop Measurements of configuration register or cell voltages or auxiliary register or status register
       wakeup_sleep(TOTAL_IC);
-      LTC6811_wrcfg(TOTAL_IC,bms_ic);
-      while (input != 'm')
-      {
-        if (Serial.available() > 0)
-        {
-          input = read_char();
-        }
-
-        measurement_loop(DATALOG_ENABLED);
-
-        delay(MEASUREMENT_LOOP_TIME);
-      }
+      LTC6811_wrcfg(TOTAL_IC,BMS_IC);
+      measurement_loop(DATALOG_ENABLED);
       print_menu();
       break;
 
-    case 13: // Run the Mux Decoder Self Test
+    case 13: // Clear all ADC measurement registers
+      wakeup_sleep(TOTAL_IC);
+      LTC6811_clrcell();
+      LTC6811_clraux();
+      LTC6811_clrstat();
+      wakeup_idle(TOTAL_IC);    
+      LTC6811_rdcv(SEL_ALL_REG, TOTAL_IC,BMS_IC); // Read back all cell voltage registers
+      print_cells(DATALOG_DISABLED);
+
+      LTC6811_rdaux(SEL_ALL_REG,TOTAL_IC,BMS_IC); // Read back all aux registers
+      print_aux(DATALOG_DISABLED);
+
+      LTC6811_rdstat(SEL_ALL_REG,TOTAL_IC,BMS_IC); // Read back all stat 
+      print_stat();           
+      break;
+        
+    case 14: //Read CV,AUX and ADSTAT Voltages 
+      wakeup_sleep(TOTAL_IC);
+      LTC6811_adcv(ADC_CONVERSION_MODE,ADC_DCP,CELL_CH_TO_CONVERT);
+      conv_time = LTC6811_pollAdc();
+      print_conv_time(conv_time);
+      wakeup_idle(TOTAL_IC);      
+      error = LTC6811_rdcv(SEL_ALL_REG, TOTAL_IC,BMS_IC); // Set to read back all cell voltage registers
+      check_error(error);
+      print_cells(DATALOG_DISABLED);
+
+      wakeup_sleep(TOTAL_IC);
+      LTC6811_adax(ADC_CONVERSION_MODE , AUX_CH_TO_CONVERT);
+      conv_time = LTC6811_pollAdc();
+      print_conv_time(conv_time);
+      wakeup_idle(TOTAL_IC); 
+      error = LTC6811_rdaux(SEL_ALL_REG,TOTAL_IC,BMS_IC); // Set to read back all aux registers
+      check_error(error);
+      print_aux(DATALOG_DISABLED);   
+
+      wakeup_sleep(TOTAL_IC);
+      LTC6811_adstat(ADC_CONVERSION_MODE, STAT_CH_TO_CONVERT);
+      conv_time = LTC6811_pollAdc();
+      print_conv_time(conv_time);
+      wakeup_idle(TOTAL_IC);
+      error = LTC6811_rdstat(SEL_ALL_REG,TOTAL_IC,BMS_IC); // Set to read back all status registers 
+      check_error(error);
+      print_stat();    
+      break;
+
+    case 15: // Run the Mux Decoder Self Test
       wakeup_sleep(TOTAL_IC);
       LTC6811_diagn();
       conv_time = LTC6811_pollAdc();
-      Serial.print(F("DIAGN  conversion completed in: "));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F(" ms"));    
-      Serial.println(); 
-      error = LTC6811_rdstat(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all aux registers
+      print_conv_time(conv_time); 
+      error = LTC6811_rdstat(SEL_REG_B,TOTAL_IC,BMS_IC); // Set to read back status register B
       check_error(error);
-      for (int ic = 0; ic<TOTAL_IC; ic++)
-        { error = 0;
-          Serial.print(" IC ");
-          Serial.println(ic+1,DEC);
-          if (bms_ic[ic].stat.mux_fail[0] != 0) error++;
-        
-          if (error==0) Serial.println(F("Mux Test: PASS "));
-          else Serial.println(F("Mux Test: FAIL "));
-        }
-      Serial.println("");  
+      check_mux_fail();
       break;
 
-    case 14:  // Run the ADC/Memory Self Test
+    case 16:  // Run the ADC/Memory Self Test
+      error =0;
       wakeup_sleep(TOTAL_IC);
-      error = LTC6811_run_cell_adc_st(CELL,TOTAL_IC,bms_ic, ADC_CONVERSION_MODE, ADCOPT);
-      Serial.print(error, DEC);
-      Serial.println(F(" : errors detected in Digital Filter and CELL Memory \n"));
+      error = LTC6811_run_cell_adc_st(CELL,TOTAL_IC,BMS_IC, ADC_CONVERSION_MODE, ADCOPT);
+      print_selftest_errors(CELL, error);
+      
+      error =0;
+      wakeup_sleep(TOTAL_IC);
+      error = LTC6811_run_cell_adc_st(AUX,TOTAL_IC, BMS_IC, ADC_CONVERSION_MODE, ADCOPT);
+      print_selftest_errors(AUX, error);
 
+      error =0;
       wakeup_sleep(TOTAL_IC);
-      error = LTC6811_run_cell_adc_st(AUX,TOTAL_IC, bms_ic, ADC_CONVERSION_MODE, ADCOPT);
-      Serial.print(error, DEC);
-      Serial.println(F(" : errors detected in Digital Filter and AUX Memory \n"));
-
-      wakeup_sleep(TOTAL_IC);
-      error = LTC6811_run_cell_adc_st(STAT,TOTAL_IC, bms_ic, ADC_CONVERSION_MODE, ADCOPT);
-      Serial.print(error, DEC);
-      Serial.println(F(" : errors detected in Digital Filter and STAT Memory \n"));
+      error = LTC6811_run_cell_adc_st(STAT,TOTAL_IC, BMS_IC, ADC_CONVERSION_MODE, ADCOPT);
+      print_selftest_errors(STAT, error);
       print_menu();
       break;
       
-    case 15: // Run ADC Overlap self test
+    case 17: // Run ADC Overlap self test
+      error =0;
       wakeup_sleep(TOTAL_IC);
-      error = (int8_t)LTC6811_run_adc_overlap(TOTAL_IC,bms_ic);
-      if (error==0) Serial.println(F("Overlap Test: PASS "));
-      else Serial.println(F("Overlap Test: FAIL"));
-      Serial.println(); 
+      error = (int8_t)LTC6811_run_adc_overlap(TOTAL_IC,BMS_IC);
+      print_overlap_results(error);
       break;
 
-    case 16: // Run ADC Redundancy self test
+    case 18: // Run ADC Digital Redundancy self test
+      error =0;
       wakeup_sleep(TOTAL_IC);
-      error = LTC6811_run_adc_redundancy_st(ADC_CONVERSION_MODE,AUX,TOTAL_IC, bms_ic);
-      Serial.print(error, DEC);
-      Serial.println(F(" : errors detected in AUX Measurement \n"));
+      error = LTC6811_run_adc_redundancy_st(ADC_CONVERSION_MODE,AUX,TOTAL_IC, BMS_IC);
+      print_digital_redundancy_errors(AUX, error);
 
+      error =0;
       wakeup_sleep(TOTAL_IC);
-      error = LTC6811_run_adc_redundancy_st(ADC_CONVERSION_MODE,STAT,TOTAL_IC, bms_ic);
-      Serial.print(error, DEC);
-      Serial.println(F(" : errors detected in STAT Measurement \n"));
+      error = LTC6811_run_adc_redundancy_st(ADC_CONVERSION_MODE,STAT,TOTAL_IC, BMS_IC);
+      print_digital_redundancy_errors(STAT, error);
       break;
 
-    case 17: // Open Wire test for single cell detection
+    case 19: // Open Wire test for single cell detection
       wakeup_sleep(TOTAL_IC);         
-      LTC6811_run_openwire_single(TOTAL_IC, bms_ic);
-      print_open();
-      Serial.println();    
+      LTC6811_run_openwire_single(TOTAL_IC, BMS_IC);
+      print_open_wires();  
       break;
 
-    case 18: // Open Wire test for multiple cell and two consecutive cells detection
+    case 20: // Open Wire test for multiple cell and two consecutive cells detection
       wakeup_sleep(TOTAL_IC);         
-      LTC6811_run_openwire_multi(TOTAL_IC, bms_ic);
-      Serial.println();    
+      LTC6811_run_openwire_multi(TOTAL_IC, BMS_IC);  
       break;
 
-    case 19:// PEC Errors Detected
-      print_pec(); 
-      Serial.println();     
+    case 21:// PEC Errors Detected
+      print_pec_error_count();    
       break;
 
-    case 20: //Reset PEC Counter
-      LTC6811_reset_crc_count(TOTAL_IC,bms_ic);
-      Serial.println(F("PEC counter reset"));
-      Serial.println();
+    case 22: // Reset PEC Counter
+      LTC6811_reset_crc_count(TOTAL_IC,BMS_IC);
+      print_pec_error_count();
       break;
       
-    case 21: // Enable a discharge transistor
-      Serial.println(F("Please enter the Spin number:"));
-      readIC = (int8_t)read_int();
-      Serial.println(readIC);
+    case 23: // Enable a discharge transistor
+      s_pin_read = select_s_pin();
       wakeup_sleep(TOTAL_IC);
-      LTC6811_set_discharge(readIC,TOTAL_IC,bms_ic);
-      LTC6811_wrcfg(TOTAL_IC,bms_ic);   
-      print_config();
+      LTC6811_set_discharge(s_pin_read,TOTAL_IC,BMS_IC);
+      LTC6811_wrcfg(TOTAL_IC,BMS_IC);   
+      print_wrconfig();
       wakeup_idle(TOTAL_IC);
-      error = LTC6811_rdcfg(TOTAL_IC,bms_ic);
+      error = LTC6811_rdcfg(TOTAL_IC,BMS_IC);
       check_error(error);
       print_rxconfig();
       break;
       
-    case 22: // Clear all discharge transistors
+    case 24: // Clear all discharge transistors
       wakeup_sleep(TOTAL_IC);
-      LTC6811_clear_discharge(TOTAL_IC,bms_ic);
-      LTC6811_wrcfg(TOTAL_IC,bms_ic);    
-      print_config();
+      LTC6811_clear_discharge(TOTAL_IC,BMS_IC);
+      LTC6811_wrcfg(TOTAL_IC,BMS_IC);    
+      print_wrconfig();
       wakeup_idle(TOTAL_IC);
-      error = LTC6811_rdcfg(TOTAL_IC,bms_ic);
+      error = LTC6811_rdcfg(TOTAL_IC,BMS_IC);
       check_error(error);
       print_rxconfig();
       break;
 
-    case 23://Write read pwm configuration     
+    case 25:// Write read pwm configuration     
       /*****************************************************
          PWM configuration data.
          1)Set the corresponding DCC bit to one for pwm operation. 
@@ -484,22 +474,22 @@ void run_command(uint32_t cmd)
       wakeup_sleep(TOTAL_IC);
       for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
       {
-        bms_ic[current_ic].pwm.tx_data[0]= 0x88; // Duty cycle for S pin 2 and 1
-        bms_ic[current_ic].pwm.tx_data[1]= 0x88; // Duty cycle for S pin 4 and 3
-        bms_ic[current_ic].pwm.tx_data[2]= 0x88; // Duty cycle for S pin 6 and 5
-        bms_ic[current_ic].pwm.tx_data[3]= 0x88; // Duty cycle for S pin 8 and 7
-        bms_ic[current_ic].pwm.tx_data[4]= 0x88; // Duty cycle for S pin 10 and 9
-        bms_ic[current_ic].pwm.tx_data[5]= 0x88; // Duty cycle for S pin 12 and 11
+        BMS_IC[current_ic].pwm.tx_data[0]= 0x88; // Duty cycle for S pin 2 and 1
+        BMS_IC[current_ic].pwm.tx_data[1]= 0x88; // Duty cycle for S pin 4 and 3
+        BMS_IC[current_ic].pwm.tx_data[2]= 0x88; // Duty cycle for S pin 6 and 5
+        BMS_IC[current_ic].pwm.tx_data[3]= 0x88; // Duty cycle for S pin 8 and 7
+        BMS_IC[current_ic].pwm.tx_data[4]= 0x88; // Duty cycle for S pin 10 and 9
+        BMS_IC[current_ic].pwm.tx_data[5]= 0x88; // Duty cycle for S pin 12 and 11
       }          
-      LTC6811_wrpwm(TOTAL_IC,0,bms_ic);
-      print_pwmconfig(); 
+      LTC6811_wrpwm(TOTAL_IC,0,BMS_IC);
+      print_wrpwm(); 
 
       wakeup_idle(TOTAL_IC);
-      LTC6811_rdpwm(TOTAL_IC,0,bms_ic);       
-      print_rxpwmconfig();                              
+      LTC6811_rdpwm(TOTAL_IC,0,BMS_IC);       
+      print_rxpwm();                              
       break;
 
-    case 24: // Write and read S Control Register Group
+    case 26: // Write and read S Control Register Group
       wakeup_sleep(TOTAL_IC);
       /**************************************************************************************
          S pin control. 
@@ -509,300 +499,255 @@ void run_command(uint32_t cmd)
       ***************************************************************************************/
       for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
       {
-        bms_ic[current_ic].sctrl.tx_data[0]=0xFF; // No. of high pulses on S pin 2 and 1
-        bms_ic[current_ic].sctrl.tx_data[1]=0xFF; // No. of high pulses on S pin 4 and 3
-        bms_ic[current_ic].sctrl.tx_data[2]=0xFF; // No. of high pulses on S pin 6 and 5
-        bms_ic[current_ic].sctrl.tx_data[3]=0xFF; // No. of high pulses on S pin 8 and 7
-        bms_ic[current_ic].sctrl.tx_data[4]=0xFF; // No. of high pulses on S pin 10 and 9
-        bms_ic[current_ic].sctrl.tx_data[5]=0xFF; // No. of high pulses on S pin 12 and 11
+        BMS_IC[current_ic].sctrl.tx_data[0]=0xFF; // No. of high pulses on S pin 2 and 1
+        BMS_IC[current_ic].sctrl.tx_data[1]=0xFF; // No. of high pulses on S pin 4 and 3
+        BMS_IC[current_ic].sctrl.tx_data[2]=0xFF; // No. of high pulses on S pin 6 and 5
+        BMS_IC[current_ic].sctrl.tx_data[3]=0xFF; // No. of high pulses on S pin 8 and 7
+        BMS_IC[current_ic].sctrl.tx_data[4]=0xFF; // No. of high pulses on S pin 10 and 9
+        BMS_IC[current_ic].sctrl.tx_data[5]=0xFF; // No. of high pulses on S pin 12 and 11
       }
-      LTC6811_wrsctrl(TOTAL_IC,STREG,bms_ic);
-      print_sctrl();
+      LTC6811_wrsctrl(TOTAL_IC,streg,BMS_IC);
+      print_wrsctrl();
 
       // Start S Control pulsing
       wakeup_idle(TOTAL_IC);
       LTC6811_stsctrl();
-      LTC6811_pollAdc();
-      Serial.println(F("Start S Control Pulsing"));
-      Serial.println();
 
       // Read S Control Register Group 
       wakeup_idle(TOTAL_IC);
-      error=LTC6811_rdsctrl(TOTAL_IC,STREG,bms_ic);
+      error=LTC6811_rdsctrl(TOTAL_IC,streg,BMS_IC);
       check_error(error);
       print_rxsctrl();
       break;
 
-    case 25: // Clear S Control Register Group
+    case 27: // Clear S Control Register Group
       wakeup_sleep(TOTAL_IC);
       LTC6811_clrsctrl();
-      Serial.println(F("S Control Register Cleared"));
-      Serial.println(); 
       
-      // Read S Control Register Group
       wakeup_idle(TOTAL_IC);
-      error=LTC6811_rdsctrl(TOTAL_IC,STREG,bms_ic);
+      error=LTC6811_rdsctrl(TOTAL_IC,streg,BMS_IC); // Read S Control Register Group
       check_error(error);
       print_rxsctrl();
       break;
-
-    case 26://Start SPI Communication on the GPIO Ports
-      wakeup_sleep(TOTAL_IC);
-      /************************************************************
-         Communication control bits and communication data bytes. 
-         Refer to the data sheet. 
+      
+    case 28://SPI Communication 
+      /*************************************************************
+         Ensure to set the GPIO bits to 1 in the CFG register group. 
       *************************************************************/  
-       for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
-      {                        
-        bms_ic[current_ic].com.tx_data[0]= 0x80;
-        bms_ic[current_ic].com.tx_data[1]= 0x00;
-        bms_ic[current_ic].com.tx_data[2]= 0xA2;
-        bms_ic[current_ic].com.tx_data[3]= 0x20;
-        bms_ic[current_ic].com.tx_data[4]= 0xA3;
-        bms_ic[current_ic].com.tx_data[5]= 0x39;
-      }    
-      LTC6811_wrcomm(TOTAL_IC,bms_ic);               
-      print_comm();   
-
-      wakeup_idle(TOTAL_IC);
-      LTC6811_stcomm(); 
-      LTC6811_pollAdc();           
-      Serial.println(F("Stcomm SPI Communication completed"));
-      Serial.println();  
-
-      wakeup_idle(TOTAL_IC);
-      error = LTC6811_rdcomm(TOTAL_IC,bms_ic);                       
-      check_error(error);
-      print_rxcomm();        
-      break;
-
-    case 27: // write byte I2C Communication on the GPIO Ports(using eeprom 24AA01)
-      wakeup_sleep(TOTAL_IC);
-      /************************************************************
-         Communication control bits and communication data bytes. 
-         Refer to the data sheet. 
-      *************************************************************/ 
       for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
       {
-        bms_ic[current_ic].com.tx_data[0]= 0x6A; // Icom(6)Start + I2C_address D0 (1010 0000)
-        bms_ic[current_ic].com.tx_data[1]= 0x00; // Fcom master ack  
-        bms_ic[current_ic].com.tx_data[2]= 0x00; // eeprom address D1 (0000 0000)
-        bms_ic[current_ic].com.tx_data[3]= 0x00; // Fcom master ack 
-        bms_ic[current_ic].com.tx_data[4]= 0x01; // Icom BLANCK D2 (0Xxx)
-        bms_ic[current_ic].com.tx_data[5]= 0x29; // Fcom master nack+stop 
-      }             
-             
-      LTC6811_wrcomm(TOTAL_IC,bms_ic);// write comm register    
-      print_comm();
+        //Communication control bits and communication data bytes. Refer to the data sheet.
+        BMS_IC[current_ic].com.tx_data[0]= 0x81; // Icom CSBM Low(8) + data D0 (0x11)
+        BMS_IC[current_ic].com.tx_data[1]= 0x10; // Fcom CSBM Low(0) 
+        BMS_IC[current_ic].com.tx_data[2]= 0xA2; // Icom CSBM Falling Edge (A) +  D1 (0x25)
+        BMS_IC[current_ic].com.tx_data[3]= 0x50; // Fcom CSBM Low(0)    
+        BMS_IC[current_ic].com.tx_data[4]= 0xA1; // Icom CSBM Falling Edge (A) +  D2 (0x17)
+        BMS_IC[current_ic].com.tx_data[5]= 0x79; // Fcom CSBM High(9)
+      }
+      wakeup_sleep(TOTAL_IC);   
+      LTC6811_wrcomm(TOTAL_IC,BMS_IC); // write to comm register                 
+      print_wrcomm(); // print data in the comm register
 
-      wakeup_idle(TOTAL_IC); 
-      LTC6811_stcomm();// start I2C to write data into slave device
-      LTC6811_pollAdc();
-      Serial.println(F("Stcomm I2C Communication completed"));
-      Serial.println(); 
-    
-      wakeup_idle(TOTAL_IC); 
-      error = LTC6811_rdcomm(TOTAL_IC,bms_ic); // Read comm register                       
-      check_error(error);
-      print_rxcomm(); // Print comm register  
-      break;
-      
-    case 28: // Read byte data I2C Communication on the GPIO Ports(using eeprom 24AA01)
-      wakeup_sleep(TOTAL_IC);
-      /************************************************************
-         Communication control bits and communication data bytes. 
-         Refer to the data sheet. 
-        *************************************************************/         
-      for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
-      {        
-        bms_ic[current_ic].com.tx_data[0]= 0x6A; // Icom(6)Start + I2C_address D0 (1010 0000)
-        bms_ic[current_ic].com.tx_data[1]= 0x10; // Fcom master ack 
-        bms_ic[current_ic].com.tx_data[2]= 0x60; // again start I2C with I2C_address (1010 0001)
-        bms_ic[current_ic].com.tx_data[3]= 0x19; // fcom master nack + stop  
-      }            
-      LTC6811_wrcomm(TOTAL_IC,bms_ic);
-
-      wakeup_idle(TOTAL_IC); 
-      LTC6811_stcomm();// I2C for write data in slave device 
-      LTC6811_pollAdc();   
-      Serial.println(F("I2C Communication completed"));
-      Serial.println(); 
-
-      wakeup_idle(TOTAL_IC); 
-      error = LTC6811_rdcomm(TOTAL_IC,bms_ic); // Read comm register                 
-      check_error(error);
-      print_rxcomm(); // Print comm register   
-      break;      
-
-    case 29: // Clear all ADC measurement registers
-      wakeup_sleep(TOTAL_IC);
-      LTC6811_clrcell();
-      LTC6811_clraux();
-      LTC6811_clrstat();
-      Serial.println(F("All Registers Cleared"));
-      wakeup_sleep(TOTAL_IC);
-      error = LTC6811_rdcv(NO_OF_REG, TOTAL_IC,bms_ic); // read back all cell voltage registers
-      check_error(error);
-      print_cells(DATALOG_DISABLED);
-
-      error = LTC6811_rdaux(NO_OF_REG,TOTAL_IC,bms_ic); // read back all aux registers
-      check_error(error);
-      print_aux(DATALOG_DISABLED);
-
-      error = LTC6811_rdstat(NO_OF_REG,TOTAL_IC,bms_ic); // read back all stat 
-      check_error(error);
-      print_stat();           
-      break;
-        
-    case 30: //Read CV,AUX and ADSTAT Voltages 
-      wakeup_sleep(TOTAL_IC);
-      LTC6811_adcv(ADC_CONVERSION_MODE,ADC_DCP,CELL_CH_TO_CONVERT);
-      conv_time = LTC6811_pollAdc();
-      Serial.print(F("cell conversion completed in: "));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F(" ms"));
-      Serial.println();
-      wakeup_idle(TOTAL_IC);      
-      error = LTC6811_rdcv(NO_OF_REG, TOTAL_IC,bms_ic); // Set to read back all cell voltage registers
-      check_error(error);
-      print_cells(DATALOG_DISABLED);
-
-      wakeup_sleep(TOTAL_IC);
-      LTC6811_adax(ADC_CONVERSION_MODE , AUX_CH_TO_CONVERT);
-      conv_time = LTC6811_pollAdc();
-      Serial.print(F("Aux conversion completed in: "));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F(" ms"));    
-      Serial.println();
-      wakeup_idle(TOTAL_IC); 
-      error = LTC6811_rdaux(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all aux registers
-      check_error(error);
-      print_aux(DATALOG_DISABLED);   
-
-      wakeup_sleep(TOTAL_IC);
-      LTC6811_adstat(ADC_CONVERSION_MODE, STAT_CH_TO_CONVERT);
-      conv_time = LTC6811_pollAdc();
-      Serial.print(F("Stat conversion completed in "));
-      Serial.print(((float)conv_time/1000), 1);
-      Serial.println(F(" ms"));
-      Serial.println();
       wakeup_idle(TOTAL_IC);
-      error = LTC6811_rdstat(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all stat 
+      LTC6811_stcomm(3); // data length=3 // initiates communication between master and the I2C slave
+
+      wakeup_idle(TOTAL_IC);
+      error = LTC6811_rdcomm(TOTAL_IC,BMS_IC); // read from comm register                       
       check_error(error);
-      print_stat();    
+      print_rxcomm();  // print received data into the comm register
       break;
+
+  case 29: // write byte I2C Communication on the GPIO Ports(using I2C eeprom 24LC025)
+       /************************************************************
+         Ensure to set the GPIO bits to 1 in the CFG register group. 
+      *************************************************************/   
+      for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
+      {
+        //Communication control bits and communication data bytes. Refer to the data sheet.
+        BMS_IC[current_ic].com.tx_data[0]= 0x6A; // Icom Start(6) + I2C_address D0 (0xA0)
+        BMS_IC[current_ic].com.tx_data[1]= 0x08; // Fcom master NACK(8)  
+        BMS_IC[current_ic].com.tx_data[2]= 0x00; // Icom Blank (0) + eeprom address D1 (0x00)
+        BMS_IC[current_ic].com.tx_data[3]= 0x08; // Fcom master NACK(8)   
+        BMS_IC[current_ic].com.tx_data[4]= 0x01; // Icom Blank (0) + data D2 (0x11)
+        BMS_IC[current_ic].com.tx_data[5]= 0x19; // Fcom master NACK + Stop(9) 
+      }
+      wakeup_sleep(TOTAL_IC);       
+      LTC6811_wrcomm(TOTAL_IC,BMS_IC); // write to comm register    
+      print_wrcomm(); // print transmitted data from the comm register
+
+      wakeup_idle(TOTAL_IC);
+      LTC6811_stcomm(3); // data length=3 // initiates communication between master and the I2C slave
+
+      wakeup_idle(TOTAL_IC);
+      error = LTC6811_rdcomm(TOTAL_IC,BMS_IC); // read from comm register                       
+      check_error(error);
+      print_rxcomm(); // print received data into the comm register  
+      break; 
+
+    case 30: // Read byte data I2C Communication on the GPIO Ports(using I2C eeprom 24LC025)
+      /************************************************************
+         Ensure to set the GPIO bits to 1 in the CFG register group.  
+      *************************************************************/     
+      for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
+      {
+        //Communication control bits and communication data bytes. Refer to the data sheet.        
+        BMS_IC[current_ic].com.tx_data[0]= 0x6A; // Icom Start (6) + I2C_address D0 (A0) (Write operation to set the word address)
+        BMS_IC[current_ic].com.tx_data[1]= 0x08; // Fcom master NACK(8)  
+        BMS_IC[current_ic].com.tx_data[2]= 0x00; // Icom Blank (0) + eeprom address(word address) D1 (0x00)
+        BMS_IC[current_ic].com.tx_data[3]= 0x08; // Fcom master NACK(8)
+        BMS_IC[current_ic].com.tx_data[4]= 0x6A; // Icom Start (6) + I2C_address D2 (0xA1)(Read operation)
+        BMS_IC[current_ic].com.tx_data[5]= 0x18; // Fcom master NACK(8)  
+      }
+      wakeup_sleep(TOTAL_IC);         
+      LTC6811_wrcomm(TOTAL_IC,BMS_IC); // write to comm register 
+
+      wakeup_idle(TOTAL_IC);
+      LTC6811_stcomm(3); // data length=3 // initiates communication between master and the I2C slave 
+
+      for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
+      { 
+        //Communication control bits and communication data bytes. Refer to the data sheet.       
+        BMS_IC[current_ic].com.tx_data[0]= 0x0F; // Icom Blank (0) + data D0 (FF)
+        BMS_IC[current_ic].com.tx_data[1]= 0xF9; // Fcom master NACK + Stop(9) 
+        BMS_IC[current_ic].com.tx_data[2]= 0x7F; // Icom No Transmit (7) + data D1 (FF)
+        BMS_IC[current_ic].com.tx_data[3]= 0xF9; // Fcom master NACK + Stop(9)
+        BMS_IC[current_ic].com.tx_data[4]= 0x7F; // Icom No Transmit (7) + data D2 (FF)
+        BMS_IC[current_ic].com.tx_data[5]= 0xF9; // Fcom master NACK + Stop(9) 
+      }  
+
+      wakeup_idle(TOTAL_IC);
+      LTC6811_wrcomm(TOTAL_IC,BMS_IC); // write to comm register
+
+      wakeup_idle(TOTAL_IC);
+      LTC6811_stcomm(1); // data length=1 // initiates communication between master and the I2C slave  
+
+      wakeup_idle(TOTAL_IC);
+      error = LTC6811_rdcomm(TOTAL_IC,BMS_IC); // read from comm register                
+      check_error(error);
+      print_rxcomm(); // print received data from the comm register    
+      break;    
 
     case 31: // Set or reset the gpio pins(to drive output on gpio pins)
       /***********************************************************************
        Please ensure you have set the GPIO bits according to your requirement 
-       in the configuration register.( check the global variable gpioBits_a )
+       in the configuration register.( check the global variable GPIOBITS_A )
       ************************************************************************/   
       wakeup_sleep(TOTAL_IC);
       for (uint8_t current_ic = 0; current_ic<TOTAL_IC;current_ic++) 
       {
-        LTC6811_set_cfgr(current_ic,bms_ic,REFON,ADCOPT,gpioBits_a,dccBits_a, dctoBits, UV, OV);
+        LTC6811_set_cfgr(current_ic,BMS_IC,REFON,ADCOPT,GPIOBITS_A,DCCBITS_A, DCTOBITS, UV, OV);
       } 
       wakeup_idle(TOTAL_IC);
-      LTC6811_wrcfg(TOTAL_IC,bms_ic);
-      print_config();
+      LTC6811_wrcfg(TOTAL_IC,BMS_IC);
+      print_wrconfig();
       break;
-	  
-	  case 'm': //prints menu
+    
+    case 'm': //prints menu
       print_menu();
       break;
 
     default:
-      Serial.println(F("Incorrect Option"));
-      Serial.println();
+      char str_error[]="Incorrect Option \n";
+      serial_print_text(str_error);
       break;
   }
 }
 
-/*!*********************************
-  \brief For Loop Measurement
+/*!**********************************************************************************************************************************************
+ \brief For writing/reading configuration data or measuring cell voltages or reading aux register or reading status register in a continuous loop  
  @return void
-***********************************/
+*************************************************************************************************************************************************/
 void measurement_loop(uint8_t datalog_en)
 {
   int8_t error = 0;
-  if (WRITE_CONFIG == ENABLED)
+  char input = 0;
+  
+  Serial.println(F("Transmit 'm' to quit"));
+  
+  while (input != 'm')
   {
-    wakeup_sleep(TOTAL_IC);
-    LTC6811_wrcfg(TOTAL_IC,bms_ic);
-    print_config();
+     if (Serial.available() > 0)
+      {
+        input = read_char();
+      } 
+    if (WRITE_CONFIG == ENABLED)
+    {
+      wakeup_sleep(TOTAL_IC);
+      LTC6811_wrcfg(TOTAL_IC,BMS_IC);
+      print_wrconfig();
+    }
+  
+    if (READ_CONFIG == ENABLED)
+    {
+      wakeup_sleep(TOTAL_IC);
+      error = LTC6811_rdcfg(TOTAL_IC,BMS_IC);
+      check_error(error);
+      print_rxconfig();
+    }
+  
+    if (MEASURE_CELL == ENABLED)
+    {
+      wakeup_idle(TOTAL_IC);
+      LTC6811_adcv(ADC_CONVERSION_MODE,ADC_DCP,CELL_CH_TO_CONVERT);
+      LTC6811_pollAdc();
+      wakeup_idle(TOTAL_IC);
+      error = LTC6811_rdcv(SEL_ALL_REG, TOTAL_IC,BMS_IC);
+      check_error(error);
+      print_cells(datalog_en);
+    }
+  
+    if (MEASURE_AUX == ENABLED)
+    {
+      wakeup_idle(TOTAL_IC);
+      LTC6811_adax(ADC_CONVERSION_MODE , AUX_CH_ALL);
+      LTC6811_pollAdc();
+      wakeup_idle(TOTAL_IC);
+      error = LTC6811_rdaux(SEL_ALL_REG,TOTAL_IC,BMS_IC); // Set to read back all aux registers
+      check_error(error);
+      print_aux(datalog_en);
+    }
+  
+    if (MEASURE_STAT == ENABLED)
+    {
+      wakeup_idle(TOTAL_IC);
+      LTC6811_adstat(ADC_CONVERSION_MODE, STAT_CH_ALL);
+      LTC6811_pollAdc();
+      wakeup_idle(TOTAL_IC);
+      error = LTC6811_rdstat(SEL_ALL_REG,TOTAL_IC,BMS_IC); // Set to read back all aux registers
+      check_error(error);
+      print_stat();
+    }
+  
+    if (PRINT_PEC == ENABLED)
+    {
+      print_pec_error_count();
+    }
+
+    delay(MEASUREMENT_LOOP_TIME);
   }
-
-  if (READ_CONFIG == ENABLED)
-  {
-    wakeup_sleep(TOTAL_IC);
-    error = LTC6811_rdcfg(TOTAL_IC,bms_ic);
-    check_error(error);
-    print_rxconfig();
-  }
-
-  if (MEASURE_CELL == ENABLED)
-  {
-    wakeup_idle(TOTAL_IC);
-    LTC6811_adcv(ADC_CONVERSION_MODE,ADC_DCP,CELL_CH_TO_CONVERT);
-    LTC6811_pollAdc();
-    wakeup_idle(TOTAL_IC);
-    error = LTC6811_rdcv(NO_OF_REG, TOTAL_IC,bms_ic);
-    check_error(error);
-    print_cells(datalog_en);
-
-  }
-
-  if (MEASURE_AUX == ENABLED)
-  {
-    wakeup_idle(TOTAL_IC);
-    LTC6811_adax(ADC_CONVERSION_MODE , AUX_CH_ALL);
-    LTC6811_pollAdc();
-    wakeup_idle(TOTAL_IC);
-    error = LTC6811_rdaux(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all aux registers
-    check_error(error);
-    print_aux(datalog_en);
-  }
-
-  if (MEASURE_STAT == ENABLED)
-  {
-    wakeup_idle(TOTAL_IC);
-    LTC6811_adstat(ADC_CONVERSION_MODE, STAT_CH_ALL);
-    LTC6811_pollAdc();
-    wakeup_idle(TOTAL_IC);
-    error = LTC6811_rdstat(NO_OF_REG,TOTAL_IC,bms_ic); // Set to read back all aux registers
-    check_error(error);
-    print_stat();
-  }
-
-  if (PRINT_PEC == ENABLED)
-  {
-    print_pec();
-  }
-
 }
 
 /*!*********************************
   \brief Prints the main menu
  @return void
 ***********************************/
-void print_menu()
+void print_menu(void)
 {
-  Serial.println(F("List of Commands: "));
-  Serial.println(F("Write and Read Configuration: 1                             |Loop measurements with data-log output: 12                             |Write and Read of PWM: 23  "));
-  Serial.println(F("Read Configuration: 2                                       |Run Mux Self Test: 13                                                  |Write and  Read of S control: 24 "));
-  Serial.println(F("Start Cell Voltage Conversion: 3                            |Run ADC Self Test: 14                                                  |Clear S control register: 25 "));
-  Serial.println(F("Read Cell Voltages: 4                                       |ADC overlap Test : 15                                                  |SPI Communication: 26 "));
-  Serial.println(F("Start Aux Voltage Conversion: 5                             |Run Digital Redundancy Test: 16                                        |I2C Communication Write to Slave: 27"));
-  Serial.println(F("Read Aux Voltages: 6                                        |Open Wire Test for single cell detection: 17                           |I2C Communication Read from Slave:28"));
-  Serial.println(F("Start Stat Voltage Conversion: 7                            |Open Wire Test for multiple cell or two consecutive cells detection:18 |Clear Registers: 29"));
-  Serial.println(F("Read Stat Voltages: 8                                       |Print PEC Counter: 19                                                  |Read CV,AUX and ADSTAT Voltages:30"));
-  Serial.println(F("Start Combined Cell Voltage and GPIO1, GPIO2 Conversion: 9  |Reset PEC Counter: 20                                                  |Set or Reset the GPIO pins: 31 "));
-  Serial.println(F("Start  Cell Voltage and Sum of cells : 10                   |Set Discharge: 21                                                      |"));
-  Serial.println(F("loop Measurements: 11                                       |Clear Discharge: 22                                                    |"));
-  Serial.println();
+  Serial.println(F("List of 6811 Commands: "));
+  Serial.println(F("Write and Read Configuration: 1                            |Loop measurements with data-log output: 12     |Set Discharge: 23"));                         
+  Serial.println(F("Read Configuration: 2                                      |Clear Registers: 13                            |Clear Discharge: 24"));
+  Serial.println(F("Start Cell Voltage Conversion: 3                           |Read CV,AUX and ADSTAT Voltages: 14            |Write and Read of PWM: 25"));                 
+  Serial.println(F("Read Cell Voltages: 4                                      |Run Mux Self Test: 15                          |Write and Read of S control: 26"));    
+  Serial.println(F("Start Aux Voltage Conversion: 5                            |Run ADC Self Test: 16                          |Clear S control register: 27")); 
+  Serial.println(F("Read Aux Voltages: 6                                       |ADC overlap Test : 17                          |SPI Communication: 28"));    
+  Serial.println(F("Start Stat Voltage Conversion: 7                           |Run Digital Redundancy Test: 18                |I2C Communication Write to Slave: 29"));             
+  Serial.println(F("Read Stat Voltages: 8                                      |Open Wire Test for single cell detection: 19   |I2C Communication Read from Slave:30"));                        
+  Serial.println(F("Start Combined Cell Voltage and GPIO1, GPIO2 Conversion: 9 |Open Wire Test for multiple cell detection: 20 |Set or Reset the GPIO pins: 31 ")); 
+  Serial.println(F("Start  Cell Voltage and Sum of cells : 10                  |Print PEC Counter: 21                          |"));
+  Serial.println(F("Loop Measurements: 11                                      |Reset PEC Counter: 22                          | \n "));
+  
   Serial.println(F("Print 'm' for menu"));
-  Serial.println(F("Please enter command: "));
-  Serial.println();
+  Serial.println(F("Please enter command: \n"));
 }
 
 /*!******************************************************************************
@@ -810,36 +755,27 @@ void print_menu()
  to the serial port.
  @return void
  ********************************************************************************/
-void print_config()
+void print_wrconfig(void)
 {
   int cfg_pec;
 
   Serial.println(F("Written Configuration: "));
   for (int current_ic = 0; current_ic<TOTAL_IC; current_ic++)
   {
-    Serial.print(F(" IC "));
+    Serial.print(F("CFGA IC "));
     Serial.print(current_ic+1,DEC);
-    Serial.print(F(": "));
-    Serial.print(F("0x"));
-    serial_print_hex(bms_ic[current_ic].config.tx_data[0]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.tx_data[1]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.tx_data[2]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.tx_data[3]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.tx_data[4]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.tx_data[5]);
+    for(int i = 0;i<6;i++)
+    {
+      Serial.print(F(", 0x"));
+      serial_print_hex(BMS_IC[current_ic].config.tx_data[i]);
+    }
     Serial.print(F(", Calculated PEC: 0x"));
-    cfg_pec = pec15_calc(6,&bms_ic[current_ic].config.tx_data[0]);
+    cfg_pec = pec15_calc(6,&BMS_IC[current_ic].config.tx_data[0]);
     serial_print_hex((uint8_t)(cfg_pec>>8));
     Serial.print(F(", 0x"));
     serial_print_hex((uint8_t)(cfg_pec));
-    Serial.println();
+    Serial.println("\n");
   }
-  Serial.println();
 }
 
 /*!*****************************************************************
@@ -847,32 +783,24 @@ void print_config()
  LTC6811 to the serial port.
   @return void
  *******************************************************************/
-void print_rxconfig()
+void print_rxconfig(void)
 {
-  Serial.println(F("Received Configuration: "));
+  Serial.println(F("Received Configuration "));
   for (int current_ic=0; current_ic<TOTAL_IC; current_ic++)
   {
-    Serial.print(F(" IC "));
+    Serial.print(F("CFGA IC "));
     Serial.print(current_ic+1,DEC);
-    Serial.print(F(": 0x"));
-    serial_print_hex(bms_ic[current_ic].config.rx_data[0]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.rx_data[1]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.rx_data[2]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.rx_data[3]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.rx_data[4]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.rx_data[5]);
+    for(int i = 0; i < 6; i++)
+    {
+      Serial.print(F(", 0x"));
+      serial_print_hex(BMS_IC[current_ic].config.rx_data[i]);
+    }
     Serial.print(F(", Received PEC: 0x"));
-    serial_print_hex(bms_ic[current_ic].config.rx_data[6]);
+    serial_print_hex(BMS_IC[current_ic].config.rx_data[6]);
     Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].config.rx_data[7]);
-    Serial.println();
+    serial_print_hex(BMS_IC[current_ic].config.rx_data[7]);
+    Serial.println("\n");
   }
-  Serial.println();
 }
 
 /*!************************************************************
@@ -881,37 +809,33 @@ void print_rxconfig()
  *************************************************************/
 void print_cells(uint8_t datalog_en)
 {
-   for (int current_ic = 0 ; current_ic < TOTAL_IC; current_ic++)
+  for (int current_ic = 0 ; current_ic < TOTAL_IC; current_ic++)
   {
     if (datalog_en == 0)
     {
       Serial.print(" IC ");
       Serial.print(current_ic+1,DEC);
-      Serial.print(": ");
-      for (int i=0; i<bms_ic[0].ic_reg.cell_channels; i++)
+      Serial.print(": ");      for (int i=0; i< BMS_IC[0].ic_reg.cell_channels; i++)
       {
-
         Serial.print(" C");
         Serial.print(i+1,DEC);
-        Serial.print(":");
-        Serial.print(bms_ic[current_ic].cells.c_codes[i]*0.0001,4);
+        Serial.print(":");        
+        Serial.print(BMS_IC[current_ic].cells.c_codes[i]*0.0001,4);
         Serial.print(",");
       }
       Serial.println();
     }
     else
     {
-      Serial.print("Cells ");
-      
-      for (int i=0; i<bms_ic[0].ic_reg.cell_channels; i++)
+      Serial.print(" Cells :");
+      for (int i=0; i<BMS_IC[0].ic_reg.cell_channels; i++)
       {
-        Serial.print(bms_ic[current_ic].cells.c_codes[i]*0.0001,4);
+        Serial.print(BMS_IC[current_ic].cells.c_codes[i]*0.0001,4);
         Serial.print(",");
       }
-
     }
   }
-  Serial.println();
+  Serial.println("\n");
 }
 
 /*!****************************************************************************
@@ -934,112 +858,78 @@ void print_aux(uint8_t datalog_en)
         Serial.print(F(" GPIO-"));
         Serial.print(i+1,DEC);
         Serial.print(":");
-        Serial.print(bms_ic[current_ic].aux.a_codes[i]*0.0001,4);
+        Serial.print(BMS_IC[current_ic].aux.a_codes[i]*0.0001,4);
         Serial.print(",");
       }
       Serial.print(F(" Vref2"));
       Serial.print(":");
-      Serial.print(bms_ic[current_ic].aux.a_codes[5]*0.0001,4);
+      Serial.print(BMS_IC[current_ic].aux.a_codes[5]*0.0001,4);
       Serial.println();
     }
     else
     {
       Serial.print("AUX ");
-
-      for (int i=0; i < 6; i++)
-      {
-        Serial.print(bms_ic[current_ic].aux.a_codes[i]*0.0001,4);
-        Serial.print(",");
-      }
-    }
-  }
-  Serial.println();
-}
-
-/*!****************************************************************************
-  \brief Prints GPIO voltage codes (GPIO 1 & 2)
- @return void
- *****************************************************************************/
-void print_aux1(uint8_t datalog_en)
-{
-  for (int current_ic =0 ; current_ic < TOTAL_IC; current_ic++)
-  {
-    if (datalog_en == 0)
-    {
       Serial.print(" IC ");
       Serial.print(current_ic+1,DEC);
-      Serial.print(F(": "));
-      for (int i=0; i < 2; i++)
-      {
-        Serial.print(F(" GPIO-"));
-        Serial.print(i+1,DEC);
-        Serial.print(":");
-        Serial.print(bms_ic[current_ic].aux.a_codes[i]*0.0001,4);
-        Serial.print(",");
-      }
-    }
-    else
-    {
-      Serial.print("AUX ");
+      Serial.print(": ");
 
       for (int i=0; i < 6; i++)
       {
-        Serial.print(bms_ic[current_ic].aux.a_codes[i]*0.0001,4);
+        Serial.print(BMS_IC[current_ic].aux.a_codes[i]*0.0001,4);
         Serial.print(",");
       }
     }
   }
-  Serial.println();
+  Serial.println("\n");
 }
 
 /*!****************************************************************************
   \brief Prints Status voltage codes and Vref2 voltage code onto the serial port
  @return void
  *****************************************************************************/
-void print_stat()
+void print_stat(void)
 {
-   double ITMP;
+   double itmp;
   for (uint8_t current_ic =0 ; current_ic < TOTAL_IC; current_ic++)
   {
     Serial.print(F(" IC "));
     Serial.print(current_ic+1,DEC);
     Serial.print(F(": "));
     Serial.print(F(" SOC:"));
-    Serial.print(bms_ic[current_ic].stat.stat_codes[0]*0.0001*20,4);
+    Serial.print(BMS_IC[current_ic].stat.stat_codes[0]*0.0001*20,4);
     Serial.print(F(","));
     Serial.print(F(" Itemp:"));
-    ITMP = (double)((bms_ic[current_ic].stat.stat_codes[1] * (0.0001 / 0.0075)) - 273);   //Internal Die Temperature(°C) = ITMP • (100 µV / 7.5mV)°C - 273°C
-    Serial.print(ITMP,4);
+    itmp = (double)((BMS_IC[current_ic].stat.stat_codes[1] * (0.0001 / 0.0075)) - 273);   //Internal Die Temperature(°C) = itmp • (100 µV / 7.5mV)°C - 273°C
+    Serial.print(itmp,4);
     Serial.print(F(","));
     Serial.print(F(" VregA:"));
-    Serial.print(bms_ic[current_ic].stat.stat_codes[2]*0.0001,4);
+    Serial.print(BMS_IC[current_ic].stat.stat_codes[2]*0.0001,4);
     Serial.print(F(","));
     Serial.print(F(" VregD:"));
-    Serial.print(bms_ic[current_ic].stat.stat_codes[3]*0.0001,4);
+    Serial.print(BMS_IC[current_ic].stat.stat_codes[3]*0.0001,4);
     Serial.println();
     Serial.print(F(" Flags:"));
     Serial.print(F(" 0x"));
-    serial_print_hex(bms_ic[current_ic].stat.flags[0]);
+    serial_print_hex(BMS_IC[current_ic].stat.flags[0]);
     Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].stat.flags[1]);
+    serial_print_hex(BMS_IC[current_ic].stat.flags[1]);
     Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].stat.flags[2]);
+    serial_print_hex(BMS_IC[current_ic].stat.flags[2]);
     Serial.print(F("   Mux fail flag:"));
     Serial.print(F(" 0x"));
-    serial_print_hex(bms_ic[current_ic].stat.mux_fail[0]);
+    serial_print_hex(BMS_IC[current_ic].stat.mux_fail[0]);
     Serial.print(F("   THSD:"));
     Serial.print(F(" 0x"));
-    serial_print_hex(bms_ic[current_ic].stat.thsd[0]);
-    Serial.println();  
-}
-  Serial.println();
+    serial_print_hex(BMS_IC[current_ic].stat.thsd[0]);
+    Serial.println("\n");  
+  }
 }
 
 /*!****************************************************************************
   \brief Prints Status voltage codes for SOC onto the serial port
  @return void
  *****************************************************************************/
-void print_statsoc()
+void print_sumofcells(void)
 {
  for (int current_ic =0 ; current_ic < TOTAL_IC; current_ic++)
   {
@@ -1047,34 +937,133 @@ void print_statsoc()
     Serial.print(current_ic+1,DEC);
     Serial.print(F(": "));
     Serial.print(F(" SOC:"));
-    Serial.print(bms_ic[current_ic].stat.stat_codes[0]*0.0001*20,4);
+    Serial.print(BMS_IC[current_ic].stat.stat_codes[0]*0.0001*20,4);
     Serial.print(F(","));
   }
-  Serial.println();
+  Serial.println("\n");
+}
+
+/*!****************************************************************
+  \brief Function to check the MUX fail bit in the Status Register
+   @return void
+*******************************************************************/
+void check_mux_fail(void)
+{ 
+  int8_t error = 0;
+  for (int ic = 0; ic<TOTAL_IC; ic++)
+    { 
+      Serial.print(" IC ");
+      Serial.println(ic+1,DEC);
+      if (BMS_IC[ic].stat.mux_fail[0] != 0) error++;
+    
+      if (error==0) Serial.println(F("Mux Test: PASS \n"));
+      else Serial.println(F("Mux Test: FAIL \n"));
+    }
+}
+
+/*!************************************************************
+  \brief Prints Errors Detected during self test
+   @return void
+*************************************************************/
+void print_selftest_errors(uint8_t adc_reg ,int8_t error)
+{
+  if(adc_reg==1)
+  {
+    Serial.println("Cell ");
+    }
+  else if(adc_reg==2)
+  {
+    Serial.println("Aux ");
+    }
+  else if(adc_reg==3)
+  {
+    Serial.println("Stat ");
+    }
+  Serial.print(error, DEC);
+  Serial.println(F(" : errors detected in Digital Filter and Memory \n"));
+}
+
+/*!************************************************************
+  \brief Prints the output of  the ADC overlap test  
+   @return void
+*************************************************************/
+void print_overlap_results(int8_t error)
+{
+  if (error==0) Serial.println(F("Overlap Test: PASS \n"));
+  else Serial.println(F("Overlap Test: FAIL \n"));
+}
+
+/*!************************************************************
+  \brief Prints Errors Detected during Digital Redundancy test
+   @return void
+*************************************************************/
+void print_digital_redundancy_errors(uint8_t adc_reg ,int8_t error)
+{
+  if(adc_reg==2)
+  {
+    Serial.println("Aux ");
+    }
+  else if(adc_reg==3)
+  {
+    Serial.println("Stat ");
+    }
+
+  Serial.print(error, DEC);
+  Serial.println(F(" : errors detected in Measurement \n"));
 }
 
 /*****************************************************************************
   \brief Prints Open wire test results to the serial port
   @return void
  *****************************************************************************/
-void print_open()
+void print_open_wires(void)
 {
   for (int current_ic =0 ; current_ic < TOTAL_IC; current_ic++)
   {
-    if (bms_ic[current_ic].system_open_wire == 65535)
+    if (BMS_IC[current_ic].system_open_wire == 65535)
     {
       Serial.print("No Opens Detected on IC ");
-      Serial.print(current_ic+1, DEC);
-      Serial.println();
+      Serial.println(current_ic+1, DEC);
     }
     else
     {
       Serial.print(F("There is an open wire on IC "));
       Serial.print(current_ic + 1,DEC);
       Serial.print(F(" Channel: "));
-      Serial.println(bms_ic[current_ic].system_open_wire);
+      Serial.println(BMS_IC[current_ic].system_open_wire);
     }
+    Serial.println("\n");
   }
+}
+
+/*!************************************************************
+  \brief Prints the PEC errors detected to the serial port
+  @return void
+ *************************************************************/ 
+void print_pec_error_count(void)
+{
+  for (int current_ic=0; current_ic<TOTAL_IC; current_ic++)
+  {
+    Serial.println("");
+    Serial.print(BMS_IC[current_ic].crc_count.pec_count,DEC);
+    Serial.print(F(" : PEC Errors Detected on IC"));
+    Serial.println(current_ic+1,DEC);
+  }
+  Serial.println("\n");
+}
+
+/*!****************************************************
+  \brief Function to select the S pin for discharge
+  @return void
+ ******************************************************/
+int8_t select_s_pin(void)
+{
+  int8_t read_s_pin=0;
+  
+  Serial.print(F("Please enter the Spin number: "));
+  read_s_pin = (int8_t)read_int();
+  Serial.println(read_s_pin);
+  return(read_s_pin);
 }
 
 /*!******************************************************************************
@@ -1082,36 +1071,27 @@ void print_open()
  to the serial port.
   @return void
  ********************************************************************************/
-void print_pwmconfig()
+void print_wrpwm(void)
 {
-  int cfg_pec;
+  int pwm_pec;
 
   Serial.println(F("Written PWM Configuration: "));
   for (uint8_t current_ic = 0; current_ic<TOTAL_IC; current_ic++)
   {
     Serial.print(F("IC "));
     Serial.print(current_ic+1,DEC);
-    Serial.print(F(": "));
-    Serial.print(F("0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.tx_data[0]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.tx_data[1]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.tx_data[2]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.tx_data[3]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.tx_data[4]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.tx_data[5]);
+    for(int i = 0; i < 6; i++)
+    {
+      Serial.print(F(", 0x"));
+     serial_print_hex(BMS_IC[current_ic].pwm.tx_data[i]);
+    }
     Serial.print(F(", Calculated PEC: 0x"));
-    cfg_pec = pec15_calc(6,&bms_ic[current_ic].pwm.tx_data[0]);
-    serial_print_hex((uint8_t)(cfg_pec>>8));
+    pwm_pec = pec15_calc(6,&BMS_IC[current_ic].pwm.tx_data[0]);
+    serial_print_hex((uint8_t)(pwm_pec>>8));
     Serial.print(F(", 0x"));
-    serial_print_hex((uint8_t)(cfg_pec));
-    Serial.println();
-  }
-  Serial.println();
+    serial_print_hex((uint8_t)(pwm_pec));
+    Serial.println("\n");
+  } 
 }
 
 /*!*****************************************************************
@@ -1119,136 +1099,53 @@ void print_pwmconfig()
  LTC6811 to the serial port.
  @return void
  *******************************************************************/
-void print_rxpwmconfig()
+void print_rxpwm(void)
 {
-  Serial.println(F("Received PWM Configuration:"));
+  Serial.println(F("Received pwm Configuration:"));
   for (uint8_t current_ic=0; current_ic<TOTAL_IC; current_ic++)
   {
     Serial.print(F("IC "));
     Serial.print(current_ic+1,DEC);
-    Serial.print(F(": 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.rx_data[0]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.rx_data[1]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.rx_data[2]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.rx_data[3]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.rx_data[4]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.rx_data[5]);
+    for(int i = 0; i < 6; i++)
+    {
+      Serial.print(F(", 0x"));
+     serial_print_hex(BMS_IC[current_ic].pwm.rx_data[i]);
+    }
     Serial.print(F(", Received PEC: 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.rx_data[6]);
+    serial_print_hex(BMS_IC[current_ic].pwm.rx_data[6]);
     Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].pwm.rx_data[7]);
-    Serial.println();
+    serial_print_hex(BMS_IC[current_ic].pwm.rx_data[7]);
+    Serial.println("\n");
   }
-  Serial.println();
-}
-
-/*!************************************************************
-  \brief Prints comm register data to the serial port
-  @return void
- *************************************************************/ 
-void print_comm()
-{
-  uint8_t comm_pec;
-  Serial.println(F("Written Data in COMM Register: "));
-  for (int current_ic = 0; current_ic<TOTAL_IC; current_ic++)
-  {
-    Serial.print(F(" IC "));
-    Serial.print(current_ic+1,DEC);
-    Serial.print(F(": "));
-    Serial.print(F("0x"));
-    serial_print_hex(bms_ic[current_ic].com.tx_data[0]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.tx_data[1]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.tx_data[2]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.tx_data[3]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.tx_data[4]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.tx_data[5]);
-    Serial.print(F(", Calculated PEC: 0x"));
-    comm_pec = pec15_calc(6,&bms_ic[current_ic].com.tx_data[0]);
-    serial_print_hex((uint8_t)(comm_pec>>8));
-    Serial.print(F(", 0x"));
-    serial_print_hex((uint8_t)(comm_pec));
-    Serial.println();
-  }
-  Serial.println();
-}
-
-/*!************************************************************
-  \brief Prints comm register data that was read back from the
- LTC6811 to the serial port. 
- @return void
- *************************************************************/
-void print_rxcomm()
-{
-  Serial.println(F("Received Data:"));
-  for (uint8_t current_ic=0; current_ic<TOTAL_IC; current_ic++)
-  {
-    Serial.print(F(" IC "));
-    Serial.print(current_ic+1,DEC);
-    Serial.print(F(": 0x"));
-    serial_print_hex(bms_ic[current_ic].com.rx_data[0]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.rx_data[1]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.rx_data[2]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.rx_data[3]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.rx_data[4]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.rx_data[5]);
-    Serial.print(F(", Received PEC: 0x"));
-    serial_print_hex(bms_ic[current_ic].com.rx_data[6]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].com.rx_data[7]);
-    Serial.println();
-  }
-  Serial.println();
 }
 
 /*!************************************************************
   \brief Prints S control register data to the serial port
   @return void
  *************************************************************/ 
-void print_sctrl()
+void print_wrsctrl(void)
 {
-  int sctrl_pec;
+   int sctrl_pec;
 
-  Serial.println(F("Written Data in sctrl register: "));
+  Serial.println(F("Written Data in Sctrl register: "));
   for (int current_ic = 0; current_ic<TOTAL_IC; current_ic++)
   {
-    Serial.print(F(" IC "));
+    Serial.print(F(" IC: "));
     Serial.print(current_ic+1,DEC);
-    Serial.print(F(": "));
-    Serial.print(F("0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.tx_data[0]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.tx_data[1]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.tx_data[2]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.tx_data[3]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.tx_data[4]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.tx_data[5]);
+    Serial.print(F(" Sctrl register group:"));
+    for(int i = 0; i < 6; i++)
+    {
+      Serial.print(F(", 0x"));
+      serial_print_hex(BMS_IC[current_ic].sctrl.tx_data[i]);
+    }
+    
     Serial.print(F(", Calculated PEC: 0x"));
-    sctrl_pec = pec15_calc(6,&bms_ic[current_ic].sctrl.tx_data[0]);
+    sctrl_pec = pec15_calc(6,&BMS_IC[current_ic].sctrl.tx_data[0]);
     serial_print_hex((uint8_t)(sctrl_pec>>8));
     Serial.print(F(", 0x"));
     serial_print_hex((uint8_t)(sctrl_pec));
-    Serial.println();
+    Serial.println("\n");
   }
-  Serial.println();
 }
 
 /*!************************************************************
@@ -1256,47 +1153,93 @@ void print_sctrl()
  LTC6811 to the serial port.
 @return void
  *************************************************************/
-void print_rxsctrl()
+void print_rxsctrl(void)
 {
   Serial.println(F("Received Data:"));
   for (int current_ic=0; current_ic<TOTAL_IC; current_ic++)
   {
     Serial.print(F(" IC "));
     Serial.print(current_ic+1,DEC);
-    Serial.print(F(": 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.rx_data[0]);
+    
+    for(int i = 0; i < 6; i++)
+    {
     Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.rx_data[1]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.rx_data[2]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.rx_data[3]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.rx_data[4]);
-    Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.rx_data[5]);
+    serial_print_hex(BMS_IC[current_ic].sctrl.rx_data[i]);
+    }
+    
     Serial.print(F(", Received PEC: 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.rx_data[6]);
+    serial_print_hex(BMS_IC[current_ic].sctrl.rx_data[6]);
     Serial.print(F(", 0x"));
-    serial_print_hex(bms_ic[current_ic].sctrl.rx_data[7]);
-    Serial.println();
+    serial_print_hex(BMS_IC[current_ic].sctrl.rx_data[7]);
+    Serial.println("\n");
   }
-  Serial.println();
 }
 
 /*!************************************************************
-  \brief Prints the PEC errors detected to the serial port
+  \brief Prints comm register data to the serial port
   @return void
  *************************************************************/ 
-void print_pec()
+void print_wrcomm(void)
 {
+  int comm_pec;
+
+  Serial.println(F("Written Data in COMM Register: "));
+  for (int current_ic = 0; current_ic<TOTAL_IC; current_ic++)
+  {
+    Serial.print(F(" IC- "));
+    Serial.print(current_ic+1,DEC);
+    
+    for(int i = 0; i < 6; i++)
+    {
+      Serial.print(F(", 0x"));
+      serial_print_hex(BMS_IC[current_ic].com.tx_data[i]);
+    }
+    Serial.print(F(", Calculated PEC: 0x"));
+    comm_pec = pec15_calc(6,&BMS_IC[current_ic].com.tx_data[0]);
+    serial_print_hex((uint8_t)(comm_pec>>8));
+    Serial.print(F(", 0x"));
+    serial_print_hex((uint8_t)(comm_pec));
+    Serial.println("\n");
+  }
+}
+
+/*!************************************************************
+  \brief Prints comm register data that was read back from the
+ LTC6811 to the serial port. 
+ @return void
+ *************************************************************/
+void print_rxcomm(void)
+{
+  Serial.println(F("Received Data in COMM register:"));
   for (int current_ic=0; current_ic<TOTAL_IC; current_ic++)
   {
-    Serial.println("");
-    Serial.print(bms_ic[current_ic].crc_count.pec_count,DEC);
-    Serial.print(F(" : PEC Errors Detected on IC"));
-    Serial.println(current_ic+1,DEC);
+    Serial.print(F(" IC- "));
+    Serial.print(current_ic+1,DEC);
+    
+    for(int i = 0; i < 6; i++)
+    {
+      Serial.print(F(", 0x"));
+      serial_print_hex(BMS_IC[current_ic].com.rx_data[i]);
+    }
+    Serial.print(F(", Received PEC: 0x"));
+    serial_print_hex(BMS_IC[current_ic].com.rx_data[6]);
+    Serial.print(F(", 0x"));
+    serial_print_hex(BMS_IC[current_ic].com.rx_data[7]);
+    Serial.println("\n");
   }
+}
+
+/*!****************************************************************************
+  \brief Function to print the Conversion Time
+  @return void
+ *****************************************************************************/
+void print_conv_time(uint32_t conv_time)
+{
+  uint16_t m_factor=1000;  // to print in ms
+
+  Serial.print(F("Conversion completed in:"));
+  Serial.print(((float)conv_time/m_factor), 1);
+  Serial.println(F("ms \n"));
 }
 
 /*!************************************************************
@@ -1309,6 +1252,15 @@ void check_error(int error)
   {
     Serial.println(F("A PEC error was detected in the received data"));
   }
+}
+
+/*!************************************************************
+  \brief Function to print text on serial monitor
+  @return void
+*************************************************************/ 
+void serial_print_text(char data[])
+{       
+  Serial.println(data);
 }
 
 /*!************************************************************
@@ -1354,7 +1306,7 @@ char byte_to_hex_buffer[3]=
  \brief Read 2 hex characters from the serial buffer and convert them to a byte
  @return char data Read Data
  *************************************************************/
-char read_hex()    
+char read_hex(void)    
 {
   byte data;
   hex_to_byte_buffer[2]=get_char();
@@ -1369,9 +1321,8 @@ char read_hex()
  \brief Read a command from the serial port
  @return char 
  *************************************************************/
-char get_char()
+char get_char(void)
 {
-
   while (Serial.available() <= 0);
   return(Serial.read());
 }
