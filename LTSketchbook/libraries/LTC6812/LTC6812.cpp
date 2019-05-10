@@ -1,7 +1,7 @@
 /*! LTC6812: Multicell Battery Monitors
 *
 *@verbatim
-*The LTC6812 is multicell battery stack monitor that measures up to 15 series 
+*The LTC6812 is multi-cell battery stack monitor that measures up to 15 series 
 *connected battery cells with a total measurement error of less than 2.2mV. 
 *The cell measurement range of 0V to 5V makes the LTC6812 suitable for most 
 *battery chemistries. All 15 cell voltages can be captured in 245uS, and lower 
@@ -64,8 +64,10 @@
 #include "LTC681x.h"
 #include "LTC6812.h"
 
-//Helper function to initialize register limits.
-void LTC6812_init_reg_limits(uint8_t total_ic, cell_asic *ic)
+/* Helper function to initialize register limits. */
+void LTC6812_init_reg_limits(uint8_t total_ic, //Number of ICs in the system
+							cell_asic *ic //A two dimensional array that the function stores data
+							)
 {
     for(uint8_t cic=0; cic<total_ic; cic++)
     {
@@ -78,218 +80,6 @@ void LTC6812_init_reg_limits(uint8_t total_ic, cell_asic *ic)
     } 
 }
 
-//Starts cell voltage conversion
-void LTC6812_adcv(
-  uint8_t MD, //ADC Mode
-  uint8_t DCP, //Discharge Permit
-  uint8_t CH //Cell Channels to be measured
-)
-{
-    LTC681x_adcv(MD,DCP,CH);
-}
-
-//Starts cell voltage and SOC conversion
-void LTC6812_adcvsc(
-  uint8_t MD, //ADC Mode
-  uint8_t DCP //Discharge Permit
-)
-{
-    LTC681x_adcvsc(MD,DCP);
-}
-
-// Starts cell voltage  and GPIO 1&2 conversion
-void LTC6812_adcvax(
-  uint8_t MD, //ADC Mode
-  uint8_t DCP //Discharge Permit
-)
-{
-    LTC681x_adcvax(MD,DCP);
-}
-
-//Starts cell voltage overlap conversion
-void LTC6812_adol(
-  uint8_t MD, //ADC Mode
-  uint8_t DCP //Discharge Permit
-)
-{
-  LTC681x_adol(MD,DCP);
-}
-
-//Starts cell voltage self test conversion
-void LTC6812_cvst(
-  uint8_t MD, //ADC Mode
-  uint8_t ST //Self Test
-)
-{
-    LTC681x_cvst(MD,ST);
-}
-
-//Start an Auxiliary Register Self Test Conversion
-void LTC6812_axst(
-  uint8_t MD, //ADC Mode
-  uint8_t ST //Self Test
-)
-{
-  LTC681x_axst(MD,ST);
-}
-
-//Start a Status Register Self Test Conversion
-void LTC6812_statst(
-  uint8_t MD, //ADC Mode
-  uint8_t ST //Self Test
-)
-{
-    LTC681x_statst(MD,ST);
-}
-
-//Sends the poll ADC command
-uint8_t LTC6812_pladc()
-{
-  return(LTC681x_pladc());
-}
-
-//This function will block operation until the ADC has finished it's conversion
-uint32_t LTC6812_pollAdc()
-{
-  return(LTC681x_pollAdc());
-}
-
-//Start a GPIO and Vref2 Conversion
-void LTC6812_adax(
-  uint8_t MD, //ADC Mode
-  uint8_t CHG //GPIO Channels to be measured)
-)
-{
-  LTC681x_adax(MD,CHG);
-}
-
-//Start an GPIO Redundancy test
-void LTC6812_adaxd(
-  uint8_t MD, //ADC Mode
-  uint8_t CHG //GPIO Channels to be measured)
-)
-{
-  LTC681x_adaxd(MD,CHG);
-}
-
-//Start a Status ADC Conversion
-void LTC6812_adstat(
-  uint8_t MD, //ADC Mode
-  uint8_t CHST //GPIO Channels to be measured
-)
-{
-  LTC681x_adstat(MD,CHST);
-}
-
-// Start a Status register redundancy test Conversion
-void LTC6812_adstatd(
-  uint8_t MD, //ADC Mode
-  uint8_t CHST //GPIO Channels to be measured
-)
-{
- LTC681x_adstatd(MD,CHST);
-}
-
-// Start an open wire Conversion
-void LTC6812_adow(uint8_t MD, // ADC Conversion Mode
-				 uint8_t PUP, // Controls if Discharge is permitted during conversion
-				 uint8_t CH,  // Sets which Cell channels are converted
-				 uint8_t DCP  // Discharge permitted during conversion
-				 )
-{
-    LTC681x_adow(MD,PUP,CH,DCP);
-}
-
-// Reads and parses the LTC6812 cell voltage registers.
-uint8_t LTC6812_rdcv(uint8_t reg, // Controls which cell voltage register is read back.
-                     uint8_t total_ic, // the number of ICs in the system
-                     cell_asic *ic // Array of the parsed cell codes
-                    )
-{
- 
-  int8_t pec_error = 0;
-  pec_error = LTC681x_rdcv(reg,total_ic,ic);
-  return(pec_error);
-}
-
-/*
-The function is used
-to read the  parsed GPIO codes of the LTC6812. This function will send the requested
-read commands parse the data and store the gpio voltages in aux_codes variable
-*/
-int8_t LTC6812_rdaux(uint8_t reg, //Determines which GPIO voltage register is read back.
-                       uint8_t total_ic,//the number of ICs in the system
-                       cell_asic *ic//A two dimensional array of the gpio voltage codes.
-                      )
-  {
-    int8_t pec_error = 0;
-    LTC681x_rdaux(reg,total_ic,ic);
-    return (pec_error);
-  }
-
-/*
-Reads and parses the LTC6812 stat registers.
-The function is used
-to read the  parsed stat codes of the LTC6812. This function will send the requested
-read commands parse the data and store the stat voltages in stat_codes variable
-*/
-int8_t LTC6812_rdstat(uint8_t reg, //Determines which Stat  register is read back.
-                        uint8_t total_ic,//the number of ICs in the system
-                        cell_asic *ic
-                       )
-  {
-    int8_t pec_error = 0;
-    pec_error = LTC681x_rdstat(reg,total_ic,ic);
-    return (pec_error);
-  }
-
-/*
-The command clears the cell voltage registers and initializes
-all values to 1. The register will read back hexadecimal 0xFF
-after the command is sent.
-*/
-void LTC6812_clrcell()
-  {
-    LTC681x_clrcell();
-  }
-
-/*
-The command clears the Auxiliary registers and initializes
-all values to 1. The register will read back hexadecimal 0xFF
-after the command is sent.
-*/
-void LTC6812_clraux()
-  {
-    LTC681x_clraux();
-  }
-
-/*
-The command clears the Stat registers and initializes
-all values to 1. The register will read back hexadecimal 0xFF
-after the command is sent.
-
-*/
-void LTC6812_clrstat()
-  {
-   LTC681x_clrstat();
-  }
-
-/*
-The command clears the Sctrl registers and initializes
-all values to 0. The register will read back hexadecimal 0x00
-after the command is sent.
-*/
-void LTC6812_clrsctrl()
-  {
-     LTC681x_clrsctrl();
-  }
-
-//Starts the Mux Decoder diagnostic self test
-void LTC6812_diagn()
-  {
-     LTC681x_diagn();
-  }
-
 /*
 This command will write the configuration registers of the LTC6812-1s
 connected in a daisy chain stack. The configuration is written in descending
@@ -298,9 +88,9 @@ order so the last device's configuration is written first.
 void LTC6812_wrcfg(uint8_t total_ic, //The number of ICs being written to
                      cell_asic *ic //A two dimensional array of the configuration data that will be written
                     )
-  {
-    LTC681x_wrcfg(total_ic,ic);
-  }
+{
+	LTC681x_wrcfg(total_ic,ic);
+}
 
 /*
 This command will write the configuration b registers of the LTC6812-1s
@@ -314,17 +104,17 @@ void LTC6812_wrcfgb(uint8_t total_ic, //The number of ICs being written to
     LTC681x_wrcfgb(total_ic,ic);
 }
 
-// Reads configuration registers of a LTC6812 daisy chain
+/* Reads configuration registers of a LTC6812 daisy chain */
 int8_t LTC6812_rdcfg(uint8_t total_ic, //Number of ICs in the system
                        cell_asic *ic //A two dimensional array that the function stores the read configuration data.
                       )
-  {
-    int8_t pec_error = 0;
-    pec_error = LTC681x_rdcfg(total_ic,ic);
-    return(pec_error);
-  }
+{
+	int8_t pec_error = 0;
+	pec_error = LTC681x_rdcfg(total_ic,ic);
+	return(pec_error);
+}
 
-// Reads configuration b registers of a LTC6812 daisy chain
+/* Reads configuration registers B of a LTC6812 daisy chain */
 int8_t LTC6812_rdcfgb(uint8_t total_ic, //Number of ICs in the system
                    cell_asic *ic //A two dimensional array that the function stores the read configuration data.
                   )
@@ -334,124 +124,205 @@ int8_t LTC6812_rdcfgb(uint8_t total_ic, //Number of ICs in the system
     return(pec_error);
 }
 
- // Writes the pwm registers of a LTC6812 daisy chain
-void LTC6812_wrpwm(uint8_t total_ic,
-                     uint8_t pwmReg,  //The number of ICs being written to
-                     cell_asic *ic //A two dimensional array of the configuration data that will be written
+/* Starts cell voltage conversion */
+void LTC6812_adcv(uint8_t MD, //ADC Mode
+				  uint8_t DCP, //Discharge Permit
+				  uint8_t CH //Cell Channels to be measured
+				)
+{
+    LTC681x_adcv(MD,DCP,CH);
+}
+
+/* Start a GPIO and Vref2 Conversion */
+void LTC6812_adax(uint8_t MD, //ADC Mode
+				  uint8_t CHG //GPIO Channels to be measured)
+				)
+{
+	LTC681x_adax(MD,CHG);
+}
+
+/* Start a Status ADC Conversion */
+void LTC6812_adstat(uint8_t MD, //ADC Mode
+				    uint8_t CHST //Stat Channels to be measured
+				  )
+{
+	LTC681x_adstat(MD,CHST);
+}
+
+/* Starts cell voltage and SOC conversion */
+void LTC6812_adcvsc(uint8_t MD, //ADC Mode
+					uint8_t DCP //Discharge Permit
+					)
+{
+    LTC681x_adcvsc(MD,DCP);
+}
+
+/* Starts cell voltage  and GPIO 1 & 2 conversion */
+void LTC6812_adcvax(uint8_t MD, //ADC Mode
+					uint8_t DCP //Discharge Permit
+					)
+{
+    LTC681x_adcvax(MD,DCP);
+}
+
+/*
+Reads and parses the LTC6812 cell voltage registers of the LTC6812. This function will send the requested
+read commands parse the data and store the cell voltages in c_codes variable.
+*/
+uint8_t LTC6812_rdcv(uint8_t reg, // Controls which cell voltage register is read back.
+                     uint8_t total_ic, // the number of ICs in the system
+                     cell_asic *ic // Array of the parsed cell codes
                     )
-  {
-      LTC681x_wrpwm(total_ic,pwmReg,ic);
-  }
+{
+	int8_t pec_error = 0;
+	pec_error = LTC681x_rdcv(reg,total_ic,ic);
+	return(pec_error);
+}
 
-// Reads pwm registers of a LTC6812 daisy chain
-int8_t LTC6812_rdpwm(uint8_t total_ic, //Number of ICs in the system
-                       uint8_t pwmReg,
-                       cell_asic *ic //A two dimensional array that the function stores the read configuration data.
+/*
+The function is used to read the  parsed GPIO codes of the LTC6812. This function will send the requested
+read commands parse the data and store the gpio voltages in a_codes variable
+*/
+int8_t LTC6812_rdaux(uint8_t reg, //Determines which GPIO voltage register is read back.
+                       uint8_t total_ic,//The number of ICs in the system
+                       cell_asic *ic//A two dimensional array of the gpio voltage codes.
                       )
-  {
-    int8_t pec_error =0;
-    pec_error = LTC681x_rdpwm(total_ic,pwmReg,ic);
-    return(pec_error);
-  }
+{
+	int8_t pec_error = 0;
+	LTC681x_rdaux(reg,total_ic,ic);
+	return (pec_error);
+}
 
-// Writes the COMM registers of a LTC6812 daisy chain
-void LTC6812_wrcomm(uint8_t total_ic, //The number of ICs being written to
-                      cell_asic *ic //A two dimensional array of the comm data that will be written
-                     )
-  {
-      LTC681x_wrcomm(total_ic,ic);
-  }
-
-// Reads COMM registers of a LTC6812 daisy chain
-int8_t LTC6812_rdcomm(uint8_t total_ic, //Number of ICs in the system
-                        cell_asic *ic //A two dimensional array that the function stores the read configuration data.
+/*
+Reads and parses the LTC6812 stat registers.
+The function is used to read the  parsed stat codes of the LTC6812. 
+This function will send the requested read commands parse the data 
+and store the stat voltages in stat_codes variable
+*/
+int8_t LTC6812_rdstat(uint8_t reg, //Determines which Stat  register is read back.
+                        uint8_t total_ic,//The number of ICs in the system
+                        cell_asic *ic //A two dimensional array of the stat codes.
                        )
-  {
-    int8_t pec_error = 0;
-    LTC681x_rdcomm(total_ic, ic);
-    return(pec_error);
-  }
-
-//Shifts data in COMM register out over LTC6812 SPI/I2C port
-void LTC6812_stcomm()
 {
-    LTC681x_stcomm();
+	int8_t pec_error = 0;
+	pec_error = LTC681x_rdstat(reg,total_ic,ic);
+	return (pec_error);
 }
 
-//Helper function to set discharge bit in CFG register
-void LTC6812_set_discharge(int Cell, uint8_t total_ic, cell_asic *ic)
+/* Sends the poll ADC command */
+uint8_t LTC6812_pladc()
 {
-  for (int i=0; i<total_ic; i++)
-  {
-	if (Cell==0)
-	{
-		ic[i].configb.tx_data[1] = ic[i].configb.tx_data[1] |(0x04);
-	}
-    else if (Cell<9)
-    {
-      ic[i].config.tx_data[4] = ic[i].config.tx_data[4] | (1<<(Cell-1));
-    }
-    else if (Cell < 13)
-    {
-      ic[i].config.tx_data[5] = ic[i].config.tx_data[5] | (1<<(Cell-9));
-    }
-    else if (Cell<16)
-    {
-      ic[i].configb.tx_data[0] = ic[i].configb.tx_data[0] | (1<<(Cell-9));
-    }
-    else
-	{
-		break;
-	}
-  }
+	return(LTC681x_pladc());
 }
 
-//Clears all of the DCC bits in the configuration registers
-void LTC6812_clear_discharge(uint8_t total_ic,
-                             cell_asic *ic)
+/* This function will block operation until the ADC has finished it's conversion */
+uint32_t LTC6812_pollAdc()
 {
-    LTC681x_clear_discharge(total_ic,ic);
-
+	return(LTC681x_pollAdc());
 }
 
-// Runs the Digital Filter Self Test
-int16_t LTC6812_run_cell_adc_st(uint8_t adc_reg,uint8_t total_ic, cell_asic *ic,uint8_t md,bool adcopt)
+/*
+The command clears the cell voltage registers and initializes
+all values to 1. The register will read back hexadecimal 0xFF
+after the command is sent.
+*/
+void LTC6812_clrcell()
 {
-  int16_t error = 0;
-  error = LTC681x_run_cell_adc_st(adc_reg,total_ic,ic,md,adcopt);
-  return(error);
+	LTC681x_clrcell();
 }
 
-//Runs the redundancy self test
-int16_t LTC6812_run_adc_redundancy_st(uint8_t adc_mode, uint8_t adc_reg, uint8_t total_ic, cell_asic *ic)
+/*
+The command clears the Auxiliary registers and initializes
+all values to 1. The register will read back hexadecimal 0xFF
+after the command is sent.
+*/
+void LTC6812_clraux()
 {
-  int16_t error = 0;
-  LTC681x_run_adc_redundancy_st(adc_mode,adc_reg,total_ic,ic);
-  return(error);
+	LTC681x_clraux();
 }
 
-//Runs open wire for GPIOs
-void LTC6812_run_gpio_openwire(uint8_t total_ic, 
-								cell_asic *ic
+/*
+The command clears the Stat registers and initializes
+all values to 1. The register will read back hexadecimal 0xFF
+after the command is sent.
+
+*/
+void LTC6812_clrstat()
+{
+	LTC681x_clrstat();
+}
+  
+/* Starts the Mux Decoder diagnostic self test */
+void LTC6812_diagn()
+{
+	LTC681x_diagn();
+}  
+
+/* Starts cell voltage self test conversion */
+void LTC6812_cvst(uint8_t MD, //ADC Mode
+				  uint8_t ST //Self Test
+				)
+{
+    LTC681x_cvst(MD,ST);
+}
+
+/* Start an Auxiliary Register Self Test Conversion */
+void LTC6812_axst(uint8_t MD, //ADC Mode
+				  uint8_t ST //Self Test
+				)
+{
+	LTC681x_axst(MD,ST);
+}
+
+/* Start a Status Register Self Test Conversion */
+void LTC6812_statst(uint8_t MD, //ADC Mode
+					uint8_t ST //Self Test
+					)
+{
+    LTC681x_statst(MD,ST);
+}
+
+/* Starts cell voltage overlap conversion */
+void LTC6812_adol(uint8_t MD, //ADC Mode
+				  uint8_t DCP //Discharge Permit
+				)
+{
+	LTC681x_adol(MD,DCP);
+}
+
+/* Start an GPIO Redundancy test */
+void LTC6812_adaxd(uint8_t MD, //ADC Mode
+				   uint8_t CHG //GPIO Channels to be measured
+				 )
+{
+	LTC681x_adaxd(MD,CHG);
+}
+
+/* Start a Status register redundancy test Conversion */
+void LTC6812_adstatd(uint8_t MD, //ADC Mode
+					 uint8_t CHST //Stat Channels to be measured
+					)
+{
+	LTC681x_adstatd(MD,CHST);
+}
+
+/* Runs the Digital Filter Self Test */
+int16_t LTC6812_run_cell_adc_st(uint8_t adc_reg, // Type of register
+								uint8_t total_ic, // Number of ICs in the daisy chain
+								cell_asic *ic, // A two dimensional array that will store the data 
+								uint8_t md, //ADC Mode
+								bool adcopt // The ADCOPT bit in the configuration register
 								)
 {
-	LTC681x_run_gpio_openwire(total_ic, ic);
+	int16_t error = 0;
+	error = LTC681x_run_cell_adc_st(adc_reg,total_ic,ic,md,adcopt);
+	return(error);
 }
 
-//Runs the data sheet algorithm for open wire for single cell detection
-void LTC6812_run_openwire_single(uint8_t total_ic, cell_asic *ic)
-{
-	LTC681x_run_openwire_single(total_ic, ic);
-}
-
-//Runs the data sheet algorithm for open wire for multiple cell and two consecutive cells detection
-void LTC6812_run_openwire_multi(uint8_t total_ic, cell_asic *ic)
-{
-	LTC681x_run_openwire_multi(total_ic, ic);
-}
-
-// Runs the ADC overlap test for the IC
-uint16_t LTC6812_run_adc_overlap(uint8_t total_ic, cell_asic *ic)
+/* Runs the ADC overlap test for the IC */
+uint16_t LTC6812_run_adc_overlap(uint8_t total_ic, // Number of ICs in the daisy chain
+							     cell_asic *ic // A two dimensional array that will store the data 
+								 )
 {
     uint16_t error = 0;
 	int32_t measure_delta =0;
@@ -482,215 +353,178 @@ uint16_t LTC6812_run_adc_overlap(uint8_t total_ic, cell_asic *ic)
 	return(error);
 }
 
-//Helper function that increments PEC counters
-void LTC6812_check_pec(uint8_t total_ic,uint8_t reg, cell_asic *ic)
+/* Runs the redundancy self test */
+int16_t LTC6812_run_adc_redundancy_st(uint8_t adc_mode, //ADC Mode
+									  uint8_t adc_reg, // Type of register
+									  uint8_t total_ic, // Number of ICs in the daisy chain
+									  cell_asic *ic // A two dimensional array that will store the data 
+									  )
 {
-    LTC681x_check_pec(total_ic,reg,ic);
+	int16_t error = 0;
+	LTC681x_run_adc_redundancy_st(adc_mode,adc_reg,total_ic,ic);
+	return(error);
 }
 
-//Helper Function to reset PEC counters
-void LTC6812_reset_crc_count(uint8_t total_ic, cell_asic *ic)
+/* Start an open wire Conversion */
+void LTC6812_adow(uint8_t MD, // ADC Conversion Mode
+				 uint8_t PUP, //Pull up/Pull down current
+				 uint8_t CH,  // Sets which Cell channels are converted
+				 uint8_t DCP  // Discharge permitted during conversion
+				 )
 {
-     LTC681x_reset_crc_count(total_ic,ic);
+    LTC681x_adow(MD,PUP,CH,DCP);
 }
 
-//Helper function to initialize CFG variables.
-void LTC6812_init_cfg(uint8_t total_ic, cell_asic *ic)
-{
-   LTC681x_init_cfg(total_ic,ic);
-}
-//Helper function to set CFGR variable
-void LTC6812_set_cfgr(uint8_t nIC, cell_asic *ic, bool refon, bool adcopt, bool gpio[5],bool dcc[12],bool dcto[4], uint16_t uv, uint16_t  ov)
-{
-    LTC681x_set_cfgr_refon(nIC,ic,refon);
-    LTC681x_set_cfgr_adcopt(nIC,ic,adcopt);
-    LTC681x_set_cfgr_gpio(nIC,ic,gpio);
-    LTC681x_set_cfgr_dis(nIC,ic,dcc);
-	LTC681x_set_cfgr_dcto(nIC,ic,dcto);
-	LTC681x_set_cfgr_uv(nIC, ic, uv);
-    LTC681x_set_cfgr_ov(nIC, ic, ov);
-}
-//Helper function to set the REFON bit
-void LTC6812_set_cfgr_refon(uint8_t nIC, cell_asic *ic, bool refon) 
-{
-  LTC681x_set_cfgr_refon(nIC,ic,refon);
-}
-//Helper function to set the adcopt bit
-void LTC6812_set_cfgr_adcopt(uint8_t nIC, cell_asic *ic, bool adcopt)
-{
-  LTC681x_set_cfgr_adcopt(nIC,ic,adcopt);
-}
-//Helper function to set GPIO bits
-void LTC6812_set_cfgr_gpio(uint8_t nIC, cell_asic *ic,bool gpio[5])
-{  
-  LTC681x_set_cfgr_gpio(nIC,ic,gpio);
-}
-//Helper function to control discharge
-void LTC6812_set_cfgr_dis(uint8_t nIC, cell_asic *ic,bool dcc[12])
-{  
-  LTC681x_set_cfgr_dis(nIC,ic,dcc);
-}
-//Helper Function to set dcto value in CFG register
-void LTC6812_set_cfgr_dcto(uint8_t nIC, cell_asic *ic,bool dcto[4])
-{
-    LTC681x_set_cfgr_dcto(nIC, ic, dcto);
-}
-//Helper Function to set uv value in CFG register
-void LTC6812_set_cfgr_uv(uint8_t nIC, cell_asic *ic,uint16_t uv)
-{
-    LTC681x_set_cfgr_uv(nIC, ic, uv);
-}
-//Helper function to set OV value in CFG register
-void LTC6812_set_cfgr_ov(uint8_t nIC, cell_asic *ic,uint16_t ov)
-{
-    LTC681x_set_cfgr_ov( nIC, ic, ov);
-}
-
-//Start GPIOs open wire adc conversion
-void LTC6812_axow(
-  uint8_t MD, //ADC Mode
-  uint8_t PUP //Discharge Permit
-)
+/* Start GPIOs open wire ADC conversion */
+void LTC6812_axow( uint8_t MD, //ADC Mode
+				  uint8_t PUP //Pull up/Pull down current
+				)
 {
 	LTC681x_axow(MD, PUP);
 }
 
-// Helper Function to initialize the CFGRB data structures
-void LTC6812_init_cfgb(
-  uint8_t total_ic, 
-  cell_asic *ic
- )
+/* Runs the data sheet algorithm for open wire for single cell detection */
+void LTC6812_run_openwire_single(uint8_t total_ic, cell_asic *ic)
 {
-	 for (uint8_t current_ic = 0; current_ic<total_ic;current_ic++)
-    {
-        for(int j =0; j<6;j++)
-        {
-            ic[current_ic].configb.tx_data[j] = 0;
-        }
-    }
+	LTC681x_run_openwire_single(total_ic, ic);
 }
 
-// Helper Function to set the configuration register B 
-void LTC6812_set_cfgrb(uint8_t nIC, cell_asic *ic,bool fdrf,bool dtmen,bool ps[2],bool gpiobits[4],bool dccbits[4])
+/* Runs the data sheet algorithm for open wire for multiple cell and two consecutive cells detection */
+void LTC6812_run_openwire_multi(uint8_t total_ic, cell_asic *ic)
 {
-	LTC6812_set_cfgrb_fdrf(nIC,ic,fdrf);
-    LTC6812_set_cfgrb_dtmen(nIC,ic,dtmen);
-    LTC6812_set_cfgrb_ps(nIC,ic,ps);
-    LTC6812_set_cfgrb_gpio_b(nIC,ic,gpiobits);
-	LTC6812_set_cfgrb_dcc_b(nIC,ic,dccbits);
-	
+	LTC681x_run_openwire_multi(total_ic, ic);
 }
 
-//Helper function to set the FDRF bit
-void LTC6812_set_cfgrb_fdrf(uint8_t nIC, cell_asic *ic, bool fdrf) 
+/* Runs open wire for GPIOs */
+void LTC6812_run_gpio_openwire(uint8_t total_ic, 
+								cell_asic *ic
+								)
 {
-  if(fdrf) ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]|0x40;
-  else ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]&0xBF;
+	LTC681x_run_gpio_openwire(total_ic, ic);
 }
 
-//Helper function to set the DTMEN bit
-void LTC6812_set_cfgrb_dtmen(uint8_t nIC, cell_asic *ic, bool dtmen) 
+/* Helper function to set discharge bit in CFG register */
+void LTC6812_set_discharge(int Cell, uint8_t total_ic, cell_asic *ic)
 {
-  if(dtmen) ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]|0x08;
-  else ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]&0xF7;
-}
-	
-//Helper function to set the PATH SELECT bit
-void LTC6812_set_cfgrb_ps(uint8_t nIC, cell_asic *ic, bool ps[]) 
-{
-  for(int i =0;i<2;i++)
-  {
-      if(ps[i])ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]|(0x01<<(i+4));
-      else ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]&(~(0x01<<(i+4)));
-  }
-}
-
-// Helper function to set the gpio bits in config b register
-void LTC6812_set_cfgrb_gpio_b(uint8_t nIC, cell_asic *ic, bool gpiobits[]) 
-{
-	for(int i =0;i<4;i++)
-  {
-      if(gpiobits[i])ic[nIC].configb.tx_data[0] = ic[nIC].configb.tx_data[0]|(0x01<<i);
-      else ic[nIC].configb.tx_data[0] = ic[nIC].configb.tx_data[0]&(~(0x01<<i));
-  }
-}
-
-// Helper function to set the dcc bits in config b register
-void LTC6812_set_cfgrb_dcc_b(uint8_t nIC, cell_asic *ic, bool dccbits[]) 
-{
-	
-	for(int i =0;i<4;i++)
-  { 
-		if(i==0)
+	for (int i=0; i<total_ic; i++)
+	{
+		if (Cell==0)
 		{
-			if(dccbits[i])ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]|0x04;
-			else ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]&0xFB;
+			ic[i].configb.tx_data[1] = ic[i].configb.tx_data[1] |(0x04);
+		}
+		else if (Cell<9)
+		{
+		  ic[i].config.tx_data[4] = ic[i].config.tx_data[4] | (1<<(Cell-1));
+		}
+		else if (Cell < 13)
+		{
+		  ic[i].config.tx_data[5] = ic[i].config.tx_data[5] | (1<<(Cell-9));
+		}
+		else if (Cell<16)
+		{
+		  ic[i].configb.tx_data[0] = ic[i].configb.tx_data[0] | (1<<(Cell-9));
 		}
 		else
-		{	
-			if(dccbits[i])ic[nIC].configb.tx_data[0] = ic[nIC].configb.tx_data[0]|(0x01<<(i+3));
-			else ic[nIC].configb.tx_data[0] = ic[nIC].configb.tx_data[0]&(~(0x01<<(i+3)));
+		{
+			break;
 		}
-		
-  }
+	}
 }
 
-//Writes data in S control register the LTC6812-1s connected in a daisy chain stack. 
-void LTC6812_wrsctrl(uint8_t total_ic, //number of ICs in the daisy chain
-                     uint8_t sctrl_reg,
-                     cell_asic *ic
+/* Clears all of the DCC bits in the configuration registers */
+void LTC6812_clear_discharge(uint8_t total_ic, //Number of ICs in the system
+                             cell_asic *ic //A two dimensional array of the data
+							 )
+{
+    LTC681x_clear_discharge(total_ic,ic);
+
+}
+
+/* Writes the pwm registers of a LTC6812 daisy chain */
+void LTC6812_wrpwm(uint8_t total_ic, //The number of ICs being written to
+                     uint8_t pwmReg, // Register Select 
+                     cell_asic *ic //A two dimensional array of the data that will be written
+                    )
+{
+	LTC681x_wrpwm(total_ic,pwmReg,ic);
+}
+
+/* Reads pwm registers of a LTC6812 daisy chain */
+int8_t LTC6812_rdpwm(uint8_t total_ic, //Number of ICs in the system
+                       uint8_t pwmReg, //Register Select 
+                       cell_asic *ic //A two dimensional array that the function stores the read data.
+                      )
+{
+	int8_t pec_error =0;
+	pec_error = LTC681x_rdpwm(total_ic,pwmReg,ic);
+	return(pec_error);
+}
+  
+/* Writes data in S control register the LTC6812-1s connected in a daisy chain stack. */ 
+void LTC6812_wrsctrl(uint8_t total_ic, //Number of ICs in the daisy chain
+                     uint8_t sctrl_reg, //Register Select 
+                     cell_asic *ic //A two dimensional array of the data that will be written
                     )
 {
 	LTC681x_wrsctrl(total_ic, sctrl_reg, ic);
-  }
+}
   
-//  Reads sctrl registers of a LTC6812 daisy chain   
-int8_t LTC6812_rdsctrl(uint8_t total_ic, //number of ICs in the daisy chain
-                       uint8_t sctrl_reg,
-                       cell_asic *ic //a two dimensional array that the function stores the read pwm data
+/* Reads sctrl registers of a LTC6812 daisy chain */   
+int8_t LTC6812_rdsctrl(uint8_t total_ic, //Number of ICs in the daisy chain
+                       uint8_t sctrl_reg, //Register Select 
+                       cell_asic *ic //A two dimensional array that the function stores the read data
                       )
 {
- LTC681x_rdsctrl( total_ic, sctrl_reg,ic )	;
-
-  }
+	LTC681x_rdsctrl( total_ic, sctrl_reg,ic )	;
+ }
 
 /* Start Sctrl data communication               
 This command will start the sctrl pulse communication over the spins
 */
 void LTC6812_stsctrl()
 {
-LTC681x_stsctrl();
-
-  }
+	LTC681x_stsctrl();
+ }
   
-// Write the 6812 PWM/S ctrl Register B 
-void LTC6812_wrpsb(uint8_t total_ic,cell_asic *ic)
+/*
+The command clears the Sctrl registers and initializes
+all values to 0. The register will read back hexadecimal 0x00
+after the command is sent.
+*/
+void LTC6812_clrsctrl()
 {
-		uint8_t cmd[2];
-		uint8_t write_buffer[256];
-		uint8_t c_ic = 0;
+	LTC681x_clrsctrl();
+}
+  
+/* Write the 6812 PWM/Sctrl Register B */
+void LTC6812_wrpsb(uint8_t total_ic, //Number of ICs in the daisy chain
+					cell_asic *ic //A two dimensional array of the data that will be written
+					)
+{
+	uint8_t cmd[2];
+	uint8_t write_buffer[256];
+	uint8_t c_ic = 0;
+	
+	cmd[0] = 0x00;
+	cmd[1] = 0x1C;
+	for(uint8_t current_ic = 0; current_ic<total_ic;current_ic++)
+	{
+		if(ic->isospi_reverse == true){c_ic = current_ic;}
+		else{c_ic = total_ic - current_ic - 1;}
 		
-		cmd[0] = 0x00;
-		cmd[1] = 0x1C;
-		for(uint8_t current_ic = 0; current_ic<total_ic;current_ic++)
-		{
-			if(ic->isospi_reverse == true){c_ic = current_ic;}
-			else{c_ic = total_ic - current_ic - 1;}
-			
-			write_buffer[0] = ic[c_ic].pwmb.tx_data[0];
-            write_buffer[1] = ic[c_ic].pwmb.tx_data[1]&(0x0F);
-     		write_buffer[2]= 0x00;
-        	write_buffer[3] = ic[c_ic].sctrlb.tx_data[3];
-		    write_buffer[4] = ic[c_ic].sctrlb.tx_data[4]&(0x0F);
-		    write_buffer[5]= 0x00;
-		}
-		write_68(total_ic, cmd, write_buffer);
-		
+		write_buffer[0] = ic[c_ic].pwmb.tx_data[0];
+		write_buffer[1] = ic[c_ic].pwmb.tx_data[1]&(0x0F);
+		write_buffer[2]= 0x00;
+		write_buffer[3] = ic[c_ic].sctrlb.tx_data[3];
+		write_buffer[4] = ic[c_ic].sctrlb.tx_data[4]&(0x0F);
+		write_buffer[5]= 0x00;
+	}
+	write_68(total_ic, cmd, write_buffer);		
 }
 
-// Reading pwm/s control register b
-int8_t LTC6812_rdpsb(uint8_t total_ic, //!< number of ICs in the daisy chain
-                       cell_asic *ic //!< a two dimensional array that the function stores the read pwm data
+/* Reading 6812 PWM/Sctrl Register B */
+int8_t LTC6812_rdpsb(uint8_t total_ic, //Number of ICs in the daisy chain
+                       cell_asic *ic //A two dimensional array that the function stores the read data
                       )	
 {
 	uint8_t cmd[4];
@@ -740,29 +574,188 @@ int8_t LTC6812_rdpsb(uint8_t total_ic, //!< number of ICs in the daisy chain
 		}
     }
     return(pec_error);
+}  
+  
+/*  Writes the COMM registers of a LTC6812 daisy chain */
+void LTC6812_wrcomm(uint8_t total_ic, //The number of ICs being written to
+                      cell_asic *ic //A two dimensional array of the comm data that will be written
+                     )
+{
+	LTC681x_wrcomm(total_ic,ic);
 }
 
-//Mutes the LTC6812discharge transistors
+/*  Reads COMM registers of a LTC6812 daisy chain */
+int8_t LTC6812_rdcomm(uint8_t total_ic, //Number of ICs in the system
+                        cell_asic *ic //A two dimensional array that the function stores the read data.
+                       )
+{
+	int8_t pec_error = 0;
+	LTC681x_rdcomm(total_ic, ic);
+	return(pec_error);
+}
+
+/* Shifts data in COMM register out over LTC6812 SPI/I2C port */
+void LTC6812_stcomm(uint8_t len) //Length of data to be transmitted 
+{
+    LTC681x_stcomm(len);
+}
+
+/* Mutes the LTC6812 discharge transistors */
 void LTC6812_mute()
 {
-  uint8_t cmd[2];
+	uint8_t cmd[2];
 
-  cmd[0] = 0x00;
-  cmd[1] = 0x28;
-  
-  cmd_68(cmd);
+	cmd[0] = 0x00;
+	cmd[1] = 0x28;	
+	cmd_68(cmd);
 }
 
-//Clears the LTC6812Mute Discharge
+/* Clears the LTC6812 Mute Discharge */
 void LTC6812_unmute()
 {
-  uint8_t cmd[4];
-  uint16_t cmd_pec;
+	uint8_t cmd[2];
 
-  cmd[0] = 0x00;
-  cmd[1] = 0x29;
-  cmd_68(cmd);
+	cmd[0] = 0x00;
+	cmd[1] = 0x29;
+	cmd_68(cmd);
 }
 
+/* Helper function that increments PEC counters */
+void LTC6812_check_pec(uint8_t total_ic,uint8_t reg, cell_asic *ic)
+{
+    LTC681x_check_pec(total_ic,reg,ic);
+}
 
+/* Helper Function to reset PEC counters */
+void LTC6812_reset_crc_count(uint8_t total_ic, cell_asic *ic)
+{
+	LTC681x_reset_crc_count(total_ic,ic);
+}
 
+/* Helper function to initialize CFG variables */
+void LTC6812_init_cfg(uint8_t total_ic, cell_asic *ic)
+{
+	LTC681x_init_cfg(total_ic,ic);
+}
+/* Helper function to set CFGR variable */
+void LTC6812_set_cfgr(uint8_t nIC, cell_asic *ic, bool refon, bool adcopt, bool gpio[5],bool dcc[12],bool dcto[4], uint16_t uv, uint16_t  ov)
+{
+    LTC681x_set_cfgr_refon(nIC,ic,refon);
+    LTC681x_set_cfgr_adcopt(nIC,ic,adcopt);
+    LTC681x_set_cfgr_gpio(nIC,ic,gpio);
+    LTC681x_set_cfgr_dis(nIC,ic,dcc);
+	LTC681x_set_cfgr_dcto(nIC,ic,dcto);
+	LTC681x_set_cfgr_uv(nIC, ic, uv);
+    LTC681x_set_cfgr_ov(nIC, ic, ov);
+}
+/* Helper function to set the REFON bit */
+void LTC6812_set_cfgr_refon(uint8_t nIC, cell_asic *ic, bool refon) 
+{
+	LTC681x_set_cfgr_refon(nIC,ic,refon);
+}
+/* Helper function to set the adcopt bit */
+void LTC6812_set_cfgr_adcopt(uint8_t nIC, cell_asic *ic, bool adcopt)
+{
+	LTC681x_set_cfgr_adcopt(nIC,ic,adcopt);
+}
+/* Helper function to set GPIO bits */
+void LTC6812_set_cfgr_gpio(uint8_t nIC, cell_asic *ic,bool gpio[5])
+{  
+	LTC681x_set_cfgr_gpio(nIC,ic,gpio);
+}
+/* Helper function to control discharge */
+void LTC6812_set_cfgr_dis(uint8_t nIC, cell_asic *ic,bool dcc[12])
+{  
+	LTC681x_set_cfgr_dis(nIC,ic,dcc);
+}
+/* Helper Function to set dcto value in CFG register */
+void LTC6812_set_cfgr_dcto(uint8_t nIC, cell_asic *ic,bool dcto[4])
+{
+    LTC681x_set_cfgr_dcto(nIC, ic, dcto);
+}
+/* Helper Function to set uv value in CFG register */
+void LTC6812_set_cfgr_uv(uint8_t nIC, cell_asic *ic,uint16_t uv)
+{
+    LTC681x_set_cfgr_uv(nIC, ic, uv);
+}
+/* Helper function to set OV value in CFG register */
+void LTC6812_set_cfgr_ov(uint8_t nIC, cell_asic *ic,uint16_t ov)
+{
+    LTC681x_set_cfgr_ov( nIC, ic, ov);
+}
+
+/*  Helper Function to initialize the CFGRB data structures */
+void LTC6812_init_cfgb(uint8_t total_ic, cell_asic *ic)
+{
+	 for (uint8_t current_ic = 0; current_ic<total_ic;current_ic++)
+    {
+        for(int j =0; j<6;j++)
+        {
+            ic[current_ic].configb.tx_data[j] = 0;
+        }
+    }
+}
+
+/*  Helper Function to set the configuration register B */ 
+void LTC6812_set_cfgrb(uint8_t nIC, cell_asic *ic,bool fdrf,bool dtmen,bool ps[2],bool gpiobits[4],bool dccbits[4])
+{
+	LTC6812_set_cfgrb_fdrf(nIC,ic,fdrf);
+    LTC6812_set_cfgrb_dtmen(nIC,ic,dtmen);
+    LTC6812_set_cfgrb_ps(nIC,ic,ps);
+    LTC6812_set_cfgrb_gpio_b(nIC,ic,gpiobits);
+	LTC6812_set_cfgrb_dcc_b(nIC,ic,dccbits);	
+}
+
+/* Helper function to set the FDRF bit */
+void LTC6812_set_cfgrb_fdrf(uint8_t nIC, cell_asic *ic, bool fdrf) 
+{
+	if(fdrf) ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]|0x40;
+	else ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]&0xBF;
+}
+
+/* Helper function to set the DTMEN bit */
+void LTC6812_set_cfgrb_dtmen(uint8_t nIC, cell_asic *ic, bool dtmen) 
+{
+	if(dtmen) ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]|0x08;
+	else ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]&0xF7;
+}
+	
+/* Helper function to set the PATH SELECT bit */
+void LTC6812_set_cfgrb_ps(uint8_t nIC, cell_asic *ic, bool ps[]) 
+{
+	for(int i =0;i<2;i++)
+	{
+      if(ps[i])ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]|(0x01<<(i+4));
+      else ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]&(~(0x01<<(i+4)));
+	}
+}
+
+/*  Helper function to set the gpio bits in config b register */
+void LTC6812_set_cfgrb_gpio_b(uint8_t nIC, cell_asic *ic, bool gpiobits[]) 
+{
+	for(int i =0;i<4;i++)
+	{
+      if(gpiobits[i])ic[nIC].configb.tx_data[0] = ic[nIC].configb.tx_data[0]|(0x01<<i);
+      else ic[nIC].configb.tx_data[0] = ic[nIC].configb.tx_data[0]&(~(0x01<<i));
+	}
+}
+
+/*  Helper function to set the dcc bits in config b register */
+void LTC6812_set_cfgrb_dcc_b(uint8_t nIC, cell_asic *ic, bool dccbits[]) 
+{
+	
+	for(int i =0;i<4;i++)
+   { 
+		if(i==0)
+		{
+			if(dccbits[i])ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]|0x04;
+			else ic[nIC].configb.tx_data[1] = ic[nIC].configb.tx_data[1]&0xFB;
+		}
+		else
+		{	
+			if(dccbits[i])ic[nIC].configb.tx_data[0] = ic[nIC].configb.tx_data[0]|(0x01<<(i+3));
+			else ic[nIC].configb.tx_data[0] = ic[nIC].configb.tx_data[0]&(~(0x01<<(i+3)));
+		}
+		
+   }
+}
