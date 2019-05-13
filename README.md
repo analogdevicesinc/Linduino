@@ -13,7 +13,7 @@ For details on where and how to purchase the Linduino, please visit the Analog D
 ## How to run an example code ##
 1. Download and run Arduino.exe (Version 1.8.5). You can find the installer here:
 https://www.arduino.cc/en/Main/Software
-2. Download LTSketchbook.
+2. Download [LTSketchbook](https://www.analog.com/media/en/engineering-tools/design-tools/LTSketchbook.zip).
 3. Open the Arduino IDE and go to Files → Preferences and add the LTSketchbook location. 
 4. It is the location where you have saved the LTSketchbook. Check the ‘Use External editor’ option to edit your code files in an external text editor like Notepad++ (optional).
 Click OK and reopen the Arduino IDE. The Preferences will not be set unless the IDE is reopened.
