@@ -11,11 +11,7 @@ A Detailed User Guide for the Linduino, showing how to set up the hardware and u
 For details on where and how to purchase the Linduino, please visit the Analog Devices [website](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc2026c.html#eb-buy) or any of Analog Devices authorized distribution partners.
 
 ## How to run an example code ##
-<<<<<<< HEAD
 1. Download and run Arduino.exe (Version 1.8.5). You can find the installer [here](https://www.arduino.cc/en/Main/Software). 
-=======
-1. Download and run Arduino.exe (Version 1.8.5). You can find the installer [here]https://www.arduino.cc/en/Main/Software. 
->>>>>>> d58a82e6d4e30f86474c715d8826527b517c3418
 2. Download [LTSketchbook](https://www.analog.com/media/en/engineering-tools/design-tools/LTSketchbook.zip).
 3. Open the Arduino IDE and go to Files → Preferences and add the LTSketchbook location. 
 4. It is the location where you have saved the LTSketchbook. Check the ‘Use External editor’ option to edit your code files in an external text editor like Notepad++ (optional).
