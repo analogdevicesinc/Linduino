@@ -94,7 +94,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <LT_SPI.h>
 #include <LT_I2C.h>
 #include <Linduino.h>
-#include "arduino.h"
+//#include "arduino.h"
 
 // for quikeval compatibility only
 #define MISO_TIMEOUT  1000
