@@ -197,31 +197,16 @@ Read charge, current, and voltage.
 
 //! @}
 
-/*!
-| Conversion Constants                              |  Value   |
-| :------------------------------------------------ | :------: |
-| LTC2944_CHARGE_lsb                                | 0.34  mAh|
-| LTC2944_VOLTAGE_lsb                               | 1.068  mV|
-| LTC2944_CURRENT_lsb                               |  29.3  uV|
-| LTC2944_TEMPERATURE_lsb                           | 0.25    C|
-| LTC2944_FULLSCALE_VOLTAGE                         |  23.6   V|
-| LTC2944_FULLSCALE_CURRENT                         |  60    mV|
-| LTC2944_FULLSCALE_TEMPERATURE                     | 510     K|
-
-*/
 /*! @name Conversion Constants
 @{ */
 const float LTC2944_CHARGE_lsb = 0.34E-3;
-const float LTC2944_VOLTAGE_lsb = 1.068E-3;
-const float LTC2944_CURRENT_lsb = 29.3E-6;
+const float LTC2944_VOLTAGE_lsb = 4.32E-3;
+const float LTC2944_CURRENT_lsb = 31.25E-6;
 const float LTC2944_TEMPERATURE_lsb = 0.25;
-const float LTC2944_FULLSCALE_VOLTAGE = 70;
-const float LTC2944_FULLSCALE_CURRENT = 60E-3;
+const float LTC2944_FULLSCALE_VOLTAGE = 70.8;
+const float LTC2944_FULLSCALE_CURRENT = 64E-3; // Note: 2**11*31.25e-6 = 0.064
 const float LTC2944_FULLSCALE_TEMPERATURE = 510;
 //! @}
-
-//! @}
-
 
 //! Write an 8-bit code to the LTC2944.
 //! @return The function returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
