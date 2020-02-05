@@ -20,3 +20,4 @@ Click OK and reopen the Arduino IDE. The Preferences will not be set unless the 
 6. Select the Serial Port on the Arduino IDE ­from File → Port. 
 7. Navigate to the example code in Part Number folder from File options.
 8. Click the Compile button to compile the code. Click the Upload button to upload the code into Linduino.
+9. Open the Arduino serial monitor and set the baud rate to 115200 to see the menu options. 
