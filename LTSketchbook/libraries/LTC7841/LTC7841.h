@@ -9,10 +9,7 @@ N-channel power MOSFET stages out-of-phase.
 
 @endverbatim
 
-http://www.linear.com/product/LTC7841
-
-http://www.linear.com/demo/DC2798A
-
+http://www.analog.com/product/LTC7841
 
 Copyright 2020(c) Analog Devices, Inc.
 

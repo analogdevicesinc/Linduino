@@ -1,5 +1,5 @@
 /*!
-Linear Technology DC2978A Demonstration
+Analog Devices DC2978A Demonstration
 
 LTC7841: Six Channel Sequencer and Voltage Supervisor with EEPROM
 
@@ -9,12 +9,12 @@ LTC7841: Six Channel Sequencer and Voltage Supervisor with EEPROM
 
 @endverbatim
 
-http://www.linear.com/product/LTC7841
+http://www.analog.com/product/LTC7841
 
-http://www.linear.com/demo/DC2978A
+http://www.analog.com/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc1798a-a.html
 
 
-Copyright 2018(c) Analog Devices, Inc.
+Copyright 2020(c) Analog Devices, Inc.
 
 All rights reserved.
 
