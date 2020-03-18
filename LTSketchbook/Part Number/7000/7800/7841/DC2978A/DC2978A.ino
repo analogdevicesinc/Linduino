@@ -9,7 +9,7 @@ LTC7841: Six Channel Sequencer and Voltage Supervisor with EEPROM
 
 @endverbatim
 
-http://www.analog.com/product/LTC7841
+http://www.analog.com/products/LTC7841
 
 http://www.analog.com/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc1798a-a.html
 
