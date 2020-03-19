@@ -9,7 +9,7 @@ N-channel power MOSFET stages out-of-phase.
 
 @endverbatim
 
-http://www.analog.com/product/LTC7841
+http://www.analog.com/products/LTC7841
 
 Copyright 2020(c) Analog Devices, Inc.
 
