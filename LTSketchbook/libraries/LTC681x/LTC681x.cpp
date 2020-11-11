@@ -2006,35 +2006,35 @@ void LTC681x_check_pec(uint8_t total_ic, //Number of ICs in the system
 		case CFGR:
 		  for (int current_ic = 0 ; current_ic < total_ic; current_ic++)
 		  {
-			ic[current_ic].crc_count.pec_count = ic[current_ic].crc_count.pec_count + ic[current_ic].config.rx_pec_match;
-			ic[current_ic].crc_count.cfgr_pec = ic[current_ic].crc_count.cfgr_pec + ic[current_ic].config.rx_pec_match;
+			ic[current_ic].crc_count.pec_count += ic[current_ic].config.rx_pec_match;
+			ic[current_ic].crc_count.cfgr_pec += ic[current_ic].config.rx_pec_match;
 		  }
 		break;
 
 		case CFGRB:
 		  for (int current_ic = 0 ; current_ic < total_ic; current_ic++)
 		  {
-			ic[current_ic].crc_count.pec_count = ic[current_ic].crc_count.pec_count + ic[current_ic].configb.rx_pec_match;
-			ic[current_ic].crc_count.cfgr_pec = ic[current_ic].crc_count.cfgr_pec + ic[current_ic].configb.rx_pec_match;
+			ic[current_ic].crc_count.pec_count += ic[current_ic].configb.rx_pec_match;
+			ic[current_ic].crc_count.cfgr_pec += ic[current_ic].configb.rx_pec_match;
 		  }
 		break;
 		case CELL:
 		  for (int current_ic = 0 ; current_ic < total_ic; current_ic++)
 		  {
-			for (int i=0; i<ic[0].ic_reg.num_cv_reg; i++)
+			for (int i = 0; i < ic[0].ic_reg.num_cv_reg; i++)
 			{
-			  ic[current_ic].crc_count.pec_count = ic[current_ic].crc_count.pec_count + ic[current_ic].cells.pec_match[i];
-			  ic[current_ic].crc_count.cell_pec[i] = ic[current_ic].crc_count.cell_pec[i] + ic[current_ic].cells.pec_match[i];
+			  ic[current_ic].crc_count.pec_count += ic[current_ic].cells.pec_match[i];
+			  ic[current_ic].crc_count.cell_pec[i] += ic[current_ic].cells.pec_match[i];
 			}
 		  }
 		break;
 		case AUX:
 		  for (int current_ic = 0 ; current_ic < total_ic; current_ic++)
 		  {
-			for (int i=0; i<ic[0].ic_reg.num_gpio_reg; i++)
+			for (int i = 0; i < ic[0].ic_reg.num_gpio_reg; i++)
 			{
-			  ic[current_ic].crc_count.pec_count = ic[current_ic].crc_count.pec_count + (ic[current_ic].aux.pec_match[i]);
-			  ic[current_ic].crc_count.aux_pec[i] = ic[current_ic].crc_count.aux_pec[i] + (ic[current_ic].aux.pec_match[i]);
+			  ic[current_ic].crc_count.pec_count += (ic[current_ic].aux.pec_match[i]);
+			  ic[current_ic].crc_count.aux_pec[i] += (ic[current_ic].aux.pec_match[i]);
 			}
 		  }
 
@@ -2042,11 +2042,10 @@ void LTC681x_check_pec(uint8_t total_ic, //Number of ICs in the system
 		case STAT:
 		  for (int current_ic = 0 ; current_ic < total_ic; current_ic++)
 		  {
-
-			for (int i=0; i<ic[0].ic_reg.num_stat_reg-1; i++)
+			for (int i = 0; i < ic[0].ic_reg.num_stat_reg; i++)
 			{
-			  ic[current_ic].crc_count.pec_count = ic[current_ic].crc_count.pec_count + ic[current_ic].stat.pec_match[i];
-			  ic[current_ic].crc_count.stat_pec[i] = ic[current_ic].crc_count.stat_pec[i] + ic[current_ic].stat.pec_match[i];
+			  ic[current_ic].crc_count.pec_count += ic[current_ic].stat.pec_match[i];
+			  ic[current_ic].crc_count.stat_pec[i] += ic[current_ic].stat.pec_match[i];
 			}
 		  }
 		break;
