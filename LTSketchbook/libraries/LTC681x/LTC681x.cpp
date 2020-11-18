@@ -268,8 +268,6 @@ int8_t LTC681x_rdcfg(uint8_t total_ic, //Number of ICs in the system
 	uint8_t cmd[2]= {0x00 , 0x02};
 	uint8_t read_buffer[256];
 	int8_t pec_error = 0;
-	uint16_t data_pec;
-	uint16_t calc_pec;
 	uint8_t c_ic = 0;
 	
 	pec_error = read_68(total_ic, cmd, read_buffer);
@@ -290,9 +288,7 @@ int8_t LTC681x_rdcfg(uint8_t total_ic, //Number of ICs in the system
 			ic[c_ic].config.rx_data[byte] = read_buffer[byte+(8*current_ic)];
 		}
 		
-		calc_pec = pec15_calc(6,&read_buffer[8*current_ic]);
-		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
-		if (calc_pec != data_pec )
+		if (pec_error == -1)
 		{
 			ic[c_ic].config.rx_pec_match = 1;
 		}
@@ -311,8 +307,6 @@ int8_t LTC681x_rdcfgb(uint8_t total_ic, //Number of ICs in the system
 	uint8_t cmd[2]= {0x00 , 0x26};
 	uint8_t read_buffer[256];
 	int8_t pec_error = 0;
-	uint16_t data_pec;
-	uint16_t calc_pec;
 	uint8_t c_ic = 0;
 	
 	pec_error = read_68(total_ic, cmd, read_buffer);
@@ -333,9 +327,7 @@ int8_t LTC681x_rdcfgb(uint8_t total_ic, //Number of ICs in the system
 			ic[c_ic].configb.rx_data[byte] = read_buffer[byte+(8*current_ic)];
 		}
 		
-		calc_pec = pec15_calc(6,&read_buffer[8*current_ic]);
-		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
-		if (calc_pec != data_pec )
+		if (pec_error == -1)
 		{
 			ic[c_ic].configb.rx_pec_match = 1;
 		}
@@ -1744,8 +1736,6 @@ int8_t LTC681x_rdpwm(uint8_t total_ic, //Number of ICs in the system
 	uint8_t cmd[4];
 	uint8_t read_buffer[256];
 	int8_t pec_error = 0;
-	uint16_t data_pec;
-	uint16_t calc_pec;
 	uint8_t c_ic = 0;
 	
 	if (pwmReg == 0)
@@ -1776,9 +1766,7 @@ int8_t LTC681x_rdpwm(uint8_t total_ic, //Number of ICs in the system
 			ic[c_ic].pwm.rx_data[byte] = read_buffer[byte+(8*current_ic)];
 		}
 		
-		calc_pec = pec15_calc(6,&read_buffer[8*current_ic]);
-		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
-		if (calc_pec != data_pec )
+		if (pec_error == -1)
 		{
 			ic[c_ic].pwm.rx_pec_match = 1;
 		}
@@ -1832,8 +1820,6 @@ int8_t LTC681x_rdsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
     uint8_t cmd[4];
     uint8_t read_buffer[256];
     int8_t pec_error = 0;
-    uint16_t data_pec;
-    uint16_t calc_pec;
     uint8_t c_ic = 0;
     
     if (sctrl_reg == 0)
@@ -1860,9 +1846,7 @@ int8_t LTC681x_rdsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
             ic[c_ic].sctrl.rx_data[byte] = read_buffer[byte+(8*current_ic)]; 	
         }
 		
-        calc_pec = pec15_calc(6,&read_buffer[8*current_ic]);
-        data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
-        if(calc_pec != data_pec )
+        if(pec_error == -1)
         {
             ic[c_ic].sctrl.rx_pec_match = 1;
         }
@@ -1940,8 +1924,6 @@ int8_t LTC681x_rdcomm(uint8_t total_ic, //Number of ICs in the system
 	uint8_t cmd[2]= {0x07 , 0x22};
 	uint8_t read_buffer[256];
 	int8_t pec_error = 0;
-	uint16_t data_pec;
-	uint16_t calc_pec;
 	uint8_t c_ic=0;
 	
 	pec_error = read_68(total_ic, cmd, read_buffer);
@@ -1962,9 +1944,7 @@ int8_t LTC681x_rdcomm(uint8_t total_ic, //Number of ICs in the system
 			ic[c_ic].com.rx_data[byte] = read_buffer[byte+(8*current_ic)];
 		}
 		
-		calc_pec = pec15_calc(6,&read_buffer[8*current_ic]);
-		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
-		if (calc_pec != data_pec )
+		if (pec_error == -1)
 		{
 			ic[c_ic].com.rx_pec_match = 1;
 		}
