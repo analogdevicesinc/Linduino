@@ -144,7 +144,6 @@ int8_t read_68( uint8_t total_ic, // Number of ICs in the system
 {
 	const uint8_t BYTES_IN_REG = 8;
 	uint8_t cmd[4];
-	uint8_t data[256];
 	int8_t pec_error = 0;
 	uint16_t cmd_pec;
 	uint16_t data_pec;
@@ -157,15 +156,11 @@ int8_t read_68( uint8_t total_ic, // Number of ICs in the system
 	cmd[3] = (uint8_t)(cmd_pec);
 	
 	cs_low(CS_PIN);
-	spi_write_read(cmd, 4, data, (BYTES_IN_REG*total_ic));         //Transmits the command and reads the configuration data of all ICs on the daisy chain into rx_data[] array
+	spi_write_read(cmd, 4, rx_data, (BYTES_IN_REG*total_ic));         //Transmits the command and reads the configuration data of all ICs on the daisy chain into rx_data[] array
 	cs_high(CS_PIN);                                         
 
-	for (uint8_t current_ic = 0; current_ic < total_ic; current_ic++) //Executes for each LTC681x in the daisy chain and packs the data
-	{																//into the rx_data array as well as check the received data for any bit errors
-		for (uint8_t current_byte = 0; current_byte < BYTES_IN_REG; current_byte++)
-		{
-			rx_data[(current_ic*8)+current_byte] = data[current_byte + (current_ic*BYTES_IN_REG)];
-		}
+	for (uint8_t current_ic = 0; current_ic < total_ic; current_ic++) // Executes for each LTC681x in the daisy chain
+	{								  // and check the received data for any bit errors
 		
 		received_pec = (rx_data[(current_ic*8)+6]<<8) + rx_data[(current_ic*8)+7];
 		data_pec = pec15_calc(6, &rx_data[current_ic*8]);
@@ -176,7 +171,7 @@ int8_t read_68( uint8_t total_ic, // Number of ICs in the system
 		}
 	}
 	
-	return(pec_error);
+	return pec_error;
 }
 
 /* Calculates  and returns the CRC15 */
