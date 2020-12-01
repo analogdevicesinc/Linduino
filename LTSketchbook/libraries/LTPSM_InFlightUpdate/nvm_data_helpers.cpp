@@ -122,8 +122,8 @@ uint8_t bufferNvmData(t_RECORD_NVM_DATA *pRecord)
   nvram_somethingToVerify = 1;
 
   nWords = (uint16_t)((pRecord->baseRecordHeader.Length-8)/2);
-  words = (uint16_t *) ((uint16_t)(holdRecord()+8)); // Change (UINT16) to the size of an address on the target machine.
-
+  words = (uint16_t*) ((uint8_t *)holdRecord()+8); // Change (UINT32) to the size of an address on the target machine.
+  
   return 1;
 }
 
