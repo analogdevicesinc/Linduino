@@ -558,7 +558,7 @@ int8_t LTC681x_rdstat(uint8_t reg, //Determines which Stat  register is read bac
 {
 	const uint8_t BYT_IN_REG = 6;
 	const uint8_t STAT_IN_REG = 3;
-	uint8_t data[12*total_ic];
+	uint8_t data[NUM_RX_BYT*total_ic];
 	uint8_t data_counter = 0;
 	int8_t pec_error = 0;
 	uint16_t parsed_stat;
