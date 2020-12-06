@@ -189,7 +189,7 @@ int8_t LTC6812_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
                       )
 {
 	int8_t pec_error = 0;
-	LTC681x_rdaux(reg,total_ic,ic);
+	pec_error = LTC681x_rdaux(reg,total_ic,ic);
 	return (pec_error);
 }
 
@@ -475,7 +475,9 @@ int8_t LTC6812_rdsctrl(uint8_t total_ic, //Number of ICs in the daisy chain
                        cell_asic *ic //A two dimensional array that the function stores the read data
                       )
 {
-	LTC681x_rdsctrl( total_ic, sctrl_reg,ic )	;
+    int8_t pec_error = 0;
+	pec_error = LTC681x_rdsctrl(total_ic, sctrl_reg,ic);
+    return pec_error;
  }
 
 /* Start Sctrl data communication               
@@ -590,7 +592,7 @@ int8_t LTC6812_rdcomm(uint8_t total_ic, //Number of ICs in the system
                        )
 {
 	int8_t pec_error = 0;
-	LTC681x_rdcomm(total_ic, ic);
+	pec_error = LTC681x_rdcomm(total_ic, ic);
 	return(pec_error);
 }
 

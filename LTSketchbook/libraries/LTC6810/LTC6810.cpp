@@ -169,7 +169,7 @@ int8_t LTC6810_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
 				  )
 {
    int8_t pec_error = 0;
-   LTC681x_rdaux(reg,total_ic,ic);
+   pec_error = LTC681x_rdaux(reg,total_ic,ic);
    return (pec_error);
 }
 
@@ -571,7 +571,7 @@ int8_t LTC6810_rdcomm(uint8_t total_ic, //Number of ICs in the system
 				   )
 {
    int8_t pec_error = 0;
-   LTC681x_rdcomm(total_ic, ic);
+   pec_error = LTC681x_rdcomm(total_ic, ic);
    return(pec_error);
 }
 
