@@ -201,9 +201,8 @@ uint8_t LTC6810_rds(uint8_t reg, //Controls which s voltage register is read bac
                     )
 {
     int8_t pec_error = 0;
-    uint8_t *s_data;
+    uint8_t s_data[NUM_RX_BYT*total_ic];
     uint8_t c_ic = 0;
-    s_data = (uint8_t *) malloc((NUM_RX_BYT*total_ic)*sizeof(uint8_t));
     
     if (reg == 0)
     {
@@ -248,7 +247,6 @@ uint8_t LTC6810_rds(uint8_t reg, //Controls which s voltage register is read bac
       }
     }
     LTC6810_check_pec(total_ic,CELL,ic);
-    free(s_data);
     return(pec_error);
 }
 
