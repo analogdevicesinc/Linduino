@@ -534,7 +534,7 @@ uint8_t LTC6813_rdpsb(uint8_t total_ic, //< number of ICs in the daisy chain
                       cell_asic *ic //< a two dimensional array that the function stores the read data
                       )	
 {
-    uint8_t cmd[4];
+    uint8_t cmd[2];
     uint8_t read_buffer[256];
     int8_t pec_error = 0;
     uint16_t data_pec;

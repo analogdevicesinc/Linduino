@@ -258,9 +258,7 @@ void LTC6810_rds_reg(uint8_t reg, //Determines which S voltage register is read 
                       uint8_t *data //An array of the unparsed cell codes
                      )
 {
-	const uint8_t REG_LEN = 8; //Number of bytes in each ICs register + 2 bytes for the PEC
-	uint8_t cmd[4];
-	uint16_t cmd_pec;
+	uint8_t cmd[2];
 
 	if (reg == 1)     // RDSA
 	{
@@ -586,7 +584,7 @@ uint8_t LTC6810_rdsid(uint8_t total_ic, // The number of ICs in the system
                      cell_asic *ic //A two dimensional array that the function stores the read data.
                     )
 {
-    uint8_t cmd[4];
+    uint8_t cmd[2];
     uint8_t read_buffer[256];
     int8_t pec_error = 0;
     uint16_t data_pec;
