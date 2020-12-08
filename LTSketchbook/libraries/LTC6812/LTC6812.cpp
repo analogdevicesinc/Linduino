@@ -361,7 +361,7 @@ int16_t LTC6812_run_adc_redundancy_st(uint8_t adc_mode, //ADC Mode
 									  )
 {
 	int16_t error = 0;
-	LTC681x_run_adc_redundancy_st(adc_mode,adc_reg,total_ic,ic);
+	error = LTC681x_run_adc_redundancy_st(adc_mode, adc_reg, total_ic, ic);
 	return(error);
 }
 
