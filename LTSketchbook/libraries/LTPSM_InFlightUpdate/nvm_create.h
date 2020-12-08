@@ -1,6 +1,6 @@
 /*!
 
-Copyright 2018(c) Analog Devices, Inc.
+Copyright 2020(c) Analog Devices, Inc.
 
 All rights reserved.
 
@@ -35,56 +35,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 /*! @file
     @ingroup LTPSM_InFlightUpdate
-    Library Header File for NVM
+    Library Header File
 */
 
+#ifndef NVM_CREATE_H_
+#define NVM_CREATE_H_
 
-#ifndef NVM_H_
-#define NVM_H_
-
-#include <stdbool.h>
 #include <stdint.h>
-#include <avr/pgmspace.h>
-#include "../LT_PMBUS/LT_PMBus.h"
-#include "../LT_SMBUS/LT_SMBusNoPec.h"
-#include "../LT_SMBUS/LT_SMBusPec.h"
-#include "../LT_SMBUS/LT_I2CBus.h"
-#include "main_record_processor.h"
-#include "hex_file_parser.h"
 
-// Give access to c code used by this class
-extern LT_SMBusNoPec *smbusNoPec__;
-extern LT_SMBusPec *smbusPec__;
+extern uint8_t *create_event(uint16_t id);
+extern uint8_t *create_meta_data(uint16_t data);
+extern uint8_t *create_delay_ms(uint16_t delay);
+extern uint8_t *create_send_byte(uint16_t address, uint8_t command, bool pec = false);
+extern uint8_t *create_write_byte(uint16_t address, uint8_t command, uint8_t data, bool pec = false);
+extern uint8_t *create_extended_write_byte(uint16_t address, uint16_t command, uint8_t data, bool pec = false);
+extern uint8_t *create_write_word(uint16_t address, uint8_t command, uint16_t data, bool pec = false);
+extern uint8_t *create_extended_write_word(uint16_t address, uint16_t command, uint16_t data, bool pec = false);
+extern uint8_t *create_write_block(uint16_t address, uint8_t command, uint8_t *data, int size, bool pec = false);
+extern uint8_t *create_read_byte_expect(uint16_t address, uint8_t command, uint8_t data, bool pec = false);
+extern uint8_t *create_extended_read_byte_expect(uint16_t address, uint16_t command, uint8_t data, bool pec = false);
+extern uint8_t *create_read_word_expect(uint16_t address, uint8_t command, uint16_t data, bool pec = false);
+extern uint8_t *create_extended_read_word_expect(uint16_t address, uint16_t command, uint16_t data, bool pec = false);
+extern uint8_t *create_termination();
+extern uint8_t *pack_records(uint8_t **records);
 
-class NVM
-{
-  private:
-    uint8_t numAddrs;
-
-  public:
-    //! Constructor.
-    NVM(LT_SMBusNoPec *,    //!< reference to no pec smbus object
-        LT_SMBusPec *       //!< reference to pec smbus object
-       );
-
-    //! Program with hex data.
-    //! @return true if data loaded.
-    bool programWithData(const unsigned char * //!< array of hex data
-                        );
-
-    //! Verifies board NVM with hex data..
-    //! @return true if NVM configuration matches the hex data.
-    bool verifyWithData(const unsigned char *);
-
-    //! Program with raw data records.
-    //! @return true if data loaded.
-    bool programWithRawData(const unsigned char * //!< array of records
-                        );
-
-    //! Verifies board NVM with raw data records..
-    //! @return true if NVM configuration matches the records.
-    bool verifyWithRawData(const unsigned char *);
-
-};
-
-#endif /* NVM_H_ */
+#endif /* NVM_CREATE_H_ */

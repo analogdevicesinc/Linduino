@@ -47,32 +47,60 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** PRIVATE PROTOTYPES RELATING TO RECORD TYPE PARSING ************/
 uint8_t recordProcessor___0x01___processWriteByteOptionalPEC(t_RECORD_PMBUS_WRITE_BYTE *);
+uint8_t recordProcessor___0x8001___processExtendedWriteByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BYTE *);
 uint8_t recordProcessor___0x02___processWriteWordOptionalPEC(t_RECORD_PMBUS_WRITE_WORD *);
+uint8_t recordProcessor___0x8002___processExtendedWriteWordOptionalPEC(t_RECORD_PMBUS_EXTENDED_WRITE_WORD *);
+uint8_t recordProcessor___0x03___processWriteBlockOptionalPEC(t_RECORD_PMBUS_WRITE_BLOCK *);
+uint8_t recordProcessor___0x8003___processExtendedWriteBlockOptionalPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK *);
 uint8_t recordProcessor___0x04___processReadByteExpectOptionalPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT *);
+uint8_t recordProcessor___0x8004___processExtendedReadByteExpectOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT *);
 uint8_t recordProcessor___0x05___processReadWordExpectOptionalPEC(t_RECORD_PMBUS_READ_WORD_EXPECT *);
+uint8_t recordProcessor___0x8005___processExtendedReadWordExpectOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT *);
+uint8_t recordProcessor___0x06___processReadBlockExpectOptionalPec(t_RECORD_PMBUS_READ_BLOCK_EXPECT *);
+uint8_t recordProcessor___0x8006___processExtendedReadBlockExpectOptionalPec(t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT *);
 uint8_t recordProcessor___0x09___bufferNVMData(t_RECORD_NVM_DATA *);
 uint8_t recordProcessor___0x0A___processReadByteLoopMaskOptionalPEC(t_RECORD_PMBUS_READ_BYTE_LOOP_MASK *);
+uint8_t recordProcessor___0x800A___processExtendedReadByteLoopMaskOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK *);
 uint8_t recordProcessor___0x0B___processReadWordLoopMaskOptionalPEC(t_RECORD_PMBUS_READ_WORD_LOOP_MASK *);
+uint8_t recordProcessor___0x800B___processExtendedReadWordLoopMaskOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK *);
 uint8_t recordProcessor___0x0C___processPollReadByteUntilAckNoPEC(t_RECORD_PMBUS_POLL_READ_BYTE_UNTIL_ACK *);
 uint8_t recordProcessor___0x0D___processDelayMs(t_RECORD_DELAY_MS *);
 uint8_t recordProcessor___0x0E___processSendByteOptionalPEC(t_RECORD_PMBUS_SEND_BYTE *);
+uint8_t recordProcessor___0x800E___processExtendedSendByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_SEND_BYTE *);
 uint8_t recordProcessor___0x0F___processWriteByteNoPEC(t_RECORD_PMBUS_WRITE_BYTE_NOPEC *);
+uint8_t recordProcessor___0x800F___processExtendedWriteByteNoPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BYTE_NOPEC *);
 uint8_t recordProcessor___0x10___processWriteWordNoPEC(t_RECORD_PMBUS_WRITE_WORD_NOPEC *);
+uint8_t recordProcessor___0x8010___processExtendedWriteWordNoPEC(t_RECORD_PMBUS_EXTENDED_WRITE_WORD_NOPEC *);
+uint8_t recordProcessor___0x11___processWriteBlockNoPEC(t_RECORD_PMBUS_WRITE_BLOCK_NOPEC *);
+uint8_t recordProcessor___0x8011___processExtendedWriteBlockNoPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK_NOPEC *);
 uint8_t recordProcessor___0x12___processReadByteExpectNoPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT_NOPEC *);
+uint8_t recordProcessor___0x8012___processExtendedReadByteExpectNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC *);
 uint8_t recordProcessor___0x13___processReadWordExpectNoPEC(t_RECORD_PMBUS_READ_WORD_EXPECT_NOPEC *);
+uint8_t recordProcessor___0x8013___processExtendedReadWordExpectNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC *);
+uint8_t recordProcessor___0x14___processReadBlockExpectNoPec(t_RECORD_PMBUS_READ_BLOCK_EXPECT_NOPEC *);
+uint8_t recordProcessor___0x8014___processExtendedReadBlockExpectNoPec(t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT_NOPEC *);
 uint8_t recordProcessor___0x15___processReadByteLoopMaskNoPEC(t_RECORD_PMBUS_READ_BYTE_LOOP_MASK_NOPEC *);
+uint8_t recordProcessor___0x8015___processExtendedReadByteLoopMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC *);
 uint8_t recordProcessor___0x16___processReadWordLoopMaskNoPEC(t_RECORD_PMBUS_READ_WORD_LOOP_MASK_NOPEC *);
+uint8_t recordProcessor___0x8016___processExtendedReadWordLoopMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC *);
 uint8_t recordProcessor___0x17___processSendByteNoPEC(t_RECORD_PMBUS_SEND_BYTE_NOPEC *);
+uint8_t recordProcessor___0x8017___processExtendedSendByteNoPEC(t_RECORD_PMBUS_EXTENDED_SEND_BYTE_NOPEC *);
 uint8_t recordProcessor___0x18___processEvent(t_RECORD_EVENT *);
 uint8_t recordProcessor___0x19___processReadByteExpectMaskNoPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC *);
+uint8_t recordProcessor___0x8019___processExtendedReadByteExpectMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC *);
 uint8_t recordProcessor___0x1A___processReadWordExpectMaskNoPEC(t_RECORD_PMBUS_READ_WORD_EXPECT_MASK_NOPEC *);
+uint8_t recordProcessor___0x801A___processExtendedReadWordExpectMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC *);
 uint8_t recordProcessor___0x1B___processVariableMetaData(t_RECORD_VARIABLE_META_DATA *);
 uint8_t recordProcessor___0x1C___modifyWordNoPEC(t_RECORD_PMBUS_MODIFY_WORD_NO_PEC *);
+uint8_t recordProcessor___0x801C___extendedModifyWordNoPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_WORD_NO_PEC *);
 uint8_t recordProcessor___0x1D___modifyByteNoPEC(t_RECORD_PMBUS_MODIFY_BYTE_NO_PEC *);
+uint8_t recordProcessor___0x801D___extendedModifyByteNoPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE_NO_PEC *);
 uint8_t recordProcessor___0x1E___writeNvmData(t_RECORD_NVM_DATA *);
 uint8_t recordProcessor___0x1F___read_then_verifyNvmData(t_RECORD_NVM_DATA *);
 uint8_t recordProcessor___0x20___modifyByteOptionalPEC(t_RECORD_PMBUS_MODIFY_BYTE *);
+uint8_t recordProcessor___0x8020___extendedModifyByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE *);
 uint8_t recordProcessor___0x21___modifyWordOptionalPEC(t_RECORD_PMBUS_MODIFY_WORD *);
+uint8_t recordProcessor___0x8021___extendedModifyWordOptionalPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_WORD *);
 
 /** VARIABLES ******************************************************/
 static bool verification_in_progress = false;
@@ -104,20 +132,38 @@ uint8_t processRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
       case RECORD_TYPE_PMBUS_WRITE_BYTE: // 0x01
         successful_parse_of_record_type = recordProcessor___0x01___processWriteByteOptionalPEC( (t_RECORD_PMBUS_WRITE_BYTE *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_WRITE_BYTE: // 0x8001
+        successful_parse_of_record_type = recordProcessor___0x8001___processExtendedWriteByteOptionalPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_BYTE *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_WRITE_WORD: // 0x02
         successful_parse_of_record_type = recordProcessor___0x02___processWriteWordOptionalPEC( (t_RECORD_PMBUS_WRITE_WORD *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_WRITE_WORD: // 0x8002
+        successful_parse_of_record_type = recordProcessor___0x8002___processExtendedWriteWordOptionalPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_WORD *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_WRITE_BLOCK: // 0x03
-        successful_parse_of_record_type = FAILURE; // Unsupported Record Type
+        successful_parse_of_record_type = recordProcessor___0x03___processWriteBlockOptionalPEC( (t_RECORD_PMBUS_WRITE_BLOCK *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_WRITE_BLOCK: // 0x8003
+        successful_parse_of_record_type = recordProcessor___0x8003___processExtendedWriteBlockOptionalPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK *) record_to_process);
         break;
       case RECORD_TYPE_PMBUS_READ_BYTE_EXPECT: // 0x04
         successful_parse_of_record_type = recordProcessor___0x04___processReadByteExpectOptionalPEC( (t_RECORD_PMBUS_READ_BYTE_EXPECT *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT: // 0x8004
+        successful_parse_of_record_type = recordProcessor___0x8004___processExtendedReadByteExpectOptionalPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_READ_WORD_EXPECT: // 0x05
         successful_parse_of_record_type = recordProcessor___0x05___processReadWordExpectOptionalPEC( (t_RECORD_PMBUS_READ_WORD_EXPECT *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT: // 0x8005
+        successful_parse_of_record_type = recordProcessor___0x8005___processExtendedReadWordExpectOptionalPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_READ_BLOCK_EXPECT: // 0x06
-        successful_parse_of_record_type = FAILURE; // Unsupported Record Type
+        successful_parse_of_record_type = recordProcessor___0x06___processReadBlockExpectOptionalPec( (t_RECORD_PMBUS_READ_BLOCK_EXPECT *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_BLOCK_EXPECT: // 0x8006
+        successful_parse_of_record_type = recordProcessor___0x8006___processExtendedReadBlockExpectOptionalPec( (t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT *) record_to_process);
         break;
       case RECORD_TYPE_DEVICE_ADDRESS: // 0x07 -- OBSOLETED
         successful_parse_of_record_type = SUCCESS; // Do nothing for this record type, but do not fail
@@ -131,8 +177,14 @@ uint8_t processRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
       case RECORD_TYPE_PMBUS_READ_BYTE_LOOP_MASK: // 0x0A
         successful_parse_of_record_type = recordProcessor___0x0A___processReadByteLoopMaskOptionalPEC( (t_RECORD_PMBUS_READ_BYTE_LOOP_MASK *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK: // 0x800A
+        successful_parse_of_record_type = recordProcessor___0x800A___processExtendedReadByteLoopMaskOptionalPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_READ_WORD_LOOP_MASK: //0x0B
         successful_parse_of_record_type = recordProcessor___0x0B___processReadWordLoopMaskOptionalPEC( (t_RECORD_PMBUS_READ_WORD_LOOP_MASK *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_LOOP_MASK: //0x800B
+        successful_parse_of_record_type = recordProcessor___0x800B___processExtendedReadWordLoopMaskOptionalPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK *) record_to_process);
         break;
       case RECORD_TYPE_PMBUS_POLL_UNTIL_ACK_NOPEC: // 0x0C
         successful_parse_of_record_type = recordProcessor___0x0C___processPollReadByteUntilAckNoPEC( (t_RECORD_PMBUS_POLL_READ_BYTE_UNTIL_ACK *) record_to_process);
@@ -143,32 +195,62 @@ uint8_t processRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
       case RECORD_TYPE_PMBUS_SEND_BYTE: //0x0E
         successful_parse_of_record_type = recordProcessor___0x0E___processSendByteOptionalPEC( (t_RECORD_PMBUS_SEND_BYTE *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_SEND_BYTE: //0x800E
+        successful_parse_of_record_type = recordProcessor___0x800E___processExtendedSendByteOptionalPEC( (t_RECORD_PMBUS_EXTENDED_SEND_BYTE *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_WRITE_BYTE_NOPEC: // 0x0F
         successful_parse_of_record_type = recordProcessor___0x0F___processWriteByteNoPEC( (t_RECORD_PMBUS_WRITE_BYTE_NOPEC *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_WRITE_BYTE_NOPEC: // 0x800F
+        successful_parse_of_record_type = recordProcessor___0x800F___processExtendedWriteByteNoPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_BYTE_NOPEC *) record_to_process);
         break;
       case RECORD_TYPE_PMBUS_WRITE_WORD_NOPEC: // 0x10
         successful_parse_of_record_type = recordProcessor___0x10___processWriteWordNoPEC( (t_RECORD_PMBUS_WRITE_WORD_NOPEC *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_WRITE_WORD_NOPEC: // 0x8010
+        successful_parse_of_record_type = recordProcessor___0x8010___processExtendedWriteWordNoPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_WORD_NOPEC *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_WRITE_BLOCK_NOPEC: // 0x11
-        successful_parse_of_record_type = FAILURE; // Unsupported Record Type
+        successful_parse_of_record_type = recordProcessor___0x11___processWriteBlockNoPEC( (t_RECORD_PMBUS_WRITE_BLOCK_NOPEC *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_WRITE_BLOCK_NOPEC: // 0x8011
+        successful_parse_of_record_type = recordProcessor___0x8011___processExtendedWriteBlockNoPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK_NOPEC *) record_to_process);
         break;
       case RECORD_TYPE_PMBUS_READ_BYTE_EXPECT_NOPEC: // 0x12
         successful_parse_of_record_type = recordProcessor___0x12___processReadByteExpectNoPEC( (t_RECORD_PMBUS_READ_BYTE_EXPECT_NOPEC *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC: // 0x8012
+        successful_parse_of_record_type = recordProcessor___0x8012___processExtendedReadByteExpectNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_READ_WORD_EXPECT_NOPEC: // 0x13
         successful_parse_of_record_type = recordProcessor___0x13___processReadWordExpectNoPEC( (t_RECORD_PMBUS_READ_WORD_EXPECT_NOPEC *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC: // 0x8013
+        successful_parse_of_record_type = recordProcessor___0x8013___processExtendedReadWordExpectNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_READ_BLOCK_EXPECT_NOPEC: // 0x14
-        successful_parse_of_record_type = FAILURE; // Unsupported Record Type
+        successful_parse_of_record_type = recordProcessor___0x14___processReadBlockExpectNoPec( (t_RECORD_PMBUS_READ_BLOCK_EXPECT_NOPEC *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_BLOCK_EXPECT_NOPEC: // 0x8014
+        successful_parse_of_record_type = recordProcessor___0x8014___processExtendedReadBlockExpectNoPec( (t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT_NOPEC *) record_to_process);
         break;
       case RECORD_TYPE_PMBUS_READ_BYTE_LOOP_MASK_NOPEC: // 0x15
         successful_parse_of_record_type = recordProcessor___0x15___processReadByteLoopMaskNoPEC( (t_RECORD_PMBUS_READ_BYTE_LOOP_MASK_NOPEC *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC: // 0x8015
+        successful_parse_of_record_type = recordProcessor___0x8015___processExtendedReadByteLoopMaskNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_READ_WORD_LOOP_MASK_NOPEC: // 0x16
         successful_parse_of_record_type = recordProcessor___0x16___processReadWordLoopMaskNoPEC( (t_RECORD_PMBUS_READ_WORD_LOOP_MASK_NOPEC *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC: // 0x8016
+        successful_parse_of_record_type = recordProcessor___0x8016___processExtendedReadWordLoopMaskNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_SEND_BYTE_NOPEC: // 0x17
         successful_parse_of_record_type = recordProcessor___0x17___processSendByteNoPEC( (t_RECORD_PMBUS_SEND_BYTE_NOPEC *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_SEND_BYTE_NOPEC: // 0x8017
+        successful_parse_of_record_type = recordProcessor___0x8017___processExtendedSendByteNoPEC( (t_RECORD_PMBUS_EXTENDED_SEND_BYTE_NOPEC *) record_to_process);
         break;
       case RECORD_TYPE_EVENT: // 0x18
         successful_parse_of_record_type = recordProcessor___0x18___processEvent( (t_RECORD_EVENT *) record_to_process);
@@ -176,8 +258,14 @@ uint8_t processRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
       case RECORD_TYPE_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC: // 0x19
         successful_parse_of_record_type = recordProcessor___0x19___processReadByteExpectMaskNoPEC( (t_RECORD_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC: // 0x8019
+        successful_parse_of_record_type = recordProcessor___0x8019___processExtendedReadByteExpectMaskNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_READ_WORD_EXPECT_MASK_NOPEC: //0x1A
         successful_parse_of_record_type = recordProcessor___0x1A___processReadWordExpectMaskNoPEC( (t_RECORD_PMBUS_READ_WORD_EXPECT_MASK_NOPEC *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC: //0x801A
+        successful_parse_of_record_type = recordProcessor___0x801A___processExtendedReadWordExpectMaskNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC *) record_to_process);
         break;
       case RECORD_TYPE_VARIABLE_META_DATA: // 0x1B
         successful_parse_of_record_type = recordProcessor___0x1B___processVariableMetaData( (t_RECORD_VARIABLE_META_DATA *) record_to_process);
@@ -185,8 +273,14 @@ uint8_t processRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
       case RECORD_TYPE_MODIFY_WORD_NOPEC: // 0x1C
         successful_parse_of_record_type = recordProcessor___0x1C___modifyWordNoPEC( (t_RECORD_PMBUS_MODIFY_WORD_NO_PEC *) record_to_process);
         break;
+      case RECORD_TYPE_EXTENDED_MODIFY_WORD_NOPEC: // 0x801C
+        successful_parse_of_record_type = recordProcessor___0x801C___extendedModifyWordNoPEC( (t_RECORD_PMBUS_EXTENDED_MODIFY_WORD_NO_PEC *) record_to_process);
+        break;
       case RECORD_TYPE_MODIFY_BYTE_NOPEC: // 0x1D
         successful_parse_of_record_type = recordProcessor___0x1D___modifyByteNoPEC( (t_RECORD_PMBUS_MODIFY_BYTE_NO_PEC *) record_to_process);
+        break;
+      case RECORD_TYPE_EXTENDED_MODIFY_BYTE_NOPEC: // 0x801D
+        successful_parse_of_record_type = recordProcessor___0x801D___extendedModifyByteNoPEC( (t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE_NO_PEC *) record_to_process);
         break;
       case RECORD_TYPE_PMBUS_WRITE_EE_DATA: // 0x1E
         successful_parse_of_record_type = recordProcessor___0x1E___writeNvmData( (t_RECORD_NVM_DATA *) record_to_process);
@@ -197,8 +291,14 @@ uint8_t processRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
       case RECORD_TYPE_PMBUS_MODIFY_BYTE: // 0x20
         successful_parse_of_record_type = recordProcessor___0x20___modifyByteOptionalPEC( (t_RECORD_PMBUS_MODIFY_BYTE *) record_to_process);
         break;
+      case RECORD_TYPE_PMBUS_EXTENDED_MODIFY_BYTE: // 0x8020
+        successful_parse_of_record_type = recordProcessor___0x8020___extendedModifyByteOptionalPEC( (t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE *) record_to_process);
+        break;
       case RECORD_TYPE_PMBUS_MODIFY_WORD: // 0x21
         successful_parse_of_record_type = recordProcessor___0x21___modifyWordOptionalPEC( (t_RECORD_PMBUS_MODIFY_WORD *) record_to_process);
+        break;
+      case RECORD_TYPE_PMBUS_EXTENDED_MODIFY_WORD: // 0x8021
+        successful_parse_of_record_type = recordProcessor___0x8021___extendedModifyWordOptionalPEC( (t_RECORD_PMBUS_EXTENDED_MODIFY_WORD *) record_to_process);
         break;
       case RECORD_TYPE_END_OF_RECORDS: // 0x22
         return SUCCESS;
@@ -242,20 +342,41 @@ uint8_t verifyRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
           else
             smbusPec__->writeByte((uint8_t) ((t_RECORD_PMBUS_WRITE_BYTE *)record_to_process)->detailedRecordHeader.DeviceAddress, 0xBD, 0);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_WRITE_BYTE: // 0x8001
+          if (((t_RECORD_PMBUS_EXTENDED_WRITE_BYTE *) record_to_process)->detailedRecordHeader.CommandCode != 0xBE)
+            successful_parse_of_record_type = recordProcessor___0x8001___processExtendedWriteByteOptionalPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_BYTE *) record_to_process);
+          else
+            smbusPec__->extendedWriteByte((uint8_t) ((t_RECORD_PMBUS_EXTENDED_WRITE_BYTE *)record_to_process)->detailedRecordHeader.DeviceAddress, 0xBD, 0);
+          break;
         case RECORD_TYPE_PMBUS_WRITE_WORD: // 0x02
           successful_parse_of_record_type = recordProcessor___0x02___processWriteWordOptionalPEC( (t_RECORD_PMBUS_WRITE_WORD *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_WRITE_WORD: // 0x8002
+          successful_parse_of_record_type = recordProcessor___0x8002___processExtendedWriteWordOptionalPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_WORD *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_WRITE_BLOCK: // 0x03
-          successful_parse_of_record_type = FAILURE; // Unsupported Record Type
+          successful_parse_of_record_type = recordProcessor___0x11___processWriteBlockNoPEC( (t_RECORD_PMBUS_WRITE_BLOCK_NOPEC *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_WRITE_BLOCK: // 0x8003
+          successful_parse_of_record_type = recordProcessor___0x8003___processExtendedWriteBlockOptionalPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK *) record_to_process);
           break;
         case RECORD_TYPE_PMBUS_READ_BYTE_EXPECT: // 0x04
           successful_parse_of_record_type = recordProcessor___0x04___processReadByteExpectOptionalPEC( (t_RECORD_PMBUS_READ_BYTE_EXPECT *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT: // 0x8004
+          successful_parse_of_record_type = recordProcessor___0x8004___processExtendedReadByteExpectOptionalPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_READ_WORD_EXPECT: // 0x05
           successful_parse_of_record_type = recordProcessor___0x05___processReadWordExpectOptionalPEC( (t_RECORD_PMBUS_READ_WORD_EXPECT *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT: // 0x8005
+          successful_parse_of_record_type = recordProcessor___0x8005___processExtendedReadWordExpectOptionalPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_READ_BLOCK_EXPECT: // 0x06
-          successful_parse_of_record_type = FAILURE; // Unsupported Record Type
+          successful_parse_of_record_type = recordProcessor___0x14___processReadBlockExpectNoPec( (t_RECORD_PMBUS_READ_BLOCK_EXPECT_NOPEC *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_BLOCK_EXPECT: // 0x8006
+          successful_parse_of_record_type = recordProcessor___0x8006___processExtendedReadBlockExpectOptionalPec( (t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT *) record_to_process);
           break;
         case RECORD_TYPE_DEVICE_ADDRESS: // 0x07 -- OBSOLETED
           successful_parse_of_record_type = SUCCESS; // Do nothing for this record type, but do not fail
@@ -266,8 +387,14 @@ uint8_t verifyRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
         case RECORD_TYPE_PMBUS_READ_BYTE_LOOP_MASK: // 0x0A
           successful_parse_of_record_type = recordProcessor___0x0A___processReadByteLoopMaskOptionalPEC( (t_RECORD_PMBUS_READ_BYTE_LOOP_MASK *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK: // 0x800A
+          successful_parse_of_record_type = recordProcessor___0x800A___processExtendedReadByteLoopMaskOptionalPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_READ_WORD_LOOP_MASK: //0x0B
           successful_parse_of_record_type = recordProcessor___0x0B___processReadWordLoopMaskOptionalPEC( (t_RECORD_PMBUS_READ_WORD_LOOP_MASK *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_LOOP_MASK: //0x800B
+          successful_parse_of_record_type = recordProcessor___0x800B___processExtendedReadWordLoopMaskOptionalPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK *) record_to_process);
           break;
         case RECORD_TYPE_PMBUS_POLL_UNTIL_ACK_NOPEC: // 0x0C
           successful_parse_of_record_type = recordProcessor___0x0C___processPollReadByteUntilAckNoPEC( (t_RECORD_PMBUS_POLL_READ_BYTE_UNTIL_ACK *) record_to_process);
@@ -278,38 +405,74 @@ uint8_t verifyRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
         case RECORD_TYPE_PMBUS_SEND_BYTE: //0x0E
           successful_parse_of_record_type = recordProcessor___0x0E___processSendByteOptionalPEC( (t_RECORD_PMBUS_SEND_BYTE *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_SEND_BYTE: //0x800E
+          successful_parse_of_record_type = recordProcessor___0x800E___processExtendedSendByteOptionalPEC( (t_RECORD_PMBUS_EXTENDED_SEND_BYTE *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_WRITE_BYTE_NOPEC: // 0x0F
           successful_parse_of_record_type = recordProcessor___0x0F___processWriteByteNoPEC( (t_RECORD_PMBUS_WRITE_BYTE_NOPEC *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_WRITE_BYTE_NOPEC: // 0x800F
+          successful_parse_of_record_type = recordProcessor___0x800F___processExtendedWriteByteNoPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_BYTE_NOPEC *) record_to_process);
           break;
         case RECORD_TYPE_PMBUS_WRITE_WORD_NOPEC: // 0x10
           successful_parse_of_record_type = recordProcessor___0x10___processWriteWordNoPEC( (t_RECORD_PMBUS_WRITE_WORD_NOPEC *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_WRITE_WORD_NOPEC: // 0x8010
+          successful_parse_of_record_type = recordProcessor___0x8010___processExtendedWriteWordNoPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_WORD_NOPEC *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_WRITE_BLOCK_NOPEC: // 0x11
-          successful_parse_of_record_type = FAILURE; // Unsupported Record Type
+          successful_parse_of_record_type = recordProcessor___0x11___processWriteBlockNoPEC( (t_RECORD_PMBUS_WRITE_BLOCK_NOPEC *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_WRITE_BLOCK_NOPEC: // 0x8011
+          successful_parse_of_record_type = recordProcessor___0x8011___processExtendedWriteBlockNoPEC( (t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK_NOPEC *) record_to_process);
           break;
         case RECORD_TYPE_PMBUS_READ_BYTE_EXPECT_NOPEC: // 0x12
           successful_parse_of_record_type = recordProcessor___0x12___processReadByteExpectNoPEC( (t_RECORD_PMBUS_READ_BYTE_EXPECT_NOPEC *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC: // 0x8012
+          successful_parse_of_record_type = recordProcessor___0x8012___processExtendedReadByteExpectNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_READ_WORD_EXPECT_NOPEC: // 0x13
           successful_parse_of_record_type = recordProcessor___0x13___processReadWordExpectNoPEC( (t_RECORD_PMBUS_READ_WORD_EXPECT_NOPEC *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC: // 0x8013
+          successful_parse_of_record_type = recordProcessor___0x8013___processExtendedReadWordExpectNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_READ_BLOCK_EXPECT_NOPEC: // 0x14
-          successful_parse_of_record_type = FAILURE; // Unsupported Record Type
+          successful_parse_of_record_type = recordProcessor___0x14___processReadBlockExpectNoPec( (t_RECORD_PMBUS_READ_BLOCK_EXPECT_NOPEC *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_BLOCK_EXPECT_NOPEC: // 0x8014
+          successful_parse_of_record_type = recordProcessor___0x8014___processExtendedReadBlockExpectNoPec( (t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT_NOPEC *) record_to_process);
           break;
         case RECORD_TYPE_PMBUS_READ_BYTE_LOOP_MASK_NOPEC: // 0x15
           successful_parse_of_record_type = recordProcessor___0x15___processReadByteLoopMaskNoPEC( (t_RECORD_PMBUS_READ_BYTE_LOOP_MASK_NOPEC *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC: // 0x8015
+          successful_parse_of_record_type = recordProcessor___0x8015___processExtendedReadByteLoopMaskNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_READ_WORD_LOOP_MASK_NOPEC: // 0x16
           successful_parse_of_record_type = recordProcessor___0x16___processReadWordLoopMaskNoPEC( (t_RECORD_PMBUS_READ_WORD_LOOP_MASK_NOPEC *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC: // 0x8016
+          successful_parse_of_record_type = recordProcessor___0x8016___processExtendedReadWordLoopMaskNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC *) record_to_process);
           break;
         case RECORD_TYPE_PMBUS_SEND_BYTE_NOPEC: // 0x17
           successful_parse_of_record_type = recordProcessor___0x17___processSendByteNoPEC( (t_RECORD_PMBUS_SEND_BYTE_NOPEC *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_SEND_BYTE_NOPEC: // 0x8017
+          successful_parse_of_record_type = recordProcessor___0x8017___processExtendedSendByteNoPEC( (t_RECORD_PMBUS_EXTENDED_SEND_BYTE_NOPEC *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC: // 0x19
           successful_parse_of_record_type = recordProcessor___0x19___processReadByteExpectMaskNoPEC( (t_RECORD_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC: // 0x8019
+          successful_parse_of_record_type = recordProcessor___0x8019___processExtendedReadByteExpectMaskNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_READ_WORD_EXPECT_MASK_NOPEC: //0x1A
           successful_parse_of_record_type = recordProcessor___0x1A___processReadWordExpectMaskNoPEC( (t_RECORD_PMBUS_READ_WORD_EXPECT_MASK_NOPEC *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC: //0x801A
+          successful_parse_of_record_type = recordProcessor___0x801A___processExtendedReadWordExpectMaskNoPEC( (t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC *) record_to_process);
           break;
         case RECORD_TYPE_VARIABLE_META_DATA: // 0x1B
           successful_parse_of_record_type = recordProcessor___0x1B___processVariableMetaData( (t_RECORD_VARIABLE_META_DATA *) record_to_process);
@@ -317,8 +480,14 @@ uint8_t verifyRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
         case RECORD_TYPE_MODIFY_WORD_NOPEC: // 0x1C
           successful_parse_of_record_type = recordProcessor___0x1C___modifyWordNoPEC( (t_RECORD_PMBUS_MODIFY_WORD_NO_PEC *) record_to_process);
           break;
+        case RECORD_TYPE_EXTENDED_MODIFY_WORD_NOPEC: // 0x801C
+          successful_parse_of_record_type = recordProcessor___0x801C___extendedModifyWordNoPEC( (t_RECORD_PMBUS_EXTENDED_MODIFY_WORD_NO_PEC *) record_to_process);
+          break;
         case RECORD_TYPE_MODIFY_BYTE_NOPEC: // 0x1D
           successful_parse_of_record_type = recordProcessor___0x1D___modifyByteNoPEC( (t_RECORD_PMBUS_MODIFY_BYTE_NO_PEC *) record_to_process);
+          break;
+        case RECORD_TYPE_EXTENDED_MODIFY_BYTE_NOPEC: // 0x801D
+          successful_parse_of_record_type = recordProcessor___0x801D___extendedModifyByteNoPEC( (t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE_NO_PEC *) record_to_process);
           break;
         case RECORD_TYPE_PMBUS_WRITE_EE_DATA: // 0x1E
           //successful_parse_of_record_type = recordProcessor___0x1E___writeNvmData( (t_RECORD_NVM_DATA *) record_to_process);
@@ -330,8 +499,14 @@ uint8_t verifyRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
         case RECORD_TYPE_PMBUS_MODIFY_BYTE: // 0x20
           successful_parse_of_record_type = recordProcessor___0x20___modifyByteOptionalPEC( (t_RECORD_PMBUS_MODIFY_BYTE *) record_to_process);
           break;
+        case RECORD_TYPE_PMBUS_EXTENDED_MODIFY_BYTE: // 0x8020
+          successful_parse_of_record_type = recordProcessor___0x8020___extendedModifyByteOptionalPEC( (t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE *) record_to_process);
+          break;
         case RECORD_TYPE_PMBUS_MODIFY_WORD: // 0x21
           successful_parse_of_record_type = recordProcessor___0x21___modifyWordOptionalPEC( (t_RECORD_PMBUS_MODIFY_WORD *) record_to_process);
+          break;
+        case RECORD_TYPE_PMBUS_EXTENDED_MODIFY_WORD: // 0x8021
+          successful_parse_of_record_type = recordProcessor___0x8021___extendedModifyWordOptionalPEC( (t_RECORD_PMBUS_EXTENDED_MODIFY_WORD *) record_to_process);
           break;
         default:
           successful_parse_of_record_type = FAILURE; // Unknown Instruction, report a failure
@@ -366,7 +541,7 @@ uint8_t verifyRecordsOnDemand(pRecordHeaderLengthAndType (*getRecord)(void))
  *******************************************************************/
 uint8_t recordProcessor___0x01___processWriteByteOptionalPEC(t_RECORD_PMBUS_WRITE_BYTE *pRecord)
 {
-#if DEBUG_SILENT == 1
+#if DEBUG_SILENT == 10
   return SUCCESS;
 #else
 #if DEBUG_PROCESSING == 1
@@ -395,6 +570,64 @@ uint8_t recordProcessor___0x01___processWriteByteOptionalPEC(t_RECORD_PMBUS_WRIT
     smbusNoPec__->writeByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
                             pRecord->detailedRecordHeader.CommandCode,
                             pRecord->dataByte);
+#endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x8001___processExtendedWriteByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BYTE*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_WRITE_BYTE pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_WRITE_BYTE record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8001___processExtendedWriteByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BYTE *pRecord)
+{
+#if DEBUG_SILENT == 1
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING == 1
+  Serial.print(F("ExtendedWriteByteOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->dataByte, HEX);
+#else
+#if DEBUG_PRINT == 1
+  Serial.print(F("ExtendedWriteByteOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(" ");
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->dataByte, HEX);
+#endif
+
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->extendedWriteByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            pRecord->dataByte);
+    else
+      smbusNoPec__->extendedWriteByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode,
+                              pRecord->dataByte);
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->writeByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            pRecord->dataByte);
+    else
+      smbusNoPec__->writeByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                              pRecord->dataByte);
+  }
 #endif
 #endif
   return SUCCESS;
@@ -444,12 +677,179 @@ uint8_t recordProcessor___0x02___processWriteWordOptionalPEC(t_RECORD_PMBUS_WRIT
 }
 
 /********************************************************************
- * Function:        uint8_t recordProcessor___0x04___processReadByteExpectOptionalPEC(t_RECORD_smbus_read_byte_EXPECT*);
+ * Function:        uint8_t recordProcessor___0x8002___processExtendedWriteWordOptionalPEC(t_RECORD_PMBUS_EXTENDED_WRITE_WORD*);
  *
  * PreCondition:    None
- * Input:           A t_RECORD_smbus_read_byte_EXPECT pointer reference
+ * Input:           A t_RECORD_PMBUS_EXTENDED_WRITE_WORD pointer reference
  * Output:          A 1 is returned on success and a 0 is returned on failure
- * Overview:        Processes the t_RECORD_smbus_read_byte_EXPECT record type
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_WRITE_WORD record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8002___processExtendedWriteWordOptionalPEC(t_RECORD_PMBUS_EXTENDED_WRITE_WORD *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("WriteWordOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->dataWord, HEX);
+#else
+#if DEBUG_PRINT
+  Serial.print(F("WriteWordOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->dataWord, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->extendedWriteWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            pRecord->dataWord);
+    else
+      smbusNoPec__->extendedWriteWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode,
+                              pRecord->dataWord);
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->writeWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            pRecord->dataWord);
+    else
+      smbusNoPec__->writeWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                              pRecord->dataWord);
+  }
+#endif
+#endif
+  return SUCCESS;
+}
+
+uint8_t recordProcessor___0x03___processWriteBlockOptionalPEC(t_RECORD_PMBUS_WRITE_BLOCK *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("processWriteBlockOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+
+  uint8_t nBytes = (uint8_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  for (int i = 0; i < nBytes; i++)
+    Serial.println(bytes[i], HEX); // Change (UINT16) to the size of an address on the target machine.
+
+  return SUCCESS;
+#else
+#if DEBUG_PRINT
+  Serial.print(F("processWriteBlockOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+#endif
+  uint8_t count = (uint8_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *data = (uint8_t *) ((uint16_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+  if (pRecord->detailedRecordHeader.UsePec)
+    smbusPec__->writeBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode,
+                          data,
+                          count);
+  else
+    smbusNoPec__->writeBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            data,
+                            count);
+#endif
+#endif
+  return SUCCESS;
+}
+
+uint8_t recordProcessor___0x8003___processExtendedWriteBlockOptionalPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("processExtendedWriteBlockOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+
+  uint8_t nBytes = (uint8_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint16_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  for (int i = 0; i < nBytes; i++)
+    Serial.println(bytes[i], HEX); // Change (UINT16) to the size of an address on the target machine.
+
+  return SUCCESS;
+#else
+#if DEBUG_PRINT
+  Serial.print(F("processExtendedWriteBlockOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+#endif
+  uint8_t count = (uint8_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *data = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->extendedWriteBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            data,
+                            count);
+    else
+      smbusNoPec__->extendedWriteBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode,
+                              data,
+                              count);
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->writeBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            data,
+                            count);
+    else
+      smbusNoPec__->writeBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                              data,
+                              count); 
+  }
+#endif
+#endif
+  return SUCCESS;
+}
+
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x04___processReadByteExpectOptionalPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_READ_BYTE_EXPECT pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_READ_BYTE_EXPECT record type
  * Note:            More detailed information may be available in the PDF
  *******************************************************************/
 uint8_t recordProcessor___0x04___processReadByteExpectOptionalPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT *pRecord)
@@ -474,6 +874,64 @@ uint8_t recordProcessor___0x04___processReadByteExpectOptionalPEC(t_RECORD_PMBUS
 
 #if DEBUG_PRINT
   Serial.print(F("ReadByteExpectOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.print(actualByteValue, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->expectedDataByte, HEX);
+#endif
+
+  return (actualByteValue != pRecord->expectedDataByte) ? FAILURE : SUCCESS;
+#endif
+#endif
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x8004___processExtendedReadByteExpectOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8004___processExtendedReadByteExpectOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadByteExpectOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->detailedRecordHeader.CommandCode, HEX);
+  return SUCCESS;
+#else
+  uint8_t actualByteValue;
+
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      actualByteValue = smbusPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                             pRecord->detailedRecordHeader.CommandCode);
+    else
+      actualByteValue = smbusNoPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode);
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      actualByteValue = smbusPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                             pRecord->detailedRecordHeader.CommandCode & 0xFF);
+    else
+      actualByteValue = smbusNoPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode & 0xFF);    
+  }
+
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedReadByteExpectOptionalPEC "));
   Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
   Serial.print(F(" "));
   Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
@@ -534,6 +992,191 @@ uint8_t recordProcessor___0x05___processReadWordExpectOptionalPEC(t_RECORD_PMBUS
 }
 
 /********************************************************************
+ * Function:        uint8_t recordProcessor___0x8005___processExtendedReadWordExpectOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8005___processExtendedReadWordExpectOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadWordExpectOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->detailedRecordHeader.CommandCode, HEX);
+  return SUCCESS;
+#else
+  uint16_t actualWordValue;
+
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      actualWordValue = smbusPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                             pRecord->detailedRecordHeader.CommandCode);
+    else
+      actualWordValue = smbusNoPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode);
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      actualWordValue = smbusPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                             pRecord->detailedRecordHeader.CommandCode & 0xFF);
+    else
+      actualWordValue = smbusNoPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode & 0xFF);    
+  }
+
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedReadWordExpectOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.print(actualWordValue, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->expectedDataWord, HEX);
+#endif
+
+  return (actualWordValue != pRecord->expectedDataWord) ? FAILURE : SUCCESS;
+#endif
+#endif
+}
+
+uint8_t recordProcessor___0x06___processReadBlockExpectOptionalPec(t_RECORD_PMBUS_READ_BLOCK_EXPECT *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ReadBlockExpectOptionalPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+
+  uint16_t nBytes = (uint16_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  for (int i = 0; i < nBytes; i++)
+    Serial.println(bytes[i], HEX); // Change (UINT16) to the size of an address on the target machine.
+
+  return SUCCESS;
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ReadBlockExpectOptionalPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+#endif
+  uint16_t count = (uint16_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+  uint8_t *data = (uint8_t *) malloc(count); // Change (UINT16) to the size of an address on the target machine.
+  uint8_t ret = SUCCESS;
+
+  if (pRecord->detailedRecordHeader.UsePec)
+    smbusPec__->readBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode,
+                          data,
+                          count);
+  else
+    smbusNoPec__->readBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            data,
+                            count); 
+
+  for (int i = 0; i < count; i++)
+    if (bytes[i] != data[i])
+    {
+      ret = FAILURE;
+    }
+  delete data;
+  return ret;
+#endif
+#endif
+}
+
+uint8_t recordProcessor___0x8006___processExtendedReadBlockExpectOptionalPec(t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadBlockExpectOptionalPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+
+  uint16_t nBytes = (uint16_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  for (int i = 0; i < nBytes; i++)
+    Serial.println(bytes[i], HEX); // Change (UINT16) to the size of an address on the target machine.
+
+  return SUCCESS;
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedReadBlockExpectOptionalPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+#endif
+  uint16_t count = (uint16_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+  uint8_t *data = (uint8_t *) malloc(count); // Change (UINT16) to the size of an address on the target machine.
+  uint8_t ret = SUCCESS;
+
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->extendedReadBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            data,
+                            count);
+    else
+      smbusNoPec__->extendedReadBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode,
+                              data,
+                              count);
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->readBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            data,
+                            count);
+    else
+      smbusNoPec__->readBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                              data,
+                              count); 
+  }
+  for (int i = 0; i < count; i++)
+    if (bytes[i] != data[i])
+    {
+      ret = FAILURE;
+    }
+  delete data;
+  return ret;
+#endif
+#endif
+}
+
+/********************************************************************
  * Function:        uint8_t recordProcessor___0x09___bufferNVMData(t_RECORD_NVM_DATA*);
  *
  * PreCondition:    None
@@ -576,12 +1219,12 @@ uint8_t recordProcessor___0x09___bufferNVMData(t_RECORD_NVM_DATA *pRecord)
 }
 
 /********************************************************************
- * Function:        uint8_t recordProcessor___0x0A___processReadByteLoopMaskOptionalPEC(t_RECORD_smbus_read_byte_LOOP_MASK*);
+ * Function:        uint8_t recordProcessor___0x0A___processReadByteLoopMaskOptionalPEC(t_RECORD_PMBUS_READ_BYTE_LOOP_MASK*);
  *
  * PreCondition:    None
- * Input:           A t_RECORD_smbus_read_byte_LOOP_MASK pointer reference
+ * Input:           A t_RECORD_PMBUS_READ_BYTE_LOOP_MASK pointer reference
  * Output:          A 1 is returned on success and a 0 is returned on failure
- * Overview:        Processes the t_RECORD_smbus_read_byte_LOOP_MASK record type
+ * Overview:        Processes the t_RECORD_PMBUS_READ_BYTE_LOOP_MASK record type
  * Note:            More detailed information may be available in the PDF
  *******************************************************************/
 uint8_t recordProcessor___0x0A___processReadByteLoopMaskOptionalPEC(t_RECORD_PMBUS_READ_BYTE_LOOP_MASK *pRecord)
@@ -615,6 +1258,77 @@ uint8_t recordProcessor___0x0A___processReadByteLoopMaskOptionalPEC(t_RECORD_PMB
     success = (actualByteValueWithMask == expectedByteValueWithMask);
 #if DEBUG_PRINT
     Serial.print(F("ReadByteLoopMaskOptionalPEC "));
+    Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+    Serial.print(F(" "));
+    Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+    Serial.print(F(" "));
+    Serial.print(pRecord->byteMask, HEX);
+    Serial.print(F(" "));
+    Serial.print(actualByteValueWithMask, HEX);
+    Serial.print(F(" "));
+    Serial.println(expectedByteValueWithMask, HEX);
+#endif
+  }
+  while (success == FAILURE);
+#endif
+#endif
+
+  return SUCCESS;
+
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x800A___processExtendedReadByteLoopMaskOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x800A___processExtendedReadByteLoopMaskOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadByteLoopMaskOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->byteMask, HEX);
+#else
+  uint8_t actualByteValue;
+  uint8_t actualByteValueWithMask;
+  uint8_t expectedByteValueWithMask;
+  uint8_t success = FAILURE;
+  do
+  {
+    if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    {
+      if (pRecord->detailedRecordHeader.UsePec)
+        actualByteValue = smbusPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                               pRecord->detailedRecordHeader.CommandCode);
+      else
+        actualByteValue = smbusNoPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode);
+    }
+    else
+    {
+      if (pRecord->detailedRecordHeader.UsePec)
+        actualByteValue = smbusPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                               pRecord->detailedRecordHeader.CommandCode & 0xFF);
+      else
+        actualByteValue = smbusNoPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode & 0xFF);      
+    }
+
+    actualByteValueWithMask = (actualByteValue & pRecord->byteMask);
+    expectedByteValueWithMask = (pRecord->expectedDataByte & pRecord->byteMask);
+    success = (actualByteValueWithMask == expectedByteValueWithMask);
+#if DEBUG_PRINT
+    Serial.print(F("ExtendedReadByteLoopMaskOptionalPEC "));
     Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
     Serial.print(F(" "));
     Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
@@ -674,6 +1388,75 @@ uint8_t recordProcessor___0x0B___processReadWordLoopMaskOptionalPEC(t_RECORD_PMB
     success = (actualWordValueWithMask == expectedWordValueWithMask);
 #if DEBUG_PRINT
     Serial.print(F("WriteWordLoopMaskOptionalPEC "));
+    Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+    Serial.print(F(" "));
+    Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+    Serial.print(F(" "));
+    Serial.print(pRecord->wordMask, HEX);
+    Serial.print(F(" "));
+    Serial.print(actualWordValueWithMask, HEX);
+    Serial.print(F(" "));
+    Serial.println(expectedWordValueWithMask, HEX);
+#endif
+  }
+  while (success == FAILURE);
+#endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x800B___processExtendedReadWordLoopMaskOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_READ_EXTENDED_WORD_LOOP_MASK pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x800B___processExtendedReadWordLoopMaskOptionalPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedWriteWordLoopMaskOptionalPEC %x "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->wordMask, HEX);
+#else
+  uint16_t actualWordValue;
+  uint16_t actualWordValueWithMask;
+  uint16_t expectedWordValueWithMask;
+  uint8_t success = FAILURE;
+  do
+  {
+    if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    {
+      if (pRecord->detailedRecordHeader.UsePec)
+        actualWordValue = smbusPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                               pRecord->detailedRecordHeader.CommandCode);
+      else
+        actualWordValue = smbusNoPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode);
+    }
+    else
+    {
+      if (pRecord->detailedRecordHeader.UsePec)
+        actualWordValue = smbusPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                               pRecord->detailedRecordHeader.CommandCode & 0xFF);
+      else
+        actualWordValue = smbusNoPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode & 0xFF);
+    }
+
+    actualWordValueWithMask = (actualWordValue & pRecord->wordMask);
+    expectedWordValueWithMask = (pRecord->expectedDataWord & pRecord->wordMask);
+    success = (actualWordValueWithMask == expectedWordValueWithMask);
+#if DEBUG_PRINT
+    Serial.print(F("ExtendedWriteWordLoopMaskOptionalPEC "));
     Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
     Serial.print(F(" "));
     Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
@@ -808,6 +1591,55 @@ uint8_t recordProcessor___0x0E___processSendByteOptionalPEC(t_RECORD_PMBUS_SEND_
 }
 
 /********************************************************************
+ * Function:        uint8_t recordProcessor___0x800E___processExtendedSendByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_SEND_BYTE*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_SEND_BYTE pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_SEND_BYTE record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x800E___processExtendedSendByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_SEND_BYTE *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedSendByteOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->detailedRecordHeader.CommandCode, HEX);
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedSendByteOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->detailedRecordHeader.CommandCode, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->extendedSendByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                           pRecord->detailedRecordHeader.CommandCode);
+    else
+      smbusNoPec__->extendedSendByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                             pRecord->detailedRecordHeader.CommandCode);
+    }
+    else
+    {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->sendByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                           pRecord->detailedRecordHeader.CommandCode & 0xFF);
+    else
+      smbusNoPec__->sendByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                             pRecord->detailedRecordHeader.CommandCode & 0xFF);      
+    }
+#endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
  * Function:        uint8_t recordProcessor___0x0F___processWriteByteNoPEC(t_RECORD_PMBUS_WRITE_BYTE_NOPEC*);
  *
  * PreCondition:    None
@@ -841,6 +1673,50 @@ uint8_t recordProcessor___0x0F___processWriteByteNoPEC(t_RECORD_PMBUS_WRITE_BYTE
                           pRecord->detailedRecordHeader.CommandCode,
                           pRecord->dataByte);
 #endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x800F___processExtendedWriteByteNoPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BYTE_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_WRITE_BYTE_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_WRITE_BYTE_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x800F___processExtendedWriteByteNoPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BYTE_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedWriteByteNoPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->dataByte, HEX);
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedWriteByteNoPec %x "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->dataByte, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    smbusNoPec__->extendedWriteByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            pRecord->dataByte);
+  else
+    smbusNoPec__->writeByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            pRecord->dataByte);
+
+  #endif
 #endif
   return SUCCESS;
 }
@@ -884,12 +1760,148 @@ uint8_t recordProcessor___0x10___processWriteWordNoPEC(t_RECORD_PMBUS_WRITE_WORD
 }
 
 /********************************************************************
- * Function:        uint8_t recordProcessor___0x12___processReadByteExpectNoPEC(t_RECORD_smbus_read_byte_EXPECT_NOPEC*);
+ * Function:        uint8_t recordProcessor___0x8010___processExtendedWriteWordNoPEC(t_RECORD_PMBUS_EXTENDED_WRITE_WORD_NOPEC*);
  *
  * PreCondition:    None
- * Input:           A t_RECORD_smbus_read_byte_EXPECT_NOPEC pointer reference
+ * Input:           A t_RECORD_PMBUS_EXTENDED_WRITE_WORD_NOPEC pointer reference
  * Output:          A 1 is returned on success and a 0 is returned on failure
- * Overview:        Processes the t_RECORD_smbus_read_byte_EXPECT_NOPEC record type
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_WRITE_WORD_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8010___processExtendedWriteWordNoPEC(t_RECORD_PMBUS_EXTENDED_WRITE_WORD_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedWriteWordNoPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->dataWord, HEX);
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedWriteWordNoPec %x "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->dataWord, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    smbusNoPec__->extendedWriteWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            pRecord->dataWord);
+  else
+    smbusNoPec__->writeWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            pRecord->dataWord);
+
+#endif
+#endif
+  return SUCCESS;
+}
+
+uint8_t recordProcessor___0x11___processWriteBlockNoPEC(t_RECORD_PMBUS_WRITE_BLOCK_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("WriteBlockNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+
+  uint8_t nBytes = (uint8_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  for (int i = 0; i < nBytes; i++)
+    Serial.println(bytes[i], HEX); // Change (UINT16) to the size of an address on the target machine.
+
+  return SUCCESS;
+#else
+#if DEBUG_PRINT
+  Serial.print(F("WriteBlockNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+#endif
+  uint8_t count = (uint8_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *data = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  smbusNoPec__->writeBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode,
+                          data,
+                          count);
+#endif
+#endif
+  return SUCCESS;
+}
+
+uint8_t recordProcessor___0x8011___processExtendedWriteBlockNoPEC(t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedWriteBlockNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+
+  uint8_t nBytes = (uint8_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  for (int i = 0; i < nBytes; i++)
+    Serial.println(bytes[i], HEX); // Change (UINT16) to the size of an address on the target machine.
+
+  return SUCCESS;
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedWriteBlockNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+#endif
+  uint8_t count = (uint8_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *data = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    smbusNoPec__->extendedWriteBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            data,
+                            count);
+  }
+  else
+  {
+    smbusNoPec__->writeBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            data,
+                            count); 
+  }
+#endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x12___processReadByteExpectNoPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_READ_BYTE_EXPECT_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_READ_BYTE_EXPECT_NOPEC record type
  * Note:            More detailed information may be available in the PDF
  *******************************************************************/
 uint8_t recordProcessor___0x12___processReadByteExpectNoPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT_NOPEC *pRecord)
@@ -909,6 +1921,50 @@ uint8_t recordProcessor___0x12___processReadByteExpectNoPEC(t_RECORD_PMBUS_READ_
                     pRecord->detailedRecordHeader.CommandCode);
 #if DEBUG_PRINT
   Serial.print(F("ReadByteExpectNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.print(actualByteValue, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->expectedDataByte, HEX);
+#endif
+  return (actualByteValue != pRecord->expectedDataByte) ? FAILURE : SUCCESS;
+#endif
+#endif
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x8012___processExtendedReadByteExpectNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8012___processExtendedReadByteExpectNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadByteExpectNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->detailedRecordHeader.CommandCode, HEX);
+  return SUCCESS;
+#else
+  uint8_t actualByteValue;
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    actualByteValue = smbusNoPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode);
+  else
+    actualByteValue = smbusNoPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode & 0xFF);
+
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedReadByteExpectNoPEC "));
   Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
   Serial.print(F(" "));
   Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
@@ -963,12 +2019,165 @@ uint8_t recordProcessor___0x13___processReadWordExpectNoPEC(t_RECORD_PMBUS_READ_
 }
 
 /********************************************************************
- * Function:        uint8_t recordProcessor___0x15___processReadByteLoopMaskNoPEC(t_RECORD_smbus_read_byte_LOOP_MASK_NOPEC*);
+ * Function:        uint8_t recordProcessor___0x8013___processExtendedReadWordExpectNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC*);
  *
  * PreCondition:    None
- * Input:           A t_RECORD_smbus_read_byte_LOOP_MASK_NOPEC pointer reference
+ * Input:           A t_RECORD_PMBUS_READ_EXTENDED_WORD_EXPECT_NOPEC pointer reference
  * Output:          A 1 is returned on success and a 0 is returned on failure
- * Overview:        Processes the t_RECORD_smbus_read_byte_LOOP_MASK_NOPEC record type
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8013___processExtendedReadWordExpectNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadWordEx[ectNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->detailedRecordHeader.CommandCode, HEX);
+  return SUCCESS;
+#else
+  uint16_t actualWordValue;
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    actualWordValue = smbusNoPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode);
+  else
+    actualWordValue = smbusNoPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode & 0xFF);
+
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedReadWordExpectNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.print(actualWordValue, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->expectedDataWord, HEX);
+#endif
+  return (actualWordValue != pRecord->expectedDataWord) ? FAILURE : SUCCESS;
+#endif
+#endif
+}
+
+uint8_t recordProcessor___0x14___processReadBlockExpectNoPec(t_RECORD_PMBUS_READ_BLOCK_EXPECT_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ReadBlockExpectNoPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+
+  uint16_t nBytes = (uint16_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  for (int i = 0; i < nBytes; i++)
+    Serial.println(bytes[i], HEX); // Change (UINT16) to the size of an address on the target machine.
+
+  return SUCCESS;
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ReadBlockExpectNoPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+#endif
+  uint16_t count = (uint16_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+  uint8_t *data = (uint8_t *) malloc(count); // Change (UINT16) to the size of an address on the target machine.
+  uint8_t ret = SUCCESS;
+
+  smbusNoPec__->readBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode,
+                          data,
+                          count); 
+
+  for (int i = 0; i < count; i++)
+    if (bytes[i] != data[i])
+    {
+      ret = FAILURE;
+    }
+  delete data;
+  return ret;
+#endif
+#endif
+}
+
+uint8_t recordProcessor___0x8014___processExtendedReadBlockExpectNoPec(t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadBlockExpectNoPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+
+  uint16_t nBytes = (uint16_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+
+  for (int i = 0; i < nBytes; i++)
+    Serial.println(bytes[i], HEX); // Change (UINT16) to the size of an address on the target machine.
+
+  return SUCCESS;
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedReadBlockExpectNoPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->baseRecordHeader.Length, HEX);
+#endif
+  uint16_t count = (uint16_t)((pRecord->baseRecordHeader.Length-8));
+  uint8_t *bytes = (uint8_t *) ((uint8_t)pRecord+8); // Change (UINT16) to the size of an address on the target machine.
+  uint8_t *data = (uint8_t *) malloc(count); // Change (UINT16) to the size of an address on the target machine.
+  uint8_t ret = SUCCESS;
+
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    smbusNoPec__->extendedReadBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            data,
+                            count);
+  }
+  else
+  {
+    smbusNoPec__->readBlock((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            data,
+                            count); 
+  }
+  for (int i = 0; i < count; i++)
+    if (bytes[i] != data[i])
+    {
+      ret = FAILURE;
+    }
+  delete data;
+  return ret;
+#endif
+#endif
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x15___processReadByteLoopMaskNoPEC(t_RECORD_PMBUS_READ_BYTE_LOOP_MASK_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_READ_BYTE_LOOP_MASK_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_READ_BYTE_LOOP_MASK_NOPEC record type
  * Note:            More detailed information may be available in the PDF
  *******************************************************************/
 uint8_t recordProcessor___0x15___processReadByteLoopMaskNoPEC(t_RECORD_PMBUS_READ_BYTE_LOOP_MASK_NOPEC *pRecord)
@@ -998,6 +2207,63 @@ uint8_t recordProcessor___0x15___processReadByteLoopMaskNoPEC(t_RECORD_PMBUS_REA
     success = (actualByteValueWithMask == expectedByteValueWithMask);
 #if DEBUG_PRINT
     Serial.print(F("ReadByteLoopMaskNoPEC "));
+    Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+    Serial.print(F(" "));
+    Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+    Serial.print(F(" "));
+    Serial.print(pRecord->byteMask, HEX);
+    Serial.print(F(" "));
+    Serial.print(actualByteValueWithMask, HEX);
+    Serial.print(F(" "));
+    Serial.println(expectedByteValueWithMask, HEX);
+#endif
+  }
+  while (success == FAILURE);
+#endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x15___processExtendedReadByteLoopMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8015___processExtendedReadByteLoopMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadByteLoopMaskNoPEC  "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->byteMask, HEX);
+#else
+  uint8_t actualByteValue;
+  uint8_t actualByteValueWithMask;
+  uint8_t expectedByteValueWithMask;
+  uint8_t success = FAILURE;
+  do
+  {
+    if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+      actualByteValue = smbusNoPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode);
+    else
+      actualByteValue = smbusNoPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode & 0xFF);
+
+    actualByteValueWithMask = (actualByteValue & pRecord->byteMask);
+    expectedByteValueWithMask = (pRecord->expectedDataByte & pRecord->byteMask);
+    success = (actualByteValueWithMask == expectedByteValueWithMask);
+#if DEBUG_PRINT
+    Serial.print(F("ExtendedReadByteLoopMaskNoPEC "));
     Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
     Serial.print(F(" "));
     Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
@@ -1070,6 +2336,64 @@ uint8_t recordProcessor___0x16___processReadWordLoopMaskNoPEC(t_RECORD_PMBUS_REA
 }
 
 /********************************************************************
+ * Function:        uint8_t recordProcessor___0x8016___processExtendedReadWordLoopMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8016___processExtendedReadWordLoopMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadWordLoopMaskNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->wordMask, HEX);
+#else
+  uint16_t actualWordValue;
+  uint16_t actualWordValueWithMask;
+  uint16_t expectedWordValueWithMask;
+  uint8_t success = FAILURE;
+  do
+  {
+    if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+      actualWordValue = smbusNoPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode);
+    else
+      actualWordValue = smbusNoPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode & 0xFF);
+
+
+    actualWordValueWithMask = (actualWordValue & pRecord->wordMask);
+    expectedWordValueWithMask = (pRecord->expectedDataWord & pRecord->wordMask);
+    success = (actualWordValueWithMask == expectedWordValueWithMask);
+#if DEBUG_PRINT
+    Serial.print(F("ExtendedReadWordLoopMaskNoPEC "));
+    Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+    Serial.print(F(" "));
+    Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+    Serial.print(F(" "));
+    Serial.print(pRecord->wordMask, HEX);
+    Serial.print(F(" "));
+    Serial.print(actualWordValueWithMask, HEX);
+    Serial.print(F(" "));
+    Serial.println(expectedWordValueWithMask, HEX);
+#endif
+  }
+  while (success == FAILURE);
+#endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
  * Function:        uint8_t recordProcessor___0x17___processSendByteNoPEC(t_RECORD_PMBUS_SEND_BYTE_NOPEC*);
  *
  * PreCondition:    None
@@ -1101,6 +2425,44 @@ uint8_t recordProcessor___0x17___processSendByteNoPEC(t_RECORD_PMBUS_SEND_BYTE_N
 #endif
   return SUCCESS;
 }
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x8017___processExtendedSendByteNoPEC(t_RECORD_PMBUS_EXTENDED_SEND_BYTE_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_SEND_BYTE_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_SEND_BYTE_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8017___processExtendedSendByteNoPEC(t_RECORD_PMBUS_EXTENDED_SEND_BYTE_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedSendByteNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->detailedRecordHeader.CommandCode, HEX);
+#else
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedSendByteNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->detailedRecordHeader.CommandCode, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    smbusNoPec__->extendedSendByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                           pRecord->detailedRecordHeader.CommandCode);
+  else
+    smbusNoPec__->sendByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                           pRecord->detailedRecordHeader.CommandCode & 0xFF);
+#endif
+#endif
+  return SUCCESS;
+}
+
 
 /********************************************************************
  * Function:        uint8_t recordProcessor___0x18___processEvent(t_RECORD_EVENT*);
@@ -1151,7 +2513,7 @@ uint8_t recordProcessor___0x18___processEvent(t_RECORD_EVENT *pRecord)
       return SUCCESS;
     case SYSTEM_BEFORE_VERIFY:
       if (verification_in_progress)
-        ignore_records = true;
+        ignore_records = false;
       // This event is fired after programming the system before any commands are issued to verify the NVM
       // Potentially do something in your system that needs doing before any programming has started
       // Tell the user the chip was programmed without error and now it needs verification?
@@ -1198,12 +2560,12 @@ uint8_t recordProcessor___0x18___processEvent(t_RECORD_EVENT *pRecord)
 }
 
 /********************************************************************
- * Function:        uint8_t recordProcessor___0x19___processReadByteExpectMaskNoPEC(t_RECORD_smbus_read_byte_EXPECT_MASK_NOPEC*);
+ * Function:        uint8_t recordProcessor___0x19___processReadByteExpectMaskNoPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC*);
  *
  * PreCondition:    None
- * Input:           A t_RECORD_smbus_read_byte_EXPECT_MASK_NOPEC pointer reference
+ * Input:           A t_RECORD_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC pointer reference
  * Output:          A 1 is returned on success and a 0 is returned on failure
- * Overview:        Processes the t_RECORD_smbus_read_byte_EXPECT_MASK_NOPEC record type
+ * Overview:        Processes the t_RECORD_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC record type
  * Note:            More detailed information may be available in the PDF
  *******************************************************************/
 uint8_t recordProcessor___0x19___processReadByteExpectMaskNoPEC(t_RECORD_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC *pRecord)
@@ -1229,6 +2591,57 @@ uint8_t recordProcessor___0x19___processReadByteExpectMaskNoPEC(t_RECORD_PMBUS_R
   expectedByteValueWithMask = (pRecord->expectedDataByte & pRecord->byteMask);
 #if DEBUG_PRINT
   Serial.print(F("ReadByteExpectMaskNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->byteMask, HEX);
+  Serial.print(F(" "));
+  Serial.print(actualByteValueWithMask, HEX);
+  Serial.print(F(" "));
+  Serial.println(expectedByteValueWithMask, HEX);
+#endif
+  return (actualByteValueWithMask != expectedByteValueWithMask) ? FAILURE : SUCCESS;
+#endif
+#endif
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x8019___processExtendedReadByteExpectMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8019___processExtendedReadByteExpectMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadByteExpectMaskNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->byteMask, HEX);
+  return SUCCESS;
+#else
+  uint8_t actualByteValue;
+  uint8_t actualByteValueWithMask;
+  uint8_t expectedByteValueWithMask;
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    actualByteValue = smbusNoPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode);
+  else
+    actualByteValue = smbusNoPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode & 0xFF);
+  actualByteValueWithMask = (actualByteValue & pRecord->byteMask);
+  expectedByteValueWithMask = (pRecord->expectedDataByte & pRecord->byteMask);
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedReadByteExpectMaskNoPEC "));
   Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
   Serial.print(F(" "));
   Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
@@ -1279,6 +2692,64 @@ uint8_t recordProcessor___0x1A___processReadWordExpectMaskNoPEC(t_RECORD_PMBUS_R
   expectedWordValueWithMask = (pRecord->expectedDataWord & pRecord->wordMask);
 #if DEBUG_PRINT
   Serial.print(F("ReadWordExpectMaskNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->expectedDataWord, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->wordMask, HEX);
+  Serial.print(F(" "));
+  Serial.print(actualWordValue, HEX);
+  Serial.print(F(" "));
+  Serial.print(actualWordValueWithMask, HEX);
+  Serial.print(F(" "));
+  Serial.println(expectedWordValueWithMask, HEX);
+#endif
+  return (actualWordValueWithMask != expectedWordValueWithMask) ? FAILURE : SUCCESS;
+#endif
+#endif
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x801A___processReadWordExpectMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x801A___processExtendedReadWordExpectMaskNoPEC(t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedReadWordExpectMaskNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->expectedDataWord, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->wordMask, HEX);
+  return SUCCESS;
+#else
+  uint16_t actualWordValue;
+  uint16_t actualWordValueWithMask;
+  uint16_t expectedWordValueWithMask;
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    actualWordValue = smbusNoPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode);
+  else
+    actualWordValue = smbusNoPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode & 0xFF);
+
+  actualWordValueWithMask = (actualWordValue & pRecord->wordMask);
+  expectedWordValueWithMask = (pRecord->expectedDataWord & pRecord->wordMask);
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedReadWordExpectMaskNoPEC "));
   Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
   Serial.print(F(" "));
   Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
@@ -1428,6 +2899,55 @@ uint8_t recordProcessor___0x1C___modifyWordNoPEC(t_RECORD_PMBUS_MODIFY_WORD_NO_P
 }
 
 /********************************************************************
+ * Function:        uint8_t recordProcessor___0x801C___extendedModifyWordNoPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE_NO_PEC*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE_NO_PEC pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE_NO_PEC record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x801C___extendedModifyWordNoPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_WORD_NO_PEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedModifyWordNoPec "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->desiredDataWord, HEX);
+#else
+  uint16_t actualWordValue;
+  uint16_t modifiedWordValue;
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedModifyWordNoPec %x "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->desiredDataWord, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    actualWordValue = smbusNoPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode);
+  else
+    actualWordValue = smbusNoPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode & 0xFF);
+
+  modifiedWordValue = (actualWordValue & (~pRecord->wordMask));
+  smbusNoPec__->writeWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode,
+                          modifiedWordValue | (pRecord->desiredDataWord & pRecord->wordMask));
+#endif
+#endif
+  return SUCCESS;
+}
+
+
+/********************************************************************
  * Function:        uint8_t recordProcessor___0x1D___modifyByteNoPEC(t_RECORD_PMBUS_MODIFY_BYTE*);
  *
  * PreCondition:    None
@@ -1471,6 +2991,53 @@ uint8_t recordProcessor___0x1D___modifyByteNoPEC(t_RECORD_PMBUS_MODIFY_BYTE_NO_P
   return SUCCESS;
 }
 
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x801D___extendedModifyByteNoPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x801D___extendedModifyByteNoPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE_NO_PEC *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedModifyByteNoPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->desiredDataByte, HEX);
+#else
+  uint8_t actualByteValue;
+  uint8_t modifiedByteValue;
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedModifyByteNoPEC %x "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->desiredDataByte, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+    actualByteValue = smbusNoPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode);
+  else
+    actualByteValue = smbusNoPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                      pRecord->detailedRecordHeader.CommandCode & 0xFF);
+
+  modifiedByteValue = (actualByteValue & (~pRecord->byteMask));
+  smbusNoPec__->writeByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                          pRecord->detailedRecordHeader.CommandCode,
+                          modifiedByteValue | (pRecord->desiredDataByte & pRecord->byteMask));
+#endif
+#endif
+  return SUCCESS;
+}
 /********************************************************************
  * Function:        uint8_t recordProcessor___0x1E___writeNvmData(t_RECORD_NVM_DATA*);
  *
@@ -1577,6 +3144,84 @@ uint8_t recordProcessor___0x20___modifyByteOptionalPEC(t_RECORD_PMBUS_MODIFY_BYT
 }
 
 /********************************************************************
+ * Function:        uint8_t recordProcessor___0x8020___modifyByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8020___extendedModifyByteOptionalPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("ExtendedModifyByteOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->desiredDataByte, HEX);
+#else
+  uint8_t actualByteValue;
+  uint8_t modifiedByteValue;
+#if DEBUG_PRINT
+  Serial.print(F("ExtendedModifyByteOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->desiredDataByte, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      actualByteValue = smbusPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                             pRecord->detailedRecordHeader.CommandCode);
+    else
+      actualByteValue = smbusNoPec__->extendedReadByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode);
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      actualByteValue = smbusPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                             pRecord->detailedRecordHeader.CommandCode & 0xFF);
+    else
+      actualByteValue = smbusNoPec__->readByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode & 0xFF);    
+  }
+  modifiedByteValue = (actualByteValue & (~pRecord->byteMask));
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->extendedWriteByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            modifiedByteValue | (pRecord->desiredDataByte & pRecord->byteMask));
+    else
+      smbusNoPec__->extendedWriteByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode,
+                              modifiedByteValue | (pRecord->desiredDataByte & modifiedByteValue));
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->writeByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            modifiedByteValue | (pRecord->desiredDataByte & pRecord->byteMask));
+    else
+      smbusNoPec__->writeByte((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                              modifiedByteValue | (pRecord->desiredDataByte & modifiedByteValue));    
+  }
+#endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
  * Function:        uint8_t recordProcessor___0x21___modifyWordOptionalPEC(t_RECORD_PMBUS_MODIFY_WORD*);
  *
  * PreCondition:    None
@@ -1624,6 +3269,85 @@ uint8_t recordProcessor___0x21___modifyWordOptionalPEC(t_RECORD_PMBUS_MODIFY_WOR
     smbusNoPec__->writeWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
                             pRecord->detailedRecordHeader.CommandCode,
                             modifiedWordValue | (pRecord->desiredDataWord & pRecord->wordMask));
+#endif
+#endif
+  return SUCCESS;
+}
+
+/********************************************************************
+ * Function:        uint8_t recordProcessor___0x8021___extendedModifyWordOptionalPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_WORD*);
+ *
+ * PreCondition:    None
+ * Input:           A t_RECORD_PMBUS_EXTENDED_MODIFY_WORD pointer reference
+ * Output:          A 1 is returned on success and a 0 is returned on failure
+ * Overview:        Processes the t_RECORD_PMBUS_EXTENDED_MODIFY_WORD record type
+ * Note:            More detailed information may be available in the PDF
+ *******************************************************************/
+uint8_t recordProcessor___0x8021___extendedModifyWordOptionalPEC(t_RECORD_PMBUS_EXTENDED_MODIFY_WORD *pRecord)
+{
+#if DEBUG_SILENT
+  return SUCCESS;
+#else
+#if DEBUG_PROCESSING
+  Serial.print(F("extendedModifyWordOptionalPEC "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->desiredDataWord, HEX);
+#else
+  uint16_t actualWordValue;
+  uint16_t modifiedWordValue;
+#if DEBUG_PRINT
+  Serial.print(F("extendedModifyWordOptionalPEC %x "));
+  Serial.print(pRecord->detailedRecordHeader.DeviceAddress, HEX);
+  Serial.print(F(" "));
+  Serial.print(pRecord->detailedRecordHeader.CommandCode, HEX);
+  Serial.print(F(" "));
+  Serial.println(pRecord->desiredDataWord, HEX);
+#endif
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      actualWordValue = smbusPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                             pRecord->detailedRecordHeader.CommandCode);
+    else
+      actualWordValue = smbusNoPec__->extendedReadWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode);
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      actualWordValue = smbusPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                                             pRecord->detailedRecordHeader.CommandCode & 0xFF);
+    else
+      actualWordValue = smbusNoPec__->readWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                        pRecord->detailedRecordHeader.CommandCode & 0xFF);    
+  }
+
+  modifiedWordValue = (actualWordValue & (~pRecord->wordMask));
+  if ((pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFE) || (pRecord->detailedRecordHeader.CommandCode >> 8 == 0xFF))
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->extendedWriteWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode,
+                            modifiedWordValue | (pRecord->desiredDataWord & pRecord->wordMask));
+    else
+      smbusNoPec__->extendedWriteWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode,
+                              modifiedWordValue | (pRecord->desiredDataWord & pRecord->wordMask));
+  }
+  else
+  {
+    if (pRecord->detailedRecordHeader.UsePec)
+      smbusPec__->writeWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                            pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                            modifiedWordValue | (pRecord->desiredDataWord & pRecord->wordMask));
+    else
+      smbusNoPec__->writeWord((uint8_t) pRecord->detailedRecordHeader.DeviceAddress,
+                              pRecord->detailedRecordHeader.CommandCode & 0xFF,
+                              modifiedWordValue | (pRecord->desiredDataWord & pRecord->wordMask));    
+  }
 #endif
 #endif
   return SUCCESS;

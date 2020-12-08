@@ -102,12 +102,38 @@ int8_t LT_I2CBus::writeByte(uint8_t address, uint8_t value)
   return ret;
 }
 
+// Write "value" byte to device at "address"
+int8_t LT_I2CBus::extendedWriteByte(uint8_t address, uint16_t value)
+{
+  int8_t ret = 1;
+
+  LT_Wire.beginTransmission(address);
+  LT_Wire.write(value >> 8);
+  LT_Wire.write(value & 0xFF);
+  ret = LT_Wire.endTransmission(!inGroupProtocol_);
+  return ret;
+}
+
 // Read a byte of data at register specified by "command", store in "value"
 int8_t LT_I2CBus::readByteData(uint8_t address, uint8_t command, uint8_t *value)
 {
   int8_t ret = 1;
   LT_Wire.beginTransmission(address);
   LT_Wire.write(command);
+  ret = LT_Wire.endTransmission(false);
+  LT_Wire.beginTransmission(address);
+  LT_Wire.requestFrom(address, value, (uint16_t)1);
+
+  return ret;                             // Return result
+}
+
+// Read a byte of data at register specified by "command", store in "value"
+int8_t LT_I2CBus::extendedReadByteData(uint8_t address, uint16_t command, uint8_t *value)
+{
+  int8_t ret = 1;
+  LT_Wire.beginTransmission(address);
+  LT_Wire.write(command >> 8);
+  LT_Wire.write(command & 0xFF);
   ret = LT_Wire.endTransmission(false);
   LT_Wire.beginTransmission(address);
   LT_Wire.requestFrom(address, value, (uint16_t)1);
@@ -127,6 +153,19 @@ int8_t LT_I2CBus::writeByteData(uint8_t address, uint8_t command, uint8_t value)
   return ret;
 }
 
+// Write a byte of data to register specified by "command"
+int8_t LT_I2CBus::extendedWriteByteData(uint8_t address, uint16_t command, uint8_t value)
+{
+  int8_t ret = 1;
+
+  LT_Wire.beginTransmission(address);
+  LT_Wire.write(command >> 8);
+  LT_Wire.write(command & 0xFF);
+  LT_Wire.write(value);
+  ret = LT_Wire.endTransmission(!inGroupProtocol_);
+  return ret;
+}
+
 // Read a 16-bit word of data from register specified by "command"
 int8_t LT_I2CBus::readWordData(uint8_t address, uint8_t command, uint16_t *value)
 {
@@ -134,6 +173,24 @@ int8_t LT_I2CBus::readWordData(uint8_t address, uint8_t command, uint16_t *value
 
   LT_Wire.beginTransmission(address);
   LT_Wire.write(command);
+  ret = LT_Wire.endTransmission(false);
+  LT_Wire.beginTransmission(address);
+  uint8_t tempHolder[2];
+  LT_Wire.requestFrom(address, tempHolder, (uint16_t)2);
+  *value = tempHolder[0] << 8;
+  *value |= tempHolder[1];
+
+  return ret;
+}
+
+// Read a 16-bit word of data from register specified by "command"
+int8_t LT_I2CBus::extendedReadWordData(uint8_t address, uint16_t command, uint16_t *value)
+{
+  int8_t ret = 1;
+
+  LT_Wire.beginTransmission(address);
+  LT_Wire.write(command >> 8);
+  LT_Wire.write(command & 0xFF);
   ret = LT_Wire.endTransmission(false);
   LT_Wire.beginTransmission(address);
   uint8_t tempHolder[2];
@@ -158,6 +215,21 @@ int8_t LT_I2CBus::writeWordData(uint8_t address, uint8_t command, uint16_t value
   return ret;
 }
 
+// Write a 16-bit word of data to register specified by "command"
+int8_t LT_I2CBus::extendedWriteWordData(uint8_t address, uint16_t command, uint16_t value)
+{
+  int8_t ret = 1;
+
+  LT_Wire.beginTransmission(address);
+  LT_Wire.write(command >> 8);
+  LT_Wire.write(command & 0xFF);
+  LT_Wire.write(value >> 8);
+  LT_Wire.write(value & 0xFF);
+  ret = LT_Wire.endTransmission(!inGroupProtocol_);
+
+  return ret;
+}
+
 int8_t LT_I2CBus::readBlockData(uint8_t address, uint8_t command, uint16_t length, uint8_t *values)
 {
   int8_t ret = 0;
@@ -170,6 +242,18 @@ int8_t LT_I2CBus::readBlockData(uint8_t address, uint8_t command, uint16_t lengt
   return ret;
 }
 
+int8_t LT_I2CBus::extendedReadBlockData(uint8_t address, uint16_t command, uint16_t length, uint8_t *values)
+{
+  int8_t ret = 0;
+  LT_Wire.beginTransmission(address);
+  LT_Wire.write(command >> 8);
+  LT_Wire.write(command & 0xFF);
+  ret = LT_Wire.endTransmission(false);
+  LT_Wire.beginTransmission(address);
+  LT_Wire.requestFrom(address, values, length);
+
+  return ret;
+}
 
 // Read a block of data, no command byte, reads length number of bytes and stores it in values.
 int8_t LT_I2CBus::readBlockData(uint8_t address, uint16_t length, uint8_t *values)
@@ -191,6 +275,26 @@ int8_t LT_I2CBus::writeBlockData(uint8_t address, uint8_t command, uint16_t leng
 
   LT_Wire.beginTransmission(address);
   LT_Wire.write(command);
+  do
+  {
+    i--;
+  }
+  while (LT_Wire.write(values[length - 1 - i]) == 1 && i > 0);
+
+  ret = LT_Wire.endTransmission(!inGroupProtocol_);
+
+  return ret;
+}
+
+// Write a block of data, starting at register specified by "command" and ending at (command + length - 1)
+int8_t LT_I2CBus::extendedWriteBlockData(uint8_t address, uint16_t command, uint16_t length, uint8_t *values)
+{
+  uint8_t i = length;
+  int8_t ret = 1;
+
+  LT_Wire.beginTransmission(address);
+  LT_Wire.write(command >> 8);
+  LT_Wire.write(command & 0xFF);
   do
   {
     i--;
