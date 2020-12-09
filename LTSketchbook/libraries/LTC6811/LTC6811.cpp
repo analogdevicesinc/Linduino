@@ -74,7 +74,7 @@ void LTC6811_init_reg_limits(uint8_t total_ic, //The number of ICs in the system
     ic[cic].ic_reg.aux_channels=6;
     ic[cic].ic_reg.num_cv_reg=4;
     ic[cic].ic_reg.num_gpio_reg=2;
-    ic[cic].ic_reg.num_stat_reg=3;
+    ic[cic].ic_reg.num_stat_reg=2;
   }
 }
 
