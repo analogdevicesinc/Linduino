@@ -533,13 +533,11 @@ int8_t LTC6812_rdpsb(uint8_t total_ic, //Number of ICs in the daisy chain
     uint16_t data_pec;
     uint16_t calc_pec;
     uint8_t c_ic = 0;
-    
-   
+ 
     cmd[0] = 0x00;
-    cmd[1] = 0x1E;
-	 
+    cmd[1] = 0x1E; 
     
-    pec_error = read_68(total_ic, cmd, read_buffer);
+    read_68(total_ic, cmd, read_buffer);
 
     for(uint8_t current_ic =0; current_ic<total_ic; current_ic++)
     {	
@@ -564,6 +562,7 @@ int8_t LTC6812_rdpsb(uint8_t total_ic, //Number of ICs in the daisy chain
         data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
         if(calc_pec != data_pec )
         {
+            pec_error = -1;
             ic[c_ic].pwmb.rx_pec_match = 1;
 			ic[c_ic].sctrlb.rx_pec_match = 1;
         }

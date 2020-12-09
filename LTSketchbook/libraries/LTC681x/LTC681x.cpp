@@ -137,18 +137,13 @@ void write_68(uint8_t total_ic, //Number of ICs to be written to
 }
 
 /* Generic function to write 68xx commands and read data. Function calculated PEC for tx_cmd data */
-int8_t read_68( uint8_t total_ic, // Number of ICs in the system 
+void read_68( uint8_t total_ic, // Number of ICs in the system 
 				uint8_t tx_cmd[2], // The command to be transmitted 
 				uint8_t *rx_data // Data to be read
 				)
 {
-	const uint8_t BYTES_IN_REG = 8;
 	uint8_t cmd[4];
-	uint8_t data[256];
-	int8_t pec_error = 0;
 	uint16_t cmd_pec;
-	uint16_t data_pec;
-	uint16_t received_pec;
 	
 	cmd[0] = tx_cmd[0];
 	cmd[1] = tx_cmd[1];
@@ -157,26 +152,8 @@ int8_t read_68( uint8_t total_ic, // Number of ICs in the system
 	cmd[3] = (uint8_t)(cmd_pec);
 	
 	cs_low(CS_PIN);
-	spi_write_read(cmd, 4, data, (BYTES_IN_REG*total_ic));         //Transmits the command and reads the configuration data of all ICs on the daisy chain into rx_data[] array
+	spi_write_read(cmd, 4, rx_data, (NUM_RX_BYT*total_ic));         //Transmits the command and reads the configuration data of all ICs on the daisy chain into rx_data[] array
 	cs_high(CS_PIN);                                         
-
-	for (uint8_t current_ic = 0; current_ic < total_ic; current_ic++) //Executes for each LTC681x in the daisy chain and packs the data
-	{																//into the rx_data array as well as check the received data for any bit errors
-		for (uint8_t current_byte = 0; current_byte < BYTES_IN_REG; current_byte++)
-		{
-			rx_data[(current_ic*8)+current_byte] = data[current_byte + (current_ic*BYTES_IN_REG)];
-		}
-		
-		received_pec = (rx_data[(current_ic*8)+6]<<8) + rx_data[(current_ic*8)+7];
-		data_pec = pec15_calc(6, &rx_data[current_ic*8]);
-		
-		if (received_pec != data_pec)
-		{
-		  pec_error = -1;
-		}
-	}
-	
-	return(pec_error);
 }
 
 /* Calculates  and returns the CRC15 */
@@ -272,7 +249,7 @@ int8_t LTC681x_rdcfg(uint8_t total_ic, //Number of ICs in the system
 	uint16_t calc_pec;
 	uint8_t c_ic = 0;
 	
-	pec_error = read_68(total_ic, cmd, read_buffer);
+	read_68(total_ic, cmd, read_buffer);
 	
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
@@ -294,6 +271,7 @@ int8_t LTC681x_rdcfg(uint8_t total_ic, //Number of ICs in the system
 		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
 		if (calc_pec != data_pec )
 		{
+                        pec_error = -1;
 			ic[c_ic].config.rx_pec_match = 1;
 		}
 		else ic[c_ic].config.rx_pec_match = 0;
@@ -315,7 +293,7 @@ int8_t LTC681x_rdcfgb(uint8_t total_ic, //Number of ICs in the system
 	uint16_t calc_pec;
 	uint8_t c_ic = 0;
 	
-	pec_error = read_68(total_ic, cmd, read_buffer);
+	read_68(total_ic, cmd, read_buffer);
 	
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
@@ -337,6 +315,7 @@ int8_t LTC681x_rdcfgb(uint8_t total_ic, //Number of ICs in the system
 		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
 		if (calc_pec != data_pec )
 		{
+                        pec_error = -1;
 			ic[c_ic].configb.rx_pec_match = 1;
 		}
 		else ic[c_ic].configb.rx_pec_match = 0;
@@ -696,9 +675,7 @@ void LTC681x_rdcv_reg(uint8_t reg, //Determines which cell voltage register is r
                       uint8_t *data //An array of the unparsed cell codes
                      )
 {
-	const uint8_t REG_LEN = 8; //Number of bytes in each ICs register + 2 bytes for the PEC
-	uint8_t cmd[4];
-	uint16_t cmd_pec;
+	uint8_t cmd[2];
 
 	if (reg == 1)     //1: RDCVA
 	{
@@ -731,13 +708,7 @@ void LTC681x_rdcv_reg(uint8_t reg, //Determines which cell voltage register is r
 		cmd[0] = 0x00;
 	}
 
-	cmd_pec = pec15_calc(2, cmd);
-	cmd[2] = (uint8_t)(cmd_pec >> 8);
-	cmd[3] = (uint8_t)(cmd_pec);
-
-	cs_low(CS_PIN);
-	spi_write_read(cmd,4,data,(REG_LEN*total_ic));
-	cs_high(CS_PIN);
+        read_68(total_ic, cmd, data);
 }
 
 /*
@@ -750,9 +721,7 @@ void LTC681x_rdaux_reg(uint8_t reg, //Determines which GPIO voltage register is 
                        uint8_t *data //Array of the unparsed auxiliary codes
                       )
 {
-	const uint8_t REG_LEN = 8; // Number of bytes in the register + 2 bytes for the PEC
-	uint8_t cmd[4];
-	uint16_t cmd_pec;
+	uint8_t cmd[2];
 
 	if (reg == 1)     //Read back auxiliary group A
 	{
@@ -780,13 +749,7 @@ void LTC681x_rdaux_reg(uint8_t reg, //Determines which GPIO voltage register is 
 		cmd[0] = 0x00;
 	}
 
-	cmd_pec = pec15_calc(2, cmd);
-	cmd[2] = (uint8_t)(cmd_pec >> 8);
-	cmd[3] = (uint8_t)(cmd_pec);
-
-	cs_low(CS_PIN);
-	spi_write_read(cmd,4,data,(REG_LEN*total_ic));
-	cs_high(CS_PIN);
+        read_68(total_ic, cmd, data);
 }
 
 /*
@@ -799,9 +762,7 @@ void LTC681x_rdstat_reg(uint8_t reg, //Determines which stat register is read ba
                         uint8_t *data //Array of the unparsed stat codes
                        )
 {
-	const uint8_t REG_LEN = 8; // number of bytes in the register + 2 bytes for the PEC
-	uint8_t cmd[4];
-	uint16_t cmd_pec;
+	uint8_t cmd[2];
 
 	if (reg == 1)     //Read back status group A
 	{
@@ -820,13 +781,7 @@ void LTC681x_rdstat_reg(uint8_t reg, //Determines which stat register is read ba
 		cmd[0] = 0x00;
 	}
 
-	cmd_pec = pec15_calc(2, cmd);
-	cmd[2] = (uint8_t)(cmd_pec >> 8);
-	cmd[3] = (uint8_t)(cmd_pec);
-
-	cs_low(CS_PIN);
-	spi_write_read(cmd,4,data,(REG_LEN*total_ic));
-	cs_high(CS_PIN);
+        read_68(total_ic, cmd, data);
 }
 
 /* Helper function that parses voltage measurement registers */
@@ -1759,7 +1714,7 @@ int8_t LTC681x_rdpwm(uint8_t total_ic, //Number of ICs in the system
 		cmd[1] = 0x1E;
 	}
 	
-	pec_error = read_68(total_ic, cmd, read_buffer);
+	read_68(total_ic, cmd, read_buffer);
 	for (uint8_t current_ic =0; current_ic<total_ic; current_ic++)
 	{
 		if (ic->isospi_reverse == false)
@@ -1780,6 +1735,7 @@ int8_t LTC681x_rdpwm(uint8_t total_ic, //Number of ICs in the system
 		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
 		if (calc_pec != data_pec )
 		{
+                        pec_error = -1;
 			ic[c_ic].pwm.rx_pec_match = 1;
 		}
 		else ic[c_ic].pwm.rx_pec_match = 0;
@@ -1793,7 +1749,7 @@ void LTC681x_wrsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
                      cell_asic *ic  // A two dimensional array that stores the data to be written
                     )
 {
-	uint8_t cmd[2];
+    uint8_t cmd[2];
     uint8_t write_buffer[256];
     uint8_t write_count = 0;
     uint8_t c_ic = 0;
@@ -1847,7 +1803,7 @@ int8_t LTC681x_rdsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
       cmd[1] = 0x1E;
 	}
     
-    pec_error = read_68(total_ic, cmd, read_buffer);
+    read_68(total_ic, cmd, read_buffer);
 
     for(uint8_t current_ic =0; current_ic<total_ic; current_ic++)
     {	
@@ -1864,6 +1820,7 @@ int8_t LTC681x_rdsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
         data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
         if(calc_pec != data_pec )
         {
+            pec_error = -1;
             ic[c_ic].sctrl.rx_pec_match = 1;
         }
         else ic[c_ic].sctrl.rx_pec_match = 0;
@@ -1944,7 +1901,7 @@ int8_t LTC681x_rdcomm(uint8_t total_ic, //Number of ICs in the system
 	uint16_t calc_pec;
 	uint8_t c_ic=0;
 	
-	pec_error = read_68(total_ic, cmd, read_buffer);
+	read_68(total_ic, cmd, read_buffer);
 	
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
@@ -1966,6 +1923,7 @@ int8_t LTC681x_rdcomm(uint8_t total_ic, //Number of ICs in the system
 		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
 		if (calc_pec != data_pec )
 		{
+                        pec_error = -1;
 			ic[c_ic].com.rx_pec_match = 1;
 		}
 		else ic[c_ic].com.rx_pec_match = 0;
