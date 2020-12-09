@@ -584,7 +584,7 @@ int8_t LTC6810_rdsid(uint8_t total_ic, // The number of ICs in the system
                      cell_asic *ic //A two dimensional array that the function stores the read data.
                     )
 {
-    uint8_t cmd[4];
+    uint8_t cmd[2];
     uint8_t read_buffer[256];
     int8_t pec_error = 0;
     uint16_t data_pec;

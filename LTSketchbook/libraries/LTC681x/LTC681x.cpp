@@ -347,7 +347,7 @@ void LTC681x_adax(uint8_t MD, //ADC Mode
 				  uint8_t CHG //GPIO Channels to be measured
 				  )
 {
-	uint8_t cmd[4];
+	uint8_t cmd[2];
 	uint8_t md_bits;
 	
 	md_bits = (MD & 0x02) >> 1;
@@ -363,7 +363,7 @@ void LTC681x_adstat(uint8_t MD, //ADC Mode
 				    uint8_t CHST //Stat Channels to be measured
 				    )
 {
-	uint8_t cmd[4];
+	uint8_t cmd[2];
 	uint8_t md_bits;
 	
 	md_bits = (MD & 0x02) >> 1;
@@ -994,7 +994,7 @@ void LTC681x_adaxd(uint8_t MD, //ADC Mode
 				   uint8_t CHG //GPIO Channels to be measured
 				   )
 {
-	uint8_t cmd[4];
+	uint8_t cmd[2];
 	uint8_t md_bits;
 
 	md_bits = (MD & 0x02) >> 1;
@@ -1696,7 +1696,7 @@ int8_t LTC681x_rdpwm(uint8_t total_ic, //Number of ICs in the system
                     )
 {
 	const uint8_t BYTES_IN_REG = 8;
-	uint8_t cmd[4];
+	uint8_t cmd[2];
 	uint8_t read_buffer[256];
 	int8_t pec_error = 0;
 	uint16_t data_pec;
@@ -1785,7 +1785,7 @@ int8_t LTC681x_rdsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
                        cell_asic *ic // A two dimensional array that the function stores the read data
                       )	
 {
-    uint8_t cmd[4];
+    uint8_t cmd[2];
     uint8_t read_buffer[256];
     int8_t pec_error = 0;
     uint16_t data_pec;
