@@ -214,12 +214,10 @@ void write_68(uint8_t total_ic , //!< Number of ICs in the daisy chain
              );
 			 
 /*!
- Issues a command onto the daisy chain and reads back 6*total_ic data in the rx_data array
- @return int8_t, PEC Status.
-  0: Data read back has matching PEC
- -1: Data read back has incorrect PEC  
+ Issues a command onto the daisy chain and reads back 8*total_ic data in the rx_data array
+ @return void 
  */
-int8_t read_68( uint8_t total_ic, //!< Number of ICs in the daisy chain
+void read_68( uint8_t total_ic, //!< Number of ICs in the daisy chain
                 uint8_t tx_cmd[2], //!< 2 byte array containing the BMS command to be sent
                 uint8_t *rx_data); //!< Array that the read back data will be stored in.
 				

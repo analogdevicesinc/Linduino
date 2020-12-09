@@ -424,7 +424,7 @@ void LTC6813_wrpsb(uint8_t total_ic, //!< Number of ICs in the system
    0: Data read back has matching PEC
   -1: Data read back has incorrect PEC 
   */
-uint8_t LTC6813_rdpsb(uint8_t total_ic, //!< Number of ICs in the daisy chain
+int8_t LTC6813_rdpsb(uint8_t total_ic, //!< Number of ICs in the daisy chain
                        cell_asic *ic //!< A two dimensional array that the function stores the read data
                       );	
 
