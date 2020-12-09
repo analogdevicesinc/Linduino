@@ -388,7 +388,7 @@ void LTC6810_stcomm(uint8_t len //!< Length of data to be transmitted
    0: Data read back has matching PEC
  -1: Data read back has incorrect PEC 
  */
-uint8_t LTC6810_rdsid(uint8_t total_ic, //!< The number of ICs in the system
+int8_t LTC6810_rdsid(uint8_t total_ic, //!< The number of ICs in the system
                      cell_asic *ic //!< A two dimensional array that will store the read data 
                     );
 					

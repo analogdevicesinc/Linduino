@@ -258,9 +258,7 @@ void LTC6810_rds_reg(uint8_t reg, //Determines which S voltage register is read 
                       uint8_t *data //An array of the unparsed cell codes
                      )
 {
-	const uint8_t REG_LEN = 8; //Number of bytes in each ICs register + 2 bytes for the PEC
-	uint8_t cmd[4];
-	uint16_t cmd_pec;
+	uint8_t cmd[2];
 
 	if (reg == 1)     // RDSA
 	{
@@ -582,7 +580,7 @@ void LTC6810_stcomm(uint8_t len) //Length of data to be transmitted
 }
 
 /* Reads Serial ID registers group. */
-uint8_t LTC6810_rdsid(uint8_t total_ic, // The number of ICs in the system
+int8_t LTC6810_rdsid(uint8_t total_ic, // The number of ICs in the system
                      cell_asic *ic //A two dimensional array that the function stores the read data.
                     )
 {
@@ -597,22 +595,28 @@ uint8_t LTC6810_rdsid(uint8_t total_ic, // The number of ICs in the system
     cmd[0] = 0x00;
     cmd[1] = 0x2C;
     
-    pec_error = read_68(total_ic, cmd, read_buffer);
+    read_68(total_ic, cmd, read_buffer);
 
     for(uint8_t current_ic =0; current_ic<total_ic; current_ic++)
     {	
-      if (temp== false)
-      {
-        c_ic = current_ic;
-      }
-      else
-      {
-        c_ic = total_ic - current_ic - 1;
-      }
+        if (temp== false)
+        {
+            c_ic = current_ic;
+        }
+        else
+        {
+            c_ic = total_ic - current_ic - 1;
+        }
 	
-        for(int byte=0; byte<8;byte++)
+        for(int byte = 0; byte < 6; byte++)
         {
             ic[c_ic].sid[byte] = read_buffer[byte+(8*current_ic)];
+        }
+
+        calc_pec = pec15_calc(6,&read_buffer[8*current_ic]);
+        data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
+        if(calc_pec != data_pec ){
+            pec_error = -1;
         }
     }
     return(pec_error);
