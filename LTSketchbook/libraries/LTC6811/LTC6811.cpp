@@ -167,7 +167,7 @@ int8_t LTC6811_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
                      )
 {
   int8_t pec_error = 0;
-  LTC681x_rdaux(reg,total_ic,ic);
+  pec_error = LTC681x_rdaux(reg,total_ic,ic);
   return (pec_error);
 }
 
@@ -299,7 +299,7 @@ uint16_t LTC6811_run_adc_overlap(uint8_t total_ic,//Number of ICs in the system
 								 )
 {
   uint16_t error = 0;
-  LTC681x_run_adc_overlap(total_ic, ic);
+  error = LTC681x_run_adc_overlap(total_ic, ic);
   return(error);
 }
 
@@ -311,7 +311,7 @@ int16_t LTC6811_run_adc_redundancy_st(uint8_t adc_mode, //ADC Mode
 									  )
 {
   int16_t error = 0;
-  LTC681x_run_adc_redundancy_st(adc_mode,adc_reg,total_ic,ic);
+  error = LTC681x_run_adc_redundancy_st(adc_mode, adc_reg, total_ic, ic);
   return(error);
 }
 
@@ -444,7 +444,7 @@ int8_t LTC6811_rdcomm(uint8_t total_ic, //Number of ICs in the system
                      )
 {
   int8_t pec_error = 0;
-  LTC681x_rdcomm(total_ic, ic);
+  pec_error = LTC681x_rdcomm(total_ic, ic);
   return(pec_error);
 }
 
