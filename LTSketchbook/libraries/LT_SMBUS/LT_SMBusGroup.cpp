@@ -80,6 +80,14 @@ void LT_SMBusGroup::writeByte(uint8_t address, uint8_t command, uint8_t data)
     executor->writeByte(address, command, data);
 }
 
+void LT_SMBusGroup::extendedWriteByte(uint8_t address, uint16_t command, uint8_t data)
+{
+  if (queueing)
+    addToQueue(new ExtendedWriteByte(executor, address, command, data));
+  else
+    executor->extendedWriteByte(address, command, data);
+}
+
 void LT_SMBusGroup::writeBytes(uint8_t *addresses, uint8_t *commands, uint8_t *data, uint8_t no_addresses)
 {
   if (queueing)
@@ -96,12 +104,28 @@ uint8_t LT_SMBusGroup::readByte(uint8_t address, uint8_t command)
     return executor->readByte(address, command);
 }
 
+uint8_t LT_SMBusGroup::extendedReadByte(uint8_t address, uint16_t command)
+{
+  if (queueing)
+    return executor->extendedReadByte(address, command);
+  else
+    return executor->extendedReadByte(address, command);
+}
+
 void LT_SMBusGroup::writeWord(uint8_t address, uint8_t command, uint16_t data)
 {
   if (queueing)
     addToQueue(new WriteWord(executor, address, command, data));
   else
     executor->writeWord(address, command, data);
+}
+
+void LT_SMBusGroup::extendedWriteWord(uint8_t address, uint16_t command, uint16_t data)
+{
+  if (queueing)
+    addToQueue(new ExtendedWriteWord(executor, address, command, data));
+  else
+    executor->extendedWriteWord(address, command, data);
 }
 
 uint16_t LT_SMBusGroup::readWord(uint8_t address, uint8_t command)
@@ -112,6 +136,14 @@ uint16_t LT_SMBusGroup::readWord(uint8_t address, uint8_t command)
     return executor->readWord(address, command);
 }
 
+uint16_t LT_SMBusGroup::extendedReadWord(uint8_t address, uint16_t command)
+{
+  if (queueing)
+    return executor->extendedReadWord(address, command);
+  else
+    return executor->extendedReadWord(address, command);
+}
+
 void LT_SMBusGroup::writeBlock(uint8_t address, uint8_t command,
                                uint8_t *block, uint16_t block_size)
 {
@@ -119,6 +151,15 @@ void LT_SMBusGroup::writeBlock(uint8_t address, uint8_t command,
     addToQueue(new WriteBlock(executor, address, command, block, block_size));
   else
     executor->writeBlock(address, command, block, block_size);
+}
+
+void LT_SMBusGroup::extendedWriteBlock(uint8_t address, uint16_t command,
+                               uint8_t *block, uint16_t block_size)
+{
+  if (queueing)
+    addToQueue(new ExtendedWriteBlock(executor, address, command, block, block_size));
+  else
+    executor->extendedWriteBlock(address, command, block, block_size);
 }
 
 uint8_t LT_SMBusGroup::writeReadBlock(uint8_t address, uint8_t command,
@@ -139,6 +180,15 @@ uint8_t LT_SMBusGroup::readBlock(uint8_t address, uint8_t command,
     return executor->readBlock(address, command, block, block_size);
 }
 
+uint8_t LT_SMBusGroup::extendedReadBlock(uint8_t address, uint16_t command,
+                                 uint8_t *block, uint16_t block_size)
+{
+  if (queueing)
+    return 0;
+  else
+    return executor->extendedReadBlock(address, command, block, block_size);
+}
+
 void LT_SMBusGroup::sendByte(uint8_t address, uint8_t command)
 {
   if (queueing)
@@ -147,6 +197,13 @@ void LT_SMBusGroup::sendByte(uint8_t address, uint8_t command)
     executor->sendByte(address, command);
 }
 
+void LT_SMBusGroup::extendedSendByte(uint8_t address, uint16_t command)
+{
+  if (queueing)
+    addToQueue(new ExtendedSendByte(executor, address, command));
+  else
+    executor->extendedSendByte(address, command);
+}
 
 void LT_SMBusGroup::beginStoring()
 {
@@ -210,6 +267,17 @@ void LT_SMBusGroup::WriteByte::execute()
   executor->writeByte(address, command, data);
 }
 
+LT_SMBusGroup::ExtendedWriteByte::ExtendedWriteByte(LT_SMBus *e, uint8_t a, uint16_t c, uint8_t d) : Executable(e)
+{
+  address = a;
+  command = c;
+  data = d;
+}
+void LT_SMBusGroup::ExtendedWriteByte::execute()
+{
+  executor->extendedWriteByte(address, command, data);
+}
+
 LT_SMBusGroup::WriteBytes::WriteBytes(LT_SMBus *e, uint8_t *a, uint8_t *c, uint8_t *d, uint8_t n) : Executable(e)
 {
   addresses = a;
@@ -233,6 +301,17 @@ void LT_SMBusGroup::WriteWord::execute()
   executor->writeWord(address, command, data);
 };
 
+LT_SMBusGroup::ExtendedWriteWord::ExtendedWriteWord(LT_SMBus *e, uint8_t a, uint16_t c, uint16_t d) : Executable(e)
+{
+  address = a;
+  command = c;
+  data = d;
+}
+void LT_SMBusGroup::ExtendedWriteWord::execute()
+{
+  executor->extendedWriteWord(address, command, data);
+};
+
 LT_SMBusGroup::WriteBlock::WriteBlock(LT_SMBus *e, uint8_t a, uint8_t c, uint8_t *b, uint16_t bl) : Executable(e)
 {
   address = a;
@@ -245,6 +324,18 @@ void LT_SMBusGroup::WriteBlock::execute()
   executor->writeBlock(address, command, block, block_size);
 };
 
+LT_SMBusGroup::ExtendedWriteBlock::ExtendedWriteBlock(LT_SMBus *e, uint8_t a, uint16_t c, uint8_t *b, uint16_t bl) : Executable(e)
+{
+  address = a;
+  command = c;
+  block = b;
+  block_size = bl;
+}
+void LT_SMBusGroup::ExtendedWriteBlock::execute()
+{
+  executor->extendedWriteBlock(address, command, block, block_size);
+};
+
 LT_SMBusGroup::SendByte::SendByte(LT_SMBus *e, uint8_t a, uint8_t c) : Executable(e)
 {
   address = a;
@@ -253,4 +344,14 @@ LT_SMBusGroup::SendByte::SendByte(LT_SMBus *e, uint8_t a, uint8_t c) : Executabl
 void LT_SMBusGroup::SendByte::execute()
 {
   executor->sendByte(address, command);
+};
+
+LT_SMBusGroup::ExtendedSendByte::ExtendedSendByte(LT_SMBus *e, uint8_t a, uint16_t c) : Executable(e)
+{
+  address = a;
+  command = c;
+};
+void LT_SMBusGroup::ExtendedSendByte::execute()
+{
+  executor->extendedSendByte(address, command);
 };

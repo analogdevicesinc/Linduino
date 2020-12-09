@@ -76,12 +76,25 @@ class LT_I2CBus
                      uint8_t value    //!< Byte to be written
                     );
 
+    //! Write "value" byte to device at "address"
+    //! @return 0 on success, 1 on failure
+    int8_t extendedWriteByte(uint8_t address, //!< 7-bit I2C address
+                             uint16_t value   //!< Byte to be written
+                            );
+
     //! Read a byte of data at register specified by "command", store in "value"
     //! @return 0 on success, 1 on failure
     int8_t readByteData(uint8_t address,     //!< 7-bit I2C address
                         uint8_t command,     //!< Command byte
                         uint8_t *value       //!< Byte to be read
                        );
+
+    //! Read a byte of data at register specified by "command", store in "value"
+    //! @return 0 on success, 1 on failure
+    int8_t extendedReadByteData(uint8_t address,     //!< 7-bit I2C address
+                                uint16_t command,    //!< Command word
+                                uint8_t *value       //!< Byte to be read
+                               );
 
     //! Write a byte of data to register specified by "command"
     //! @return 0 on success, 1 on failure
@@ -90,12 +103,26 @@ class LT_I2CBus
                          uint8_t value       //!< Byte to be written
                         );
 
+    //! Write a byte of data to register specified by "command"
+    //! @return 0 on success, 1 on failure
+    int8_t extendedWriteByteData(uint8_t address,    //!< 7-bit I2C address
+                                 uint16_t command,   //!< Command word
+                                 uint8_t value       //!< Byte to be written
+                                );
+
     //! Read a 16-bit word of data from register specified by "command"
     //! @return 0 on success, 1 on failure
     int8_t readWordData(uint8_t address,     //!< 7-bit I2C address
                         uint8_t command,     //!< Command byte
                         uint16_t *value      //!< Word to be read
                        );
+
+    //! Read a 16-bit word of data from register specified by "command"
+    //! @return 0 on success, 1 on failure
+    int8_t extendedReadWordData(uint8_t address,     //!< 7-bit I2C address
+                                uint16_t command,    //!< Command word
+                                uint16_t *value      //!< Word to be read
+                               );
 
     //! Write a 16-bit word of data to register specified by "command"
     //! @return 0 on success, 1 on failure
@@ -104,6 +131,13 @@ class LT_I2CBus
                          uint16_t value      //!< Word to be written
                         );
 
+    //! Write a 16-bit word of data to register specified by "command"
+    //! @return 0 on success, 1 on failure
+    int8_t extendedWriteWordData(uint8_t address,    //!< 7-bit I2C address
+                                 uint16_t command,   //!< Command word
+                                 uint16_t value      //!< Word to be written
+                                );
+
     //! Read a block of data, starting at register specified by "command" and ending at (command + length - 1)
     //! @return 0 on success, 1 on failure
     int8_t readBlockData(uint8_t address,     //!< 7-bit I2C address
@@ -111,6 +145,15 @@ class LT_I2CBus
                          uint16_t length,     //!< Length of array
                          uint8_t *values      //!< Byte array to be read
                         );
+
+    //! Read a block of data, starting at register specified by "command" and ending at (command + length - 1)
+    //! @return 0 on success, 1 on failure
+    int8_t extendedReadBlockData(uint8_t address,     //!< 7-bit I2C address
+                                 uint16_t command,    //!< Command word
+                                 uint16_t length,     //!< Length of array
+                                 uint8_t *values      //!< Byte array to be read
+                                );
+
 
     //! Read a block of data, starting at register specified by "command" and ending at (command + length - 1)
     //! @return 0 on success, 1 on failure
@@ -134,8 +177,6 @@ class LT_I2CBus
                             uint8_t *values      //!< Byte array to be read
                            );
 
-
-
     //! Write a block of data, starting at register specified by "command" and ending at (command + length - 1)
     //! @return 0 on success, 1 on failure
     int8_t writeBlockData(uint8_t address,       //!< 7-bit I2C address
@@ -143,6 +184,14 @@ class LT_I2CBus
                           uint16_t length,       //!< Length of array
                           uint8_t *values        //!< Byte array to be written
                          );
+
+    //! Write a block of data, starting at register specified by "command" and ending at (command + length - 1)
+    //! @return 0 on success, 1 on failure
+    int8_t extendedWriteBlockData(uint8_t address,       //!< 7-bit I2C address
+                                  uint16_t command,      //!< Command word
+                                  uint16_t length,       //!< Length of array
+                                  uint8_t *values        //!< Byte array to be written
+                                 );
 
     //! Write a two command bytes, then receive a block of data
     //! @return 0 on success, 1 on failure

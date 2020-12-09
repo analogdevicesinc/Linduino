@@ -48,7 +48,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define DEBUG_FLASH 0
 
-const unsigned char  *icpFile;
+const unsigned char *icpFile;
+const unsigned char *icpPosition;
 uint32_t flashLocation = 0;
 
 LT_SMBusNoPec *smbusNoPec__;
@@ -87,6 +88,17 @@ pRecordHeaderLengthAndType get_record(void)
   return parse_record(get_record_data);
 }
 
+uint8_t get_record_raw_data(void)
+{
+  return *(icpPosition++);
+}
+
+pRecordHeaderLengthAndType get_raw_record(void)
+{
+  pRecordHeaderLengthAndType record = parse_record(get_record_raw_data);
+  return record;
+}
+
 NVM::NVM(LT_SMBusNoPec *smbusNoPec, LT_SMBusPec *smbusPec)
 {
   smbusNoPec__ = smbusNoPec;
@@ -120,5 +132,30 @@ bool NVM::verifyWithData(const unsigned char *data)
     return 0;
   }
   reset_parse_hex();
+  return 1;
+}
+
+bool NVM::programWithRawData(const unsigned char *data)
+{
+  icpFile = data;
+  icpPosition = icpFile;
+
+  if (processRecordsOnDemand(get_raw_record) == 0)
+  {
+    return 0;
+  }
+  return 1;
+}
+
+bool NVM::verifyWithRawData(const unsigned char *data)
+{
+  icpFile = data;
+  icpPosition = icpFile;
+
+  if (verifyRecordsOnDemand(get_raw_record) == 0)
+  {
+    return 0;
+  }
+
   return 1;
 }

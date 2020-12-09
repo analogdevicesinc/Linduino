@@ -196,6 +196,29 @@ void LT_SMBusBase::writeByte(uint8_t address, uint8_t command, uint8_t data)
   }
 }
 
+void LT_SMBusBase::extendedWriteByte(uint8_t address, uint16_t command, uint8_t data)
+{
+  if (pec_enabled_)
+  {
+    uint8_t buffer[2];
+    buffer[0] = data;
+
+    pecClear();
+    pecAdd(address << 1);
+    pecAdd(command >> 8);
+    pecAdd(command & 0xFF);
+    pecAdd(data);
+    buffer[1] = pecGet();
+    if (i2cbus_->extendedWriteBlockData(address, command, 2, buffer))
+      Serial.print(F("Extended Write Byte With Pec: fail.\n"));
+  }
+  else
+  {
+    if (i2cbus_->extendedWriteByteData(address, command, data))
+      Serial.print(F("Extended Write Byte: fail.\n"));
+  }
+}
+
 void LT_SMBusBase::writeBytes(uint8_t *addresses, uint8_t *commands,
                               uint8_t *data, uint8_t no_addresses)
 {
@@ -262,6 +285,38 @@ uint8_t LT_SMBusBase::readByte(uint8_t address, uint8_t command)
   }
 }
 
+uint8_t LT_SMBusBase::extendedReadByte(uint8_t address, uint16_t command)
+{
+  if (pec_enabled_)
+  {
+    uint8_t input[2];
+    input[0] = 0x00;
+    input[1] = 0x00;
+
+    pecClear();
+    pecAdd(address << 1);
+    pecAdd(command >> 8);
+    pecAdd(command & 0xFF);
+    pecAdd((address << 1) | 0x01);
+    if (i2cbus_->extendedReadBlockData(address, command, 2, input))
+      Serial.print(F("Read Byte With Pec: fail.\n"));
+
+    pecAdd(input[0]);
+    if (pecGet() != input[1])
+      Serial.print(F("Read Byte With Pec: fail pec\n"));
+
+    return input[0];
+  }
+  else
+  {
+    uint8_t result;
+
+    if (i2cbus_->extendedReadByteData(address, command, &result))
+      Serial.print(F("Read Byte: fail.\n"));
+    return result;
+  }
+}
+
 void LT_SMBusBase::writeWord(uint8_t address, uint8_t command, uint16_t data)
 {
   if (pec_enabled_)
@@ -293,6 +348,43 @@ void LT_SMBusBase::writeWord(uint8_t address, uint8_t command, uint16_t data)
     uint16_t rdata;
     rdata = (data << 8) | (data >> 8);
     if (i2cbus_->writeWordData(address, command, rdata))
+      Serial.print(F("Write Word: fail.\n"));
+#endif
+  }
+}
+
+void LT_SMBusBase::extendedWriteWord(uint8_t address, uint16_t command, uint16_t data)
+{
+  if (pec_enabled_)
+  {
+    uint8_t buffer[3];
+    buffer[0] = (uint8_t) (data & 0xff);
+    buffer[1] = (uint8_t) (data >> 8);
+
+    pecClear();
+    pecAdd(address << 1);
+    pecAdd(command >> 8);
+    pecAdd(command & 0xFF);
+    pecAdd(data & 0xff);
+    pecAdd(data >> 8);
+    buffer[2] = pecGet();
+    if (i2cbus_->extendedWriteBlockData(address, command, 3, buffer))
+      Serial.print(F("Write Word With Pec: fail.\n"));
+  }
+  else
+  {
+
+#if USE_BLOCK_TRANSACTION
+    uint8_t buffer[2];
+    buffer[0] = (uint8_t) (data & 0xff);
+    buffer[1] = (uint8_t) (data >> 8);
+
+    if (i2cbus_->extendedWriteBlockData(address, command, 2, buffer))
+      Serial.print(F("Write Word: fail.\n"));
+#else
+    uint16_t rdata;
+    rdata = (data << 8) | (data >> 8);
+    if (i2cbus_->extendedWriteWordData(address, command, rdata))
       Serial.print(F("Write Word: fail.\n"));
 #endif
   }
@@ -342,6 +434,51 @@ uint16_t LT_SMBusBase::readWord(uint8_t address, uint8_t command)
   }
 }
 
+uint16_t LT_SMBusBase::extendedReadWord(uint8_t address, uint16_t command)
+{
+  if (pec_enabled_)
+  {
+    uint8_t input[3];
+    input[0] = 0x00;
+    input[1] = 0x00;
+    input[2] = 0x00;
+
+    pecClear();
+    pecAdd(address << 1);
+    pecAdd(command >> 8);
+    pecAdd(command & 0xFF);
+    pecAdd((address << 1) | 0x01);
+
+    if (i2cbus_->extendedReadBlockData(address, command, 3, input))
+      Serial.print(F("Read Word With Pec: fail.\n"));
+
+    pecAdd(input[0]);
+    pecAdd(input[1]);
+    if (pecGet() != input[2])
+      Serial.print(F("Read Word With Pec: fail pec\n"));
+
+    return input[1] << 8 | input[0];
+  }
+  else
+  {
+
+#if USE_BLOCK_TRANSACTION
+    uint8_t input[2];
+    input[0] = 0x00;
+    input[1] = 0x00;
+
+    if (i2cbus_->extendedReadBlockData(address, command, 2, input))
+      Serial.print(F("Read Word: fail.\n"));
+    return input[1] << 8 | input[0];
+#else
+    uint16_t rdata;
+    if (i2cbus_->extendedReadWordData(address, command, &rdata))
+      Serial.print(F("Read Word: fail.\n"));
+    return (rdata << 8) | (rdata >> 8);
+#endif
+  }
+}
+
 void LT_SMBusBase::writeBlock(uint8_t address, uint8_t command,
                               uint8_t *block, uint16_t block_size)
 {
@@ -373,6 +510,43 @@ void LT_SMBusBase::writeBlock(uint8_t address, uint8_t command,
     buffer[0] = block_size;
     memcpy(buffer + 1, block, block_size);
     if (i2cbus_->writeBlockData(address, command, block_size + 1, buffer))
+      Serial.print(F("Write Block: fail.\n"));
+    free(buffer);
+  }
+}
+
+void LT_SMBusBase::extendedWriteBlock(uint8_t address, uint16_t command,
+                              uint8_t *block, uint16_t block_size)
+{
+  if (pec_enabled_)
+  {
+    uint16_t pos = 0;
+
+    pecClear();
+    pecAdd(address << 1);
+    pecAdd(command >> 8);
+    pecAdd(command & 0xFF);
+    pecAdd(block_size);
+
+    while (pos < block_size)
+      pecAdd(block[pos++]);
+    uint8_t pec = pecGet();
+
+    uint8_t *data_with_pec = (uint8_t *) malloc(block_size + 2);
+    data_with_pec[0] = block_size;
+    memcpy(data_with_pec + 1, block, block_size);
+    data_with_pec[block_size + 1] = pec;
+
+    if (i2cbus_->extendedWriteBlockData(address, command, block_size + 2, data_with_pec))
+      Serial.print(F("Write Block With Pec: fail.\n"));
+    free(data_with_pec);
+  }
+  else
+  {
+    uint8_t *buffer = (uint8_t *)malloc(block_size + 1);
+    buffer[0] = block_size;
+    memcpy(buffer + 1, block, block_size);
+    if (i2cbus_->extendedWriteBlockData(address, command, block_size + 1, buffer))
       Serial.print(F("Write Block: fail.\n"));
     free(buffer);
   }
@@ -505,6 +679,56 @@ uint8_t LT_SMBusBase::readBlock(uint8_t address, uint8_t command,
   }
 }
 
+uint8_t LT_SMBusBase::extendedReadBlock(uint8_t address, uint16_t command,
+                                uint8_t *block, uint16_t block_size)
+{
+  if (pec_enabled_)
+  {
+    uint16_t pos;
+    uint8_t *buffer = (uint8_t *)malloc(block_size + 2);
+    uint8_t actual_block_size;
+
+    pecClear();
+    pecAdd(address << 1);
+    pecAdd(command >> 8);
+    pecAdd(command & 0xFF);
+    pecAdd((address << 1) | 0x01);
+
+    if (i2cbus_->extendedReadBlockData(address, command, block_size + 2, buffer))
+
+      if (buffer[0] > block_size)
+        Serial.print(F("Read Block with PEC: fail size too big.\n"));
+
+    memcpy(block, buffer + 1, block_size);
+
+    for (pos = 0; pos<buffer[0] + 1u; pos++)
+      pecAdd(buffer[pos]);
+    if (pecGet() != buffer[buffer[0]+1])
+      Serial.print(F("Read Block With Pec: fail pec\n"));
+
+    actual_block_size = buffer[0];
+    free(buffer);
+    return actual_block_size;
+  }
+  else
+  {
+    uint8_t *buffer = (uint8_t *)malloc(block_size + 1);
+    uint8_t actual_block_size;
+
+    if (i2cbus_->extendedReadBlockData(address, command, block_size + 1, buffer))
+      Serial.print(F("Read Block: fail.\n"));
+    if (buffer[0] > block_size)
+    {
+      Serial.print(F("Read Block: fail size too big.\n"));
+    }
+    memcpy(block, buffer + 1, block_size);
+
+    actual_block_size = buffer[0];
+    free(buffer);
+    return actual_block_size;
+  }
+}
+
 void LT_SMBusBase::sendByte(uint8_t address, uint8_t command)
 {
   if (pec_enabled_)
@@ -522,6 +746,28 @@ void LT_SMBusBase::sendByte(uint8_t address, uint8_t command)
   else
   {
     if (i2cbus_->writeByte(address, command))
+      Serial.print(F("Send Byte: fail.\n"));
+  }
+}
+
+void LT_SMBusBase::extendedSendByte(uint8_t address, uint16_t command)
+{
+  if (pec_enabled_)
+  {
+    uint8_t pec;
+
+    pecClear();
+    pecAdd(address << 1);
+    pecAdd(command >> 8);
+    pecAdd(command & 0xFF);
+    pec = pecGet();
+
+    if (i2cbus_->extendedWriteBlockData(address, command, 1, &pec))
+      Serial.print(F("Send Byte With Pec: fail.\n"));
+  }
+  else
+  {
+    if (i2cbus_->extendedWriteByte(address, command))
       Serial.print(F("Send Byte: fail.\n"));
   }
 }

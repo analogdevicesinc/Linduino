@@ -224,7 +224,7 @@ pRecordHeaderLengthAndType parse_record(uint8_t (*get_data)(void))
 
   if (size > getMaxRecordSize())
   {
-    Serial.println(F("record_data size too samll"));
+    Serial.println(F("record_data size too big"));
     Serial.print(F("requires "));
     Serial.print(size, DEC);
     Serial.print(F(" has "));

@@ -135,6 +135,13 @@ class LT_SMBus
                            uint8_t data       //!< Data to send
                           ) = 0;
 
+    //! SMBus write byte command
+    //! @return void
+    virtual void extendedWriteByte(uint8_t address,   //!< Slave address
+                                   uint16_t command,   //!< Command word
+                                   uint8_t data       //!< Data to send
+                                  ) = 0;
+
     //! SMBus write byte command for a list of addresses
     //! @return void
     virtual void writeBytes(uint8_t *addresses,     //!< Slave Addresses
@@ -149,6 +156,12 @@ class LT_SMBus
                              uint8_t command      //!< Command byte
                             ) = 0;
 
+    //! SMBus read byte command
+    //! @return byte
+    virtual uint8_t extendedReadByte(uint8_t address,     //!< Slave Address
+                                     uint16_t command     //!< Command word
+                                    ) = 0;
+
     //! SMBus write word command
     //! @return void
     virtual void writeWord(uint8_t address,   //!< Slave Address
@@ -156,11 +169,24 @@ class LT_SMBus
                            uint16_t data      //!< Data to send
                           ) = 0;
 
+    //! SMBus write word command
+    //! @return void
+    virtual void extendedWriteWord(uint8_t address,   //!< Slave Address
+                                   uint16_t command,  //!< Command word
+                                   uint16_t data      //!< Data to send
+                                  ) = 0;
+
     //! SMBus read word command
     //! @return word
     virtual uint16_t readWord(uint8_t address,    //!< Slave Address
                               uint8_t command     //!< Command byte
                              ) = 0;
+
+    //! SMBus read word command
+    //! @return word
+    virtual uint16_t extendedReadWord(uint8_t address,    //!< Slave Address
+                                      uint16_t command    //!< Command word
+                                     ) = 0;
 
     //! SMBus write block command
     //! @return void
@@ -169,6 +195,14 @@ class LT_SMBus
                             uint8_t *block,     //!< Data to send
                             uint16_t block_size
                            ) = 0;
+
+    //! SMBus write block command
+    //! @return void
+    virtual void extendedWriteBlock(uint8_t address,    //!< Slave Address
+                                    uint16_t command,   //!< Command bword
+                                    uint8_t *block,     //!< Data to send
+                                    uint16_t block_size
+                                   ) = 0;
 
     //! SMBus write then read block command
     //! @return actual value
@@ -188,11 +222,26 @@ class LT_SMBus
                               uint16_t block_size  //!< Size of receive data memory
                              ) = 0;
 
+    //! SMBus read block command
+    //! @return actual size
+    virtual uint8_t extendedReadBlock(uint8_t address,     //!< Slave Address
+                                      uint16_t command,    //!< Command word
+                                      uint8_t *block,      //!< Memory to receive data
+                                      uint16_t block_size  //!< Size of receive data memory
+                                     ) = 0;
+
+
     //! SMBus send byte command
     //! @return void
     virtual void sendByte(uint8_t address,    //!< Slave Address
                           uint8_t command     //!< Command byte
                          ) = 0;
+
+    //! SMBus send byte command
+    //! @return void
+    virtual void extendedSendByte(uint8_t address,    //!< Slave Address
+                                  uint16_t command    //!< Command word
+                                 ) = 0;
 
     //! Read with the address and command in loop until ack, then issue stop
     //! @return void
