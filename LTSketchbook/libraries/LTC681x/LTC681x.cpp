@@ -271,7 +271,7 @@ int8_t LTC681x_rdcfg(uint8_t total_ic, //Number of ICs in the system
 		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
 		if (calc_pec != data_pec )
 		{
-            pec_error = -1;
+                        pec_error = -1;
 			ic[c_ic].config.rx_pec_match = 1;
 		}
 		else ic[c_ic].config.rx_pec_match = 0;
@@ -315,7 +315,7 @@ int8_t LTC681x_rdcfgb(uint8_t total_ic, //Number of ICs in the system
 		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
 		if (calc_pec != data_pec )
 		{
-            pec_error = -1;
+                        pec_error = -1;
 			ic[c_ic].configb.rx_pec_match = 1;
 		}
 		else ic[c_ic].configb.rx_pec_match = 0;
@@ -708,7 +708,7 @@ void LTC681x_rdcv_reg(uint8_t reg, //Determines which cell voltage register is r
 		cmd[0] = 0x00;
 	}
 
-    read_68(total_ic, cmd, data);
+        read_68(total_ic, cmd, data);
 }
 
 /*
@@ -749,7 +749,7 @@ void LTC681x_rdaux_reg(uint8_t reg, //Determines which GPIO voltage register is 
 		cmd[0] = 0x00;
 	}
 
-    read_68(total_ic, cmd, data);
+        read_68(total_ic, cmd, data);
 }
 
 /*
@@ -781,7 +781,7 @@ void LTC681x_rdstat_reg(uint8_t reg, //Determines which stat register is read ba
 		cmd[0] = 0x00;
 	}
 
-    read_68(total_ic, cmd, data);
+        read_68(total_ic, cmd, data);
 }
 
 /* Helper function that parses voltage measurement registers */
@@ -1735,7 +1735,7 @@ int8_t LTC681x_rdpwm(uint8_t total_ic, //Number of ICs in the system
 		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
 		if (calc_pec != data_pec )
 		{
-            pec_error = -1;
+                        pec_error = -1;
 			ic[c_ic].pwm.rx_pec_match = 1;
 		}
 		else ic[c_ic].pwm.rx_pec_match = 0;
@@ -1749,7 +1749,7 @@ void LTC681x_wrsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
                      cell_asic *ic  // A two dimensional array that stores the data to be written
                     )
 {
-	uint8_t cmd[2];
+    uint8_t cmd[2];
     uint8_t write_buffer[256];
     uint8_t write_count = 0;
     uint8_t c_ic = 0;
@@ -1835,7 +1835,7 @@ This command will start the sctrl pulse communication over the spins
 */
 void LTC681x_stsctrl()
 {
-	uint8_t cmd[4];
+    uint8_t cmd[4];
     uint16_t cmd_pec;
     
     cmd[0] = 0x00;
@@ -1923,7 +1923,7 @@ int8_t LTC681x_rdcomm(uint8_t total_ic, //Number of ICs in the system
 		data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
 		if (calc_pec != data_pec )
 		{
-            pec_error = -1;
+                        pec_error = -1;
 			ic[c_ic].com.rx_pec_match = 1;
 		}
 		else ic[c_ic].com.rx_pec_match = 0;
