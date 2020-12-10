@@ -509,8 +509,7 @@ void LTC6812_wrpsb(uint8_t total_ic, //Number of ICs in the daisy chain
 	cmd[1] = 0x1C;
 	for(uint8_t current_ic = 0; current_ic<total_ic;current_ic++)
 	{
-		if(ic->isospi_reverse == true){c_ic = current_ic;}
-		else{c_ic = total_ic - current_ic - 1;}
+		c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 		
 		write_buffer[0] = ic[c_ic].pwmb.tx_data[0];
 		write_buffer[1] = ic[c_ic].pwmb.tx_data[1]&(0x0F);
@@ -543,8 +542,7 @@ int8_t LTC6812_rdpsb(uint8_t total_ic, //Number of ICs in the daisy chain
 
     for(uint8_t current_ic =0; current_ic<total_ic; current_ic++)
     {	
-        if(ic->isospi_reverse == false){c_ic = current_ic;}
-        else{c_ic = total_ic - current_ic - 1;}
+        c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 	
         for(int byte=0; byte<3;byte++)
         {
