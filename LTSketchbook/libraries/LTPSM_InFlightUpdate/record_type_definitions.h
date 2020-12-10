@@ -44,6 +44,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 #include "record_type_basic_definitions.h"  /* Basic Record Type Definitions that the following specific record types are built upon */
 
+#define EXTENDED_CMD(X) (0x8000 | (X))
+
 /*******************************************************************/
 /******** Record Type Definitions at a Glance **********************/
 /*******************************************************************/
@@ -107,7 +109,13 @@ typedef struct
   uint8_t dataByte;
 } t_RECORD_PMBUS_WRITE_BYTE;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_WRITE_BYTE  (EXTENDED_CMD(RECORD_TYPE_PMBUS_WRITE_BYTE))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint8_t dataByte;
+} t_RECORD_PMBUS_EXTENDED_WRITE_BYTE;
 
 
 
@@ -125,7 +133,13 @@ typedef struct
   uint16_t dataWord;
 } t_RECORD_PMBUS_WRITE_WORD;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_WRITE_WORD (EXTENDED_CMD(RECORD_TYPE_PMBUS_WRITE_WORD))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint16_t dataWord;
+} t_RECORD_PMBUS_EXTENDED_WRITE_WORD;
 
 
 
@@ -137,9 +151,18 @@ typedef struct
  *          RECORD TYPE NOT USED AND NOT DEFINED
  *******************************************************************/
 #define RECORD_TYPE_PMBUS_WRITE_BLOCK (3)
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndCommandWithOptionalPEC detailedRecordHeader;
+} t_RECORD_PMBUS_WRITE_BLOCK;
 
-
-
+#define RECORD_TYPE_PMBUS_EXTENDED_WRITE_BLOCK (EXTENDED_CMD(RECORD_TYPE_PMBUS_WRITE_BLOCK))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+} t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK;
 
 
 /********************************************************************
@@ -156,7 +179,13 @@ typedef struct
   uint8_t expectedDataByte;
 } t_RECORD_PMBUS_READ_BYTE_EXPECT;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_BYTE_EXPECT))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint8_t expectedDataByte;
+} t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT;
 
 
 
@@ -174,7 +203,13 @@ typedef struct
   uint16_t expectedDataWord;
 } t_RECORD_PMBUS_READ_WORD_EXPECT;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_WORD_EXPECT))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint16_t expectedDataWord;
+} t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT;
 
 
 
@@ -186,8 +221,18 @@ typedef struct
  *          RECORD TYPE NOT USED AND NOT DEFINED
  *******************************************************************/
 #define RECORD_TYPE_PMBUS_READ_BLOCK_EXPECT (6)
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndCommandWithOptionalPEC detailedRecordHeader;
+} t_RECORD_PMBUS_READ_BLOCK_EXPECT;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_BLOCK_EXPECT (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_BLOCK_EXPECT))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+} t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT;
 
 
 
@@ -253,7 +298,14 @@ typedef struct
   uint8_t expectedDataByte;
 } t_RECORD_PMBUS_READ_BYTE_LOOP_MASK;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_BYTE_LOOP_MASK))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint8_t byteMask;
+  uint8_t expectedDataByte;
+} t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK;
 
 
 
@@ -272,7 +324,14 @@ typedef struct
   uint16_t expectedDataWord;
 } t_RECORD_PMBUS_READ_WORD_LOOP_MASK;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_LOOP_MASK (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_WORD_LOOP_MASK))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint16_t wordMask;
+  uint16_t expectedDataWord;
+} t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK;
 
 
 
@@ -337,7 +396,12 @@ typedef struct
   tRecordHeaderAddressAndCommandWithOptionalPEC detailedRecordHeader;
 } t_RECORD_PMBUS_SEND_BYTE;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_SEND_BYTE (EXTENDED_CMD(RECORD_TYPE_PMBUS_SEND_BYTE))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+} t_RECORD_PMBUS_EXTENDED_SEND_BYTE;
 
 
 
@@ -355,7 +419,13 @@ typedef struct
   uint8_t dataByte;
 } t_RECORD_PMBUS_WRITE_BYTE_NOPEC;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_WRITE_BYTE_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_WRITE_BYTE_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+  uint8_t dataByte;
+} t_RECORD_PMBUS_EXTENDED_WRITE_BYTE_NOPEC;
 
 
 
@@ -373,7 +443,13 @@ typedef struct
   uint16_t dataWord;
 } t_RECORD_PMBUS_WRITE_WORD_NOPEC;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_WRITE_WORD_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_WRITE_WORD_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+  uint16_t dataWord;
+} t_RECORD_PMBUS_EXTENDED_WRITE_WORD_NOPEC;
 
 
 
@@ -384,11 +460,19 @@ typedef struct
  * Note:            RECORD_TYPE_PMBUS_WRITE_BLOCK_NOPEC with value of 0x11 would use this struct
  *          RECORD TYPE NOT USED AND NOT DEFINED
  *******************************************************************/
-/* RECORD TYPE NOT USED AND NOT DEFINED */
 #define RECORD_TYPE_PMBUS_WRITE_BLOCK_NOPEC (0x11)
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndCommandWithoutPEC detailedRecordHeader;
+} t_RECORD_PMBUS_WRITE_BLOCK_NOPEC;
 
-
-
+#define RECORD_TYPE_PMBUS_EXTENDED_WRITE_BLOCK_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_WRITE_BLOCK_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+} t_RECORD_PMBUS_EXTENDED_WRITE_BLOCK_NOPEC;
 
 
 /********************************************************************
@@ -405,7 +489,13 @@ typedef struct
   uint8_t expectedDataByte;
 } t_RECORD_PMBUS_READ_BYTE_EXPECT_NOPEC;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_BYTE_EXPECT_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+  uint8_t expectedDataByte;
+} t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_NOPEC;
 
 
 
@@ -423,7 +513,13 @@ typedef struct
   uint16_t expectedDataWord;
 } t_RECORD_PMBUS_READ_WORD_EXPECT_NOPEC;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_WORD_EXPECT_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+  uint16_t expectedDataWord;
+} t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_NOPEC;
 
 
 
@@ -435,9 +531,18 @@ typedef struct
  *          RECORD TYPE NOT USED AND NOT DEFINED
  *******************************************************************/
 #define RECORD_TYPE_PMBUS_READ_BLOCK_EXPECT_NOPEC (0x14)
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndCommandWithoutPEC detailedRecordHeader;
+} t_RECORD_PMBUS_READ_BLOCK_EXPECT_NOPEC;
 
-
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_BLOCK_EXPECT_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_BLOCK_EXPECT_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+} t_RECORD_PMBUS_EXTENDED_READ_BLOCK_EXPECT_NOPEC;
 
 
 /********************************************************************
@@ -457,7 +562,14 @@ typedef struct
   uint8_t expectedDataByte;
 } t_RECORD_PMBUS_READ_BYTE_LOOP_MASK_NOPEC;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_BYTE_LOOP_MASK_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+  uint8_t byteMask;
+  uint8_t expectedDataByte;
+} t_RECORD_PMBUS_EXTENDED_READ_BYTE_LOOP_MASK_NOPEC;
 
 
 
@@ -478,6 +590,14 @@ typedef struct
   uint16_t expectedDataWord;
 } t_RECORD_PMBUS_READ_WORD_LOOP_MASK_NOPEC;
 
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_WORD_LOOP_MASK_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+  uint16_t wordMask;
+  uint16_t expectedDataWord;
+} t_RECORD_PMBUS_EXTENDED_READ_WORD_LOOP_MASK_NOPEC;
 
 
 
@@ -495,7 +615,12 @@ typedef struct
   tRecordHeaderAddressAndCommandWithoutPEC detailedRecordHeader;
 } t_RECORD_PMBUS_SEND_BYTE_NOPEC;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_SEND_BYTE_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_SEND_BYTE_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+} t_RECORD_PMBUS_EXTENDED_SEND_BYTE_NOPEC;
 
 
 
@@ -558,7 +683,14 @@ typedef struct
   uint8_t byteMask;
 } t_RECORD_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_BYTE_EXPECT_MASK_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+  uint8_t expectedDataByte;
+  uint8_t byteMask;
+} t_RECORD_PMBUS_EXTENDED_READ_BYTE_EXPECT_MASK_NOPEC;
 
 
 
@@ -580,7 +712,14 @@ typedef struct
   uint16_t wordMask;
 } t_RECORD_PMBUS_READ_WORD_EXPECT_MASK_NOPEC;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC (EXTENDED_CMD(RECORD_TYPE_PMBUS_READ_WORD_EXPECT_MASK_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithoutPEC detailedRecordHeader;
+  uint16_t expectedDataWord;
+  uint16_t wordMask;
+} t_RECORD_PMBUS_EXTENDED_READ_WORD_EXPECT_MASK_NOPEC;
 
 
 
@@ -647,7 +786,14 @@ typedef struct
   uint16_t desiredDataWord;
 } t_RECORD_PMBUS_MODIFY_WORD_NO_PEC;
 
-
+#define RECORD_TYPE_EXTENDED_MODIFY_WORD_NOPEC (EXTENDED_CMD(RECORD_TYPE_MODIFY_WORD_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint16_t wordMask;
+  uint16_t desiredDataWord;
+} t_RECORD_PMBUS_EXTENDED_MODIFY_WORD_NO_PEC;
 
 
 
@@ -671,7 +817,14 @@ typedef struct
   uint8_t desiredDataByte;
 } t_RECORD_PMBUS_MODIFY_BYTE_NO_PEC;
 
-
+#define RECORD_TYPE_EXTENDED_MODIFY_BYTE_NOPEC (EXTENDED_CMD(RECORD_TYPE_MODIFY_BYTE_NOPEC))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint8_t byteMask;
+  uint8_t desiredDataByte;
+} t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE_NO_PEC;
 
 
 
@@ -735,7 +888,14 @@ typedef struct
   uint8_t desiredDataByte;
 } t_RECORD_PMBUS_MODIFY_BYTE;
 
-
+#define RECORD_TYPE_PMBUS_EXTENDED_MODIFY_BYTE (EXTENDED_CMD(RECORD_TYPE_PMBUS_MODIFY_BYTE))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint8_t byteMask;
+  uint8_t desiredDataByte;
+} t_RECORD_PMBUS_EXTENDED_MODIFY_BYTE;
 
 
 
@@ -758,6 +918,15 @@ typedef struct
   uint16_t wordMask;
   uint16_t desiredDataWord;
 } t_RECORD_PMBUS_MODIFY_WORD;
+
+#define RECORD_TYPE_PMBUS_EXTENDED_MODIFY_WORD (EXTENDED_CMD(RECORD_TYPE_PMBUS_MODIFY_WORD))
+typedef struct
+{
+  tRecordHeaderLengthAndType baseRecordHeader;
+  tRecordHeaderAddressAndExtendedCommandWithOptionalPEC detailedRecordHeader;
+  uint16_t wordMask;
+  uint16_t desiredDataWord;
+} t_RECORD_PMBUS_EXTENDED_MODIFY_WORD;
 
 /********************************************************************
  * Struct:          t_RECORD_TYPE_END_OF_RECORDS

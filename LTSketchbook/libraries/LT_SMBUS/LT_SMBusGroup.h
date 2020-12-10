@@ -83,6 +83,17 @@ class LT_SMBusGroup : public LT_SMBusBase
         void execute();
     };
 
+    class ExtendedWriteByte : public Executable
+    {
+        uint8_t address;
+        uint16_t command;
+        uint8_t data;
+
+      public:
+        ExtendedWriteByte(LT_SMBus *e, uint8_t a, uint16_t c, uint8_t d);
+        void execute();
+    };
+
     class WriteBytes : public Executable
     {
         uint8_t *addresses;
@@ -106,6 +117,17 @@ class LT_SMBusGroup : public LT_SMBusBase
         void execute();
     };
 
+    class ExtendedWriteWord : public Executable
+    {
+        uint8_t address;
+        uint16_t command;
+        uint16_t data;
+
+      public:
+        ExtendedWriteWord(LT_SMBus *e, uint8_t a, uint16_t c, uint16_t d);
+        void execute();
+    };
+
     class WriteBlock : public Executable
     {
         uint8_t address;
@@ -118,6 +140,18 @@ class LT_SMBusGroup : public LT_SMBusBase
         void execute();
     };
 
+    class ExtendedWriteBlock : public Executable
+    {
+        uint8_t address;
+        uint16_t command;
+        uint8_t *block;
+        uint16_t block_size;
+
+      public:
+        ExtendedWriteBlock(LT_SMBus *e, uint8_t a, uint16_t c, uint8_t *b, uint16_t bl);
+        void execute();
+    };
+
     class SendByte : public Executable
     {
         uint8_t address;
@@ -125,6 +159,16 @@ class LT_SMBusGroup : public LT_SMBusBase
 
       public:
         SendByte(LT_SMBus *e, uint8_t a, uint8_t c);
+        void execute();
+    };
+
+    class ExtendedSendByte : public Executable
+    {
+        uint8_t address;
+        uint16_t command;
+
+      public:
+        ExtendedSendByte(LT_SMBus *e, uint8_t a, uint16_t c);
         void execute();
     };
 
@@ -157,6 +201,13 @@ class LT_SMBusGroup : public LT_SMBusBase
                    uint8_t data       //!< Data to send
                   );
 
+    //! SMBus write byte command
+    //! @return void
+    void extendedWriteByte(uint8_t address,   //!< Slave address
+                           uint16_t command,  //!< Command word
+                           uint8_t data       //!< Data to send
+                          );
+
     //! SMBus write byte command for a list of addresses
     //! @return void
     void writeBytes(uint8_t *addresses,     //!< Slave Addresses
@@ -171,6 +222,12 @@ class LT_SMBusGroup : public LT_SMBusBase
                      uint8_t command      //!< Command byte
                     );
 
+    //! SMBus read byte command
+    //! @return byte
+    uint8_t extendedReadByte(uint8_t address,     //!< Slave Address
+                             uint16_t command     //!< Command word
+                            );
+
     //! SMBus write word command
     //! @return void
     void writeWord(uint8_t address,   //!< Slave Address
@@ -178,11 +235,24 @@ class LT_SMBusGroup : public LT_SMBusBase
                    uint16_t data      //!< Data to send
                   );
 
+    //! SMBus write word command
+    //! @return void
+    void extendedWriteWord(uint8_t address,   //!< Slave Address
+                           uint16_t command,  //!< Command word
+                           uint16_t data      //!< Data to send
+                          );
+
     //! SMBus read word command
     //! @return word
     uint16_t readWord(uint8_t address,    //!< Slave Address
                       uint8_t command     //!< Command byte
                      );
+
+    //! SMBus read word command
+    //! @return word
+    uint16_t extendedReadWord(uint8_t address,    //!< Slave Address
+                              uint16_t command    //!< Command word
+                             );
 
     //! SMBus write block command
     //! @return void
@@ -191,6 +261,14 @@ class LT_SMBusGroup : public LT_SMBusBase
                     uint8_t *block,     //!< Data to send
                     uint16_t block_size
                    );
+
+    //! SMBus write block command
+    //! @return void
+    void extendedWriteBlock(uint8_t address,    //!< Slave Address
+                            uint16_t command,   //!< Command word
+                            uint8_t *block,     //!< Data to send
+                            uint16_t block_size
+                           );
 
     //! SMBus write then read block command
     //! @return actual size
@@ -210,11 +288,26 @@ class LT_SMBusGroup : public LT_SMBusBase
                       uint16_t block_size  //!< Size of receive data memory
                      );
 
+    //! SMBus read block command
+    //! @return actual size
+    uint8_t extendedReadBlock(uint8_t address,     //!< Slave Address
+                              uint16_t command,    //!< Command word
+                              uint8_t *block,      //!< Memory to receive data
+                              uint16_t block_size  //!< Size of receive data memory
+                             );
+
+
     //! SMBus send byte command
     //! @return void
     void sendByte(uint8_t address,    //!< Slave Address
                   uint8_t command     //!< Command byte
                  );
+
+    //! SMBus send byte command
+    //! @return void
+    void extendedSendByte(uint8_t address,    //!< Slave Address
+                          uint16_t command    //!< Command word
+                         );
 
     //! Group Protocol Begin
     //! @return void

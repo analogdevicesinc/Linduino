@@ -52,6 +52,7 @@ LT_TwoWire::LT_TwoWire()
 void LT_TwoWire::begin(uint32_t speed)
 {
   TwoWire::begin();
+  TwoWire::setClock(speed);
 }
 
 

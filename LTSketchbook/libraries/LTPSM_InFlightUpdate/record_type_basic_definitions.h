@@ -65,7 +65,21 @@ typedef struct
 typedef struct
 {
   uint16_t DeviceAddress;
+  uint16_t CommandCode;
+  uint8_t UsePec;
+} tRecordHeaderAddressAndExtendedCommandWithOptionalPEC;
+
+typedef struct
+{
+  uint16_t DeviceAddress;
   uint8_t CommandCode;
 } tRecordHeaderAddressAndCommandWithoutPEC;
+
+typedef struct
+{
+  uint16_t DeviceAddress;
+  uint16_t CommandCode;
+} tRecordHeaderAddressAndExtendedCommandWithoutPEC;
+
 #pragma pack(pop)
 #endif
