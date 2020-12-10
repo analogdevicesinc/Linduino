@@ -213,14 +213,7 @@ uint8_t LTC6810_rds(uint8_t reg, //Controls which s voltage register is read bac
      
         for (int current_ic = 0; current_ic<total_ic; current_ic++)
         {
-          if (ic->isospi_reverse == false)
-          {
-            c_ic = current_ic;
-          }
-          else
-          {
-            c_ic = total_ic - current_ic - 1;
-          }
+          c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
           pec_error = pec_error + parse_cells(current_ic, (2+ s_reg), s_data,
                                               &ic[c_ic].cells.c_codes[0],
                                               &ic[c_ic].cells.pec_match[0]);
@@ -234,14 +227,7 @@ uint8_t LTC6810_rds(uint8_t reg, //Controls which s voltage register is read bac
     
       for (int current_ic = 0; current_ic<total_ic; current_ic++)
       {
-        if (ic->isospi_reverse == false)
-        {
-          c_ic = current_ic;
-        }
-        else
-        {
-          c_ic = total_ic - current_ic - 1;
-        }
+        c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
         pec_error = pec_error + parse_cells(current_ic, (2+ reg), &s_data[8*c_ic],
                                             &ic[c_ic].cells.c_codes[0],
                                             &ic[c_ic].cells.pec_match[0]);
@@ -592,7 +578,6 @@ uint8_t LTC6810_rdsid(uint8_t total_ic, // The number of ICs in the system
     uint16_t data_pec;
     uint16_t calc_pec;
     uint8_t c_ic = 0;
-	bool temp=ic->isospi_reverse;
     
     cmd[0] = 0x00;
     cmd[1] = 0x2C;
@@ -601,14 +586,7 @@ uint8_t LTC6810_rdsid(uint8_t total_ic, // The number of ICs in the system
 
     for(uint8_t current_ic =0; current_ic<total_ic; current_ic++)
     {	
-      if (temp== false)
-      {
-        c_ic = current_ic;
-      }
-      else
-      {
-        c_ic = total_ic - current_ic - 1;
-      }
+        c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 	
         for(int byte=0; byte<8;byte++)
         {

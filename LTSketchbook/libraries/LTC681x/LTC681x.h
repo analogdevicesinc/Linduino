@@ -385,6 +385,15 @@ void LTC681x_rdstat_reg(uint8_t reg, //!< Determines which stat register is read
                        );
 
 /*! 
+ Helper function to handle isoSPI reversal
+ @return uint8_t, current IC
+ */
+uint8_t isospi_reverse_check(uint8_t total_ic, //!< The number of ICs in the system
+                            uint8_t current_ic, //!< Current IC
+                            bool isospi_reverse //!< isoSPI reversal setting (true or false)
+                            );
+
+/*! 
  Helper function that parses voltage measurement registers
  @return int8_t, pec_error PEC Status.
   0: Data read back has matching PEC
