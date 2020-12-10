@@ -212,14 +212,7 @@ void LTC681x_wrcfg(uint8_t total_ic, //The number of ICs being written to
 	
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
-		if (ic->isospi_reverse == false)
-		{
-			c_ic = current_ic;
-		}
-		else
-		{
-			c_ic = total_ic - current_ic - 1;
-		}
+		c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 		
 		for (uint8_t data = 0; data<6; data++)
 		{
@@ -276,14 +269,7 @@ int8_t LTC681x_rdcfg(uint8_t total_ic, //Number of ICs in the system
 	
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
-		if (ic->isospi_reverse == false)
-		{
-			c_ic = current_ic;
-		}
-		else
-		{
-			c_ic = total_ic - current_ic - 1;
-		}
+		c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 		
 		for (int byte=0; byte<8; byte++)
 		{
@@ -319,14 +305,7 @@ int8_t LTC681x_rdcfgb(uint8_t total_ic, //Number of ICs in the system
 	
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
-		if (ic->isospi_reverse == false)
-		{
-			c_ic = current_ic;
-		}
-		else
-		{
-			c_ic = total_ic - current_ic - 1;
-		}
+		c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 		
 		for (int byte=0; byte<8; byte++)
 		{
@@ -448,16 +427,7 @@ uint8_t LTC681x_rdcv(uint8_t reg, // Controls which cell voltage register is rea
 		for (uint8_t cell_reg = 1; cell_reg<ic[0].ic_reg.num_cv_reg+1; cell_reg++) //Executes once for each of the LTC681x cell voltage registers
 		{
 			LTC681x_rdcv_reg(cell_reg, total_ic,cell_data );
-			for (int current_ic = 0; current_ic<total_ic; current_ic++)
-			{
-			if (ic->isospi_reverse == false)
-			{
-			  c_ic = current_ic;
-			}
-			else
-			{
-			  c_ic = total_ic - current_ic - 1;
-			}
+			c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 			pec_error = pec_error + parse_cells(current_ic,cell_reg, cell_data,
 												&ic[c_ic].cells.c_codes[0],
 												&ic[c_ic].cells.pec_match[0]);
@@ -468,17 +438,9 @@ uint8_t LTC681x_rdcv(uint8_t reg, // Controls which cell voltage register is rea
 	else
 	{
 		LTC681x_rdcv_reg(reg, total_ic,cell_data);
-
 		for (int current_ic = 0; current_ic<total_ic; current_ic++)
 		{
-			if (ic->isospi_reverse == false)
-			{
-			c_ic = current_ic;
-			}
-			else
-			{
-			c_ic = total_ic - current_ic - 1;
-			}
+			c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 			pec_error = pec_error + parse_cells(current_ic,reg, &cell_data[8*c_ic],
 											  &ic[c_ic].cells.c_codes[0],
 											  &ic[c_ic].cells.pec_match[0]);
@@ -512,14 +474,7 @@ int8_t LTC681x_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
 			LTC681x_rdaux_reg(gpio_reg, total_ic,data);                 //Reads the raw auxiliary register data into the data[] array
 			for (int current_ic = 0; current_ic<total_ic; current_ic++)
 			{
-				if (ic->isospi_reverse == false)
-				{
-				  c_ic = current_ic;
-				}
-				else
-				{
-				  c_ic = total_ic - current_ic - 1;
-				}
+				c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 				pec_error = parse_cells(current_ic,gpio_reg, data,
 										&ic[c_ic].aux.a_codes[0],
 										&ic[c_ic].aux.pec_match[0]);
@@ -532,14 +487,7 @@ int8_t LTC681x_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
 
 		for (int current_ic = 0; current_ic<total_ic; current_ic++)
 		{
-			if (ic->isospi_reverse == false)
-			{
-			c_ic = current_ic;
-			}
-			else
-			{
-			c_ic = total_ic - current_ic - 1;
-			}
+			c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 			pec_error = parse_cells(current_ic,reg, data,
 								  &ic[c_ic].aux.a_codes[0],
 								  &ic[c_ic].aux.pec_match[0]);
@@ -584,14 +532,7 @@ int8_t LTC681x_rdstat(uint8_t reg, //Determines which Stat  register is read bac
 		
 			for (uint8_t current_ic = 0 ; current_ic < total_ic; current_ic++)      // Executes for every LTC681x in the daisy chain
 			{																		// current_ic is used as the IC counter
-				if (ic->isospi_reverse == false)
-				{
-					c_ic = current_ic;
-				}
-				else
-				{
-					c_ic = total_ic - current_ic - 1;
-				}
+				c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 
 				if (stat_reg ==1)
 				{
@@ -639,14 +580,7 @@ int8_t LTC681x_rdstat(uint8_t reg, //Determines which Stat  register is read bac
 		LTC681x_rdstat_reg(reg, total_ic, data);
 		for (int current_ic = 0 ; current_ic < total_ic; current_ic++)            // Executes for every LTC681x in the daisy chain
 		{																		  // current_ic is used as an IC counter																			
-			if (ic->isospi_reverse == false)
-			{
-			c_ic = current_ic;
-			}
-			else
-			{
-			c_ic = total_ic - current_ic - 1;
-			}
+			c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 			if (reg ==1)
 			{
 				for (uint8_t current_stat = 0; current_stat< STAT_IN_REG; current_stat++) // This loop parses the read back data into Status voltages, it
@@ -827,6 +761,21 @@ void LTC681x_rdstat_reg(uint8_t reg, //Determines which stat register is read ba
 	cs_low(CS_PIN);
 	spi_write_read(cmd,4,data,(REG_LEN*total_ic));
 	cs_high(CS_PIN);
+}
+
+/* Helper function to handle isoSPI reversal */
+uint8_t isospi_reverse_check(uint8_t total_ic, uint8_t current_ic, bool isospi_reverse)
+{
+	if (isospi_reverse == false)
+	{
+		// isoSPI not reversed
+		return current_ic;
+	}
+	else
+	{
+		// isoSPI is reversed
+		return (total_ic - current_ic - 1);
+	}
 }
 
 /* Helper function that parses voltage measurement registers */
@@ -1715,14 +1664,7 @@ void LTC681x_wrpwm(uint8_t total_ic, // Number of ICs in the daisy chain
 	
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
-		if (ic->isospi_reverse == false)
-		{
-			c_ic = current_ic;
-		}
-		else
-		{
-			c_ic = total_ic - current_ic - 1;
-		}
+		c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 		
 		for (uint8_t data = 0; data<6; data++)
 		{
@@ -1762,14 +1704,7 @@ int8_t LTC681x_rdpwm(uint8_t total_ic, //Number of ICs in the system
 	pec_error = read_68(total_ic, cmd, read_buffer);
 	for (uint8_t current_ic =0; current_ic<total_ic; current_ic++)
 	{
-		if (ic->isospi_reverse == false)
-		{
-			c_ic = current_ic;
-		}
-		else
-		{
-			c_ic = total_ic - current_ic - 1;
-		}
+		c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 		
 		for (int byte=0; byte<8; byte++)
 		{
@@ -1810,9 +1745,7 @@ void LTC681x_wrsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
     
     for(uint8_t current_ic = 0; current_ic<total_ic;current_ic++)
     {
-        if(ic->isospi_reverse == false){c_ic = current_ic;}
-        else{c_ic = total_ic - current_ic - 1;}
-		
+        c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 
         for(uint8_t data = 0; data<6;data++)
         {
@@ -1851,9 +1784,7 @@ int8_t LTC681x_rdsctrl(uint8_t total_ic, // Number of ICs in the daisy chain
 
     for(uint8_t current_ic =0; current_ic<total_ic; current_ic++)
     {	
-        if(ic->isospi_reverse == false){c_ic = current_ic;}
-        else{c_ic = total_ic - current_ic - 1;}
-	
+        c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 		
         for(int byte=0; byte<8;byte++)
         {
@@ -1914,14 +1845,7 @@ void LTC681x_wrcomm(uint8_t total_ic, //The number of ICs being written to
 	uint8_t c_ic = 0;
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
-		if (ic->isospi_reverse == false)
-		{
-			c_ic = current_ic;
-		}
-		else
-		{
-			c_ic = total_ic - current_ic - 1;
-		}
+		c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 	
 		for (uint8_t data = 0; data<6; data++)
 		{
@@ -1948,14 +1872,7 @@ int8_t LTC681x_rdcomm(uint8_t total_ic, //Number of ICs in the system
 	
 	for (uint8_t current_ic = 0; current_ic<total_ic; current_ic++)
 	{
-		if (ic->isospi_reverse == false)
-		{
-			c_ic = current_ic;
-		}
-		else
-		{
-			c_ic = total_ic - current_ic - 1;
-		}
+		c_ic = isospi_reverse_check(total_ic, current_ic, ic->isospi_reverse);
 	
 		for (int byte=0; byte<8; byte++)
 		{
