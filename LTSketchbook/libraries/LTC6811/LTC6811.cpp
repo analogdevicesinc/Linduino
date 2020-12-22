@@ -347,20 +347,22 @@ void LTC6811_set_discharge(int Cell, //The cell to be discharged
 						   cell_asic *ic //A two dimensional array that will store the data
 						   )
 {
-  for (int i=0; i<total_ic; i++)
+  if (Cell <= 0) return; // Cell should be no less than 1.
+	
+  for (uint8_t i = 0; i < total_ic; i++)
   {
-    if ((Cell<9)&& (Cell!=0) )
+    if (Cell < 9)
     {
-      ic[i].config.tx_data[4] = ic[i].config.tx_data[4] | (1<<(Cell-1));
+      ic[i].config.tx_data[4] |= (1 << (Cell - 1));
     }
     else if (Cell < 13)
     {
-      ic[i].config.tx_data[5] = ic[i].config.tx_data[5] | (1<<(Cell-9));
+      ic[i].config.tx_data[5] |= (1 << (Cell - 9));
     }
-	else
-	{
-		break;
-	}
+    else
+    {
+      break;
+    }
   }
 }
 
