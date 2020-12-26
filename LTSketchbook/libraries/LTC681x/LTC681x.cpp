@@ -662,7 +662,8 @@ int8_t LTC681x_rdstat(uint8_t reg, //Determines which Stat  register is read bac
 			}
 			else if (reg == 2)
 			{
-				parsed_stat = data[data_counter++] + (data[data_counter++]<<8); //Each stat codes is received as two bytes and is combined to
+				parsed_stat = data[data_counter] + (data[data_counter + 1]<<8); //Each stat codes is received as two bytes and is combined to
+				data_counter = data_counter + 2;
 				ic[c_ic].stat.stat_codes[3] = parsed_stat;
 				ic[c_ic].stat.flags[0] = data[data_counter++];
 				ic[c_ic].stat.flags[1] = data[data_counter++];
