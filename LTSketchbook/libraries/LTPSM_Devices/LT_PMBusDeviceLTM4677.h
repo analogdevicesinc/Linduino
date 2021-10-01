@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define LT_PMBusDeviceLTM4677_H_
 
 #include "LT_PMBusDeviceController.h"
-#include "../LTPSM_PartFaultLogs/LT_3880FaultLog.h"
+#include "../LTPSM_PartFaultLogs/LT_3887FaultLog.h"
 
 class LT_PMBusDeviceLTM4677 : public LT_PMBusDeviceController
 {
@@ -61,6 +61,13 @@ class LT_PMBusDeviceLTM4677 : public LT_PMBusDeviceController
 
     LT_PMBusDeviceLTM4677(LT_PMBus *pmbus, uint8_t address) : LT_PMBusDeviceController(pmbus, address, 2)
     {
+    }
+
+    void reset()
+    {
+        pmbus_->reset(address_);
+        pmbus_->smbus()->waitForAck(address_, 0x00);
+        pmbus_->waitForNotBusy(address_);
     }
 
     uint32_t getCapabilities (
@@ -106,21 +113,21 @@ class LT_PMBusDeviceLTM4677 : public LT_PMBusDeviceController
 
     void enableFaultLog()
     {
-      LT_3880FaultLog *faultLog = new LT_3880FaultLog(pmbus_);
+      LT_3887FaultLog *faultLog = new LT_3887FaultLog(pmbus_);
       faultLog->enableFaultLog(address_);
       delete faultLog;
     }
 
     void disableFaultLog()
     {
-      LT_3880FaultLog *faultLog = new LT_3880FaultLog(pmbus_);
+      LT_3887FaultLog *faultLog = new LT_3887FaultLog(pmbus_);
       faultLog->disableFaultLog(address_);
       delete faultLog;
     }
 
     bool hasFaultLog()
     {
-      LT_3880FaultLog *faultLog = new LT_3880FaultLog(pmbus_);
+      LT_3887FaultLog *faultLog = new LT_3887FaultLog(pmbus_);
       if (faultLog->hasFaultLog(address_))
       {
         delete faultLog;
@@ -135,7 +142,7 @@ class LT_PMBusDeviceLTM4677 : public LT_PMBusDeviceController
 
     char *getFaultLog()
     {
-      LT_3880FaultLog *faultLog = new LT_3880FaultLog(pmbus_);
+      LT_3887FaultLog *faultLog = new LT_3887FaultLog(pmbus_);
       if (faultLog->hasFaultLog(address_))
       {
         faultLog->read(address_);
@@ -152,14 +159,41 @@ class LT_PMBusDeviceLTM4677 : public LT_PMBusDeviceController
       }
     }
 
+    void printFaultLog()
+    {
+      LT_3887FaultLog *faultLog = new LT_3887FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        faultLog->read(address_);
+        faultLog->print();
+//        faultLog->dumpBinary();
+        faultLog->release();
+        delete faultLog;
+      }
+    }
+    
     void clearFaultLog()
     {
-      LT_3880FaultLog *faultLog = new LT_3880FaultLog(pmbus_);
+      LT_3887FaultLog *faultLog = new LT_3887FaultLog(pmbus_);
       if (faultLog->hasFaultLog(address_))
       {
         faultLog->clearFaultLog(address_);
         pmbus_->smbus()->waitForAck(address_, 0x00);
         pmbus_->waitForNotBusy(address_);
+        delete faultLog;
+      }
+      else
+      {
+        delete faultLog;
+      }
+    }
+
+    void storeFaultLog()
+    {
+      LT_3887FaultLog *faultLog = new LT_3887FaultLog(pmbus_);
+      if (!faultLog->hasFaultLog(address_))
+      {
+        faultLog->storeFaultLog(address_);
         delete faultLog;
       }
       else

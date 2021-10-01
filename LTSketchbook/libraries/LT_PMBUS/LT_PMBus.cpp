@@ -108,24 +108,46 @@ PsmDeviceType LT_PMBus::deviceType(uint8_t address)
       return LTC3882_1;
     case 0x4300:
       return LTC3883;
+    case 0x4C00:
+      return LTC3884;
     case 0x4600:
       return LTC3886;
+    case 0x4700:
+      return LTC3887;
+    case 0x4900:
+      return LTC3889;
+    case 0x49E0:
+      return LTC7880;
+    case 0x4120:
+      return LTM4664;
     case 0x47A0:
       return LTM4675;
     case 0x4400:
-      return LTM4676;
     case 0x4480:
       return LTM4676;
     case 0x47E0:
       return LTM4676A;
     case 0x47B0:
       return LTM4677;
+    case 0x4100:
+      return LTM4678;
+    case 0x4140:
+      return LTM4680;
+    case 0x4770:
+      return LTM4686;
+    case 0x4130:
+      return LTM4700;
+    case 0x0310:
+      return LTC2972;
     case 0x0210:
       return LTC2974;
     case 0x0220:
       return LTC2975;
     case 0x0130:
       return LTC2977;
+    case 0x8060:
+    case 0x8070:
+      return LTC2979;
     case 0x8030:
       return LTC2980;
     case 0x8040:
@@ -2906,7 +2928,7 @@ void LT_PMBus::sequenceOnGlobal(void)
 void LT_PMBus::resetGlobal(void)
 {
   setPage(0x5B, 0xFF);
-  smbus_->sendByte(0x5B, MFR_RESET);
+  smbus_->sendByte(0x5B, RESTORE_USER_ALL);
 }
 
 void LT_PMBus::reset(uint8_t address)

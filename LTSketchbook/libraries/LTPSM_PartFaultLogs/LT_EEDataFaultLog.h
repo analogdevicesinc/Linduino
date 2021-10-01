@@ -62,67 +62,62 @@ class LT_EEDataFaultLog : public LT_FaultLog
 
     }
 
-    void getNvmBlock(uint8_t address, uint16_t offset, uint16_t numWords, uint8_t command, uint8_t *data)
+    void getNvmBlock(uint8_t address, uint16_t offset, uint16_t numWords, bool crc, uint8_t *data) 
     {
       bool pecMatch = true;
+      uint16_t v;
+      uint16_t skip;
+      bool shift;
+
+      skip = offset / 2;
+      shift = (offset % 2) == 1 ? true : false;
 
       // Tell the device to get ready and set the index at the beginning of EEPROM
-      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x40) != 0x40); // Wait until not busy
+      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x60) != 0x60); // Wait until not busy
       pmbus_->smbus()->writeByte(address, 0xBD, 0x2B);
-      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x40) != 0x40); // Wait until not busy
+      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x60) != 0x60); // Wait until not busy
       pmbus_->smbus()->writeByte(address, 0xBD, 0x91);
-      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x40) != 0x40); // Wait until not busy
+      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x60) != 0x60); // Wait until not busy
       pmbus_->smbus()->writeByte(address, 0xBD, 0xE4);
       // Read the ID
-      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x40) != 0x40); // Wait until not busy
-      pmbus_->smbus()->readWord(address, 0xBF);
+      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x60) != 0x60); // Wait until not busy
+      v = pmbus_->smbus()->readWord(address, 0xBF);
       // Read the size and ingore it because we know it will not change
-      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x40) != 0x40); // Wait until not busy
-      pmbus_->smbus()->readWord(address, 0xBF);
+      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x60) != 0x60); // Wait until not busy
+      v = pmbus_->smbus()->readWord(address, 0xBF);
       // Consume words we need to ignore
-      for (uint16_t i = 0; i < offset; i++)
+      for (uint16_t i = 0; i < skip; i++)
       {
-        while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x40) != 0x40); // Wait until not busy
-        pmbus_->smbus()->readWord(address, 0xBF);
+        while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x60) != 0x60); // Wait until not busy
+        v = pmbus_->smbus()->readWord(address, 0xBF);
       }
       // Consume words of the fault log and check the CRC
       int pos = 0;
       pmbus_->smbus()->pecClear();
       for (uint16_t i = 0; i < numWords; i++)
       {
-        while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x40) != 0x40); // Wait until not busy
+        while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x60) != 0x60); // Wait until not busy
         uint16_t w = pmbus_->smbus()->readWord(address, 0xBF);
-        // Toss CRC every 32 bytes
-        if ((i + 1) % 16 == 0)
+
+        if (crc && ((i + 1) % 16 == 0))
         {
           data[pos] = 0xFF & w; // If this is not obvious, consider the endianess. This is the 32nd byte.
-          pmbus_->smbus()->pecAdd(data[pos]);
           pos++;
-          uint8_t calcPec = pmbus_->smbus()->pecGet();
-          uint8_t devPec = 0xFF & (w >> 8); // This depends on endianess as well.
-          pmbus_->smbus()->pecClear();
-          if (calcPec != devPec)
-            pecMatch = false;
         }
         else   // And endianess applies here too.
         {
-          data[pos] = 0xFF & w;
-          pmbus_->smbus()->pecAdd(data[pos]);
-          pos++;
+          if ((i != 0) || !shift)
+          {
+            data[pos] = 0xFF & w;
+            pos++;
+          }
           data[pos] = 0xFF & (w >> 8);
-          pmbus_->smbus()->pecAdd(data[pos]);
           pos++;
         }
       }
-      // It is possible to have a partial good/bad CRC. The device will not load any Fault Log data
-      // to RAM if there is ANY CRC mismatch. Then the read Fault Log will return all zero data or
-      // random data depending on revision of silicon. This code mimics the most recent silicon
-      // and returns all zeros if there is a CRC mismatch.
-      if (!pecMatch)
-        memset (data, 0x00, numWords*2);
 
       pmbus_->smbus()->writeByte(address, 0xBD, 0x00);
-      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x40) != 0x40); // Wait until not busy
+      while ((pmbus_->smbus()->readByte(address, 0xEF) & 0x60) != 0x60); // Wait until not busy
     }
 };
 

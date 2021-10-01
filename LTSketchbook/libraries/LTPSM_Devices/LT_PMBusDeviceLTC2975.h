@@ -51,6 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define LT_PMBusDeviceLTC2975_H_
 
 #include "LT_PMBusDeviceManager.h"
+#include "../LTPSM_PartFaultLogs/LT_2975FaultLog.h"
 
 class LT_PMBusDeviceLTC2975 : public LT_PMBusDeviceManager
 {
@@ -60,6 +61,13 @@ class LT_PMBusDeviceLTC2975 : public LT_PMBusDeviceManager
 
     LT_PMBusDeviceLTC2975(LT_PMBus *pmbus, uint8_t address) : LT_PMBusDeviceManager(pmbus, address, 8)
     {
+    }
+
+    void reset()
+    {
+        pmbus_->restoreFromNvm(address_);
+        pmbus_->smbus()->waitForAck(address_, 0x00);
+        pmbus_->waitForNotBusy(address_);
     }
 
     uint32_t getCapabilities (
@@ -105,6 +113,95 @@ class LT_PMBusDeviceLTC2975 : public LT_PMBusDeviceManager
         return NULL;
     }
 
+   void enableFaultLog()
+    {
+      LT_2975FaultLog *faultLog = new LT_2975FaultLog(pmbus_);
+      faultLog->enableFaultLog(address_);
+      delete faultLog;
+    }
+
+    void disableFaultLog()
+    {
+      LT_2975FaultLog *faultLog = new LT_2975FaultLog(pmbus_);
+      faultLog->disableFaultLog(address_);
+      delete faultLog;
+    }
+
+    bool hasFaultLog()
+    {
+      LT_2975FaultLog *faultLog = new LT_2975FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        delete faultLog;
+        return true;
+      }
+      else
+      {
+        delete faultLog;
+        return false;
+      }
+    }
+
+    char *getFaultLog()
+    {
+      LT_2975FaultLog *faultLog = new LT_2975FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        faultLog->read(address_);
+        faultLog->print();
+        faultLog->dumpBinary();
+        faultLog->release();
+        delete faultLog;
+        return NULL;
+      }
+      else
+      {
+        delete faultLog;
+        return NULL;
+      }
+    }
+
+    void printFaultLog()
+    {
+      LT_2975FaultLog *faultLog = new LT_2975FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        faultLog->read(address_);
+        faultLog->print();
+//        faultLog->dumpBinary();
+        faultLog->release();
+        delete faultLog;
+      }
+    }
+
+    void clearFaultLog()
+    {
+      LT_2975FaultLog *faultLog = new LT_2975FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        faultLog->clearFaultLog(address_);
+        delete faultLog;
+      }
+      else
+      {
+        delete faultLog;
+      }
+    }
+
+    void storeFaultLog()
+    {
+      LT_2975FaultLog *faultLog = new LT_2975FaultLog(pmbus_);
+      if (!faultLog->hasFaultLog(address_))
+      {
+        faultLog->storeFaultLog(address_);
+        delete faultLog;
+      }
+      else
+      {
+        delete faultLog;
+      }
+    }
+    
 };
 
 #endif /* LT_PMBusDeviceLTC2975_H_ */

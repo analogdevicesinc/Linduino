@@ -123,6 +123,19 @@ class LT_FaultLog
         uint8_t shared_time_byte5;
     };
 
+    struct FaultLogFirstFault
+    {
+      public:
+        uint8_t first_fault_byte0;
+        uint8_t first_fauit_byte1;
+    };
+
+    struct FaultLogFirstFaultTime
+    {
+      public:
+        uint8_t dirt_fault_time_byte0;
+    };
+    
 #pragma pack(pop)
 
   protected:
@@ -137,11 +150,13 @@ class LT_FaultLog
     void enableFaultLog(uint8_t address);
     void disableFaultLog(uint8_t address);
     void clearFaultLog(uint8_t address);
+    void storeFaultLog(uint8_t address);
     virtual void read(uint8_t address) = 0;
     virtual void print(Print *printer) = 0;
     virtual uint8_t *getBinary() = 0;
     virtual uint16_t getBinarySize() = 0;
-    virtual void dumpBinary(Print *printer = 0) = 0;
+//    virtual void dumpBin(uint8_t *log, uint8_t size) = 0;
+//    virtual void dumpBin(Print *printer = 0, uint8_t *log = NULL, uint8_t size = 0) = 0;
     virtual void release() = 0;
 
     void dumpBin(Print *printer, uint8_t *log, uint8_t size);
@@ -155,7 +170,6 @@ class LT_FaultLog
     uint16_t getLin5_11WordReverseVal(Lin5_11WordReverse value);
     uint16_t getLin16WordVal(Lin16Word value);
     uint16_t getLin16WordReverseVal(Lin16WordReverse value);
-    virtual void getNvmBlock(uint8_t address, uint16_t offset, uint16_t numWords, uint8_t command, uint8_t *data) = 0;
 };
 
 #endif /* LT_FaultLog_H_ */

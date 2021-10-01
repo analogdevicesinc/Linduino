@@ -64,6 +64,7 @@ class LT_PMBusDetect
 
   public:
     LT_PMBusDetect(LT_PMBus *pmbus);
+    ~LT_PMBusDetect();
 
     //! Detect devices on bus
     void detect();
