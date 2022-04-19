@@ -101,7 +101,7 @@ int8_t LTC2485_read(uint8_t i2c_address, uint8_t adc_command, int32_t *adc_code,
 
   data.LT_int32 = data.LT_int32 << 1; //shift left by one bit to restore two's complement
 
-  data.LT_int32/=256;  //Convert back to 24 bit value from 32 bits.
+  data.LT_int32/=128;  //Convert back to 25 bits value from 32 bits.
   *adc_code=data.LT_int32;
 
   return (ack); // Success
