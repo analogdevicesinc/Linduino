@@ -96,6 +96,7 @@ void menu_1_set_filter();					// Set filter parameters based on user requirement
 void menu_2_set_gpo();                      // Sets the GPO
 void menu_3_shutdown();                     // Shuts down the LTC6603
 void menu_4_poweron();                      // Power up the LTC6603
+void default_state_freq_and_gain();  //Sets Default State for Filter Board
 
 // Global variables
 uint8_t filter_gain_settings = LTC6603_GAIN_0dB;
@@ -106,12 +107,16 @@ uint8_t shdn_settings = LTC6603_SHDN;
 float freq_settings = LTC6603_FREQ_MIN;
 static uint8_t LTC6903_output_config = LTC6903_CLK_ON_CLK_INV_ON;  //!< Keeps track of output configuration.
 
+//commment one and leave the other uncommented in order to determine the correct algorithm for either the LTC6602 or ltc6603 chip
 #define device_LTC6603
 //#define device_LTC6602
 
+//Declaring a Class for a specific device
+//.... device(...) is a function in ltc6603//ltc6903 class and we're inputting the chip select code here for initializing the class
 LTC6603 device(LTC6603_CS);
 LTC6903 clock_device(LTC6903_CS);
 
+//This is used to create 3 struct's called "range"
 #define num_freq_ranges 3
 
 struct frequency_range
@@ -119,7 +124,6 @@ struct frequency_range
   float range_lower;
   float range_upper;
 } range[num_freq_ranges];
-
 
 
 
@@ -171,6 +175,9 @@ void loop()
         break;
       case 4:
         menu_5_set_gain();
+        break;
+      case 5:
+        default_state_freq_and_gain();
         break;
       default:
         Serial.println("Incorrect Option");
@@ -230,7 +237,7 @@ void menu_1_set_filter()
     Serial.print(F("\nDevice not ready"));
   }
 
-#ifdef device_LTC6602
+  #ifdef device_LTC6602
   {
     Serial.print("\n\n1. " + String(required_fclk / 6000) + " KHz");
     Serial.print("\n2. " + String(required_fclk / 3000) + " KHz");
@@ -239,7 +246,9 @@ void menu_1_set_filter()
     Serial.print(F("\nSelect the required high pass cut off frequency: "));
 
     uint8_t command = read_int();
+    Serial.println(command); 
     // set 6602 HPF0, HPF1
+    Serial.println("Setting up HPF."); 
     device.set_control_byte(LTC6602_HPF_MASK, device.get_HPF_bits(command - 1));
     device.print_control_byte();
     if (device.check_device_ready())
@@ -252,27 +261,27 @@ void menu_1_set_filter()
     }
     switch (Freq_range)
     {
-      case 0:
-      case 1: sampling_f = required_fclk / 3; break;
-      case 2: sampling_f = required_fclk; break;
+    case 0: sampling_f = required_fclk/3; break;
+    case 1: sampling_f = required_fclk/3; break;
+    case 2: sampling_f = required_fclk; break;
     }
     Serial.print(F("\nSampling frequency = "));
     Serial.print(sampling_f);
     Serial.print(F("kHz\n"));
   }
-#else ifdef device_LTC6603
+  #else ifdef device_LTC6603
   {
     switch (Freq_range)
     {
-      case 0: sampling_f = required_fclk / 4; break;
-      case 1: sampling_f = required_fclk / 2; break;
+      case 0: sampling_f = required_fclk/4; break;
+      case 1: sampling_f = required_fclk/2; break;
       case 2: sampling_f = required_fclk; break;
     }
     Serial.print(F("\nSampling frequency = "));
     Serial.print(sampling_f);
     Serial.print(F("kHz\n"));
   }
-#endif
+  #endif
 }
 
 
@@ -289,16 +298,23 @@ void menu_2_set_gpo()
     Serial.print(F("\nEnter a Command: "));
     user_command = read_int();                              // Read the single command
     if (user_command == 'm')
-      return;
-    else
+    {
       Serial.println(user_command);
-    Serial.println();
+      return;
+    }
+    else
+    {
+      Serial.println(user_command);
+      Serial.println();
+    }
     switch (user_command)
     {
       case 0:
+        Serial.println("Setting GPIO Low"); 
         device.set_control_byte(LTC6603_GPO_MASK, LTC6603_GPO_LOW);
         break;
       case 1:
+        Serial.println("Setting GPIO High");
         device.set_control_byte(LTC6603_GPO_MASK, LTC6603_GPO_HIGH);
         break;
       default:
@@ -337,22 +353,32 @@ void menu_5_set_gain()
     Serial.print(F("\nEnter a Command: "));
     user_command = read_int();                              // Read the single command
     if (user_command == 'm')
-      return;
-    else
+    {
       Serial.println(user_command);
-    Serial.println();
+      return;
+    }
+    else
+    {
+      Serial.println(user_command);
+      Serial.println();
+    }
+    
     switch (user_command)
     {
       case 0:
+        Serial.println("Setting Gain to 0dB");
         device.set_control_byte(LTC6603_GAIN_MASK, LTC6603_GAIN_0dB);
         break;
       case 1:
+        Serial.println("Setting Gain to 6dB");
         device.set_control_byte(LTC6603_GAIN_MASK, LTC6603_GAIN_6dB);
         break;
       case 2:
+        Serial.println("Setting Gain to 12dB");
         device.set_control_byte(LTC6603_GAIN_MASK, LTC6603_GAIN_12dB);
         break;
       case 3:
+        Serial.println("Setting Gain to 24dB");
         device.set_control_byte(LTC6603_GAIN_MASK, LTC6603_GAIN_24dB);
         break;
       default:
@@ -362,6 +388,80 @@ void menu_5_set_gain()
   }
 }
 
+// This function was added to create a default state for the DC1304B-X in case there is some error in programming
+void default_state_freq_and_gain()
+{
+  float LP_cutoff_f, HP_cutoff_f; // Cut off frequency
+  float required_fclk;
+  float sampling_f;
+
+  // set 6903 to Fclk
+  LP_cutoff_f = 20;
+  required_fclk = LP_cutoff_f * device.get_multiplier(0);
+  Serial.print("\nFclk in KHz: " + String(required_fclk));
+  clock_device.set_frequency(required_fclk);
+
+  // set 6603 LPF0, LPF1
+  Serial.print("\nSetting LPF corner to 20 KHz");
+  device.set_control_byte(LTC6603_LPF_MASK, device.get_LPF_bits(0));
+  device.print_control_byte();
+  if (device.check_device_ready())
+  {
+    Serial.print(F("\nDevice ready"));
+  }
+  else
+  {
+    Serial.print(F("\nDevice not ready"));
+  }
+
+   Serial.println();
+  //This sets gain to 0 after printing whether device is ready
+   Serial.print("\nSetting Gain to 0 dB. ");
+   device.set_control_byte(LTC6603_GAIN_MASK, LTC6603_GAIN_0dB);
+   device.print_control_byte();
+   
+   #ifdef device_LTC6602
+  {
+
+    // set 6602 HPF0, HPF1
+ 
+    Serial.print("\nSetting HPF Corner Frequency to" + String(required_fclk / 6000) + " KHz");
+    device.set_control_byte(LTC6602_HPF_MASK, device.get_HPF_bits(0));
+    device.print_control_byte();
+    if (device.check_device_ready())
+    {
+      Serial.print(F("\nDevice ready"));
+    }
+    else
+    {
+      Serial.print(F("\nDevice not ready"));
+    }
+    //Sampling frequency is equal to fclk/3 because LPF0 = 0
+    sampling_f = required_fclk / 3; 
+    Serial.print(F("\nSampling frequency = "));
+    Serial.print(sampling_f);
+    Serial.print(F("kHz\n"));
+  }
+  #else ifdef device_LTC6603
+  {
+
+    sampling_f = required_fclk / 4;
+    
+    if (device.check_device_ready())
+    {
+      Serial.print(F("\nDevice ready"));
+    }
+    else
+    {
+      Serial.print(F("\nDevice not ready"));
+    }
+    
+    Serial.print(F("\nSampling frequency = "));
+    Serial.print(sampling_f);
+    Serial.print(F("kHz\n"));
+  }
+  #endif
+}
 
 //! Prints the title block when program first starts.
 void print_title()
@@ -384,6 +484,7 @@ void print_prompt()
   Serial.print(F("2-LTC660x: Power Down\n"));
   Serial.print(F("3-LTC660x: Power Up\n"));
   Serial.print(F("4-LTC660x: Set Gain\n"));
+  Serial.print(F("5-LTC660x: Reset / Default State\n"));
   Serial.println();
   Serial.print(F("Enter a command:"));
 }
