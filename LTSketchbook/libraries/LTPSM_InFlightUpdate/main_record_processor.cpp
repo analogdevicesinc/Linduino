@@ -2511,6 +2511,13 @@ uint8_t recordProcessor___0x18___processEvent(t_RECORD_EVENT *pRecord)
       Serial.print(F("META DATA EVENT: The system is about to begin programming a chip\n"));
 #endif
       return SUCCESS;
+    case INSYSTEM_CHIP_AFTER_PROGRAM :
+      if (verification_in_progress)
+        ignore_records = true;
+#if (DEBUG_PRINT || DEBUG_PROCESSING)
+      printf(F("META DATA EVENT: The system has finished programming a chip\n"));
+#endif
+      return SUCCESS;
     case SYSTEM_BEFORE_VERIFY:
       if (verification_in_progress)
         ignore_records = false;
