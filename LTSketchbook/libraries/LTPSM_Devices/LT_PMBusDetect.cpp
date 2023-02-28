@@ -49,15 +49,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <string.h>
 
-#include "../LT_PMBUS/LT_PMBusDetect.h"
+#include "LT_PMBusDetect.h"
 #include "LT_PMBusDeviceLTC3880.h"
 #include "LT_PMBusDeviceLTC3882.h"
 #include "LT_PMBusDeviceLTC3883.h"
+#include "LT_PMBusDeviceLTC3884.h"
 #include "LT_PMBusDeviceLTC3886.h"
 #include "LT_PMBusDeviceLTC3887.h"
+#include "LT_PMBusDeviceLTC3889.h"
+#include "LT_PMBusDeviceLTC7880.h"
+#include "LT_PMBusDeviceLTM4664.h"
 #include "LT_PMBusDeviceLTM4675.h"
 #include "LT_PMBusDeviceLTM4676.h"
 #include "LT_PMBusDeviceLTM4677.h"
+#include "LT_PMBusDeviceLTM4678.h"
+#include "LT_PMBusDeviceLTM4680.h"
+#include "LT_PMBusDeviceLTM4686.h"
+#include "LT_PMBusDeviceLTM4700.h"
+#include "LT_PMBusDeviceLTC2972.h"
 #include "LT_PMBusDeviceLTC2974.h"
 #include "LT_PMBusDeviceLTC2975.h"
 #include "LT_PMBusDeviceLTC2977.h"
@@ -67,6 +76,37 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 LT_PMBusDetect::LT_PMBusDetect(LT_PMBus *pmbus):pmbus_(pmbus)
 {
+  devices_ = NULL;
+  rails_ = NULL;
+  deviceCnt_ = 0;
+  railCnt_ = 0;
+}
+
+LT_PMBusDetect::~LT_PMBusDetect()
+{
+  if (deviceCnt_ > 0)
+  {
+    while (deviceCnt_ > 0)
+    {
+      deviceCnt_--;
+      if (devices_[deviceCnt_] != NULL)
+        delete (devices_[deviceCnt_]);
+    }
+    free(devices_);
+  }
+
+  if (railCnt_ > 0)
+  {
+    while (railCnt_ > 0)
+    {
+      railCnt_--;
+      if (rails_[railCnt_] != NULL)
+      {
+        delete (rails_[railCnt_]);
+      }
+    }
+    free(rails_);
+  }
 }
 
 LT_PMBusDevice **LT_PMBusDetect::getDevices(
@@ -84,11 +124,6 @@ LT_PMBusRail **LT_PMBusDetect::getRails(
 
 void LT_PMBusDetect::detect ()
 {
-  devices_ = NULL;
-  rails_ = NULL;
-  deviceCnt_ = 0;
-  railCnt_ = 0;
-
   uint8_t *addresses;
   LT_PMBusDevice *device;
   unsigned int i, j;
@@ -96,14 +131,24 @@ void LT_PMBusDetect::detect ()
   if (deviceCnt_ > 0)
   {
     while (deviceCnt_ > 0)
-      delete (*(devices_ + (--deviceCnt_)));
+   {
+      deviceCnt_--;
+      if (devices_[deviceCnt_] != NULL)
+        delete (devices_[deviceCnt_]);
+    }
     free(devices_);
   }
 
   if (railCnt_ > 0)
   {
     while (railCnt_ > 0)
-      delete (*(rails_ + (--railCnt_)));
+   {
+      railCnt_--;
+      if (rails_[railCnt_] != NULL)
+      {
+        delete (rails_[railCnt_]);
+      }
+    }
     free(rails_);
   }
 
@@ -124,15 +169,33 @@ void LT_PMBusDetect::detect ()
       devices_[deviceCnt_++] = device;
     else if ((device = LT_PMBusDeviceLTC3883::detect(pmbus_, addresses[i])) != NULL)
       devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTC3884::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
     else if ((device = LT_PMBusDeviceLTC3886::detect(pmbus_, addresses[i])) != NULL)
       devices_[deviceCnt_++] = device;
     else if ((device = LT_PMBusDeviceLTC3887::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTC3889::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTC7880::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTM4664::detect(pmbus_, addresses[i])) != NULL)
       devices_[deviceCnt_++] = device;
     else if ((device = LT_PMBusDeviceLTM4675::detect(pmbus_, addresses[i])) != NULL)
       devices_[deviceCnt_++] = device;
     else if ((device = LT_PMBusDeviceLTM4676::detect(pmbus_, addresses[i])) != NULL)
       devices_[deviceCnt_++] = device;
     else if ((device = LT_PMBusDeviceLTM4677::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTM4678::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTM4680::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTM4686::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTM4700::detect(pmbus_, addresses[i])) != NULL)
+      devices_[deviceCnt_++] = device;
+    else if ((device = LT_PMBusDeviceLTC2972::detect(pmbus_, addresses[i])) != NULL)
       devices_[deviceCnt_++] = device;
     else if ((device = LT_PMBusDeviceLTC2974::detect(pmbus_, addresses[i])) != NULL)
       devices_[deviceCnt_++] = device;
@@ -152,11 +215,12 @@ void LT_PMBusDetect::detect ()
   // Get all the rails, while merging duplicates.
   for (i = 0; i < deviceCnt_; i++)
   {
+    LT_PMBusRail **rails;
     LT_PMBusRail **new_rail;
     void *m;
     bool merged;
 
-    new_rail = devices_[i]->getRails();
+    new_rail = rails = devices_[i]->getRails();
 
     // Loop if device has rail support, and if there are rails to process.
     while (new_rail != NULL && *new_rail != NULL)
@@ -180,9 +244,7 @@ void LT_PMBusDetect::detect ()
         else
         {
           m = realloc(rails_, (railCnt_ + 1) * sizeof(LT_PMBusRail *));
-          if (m == NULL)
-            free(m);
-          else
+          if (m != NULL)
             rails_ = (LT_PMBusRail **) m;
         }
         if (rails_ != NULL)
@@ -191,6 +253,7 @@ void LT_PMBusDetect::detect ()
 
       new_rail++;
     }
+    delete rails;
   }
 
   rails_ = (LT_PMBusRail **) realloc(rails_, (railCnt_ + 1) * sizeof(LT_PMBusRail *));

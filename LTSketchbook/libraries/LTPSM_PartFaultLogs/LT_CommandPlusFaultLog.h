@@ -63,7 +63,7 @@ class LT_CommandPlusFaultLog : public LT_FaultLog
 
     }
 
-    void getNvmBlock(uint8_t address, uint16_t offset, uint16_t numWords, uint8_t command, uint8_t *data)
+    void getNvmBlock(uint8_t address, uint16_t offset, uint16_t numWords, uint8_t command, uint8_t *data) 
     {
       // Get device ready to give data using command plus
       pmbus_->smbus()->writeWord(address, command, 0x00EE);

@@ -91,48 +91,37 @@ class LT_PMBusDeviceController : public LT_PMBusDevice
       }
       else
       {
-        m = malloc(2*sizeof(tRailDef *));
-        if (m == NULL)
-          free(m);
-        else
-        {
-          railDef = (tRailDef **)m;
-          railDef[1] = NULL;
-          railDef[0] = new tRailDef;
-          railDef[0]->address = address_;
-          railDef[0]->pages = (uint8_t *) malloc(1);
-          railDef[0]->pages[0] = 0;
-          railDef[0]->noOfPages = 1;
-          railDef[0]->controller = true;
-          railDef[0]->multiphase = true;
-          railDef[0]->capabilities = getCapabilities();
-        }
+        railDef = (tRailDef **)malloc(2*sizeof(tRailDef *));
+        railDef[1] = NULL;
+        railDef[0] = new tRailDef;
+        railDef[0]->address = address_;
+        railDef[0]->pages = (uint8_t *) malloc(1);
+        railDef[0]->pages[0] = 0;
+        railDef[0]->noOfPages = 1;
+        railDef[0]->controller = true;
+        railDef[0]->multiphase = true;
+        railDef[0]->capabilities = getCapabilities();
         no_rails++;
       }
 
-      if (no_pages_ > 0) // Only handes 1/2 channel controllers
+      if (no_pages_ > 1) // Only handes 1/2 channel controllers
       {
         pmbus_->setPage(address_, 1);
         rail_address = pmbus_->getRailAddress(address_);
         if (rail_address == 0x80)
         {
           m = realloc(railDef, 4*sizeof(tRailDef *));
-          if (m == NULL)
-            free(m);
-          else
-          {
-            railDef = (tRailDef **)m;
-            railDef[3] = NULL;
-            railDef[2] = new tRailDef;
-            railDef[2]->address = address_;
-            railDef[2]->pages = (uint8_t *) malloc(1);
-            railDef[2]->pages[0] = 1;
-            railDef[2]->noOfPages = 1;
-            railDef[2]->controller = true;
-            railDef[2]->multiphase = false;
-            railDef[2]->capabilities = getCapabilities();
-            rail_address = address_;
-          }
+          railDef = (tRailDef **)m;
+          railDef[3] = NULL;
+          railDef[2] = new tRailDef;
+          railDef[2]->address = address_;
+          railDef[2]->pages = (uint8_t *) malloc(1);
+          railDef[2]->pages[0] = 1;
+          railDef[2]->noOfPages = 1;
+          railDef[2]->controller = true;
+          railDef[2]->multiphase = false;
+          railDef[2]->capabilities = getCapabilities();
+          rail_address = address_;
           no_rails++;
         }
         else
@@ -146,21 +135,16 @@ class LT_PMBusDeviceController : public LT_PMBusDevice
           else
           {
             m = realloc(railDef,4 *sizeof(tRailDef *));
-            if (m == NULL)
-              free(m);
-            else
-            {
-              railDef = (tRailDef **)m;
-              railDef[3] = NULL;
-              railDef[2] = new tRailDef;
-              railDef[2]->address = address_;
-              railDef[2]->pages = (uint8_t *) malloc(1);
-              railDef[2]->pages[0] = 1;
-              railDef[2]->noOfPages = 1;
-              railDef[2]->controller = true;
-              railDef[2]->multiphase = true;
-              railDef[2]->capabilities = getCapabilities();
-            }
+            railDef = (tRailDef **)m;
+            railDef[3] = NULL;
+            railDef[2] = new tRailDef;
+            railDef[2]->address = address_;
+            railDef[2]->pages = (uint8_t *) malloc(1);
+            railDef[2]->pages[0] = 1;
+            railDef[2]->noOfPages = 1;
+            railDef[2]->controller = true;
+            railDef[2]->multiphase = true;
+            railDef[2]->capabilities = getCapabilities();
             no_rails++;
           }
         }

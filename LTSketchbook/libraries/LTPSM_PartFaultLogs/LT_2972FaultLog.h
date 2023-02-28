@@ -1,5 +1,5 @@
 /*!
-LTC SMBus Support: Implementation for a LTC2974 Fault Log
+LTC SMBus Support: Implementation for a LTC2972 Fault Log
 
 @verbatim
 
@@ -9,7 +9,7 @@ API to enable use of the PMBus code without modifications.
 @endverbatim
 
 
-Copyright 2018(c) Analog Devices, Inc.
+Copyright 2021(c) Analog Devices, Inc.
 
 All rights reserved.
 
@@ -44,21 +44,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /*! @file
-    @ingroup LT_2974FaultLog
-    Library Header File for LT_2974FaultLog
+    @ingroup LT_2972FaultLog
+    Library Header File for LT_2972FaultLog
 */
 
-#ifndef LT_2974FaultLog_H_
-#define LT_2974FaultLog_H_
+#ifndef LT_2972FaultLog_H_
+#define LT_2972FaultLog_H_
 
 #include "../LT_PMBUS/LT_PMBus.h"
 #include "../LT_PMBUS/LT_PMBusMath.h"
 #include "LT_CommandPlusFaultLog.h"
 
-
-//! class that handles LTC2974 fault logs.
+//! class that handles LTC2972 fault logs.
 //! contains structs for interpreting the data read from the part.
-class LT_2974FaultLog : public LT_CommandPlusFaultLog
+class LT_2972FaultLog : public LT_CommandPlusFaultLog
 {
 
   public:
@@ -66,7 +65,7 @@ class LT_2974FaultLog : public LT_CommandPlusFaultLog
 
 
     /********************************************************************
-     * LTC2974 types
+     * LTC2972 types
      ********************************************************************/
 
     struct ChanStatus
@@ -75,12 +74,14 @@ class LT_2974FaultLog : public LT_CommandPlusFaultLog
         struct RawByte status_vout;
         struct RawByte status_iout;
         struct RawByte status_mfr_specific;
+        struct RawByte status_mfr;
     };
 
     struct VoutData
     {
       public:
-        struct RawByte status_mfr;
+        struct RawByte status_mfr_2;
+        struct RawByte status_mfr_specific;
         struct RawByte status_vout;
         struct Lin16WordReverse read_vout;
     };
@@ -118,6 +119,18 @@ class LT_2974FaultLog : public LT_CommandPlusFaultLog
         struct Lin5_11WordReverse vin;
     };
 
+    struct IinData
+    {
+      public:
+        struct Lin5_11WordReverse read_iin;
+    };
+
+    struct PinData
+    {
+      public:
+        struct Lin5_11WordReverse read_pin;
+    };
+
     struct Peak16Words
     {
       public:
@@ -132,7 +145,7 @@ class LT_2974FaultLog : public LT_CommandPlusFaultLog
         struct Lin5_11Word min;
     };
 
-    struct FaultLogPeaksLtc2974
+    struct FaultLogPeaksLtc2972
     {
       public:
         struct Peak16Words vout0_peaks;
@@ -140,53 +153,43 @@ class LT_2974FaultLog : public LT_CommandPlusFaultLog
         struct Peak5_11Words iout0_peaks;
 
         struct Peak5_11Words vin_peaks;
+        struct Peak5_11Words iin_peaks;
+        struct Peak5_11Words pin_peaks;
 
         struct Peak16Words vout1_peaks;
         struct Peak5_11Words temp1_peaks;
         struct Peak5_11Words iout1_peaks;
-
-        struct Peak16Words vout2_peaks;
-        struct Peak5_11Words temp2_peaks;
-        struct Peak5_11Words iout2_peaks;
-
-        struct Peak16Words vout3_peaks;
-        struct Peak5_11Words temp3_peaks;
-        struct Peak5_11Words iout3_peaks;
     };
 
-    struct FaultLogReadStatusLtc2974
+    struct FaultLogReadStatusLtc2972
     {
       public:
         struct ChanStatus chan_status0;
         struct ChanStatus chan_status1;
-        struct ChanStatus chan_status2;
-        struct ChanStatus chan_status3;
     };
 
-    struct FaultLogPreambleLtc2974
+    struct FaultLogPreambleLtc2972
     {
       public:
         uint8_t position_last;
+        uint8_t reserved0;
         struct FaultLogTimeStamp shared_time;
-        struct FaultLogPeaksLtc2974 peaks;
-        struct FaultLogReadStatusLtc2974 fault_log_status;
+        struct FaultLogFirstFault first_fault;
+        struct FaultLogFirstFaultTime first_fault_time;
+        struct FaultLogPeaksLtc2972 peaks;
+        struct FaultLogReadStatusLtc2972 fault_log_status;
     };
 
-    struct FaultLogReadLoopLtc2974
+    struct FaultLogReadLoopLtc2972
     {
       public:
-        struct PoutData pout_data3;
-        struct IoutData iout_data3;
-        struct TempData temp_data3;
-        struct VoutData vout_data3;
-        struct PoutData pout_data2;
-        struct IoutData iout_data2;
-        struct TempData temp_data2;
-        struct VoutData vout_data2;
         struct PoutData pout_data1;
         struct IoutData iout_data1;
         struct TempData temp_data1;
         struct VoutData vout_data1;
+
+        struct PinData pin_data;
+        struct IinData iin_data;
 
         struct RawByte reserved;
 
@@ -200,12 +203,12 @@ class LT_2974FaultLog : public LT_CommandPlusFaultLog
         struct Lin5_11WordReverse read_temp2;
     };
 
-    struct FaultLogLtc2974
+    struct FaultLogLtc2972
     {
       public:
-        struct FaultLogPreambleLtc2974 preamble;
-        uint8_t telemetryData[184];
-        struct FaultLogReadLoopLtc2974 *loops; //loops[0] - loops[4]; lays over telemetry data based on Fault-Log Pointer; 0, 3 have potential for invalid/phantom data; 4 necessarily contains some or all invalid/phantom data; based on following valid byte pointers
+        struct FaultLogPreambleLtc2972 preamble;
+        uint8_t telemetryData[200]; // 176 = 255 - 55
+        struct FaultLogReadLoopLtc2972 *loops; //loops[0] - loops[4]; lays over telemetry data based on Fault-Log Pointer; 0, 3 have potential for invalid/phantom data; 4 necessarily contains some or all invalid/phantom data; based on following valid byte pointers
         uint8_t firstValidByte; //relative to struct.  firstValidByte should reference start of telemetryData (71).  See datasheet.
         uint8_t lastValidByte; //lastValidByte should reference end of telemetryData (237).  See datasheet.
 
@@ -215,16 +218,15 @@ class LT_2974FaultLog : public LT_CommandPlusFaultLog
 #pragma pack(pop)
 
   protected:
-    FaultLogLtc2974   *faultLog2974;
+    FaultLogLtc2972   *faultLog2972;
 
   public:
     //! Constructor
-    LT_2974FaultLog(LT_PMBus *pmbus //!< pmbus object reference for this fault log handler to use.
+    LT_2972FaultLog(LT_PMBus *pmbus //!< pmbus object reference for this fault log handler to use.
                    );
 
     //! Pretty prints this part's fault log to a Print inheriting object, or Serial if none specified.
-    void print(Print *printer = 0 //!< Print inheriting object to print the fault log to.
-              );
+    void print(Print *printer);
 
     //! Get binary of the fault log or NULL if no log
     uint8_t *getBinary();
@@ -235,16 +237,15 @@ class LT_2974FaultLog : public LT_CommandPlusFaultLog
     //! Dumps binary of the fault log to a Print inheriting object, or Serial if none specified.
     void dumpBinary(Print *printer = 0  //!< Print inheriting object to print the binary to.
                    );
-
     //! Reads the fault log from the specified address, reserves memory to hold the data.
     //! @return a reference to the data read from the part.
     void read(uint8_t address  //!< the address to read the fault log from.
              );
 
     // ! Get the fault log data
-    struct FaultLogLtc2974 *get()
+    struct FaultLogLtc2972 *get()
     {
-      return faultLog2974;
+      return faultLog2972;
     }
 
     //! Frees the memory reserved for the fault log.

@@ -131,6 +131,16 @@ LT_PMBusRail **LT_PMBusDevice::getRails()
   return NULL;
 }
 
+void LT_PMBusDevice::enablePec()
+{
+  pmbus_->enablePec(address_);
+}
+
+void LT_PMBusDevice::disablePec()
+{
+  pmbus_->disablePec(address_);
+}
+
 bool LT_PMBusDevice::hasFaultLog()
 {
   return false;

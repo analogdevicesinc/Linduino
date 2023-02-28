@@ -220,7 +220,6 @@ void LT_2975FaultLog::printPeaks(Print *printer)
   printer->print(iin_min, 6);
   printer->print(F(", Peak: "));
   printer->println(iin_max, 6);
-  printer->println();
 
   float pin_max, pin_min;
   pin_max = math_.lin11_to_float(getLin5_11WordVal(faultLog2975->preamble.peaks.pin_peaks.peak));

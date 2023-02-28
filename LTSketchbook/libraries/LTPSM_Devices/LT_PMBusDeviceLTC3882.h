@@ -63,6 +63,13 @@ class LT_PMBusDeviceLTC3882 : public LT_PMBusDeviceController
     {
     }
 
+    void reset()
+    {
+        pmbus_->reset(address_);
+        pmbus_->smbus()->waitForAck(address_, 0x00);
+        pmbus_->waitForNotBusy(address_);
+    }
+
     uint32_t getCapabilities (
     )
     {
@@ -153,6 +160,19 @@ class LT_PMBusDeviceLTC3882 : public LT_PMBusDeviceController
       }
     }
 
+    void printFaultLog()
+    {
+      LT_3882FaultLog *faultLog = new LT_3882FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        faultLog->read(address_);
+        faultLog->print();
+//        faultLog->dumpBinary();
+        faultLog->release();
+        delete faultLog;
+      }
+    }
+    
     void clearFaultLog()
     {
       LT_3882FaultLog *faultLog = new LT_3882FaultLog(pmbus_);
@@ -161,6 +181,20 @@ class LT_PMBusDeviceLTC3882 : public LT_PMBusDeviceController
         faultLog->clearFaultLog(address_);
         pmbus_->smbus()->waitForAck(address_, 0x00);
         pmbus_->waitForNotBusy(address_);
+        delete faultLog;
+      }
+      else
+      {
+        delete faultLog;
+      }
+    }
+
+    void storeFaultLog()
+    {
+      LT_3882FaultLog *faultLog = new LT_3882FaultLog(pmbus_);
+      if (!faultLog->hasFaultLog(address_))
+      {
+        faultLog->storeFaultLog(address_);
         delete faultLog;
       }
       else

@@ -51,6 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define LT_PMBusDeviceLTC3886_H_
 
 #include "LT_PMBusDeviceController.h"
+#include "../LTPSM_PartFaultLogs/LT_3886FaultLog.h"
 
 class LT_PMBusDeviceLTC3886 : public LT_PMBusDeviceController
 {
@@ -60,21 +61,6 @@ class LT_PMBusDeviceLTC3886 : public LT_PMBusDeviceController
 
     LT_PMBusDeviceLTC3886(LT_PMBus *pmbus, uint8_t address) : LT_PMBusDeviceController(pmbus, address, 2)
     {
-    }
-
-    uint32_t getCapabilities (
-    )
-    {
-      return cap_;
-    }
-
-    //! Is/are these capability(s) supported?
-    //! @return true if yes
-    bool hasCapability(
-      uint32_t capability          //!< List of capabilities
-    )
-    {
-      return (cap_ & capability) == capability;
     }
 
     static LT_PMBusDevice *detect(LT_PMBus *pmbus, uint8_t address)
@@ -97,10 +83,126 @@ class LT_PMBusDeviceLTC3886 : public LT_PMBusDeviceController
       else
         return NULL;
     }
+    
+    void reset()
+    {
+        pmbus_->reset(address_);
+        pmbus_->smbus()->waitForAck(address_, 0x00);
+        pmbus_->waitForNotBusy(address_);
+    }
+
+    uint32_t getCapabilities (
+    )
+    {
+      return cap_;
+    }
+
+    //! Is/are these capability(s) supported?
+    //! @return true if yes
+    bool hasCapability(
+      uint32_t capability          //!< List of capabilities
+    )
+    {
+      return (cap_ & capability) == capability;
+    }
 
     uint8_t getNumPages(void)
     {
       return 2;
+    }
+
+    void enableFaultLog()
+    {
+      LT_3886FaultLog *faultLog = new LT_3886FaultLog(pmbus_);
+      faultLog->enableFaultLog(address_);
+      delete faultLog;
+    }
+
+    void disableFaultLog()
+    {
+      LT_3886FaultLog *faultLog = new LT_3886FaultLog(pmbus_);
+      faultLog->disableFaultLog(address_);
+      delete faultLog;
+    }
+
+    bool hasFaultLog()
+    {
+      LT_3886FaultLog *faultLog = new LT_3886FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        delete faultLog;
+        return true;
+      }
+      else
+      {
+        delete faultLog;
+        return false;
+      }
+    }
+
+    char *getFaultLog()
+    {
+      LT_3886FaultLog *faultLog = new LT_3886FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        printf("fetch LTC3886 FL\n");
+        faultLog->read(address_);
+//        faultLog->print();
+        faultLog->dumpBinary();
+        faultLog->release();
+        delete faultLog;
+        return NULL;
+      }
+      else
+      {
+        delete faultLog;
+        return NULL;
+      }
+    }
+
+    void printFaultLog()
+    {
+      LT_3886FaultLog *faultLog = new LT_3886FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        faultLog->read(address_);
+        faultLog->print();
+//        faultLog->dumpBinary();
+
+        faultLog->release();
+
+        delete faultLog;
+      }
+    }
+
+    void clearFaultLog()
+    {
+      LT_3886FaultLog *faultLog = new LT_3886FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        faultLog->clearFaultLog(address_);
+        pmbus_->smbus()->waitForAck(address_, 0x00);
+        pmbus_->waitForNotBusy(address_);
+        delete faultLog;
+      }
+      else
+      {
+        delete faultLog;
+      }
+    }
+
+    void storeFaultLog()
+    {
+      LT_3886FaultLog *faultLog = new LT_3886FaultLog(pmbus_);
+      if (!faultLog->hasFaultLog(address_))
+      {
+        faultLog->storeFaultLog(address_);
+        delete faultLog;
+      }
+      else
+      {
+        delete faultLog;
+      }
     }
 
 

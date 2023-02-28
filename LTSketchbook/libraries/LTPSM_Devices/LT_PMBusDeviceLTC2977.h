@@ -65,6 +65,13 @@ class LT_PMBusDeviceLTC2977 : public LT_PMBusDeviceManager
 
     }
 
+    void reset()
+    {
+        pmbus_->restoreFromNvm(address_);
+        pmbus_->smbus()->waitForAck(address_, 0x00);
+        pmbus_->waitForNotBusy(address_);
+    }
+
     uint32_t getCapabilities (
     )
     {
@@ -156,6 +163,19 @@ class LT_PMBusDeviceLTC2977 : public LT_PMBusDeviceManager
       }
     }
 
+    void printFaultLog()
+    {
+      LT_2977FaultLog *faultLog = new LT_2977FaultLog(pmbus_);
+      if (faultLog->hasFaultLog(address_))
+      {
+        faultLog->read(address_);
+        faultLog->print();
+//        faultLog->dumpBinary();
+        faultLog->release();
+        delete faultLog;
+      }
+    }
+    
     void clearFaultLog()
     {
       LT_2977FaultLog *faultLog = new LT_2977FaultLog(pmbus_);
@@ -164,6 +184,20 @@ class LT_PMBusDeviceLTC2977 : public LT_PMBusDeviceManager
         faultLog->clearFaultLog(address_);
         pmbus_->smbus()->waitForAck(address_, 0x00);
         pmbus_->waitForNotBusy(address_);
+        delete faultLog;
+      }
+      else
+      {
+        delete faultLog;
+      }
+    }
+
+    void storeFaultLog()
+    {
+      LT_2977FaultLog *faultLog = new LT_2977FaultLog(pmbus_);
+      if (!faultLog->hasFaultLog(address_))
+      {
+        faultLog->storeFaultLog(address_);
         delete faultLog;
       }
       else

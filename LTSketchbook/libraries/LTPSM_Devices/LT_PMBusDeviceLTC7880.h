@@ -8,7 +8,7 @@ Representation of a device and its capabilities.
 @endverbatim
 
 
-Copyright 2018(c) Analog Devices, Inc.
+Copyright 2021(c) Analog Devices, Inc.
 
 All rights reserved.
 
@@ -44,28 +44,52 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*! @file
     @ingroup LT_PMBusDevice
-    Library Header File for LT_PMBusDeviceLTC2974
+    Library Header File for LT_PMBusDeviceLTC7880
 */
 
-#ifndef LT_PMBusDeviceLTC2974_H_
-#define LT_PMBusDeviceLTC2974_H_
+#ifndef LT_PMBusDeviceLTC7880_H_
+#define LT_PMBusDeviceLTC7880_H_
+#include "../LTPSM_PartFaultLogs/LT_7880FaultLog.h"
 
-#include "LT_PMBusDeviceManager.h"
-#include "../LTPSM_PartFaultLogs/LT_2974FaultLog.h"
+#include "LT_PMBusDeviceController.h"
 
-class LT_PMBusDeviceLTC2974 : public LT_PMBusDeviceManager
+class LT_PMBusDeviceLTC7880 : public LT_PMBusDeviceController
 {
   public:
 
     static uint32_t cap_;
 
-    LT_PMBusDeviceLTC2974(LT_PMBus *pmbus, uint8_t address) : LT_PMBusDeviceManager(pmbus, address, 4)
+    LT_PMBusDeviceLTC7880(LT_PMBus *pmbus, uint8_t address) : LT_PMBusDeviceController(pmbus, address, 2)
     {
     }
 
+    static LT_PMBusDevice *detect(LT_PMBus *pmbus, uint8_t address)
+    {
+      uint16_t id;
+      LT_PMBusDeviceLTC7880 *device;
+
+      id = pmbus->readMfrSpecialId(address);
+      //printf("id is %x\n", id);
+      if ((id & 0xFFF0) == 0x49E0)
+      {
+        //printf("match\n");
+        if (pmbus->getRailAddress(address) != address)
+        {
+          printf("Found rail address %x %x\n", pmbus->getRailAddress(address), address);
+          device = new LT_PMBusDeviceLTC7880(pmbus, address);
+          device->probeSpeed();
+          return device;
+        }
+        else
+          return NULL;
+      }
+      else
+        return NULL;
+    }
+    
     void reset()
     {
-        pmbus_->restoreFromNvm(address_);
+        pmbus_->reset(address_);
         pmbus_->smbus()->waitForAck(address_, 0x00);
         pmbus_->waitForNotBusy(address_);
     }
@@ -85,58 +109,37 @@ class LT_PMBusDeviceLTC2974 : public LT_PMBusDeviceManager
       return (cap_ & capability) == capability;
     }
 
-    char *getType(void)
-    {
-      uint8_t *model = (uint8_t *) calloc(8,1);
-      memcpy(model, "LTC2974", 7);
-      return (char *) model;
-    }
-
     uint8_t getNumPages(void)
     {
-      return 4;
-    }
-
-    static LT_PMBusDevice *detect(LT_PMBus *pmbus, uint8_t address)
-    {
-      uint16_t id;
-      LT_PMBusDeviceLTC2974 *device;
-
-      id = pmbus->readMfrSpecialId(address);
-      if (  (id & 0xFFF0) == 0x0210)
-      {
-        device = new LT_PMBusDeviceLTC2974(pmbus, address);
-        device->probeSpeed();
-        return device;
-      }
-      else
-        return NULL;
+      return 2;
     }
 
     void enableFaultLog()
     {
-      LT_2974FaultLog *faultLog = new LT_2974FaultLog(pmbus_);
+      LT_7880FaultLog *faultLog = new LT_7880FaultLog(pmbus_);
       faultLog->enableFaultLog(address_);
       delete faultLog;
     }
 
     void disableFaultLog()
     {
-      LT_2974FaultLog *faultLog = new LT_2974FaultLog(pmbus_);
+      LT_7880FaultLog *faultLog = new LT_7880FaultLog(pmbus_);
       faultLog->disableFaultLog(address_);
       delete faultLog;
     }
 
     bool hasFaultLog()
     {
-      LT_2974FaultLog *faultLog = new LT_2974FaultLog(pmbus_);
+      LT_7880FaultLog *faultLog = new LT_7880FaultLog(pmbus_);
       if (faultLog->hasFaultLog(address_))
       {
+        printf("Found log\n");
         delete faultLog;
         return true;
       }
       else
       {
+        printf("Did not find log\n");
         delete faultLog;
         return false;
       }
@@ -144,12 +147,12 @@ class LT_PMBusDeviceLTC2974 : public LT_PMBusDeviceManager
 
     char *getFaultLog()
     {
-      LT_2974FaultLog *faultLog = new LT_2974FaultLog(pmbus_);
+      LT_7880FaultLog *faultLog = new LT_7880FaultLog(pmbus_);
       if (faultLog->hasFaultLog(address_))
       {
         faultLog->read(address_);
-//      faultLog->print(&Serial);
-        faultLog->dumpBinary(&Serial);
+//        faultLog->print();
+        faultLog->dumpBinary();
         faultLog->release();
         delete faultLog;
         return NULL;
@@ -163,7 +166,7 @@ class LT_PMBusDeviceLTC2974 : public LT_PMBusDeviceManager
 
     void printFaultLog()
     {
-      LT_2974FaultLog *faultLog = new LT_2974FaultLog(pmbus_);
+      LT_7880FaultLog *faultLog = new LT_7880FaultLog(pmbus_);
       if (faultLog->hasFaultLog(address_))
       {
         faultLog->read(address_);
@@ -173,10 +176,10 @@ class LT_PMBusDeviceLTC2974 : public LT_PMBusDeviceManager
         delete faultLog;
       }
     }
-    
+
     void clearFaultLog()
     {
-      LT_2974FaultLog *faultLog = new LT_2974FaultLog(pmbus_);
+      LT_7880FaultLog *faultLog = new LT_7880FaultLog(pmbus_);
       if (faultLog->hasFaultLog(address_))
       {
         faultLog->clearFaultLog(address_);
@@ -192,7 +195,7 @@ class LT_PMBusDeviceLTC2974 : public LT_PMBusDeviceManager
 
     void storeFaultLog()
     {
-      LT_2974FaultLog *faultLog = new LT_2974FaultLog(pmbus_);
+      LT_7880FaultLog *faultLog = new LT_7880FaultLog(pmbus_);
       if (!faultLog->hasFaultLog(address_))
       {
         faultLog->storeFaultLog(address_);
@@ -205,4 +208,4 @@ class LT_PMBusDeviceLTC2974 : public LT_PMBusDeviceManager
     }
 };
 
-#endif /* LT_PMBusDeviceLTC2974_H_ */
+#endif /* LT_PMBusDeviceLTC7880_H_ */

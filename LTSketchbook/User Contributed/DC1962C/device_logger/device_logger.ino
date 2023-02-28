@@ -95,7 +95,7 @@ static int channel = 0;
 //! @return void
 void setup()
 {
-  uint32_t speed = 500000;
+  uint32_t speed = 100000;
 
   Serial.begin(115200);         //! Initialize the serial port to the PC
 
@@ -176,7 +176,7 @@ void loop()
   uint8_t page;
   int id = 0 ;
 
-  if (index > 100)
+  if (index > 0)
     return;
 
   // Telemetry

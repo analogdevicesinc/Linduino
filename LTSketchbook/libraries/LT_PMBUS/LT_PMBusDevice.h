@@ -132,6 +132,12 @@ class LT_PMBusDevice
     virtual LT_PMBusRail **getRails() = 0;
 
     //! Enable the Fault Log
+    virtual void enablePec();
+
+    //! Disable the Fault Log
+    virtual void disablePec();
+    
+    //! Enable the Fault Log
     virtual void enableFaultLog() {}
 
     //! Disable the Fault Log
@@ -145,8 +151,13 @@ class LT_PMBusDevice
     //! @return text
     virtual char *getFaultLog();
 
+    //! Print the fault log text
+    virtual void printFaultLog() {};
+    
     //! Clear the Fault Log
     virtual void clearFaultLog() { }
+
+    virtual void storeFaultLog() {}
 
     /*
      * Set the output voltage of a polyphase rail
