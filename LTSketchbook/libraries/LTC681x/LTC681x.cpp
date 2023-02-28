@@ -102,12 +102,11 @@ void write_68(uint8_t total_ic, //Number of ICs to be written to
 {
 	const uint8_t BYTES_IN_REG = 6;
 	const uint8_t CMD_LEN = 4+(8*total_ic);
-	uint8_t *cmd;
+	uint8_t cmd[CMD_LEN];
 	uint16_t data_pec;
 	uint16_t cmd_pec;
 	uint8_t cmd_index;
 	
-	cmd = (uint8_t *)malloc(CMD_LEN*sizeof(uint8_t));
 	cmd[0] = tx_cmd[0];
 	cmd[1] = tx_cmd[1];
 	cmd_pec = pec15_calc(2, cmd);
@@ -132,8 +131,6 @@ void write_68(uint8_t total_ic, //Number of ICs to be written to
 	cs_low(CS_PIN);
 	spi_write_array(CMD_LEN, cmd);
 	cs_high(CS_PIN);
-	
-	free(cmd);
 }
 
 /* Generic function to write 68xx commands and read data. Function calculated PEC for tx_cmd data */
@@ -439,9 +436,8 @@ uint8_t LTC681x_rdcv(uint8_t reg, // Controls which cell voltage register is rea
                     )
 {
 	int8_t pec_error = 0;
-	uint8_t *cell_data;
+	uint8_t cell_data[NUM_RX_BYT*total_ic];
 	uint8_t c_ic = 0;
-	cell_data = (uint8_t *) malloc((NUM_RX_BYT*total_ic)*sizeof(uint8_t));
 
 	if (reg == 0)
 	{
@@ -485,7 +481,6 @@ uint8_t LTC681x_rdcv(uint8_t reg, // Controls which cell voltage register is rea
 		}
 	}
 	LTC681x_check_pec(total_ic,CELL,ic);
-	free(cell_data);
 
 	return(pec_error);
 }
@@ -500,10 +495,9 @@ int8_t LTC681x_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
                      cell_asic *ic//A two dimensional array of the gpio voltage codes.
                     )
 {
-	uint8_t *data;
+	uint8_t data[NUM_RX_BYT*total_ic];
 	int8_t pec_error = 0;
 	uint8_t c_ic =0;
-	data = (uint8_t *) malloc((NUM_RX_BYT*total_ic)*sizeof(uint8_t));
 
 	if (reg == 0)
 	{
@@ -546,7 +540,6 @@ int8_t LTC681x_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
 		}
 	}
 	LTC681x_check_pec(total_ic,AUX,ic);
-	free(data);
 
 	return (pec_error);
 }
@@ -565,15 +558,13 @@ int8_t LTC681x_rdstat(uint8_t reg, //Determines which Stat  register is read bac
 {
 	const uint8_t BYT_IN_REG = 6;
 	const uint8_t STAT_IN_REG = 3;
-	uint8_t *data;
+	uint8_t data[NUM_RX_BYT*total_ic];
 	uint8_t data_counter = 0;
 	int8_t pec_error = 0;
 	uint16_t parsed_stat;
 	uint16_t received_pec;
 	uint16_t data_pec;
 	uint8_t c_ic = 0;
-	
-	data = (uint8_t *) malloc((12*total_ic)*sizeof(uint8_t));
 	
 	if (reg == 0)
 	{
@@ -683,9 +674,8 @@ int8_t LTC681x_rdstat(uint8_t reg, //Determines which Stat  register is read bac
 			data_counter=data_counter+2;
 		}
 	}
-	LTC681x_check_pec(total_ic,STAT,ic);
 	
-	free(data);
+	LTC681x_check_pec(total_ic,STAT,ic);
 	
 	return (pec_error);
 }
