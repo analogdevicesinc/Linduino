@@ -530,11 +530,11 @@ void LTC6813_wrpsb(uint8_t total_ic, // Number of ICs in the system
 }
 
 /* Reading the 6813 PWM/Sctrl Register B */
-uint8_t LTC6813_rdpsb(uint8_t total_ic, //< number of ICs in the daisy chain
+int8_t LTC6813_rdpsb(uint8_t total_ic, //< number of ICs in the daisy chain
                       cell_asic *ic //< a two dimensional array that the function stores the read data
                       )	
 {
-    uint8_t cmd[4];
+    uint8_t cmd[2];
     uint8_t read_buffer[256];
     int8_t pec_error = 0;
     uint16_t data_pec;
@@ -542,7 +542,7 @@ uint8_t LTC6813_rdpsb(uint8_t total_ic, //< number of ICs in the daisy chain
     uint8_t c_ic = 0;
 	cmd[0] = 0x00;
 	cmd[1] = 0x1E;
-    pec_error = read_68(total_ic, cmd, read_buffer);
+    read_68(total_ic, cmd, read_buffer);
 
     for(uint8_t current_ic =0; current_ic<total_ic; current_ic++)
     {	
@@ -568,15 +568,14 @@ uint8_t LTC6813_rdpsb(uint8_t total_ic, //< number of ICs in the daisy chain
         data_pec = read_buffer[7+(8*current_ic)] | (read_buffer[6+(8*current_ic)]<<8);
         if(calc_pec != data_pec )
         {
+            pec_error = -1;
             ic[c_ic].pwmb.rx_pec_match = 1;
 			ic[c_ic].sctrlb.rx_pec_match = 1;
-			
         }
         else 
 		{
 			ic[c_ic].pwmb.rx_pec_match = 0;
 			ic[c_ic].sctrlb.rx_pec_match = 0;
-			
 		}
     }
     return(pec_error);
