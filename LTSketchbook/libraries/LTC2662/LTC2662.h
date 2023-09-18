@@ -122,7 +122,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define  LTC2662_SPAN_100MA               0x0006
 #define  LTC2662_SPAN_200MA               0x0007
 #define  LTC2662_SPAN_SW_TO_NEG_V         0x0008
-#define  LTC2662_SPAN_300MA               0x0009
+#define  LTC2662_SPAN_300MA               0x000F
 //! @}
 
 //! @name LTC2662 Minimums and Maximums for each Span
