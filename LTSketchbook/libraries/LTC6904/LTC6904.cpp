@@ -92,9 +92,9 @@ uint16_t LTC6904_frequency_to_code(float frequency, uint8_t clk)
 
   // Keep OCT within range
   if (oct_double>15)
-    oct = 15;
+    oct_double = 15;
   if (oct_double<0)
-    oct = 0;
+    oct_double = 0;
   oct = (uint8_t)oct_double;  // Cast as uint8_t , round down
 
   // Calculate DAC code
